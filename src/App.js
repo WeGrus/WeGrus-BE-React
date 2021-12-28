@@ -8,7 +8,9 @@ import Group from "./components/screens/Group";
 import CreatePage from "./components/screens/Page_Create.js";
 import UpdatePage from "./components/screens/Page_Update.js";
 import Announce from "./components/screens/Announce";
+import Profile from "./components/screens/Profile";
 import { GlobalStyles } from "./styles";
+import Operator from "./components/screens/Operator";
 
 function App() {
   const isLoggedIn = false;
@@ -17,7 +19,7 @@ function App() {
     <BrowserRouter>
       <GlobalStyles />
       <Routes>
-        <Route path="/" elemenst={<About />}>
+        <Route path="/" element={<About />}>
           {isLoggedIn ? (
             <>
               <Route path="/announce" element={<Announce />} />
@@ -37,6 +39,12 @@ function App() {
                 path="/board/update/:pagenum/:userid"
                 element={<UpdatePage />}
               />
+              <Route path="/profile/:userid" element={<Profile />} />
+              {isOperator ? (
+                <>
+                  <Route path="/operator" element={<Operator />} />
+                </>
+              ) : null}
             </>
           ) : null}
         </Route>

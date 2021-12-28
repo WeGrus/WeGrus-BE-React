@@ -11,9 +11,8 @@ input {
     all: unset;
 }
 body{
-    background-color: "f5f5f5";
+    background-color: #f5f5f5;
     font-size: 14px;
     font-family:'Open Sans', sans-serif;
-    
 }
 `;
