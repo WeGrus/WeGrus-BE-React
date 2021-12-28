@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Outlet, Link } from "react-router-dom";
-import styled from "styled-components";
+
 import NaviBar from "../navibar/NaviBar";
 
 function About() {

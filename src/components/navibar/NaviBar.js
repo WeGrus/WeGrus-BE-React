@@ -9,6 +9,7 @@ import {
   LogoLink,
   NavContents,
 } from "./NavBarElements";
+import { isLoggedIn } from "../../variables";
 
 const NaviBar = () => {
   return (
@@ -34,10 +35,16 @@ const NaviBar = () => {
             </NavLink>
           </NavMenu>
           <NavBtn>
-            <ProfileLink to="/profile">
-              <img src={"../../images/logo.png"} />
-            </ProfileLink>
-            <NavBtnLink to="/login">log out</NavBtnLink>
+            {isLoggedIn ? (
+              <>
+                <ProfileLink to="/profile">
+                  <img src={""} alt="profile" />
+                </ProfileLink>
+                <NavBtnLink to="/login">log out</NavBtnLink>
+              </>
+            ) : (
+              <NavBtnLink to="/login">log in</NavBtnLink>
+            )}
           </NavBtn>
         </NavContents>
       </Nav>

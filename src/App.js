@@ -11,10 +11,10 @@ import Announce from "./components/screens/Announce";
 import Profile from "./components/screens/Profile";
 import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
+import { isLoggedIn, isOperator } from "./variables";
+import Board from "./components/screens/Board";
 
 function App() {
-  const isLoggedIn = false;
-  const isOperator = true;
   return (
     <BrowserRouter>
       <GlobalStyles />
@@ -32,14 +32,14 @@ function App() {
                 element={<UpdatePage />}
               />
 
-              <Route path="/board" element={<Study />} />
+              <Route path="/board" element={<Board />} />
               <Route path="/board/write/:userid" element={<CreatePage />} />
               <Route path="/board/:pagenum" element={<Page />} />
               <Route
                 path="/board/update/:pagenum/:userid"
                 element={<UpdatePage />}
               />
-              <Route path="/profile/:userid" element={<Profile />} />
+              <Route path="/profile" element={<Profile />} />
               {isOperator ? (
                 <>
                   <Route path="/operator" element={<Operator />} />
