@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    position: relative; /* position 기준영역 설정 */
+    min-height: 100%;
+    margin: -100px auto;
+    padding: 100px 0;
+    box-sizing: border-box;
+    width: 85%;
+    max-width: 1920px;
+    height: 1080px;
+}
+.content {
+    width: 82%; 
+    
+    background-color: lightsalmon;
+}
+.aside {
+    width: 18%; 
+    min-width: 200px;
+    
+    background-color: lightseagreen;
+}
