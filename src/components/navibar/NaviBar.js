@@ -18,7 +18,7 @@ const NaviBar = () => {
         <NavContents>
           <NavMenu>
             <LogoLink to="/operator">
-              <img src={require("../../images/logo.png")} alt="logo" />
+              <img src={require("../../images/logo2.png")} alt="logo" />
             </LogoLink>
             <NavLink to="/" activeStyle>
               About
