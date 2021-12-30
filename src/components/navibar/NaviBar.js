@@ -20,17 +20,17 @@ const NaviBar = () => {
             <LogoLink to="/operator">
               <img src={require("../../images/logo2.png")} alt="logo" />
             </LogoLink>
-            <NavLink to="/" activeStyle>
+            <NavLink to="/"  style={({ isActive }) => ({})}>
               About
             </NavLink>
             <NavLink to="/announce">공지사항</NavLink>
-            <NavLink to="/group" activeStyle>
+            <NavLink to="/group"  style={({ isActive }) => ({})}>
               소모임
             </NavLink>
-            <NavLink to="/study" activeStyle>
+            <NavLink to="/study"  style={({ isActive }) => ({})}>
               스터디
             </NavLink>
-            <NavLink to="/board" activeStyle>
+            <NavLink to="/board"  style={({ isActive }) => ({})}>
               게시판
             </NavLink>
           </NavMenu>
