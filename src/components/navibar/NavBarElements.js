@@ -3,12 +3,13 @@ import styled from "styled-components";
 
 export const Nav = styled.nav`
   background-color: white;
-  margin-top: 65px;
+  margin-top: 24px;
   height: 60px;
-  display: flex;
+  width: 100%;
   justify-content: center;
   border-bottom: 1px solid #bebebe;
   z-index: 10;
+  display: flex;
   * {
     font-size: 14px;
     font-weight: bold;

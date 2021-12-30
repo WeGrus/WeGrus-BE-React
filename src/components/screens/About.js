@@ -1,6 +1,6 @@
 import * as React from "react";
 
 function About() {
-  return <div>sfssfesffsf</div>;
+  return <div>About</div>;
 }
 export default About;

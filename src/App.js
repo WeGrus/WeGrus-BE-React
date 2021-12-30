@@ -13,7 +13,7 @@ import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
 import { isLoggedIn, isOperator } from "./variables";
 import Board from "./components/screens/Board";
-import Layout from "./components/layout/Layout";
+import Layout from "./components/Layout";
 
 function App() {
   return (
