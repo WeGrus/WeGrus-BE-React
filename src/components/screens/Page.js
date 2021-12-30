@@ -8,12 +8,7 @@ function Page(props) {
 
     return (
       <div>
-        <h1>Page{t.pagenum}</h1>
-        <Link to="/">welcome</Link>
-        <nav style={{ borderBottom: 'solid 1px', paddingBottom: '1rem' }}>
-            <Link to={`/study/update/${t.pagenum}/1234`}>update</Link>
-            
-          </nav>
+
       </div>
     );
   }
