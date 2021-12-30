@@ -1,16 +1,23 @@
 import * as React from "react";
 import { Outlet, Link } from "react-router-dom";
-import SideBar from '../sidebar/SideBar';
+import SideBar from "../sidebar/SideBar";
 import styles from "./Board.module.css";
-import NaviBar from "../navibar/NaviBar";
 
 function Board() {
-  const arr = ["전체","정보 공유","프로젝트 모집","취미 톡방","질문/답변","자유게시판","건의사항"];
+  const arr = [
+    "전체",
+    "정보 공유",
+    "프로젝트 모집",
+    "취미 톡방",
+    "질문/답변",
+    "자유게시판",
+    "건의사항",
+  ];
   return (
     <div>
       <div className={styles.container}>
         <div className={styles.aside}>
-        <SideBar arr={arr} />
+          <SideBar arr={arr} />
         </div>
         <div className={styles.content}>
           <h1>Board</h1>
@@ -23,7 +30,6 @@ function Board() {
           <Outlet />
         </div>
       </div>
-    
     </div>
   );
 }

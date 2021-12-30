@@ -13,15 +13,17 @@ import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
 import { isLoggedIn, isOperator } from "./variables";
 import Board from "./components/screens/Board";
+import Layout from "./components/layout/Layout";
 
 function App() {
   return (
     <BrowserRouter>
       <GlobalStyles />
       <Routes>
-        <Route path="/" element={<About />}>
+        <Route path="/" element={<Layout />}>
           {isLoggedIn ? (
             <>
+              <Route path="/" element={<About />} />
               <Route path="/announce" element={<Announce />} />
               <Route path="/group" element={<Group />} />
               <Route path="/study" element={<Study />} />
