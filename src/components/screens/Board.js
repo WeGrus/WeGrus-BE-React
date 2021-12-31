@@ -45,6 +45,7 @@ const datas=[
 ]
 
 
+
 function Board() {
   const [target, setTarget] = React.useState("free-board");
   const [text,setText] = React.useState();
@@ -61,11 +62,10 @@ function Board() {
     )));
   },[target])
   
-
+  
   return (
     <>
-      <SideBar contents={contents} getFilter={getFilter}>
-
+      <SideBar posts={contents} getFilter={getFilter}>
       </SideBar>
       <Content>
         {text}
@@ -78,7 +78,7 @@ function Board() {
         <Link to="write/1234">create</Link> */}
         <Outlet />
       </Content>
-    </>
+      </>
   );
 }
 export default Board;

@@ -8,22 +8,21 @@ const Content = styled.div`
   background-color: white;
 `;
 
+const arr =   [
+  { "content":"Ixploit",
+    "filter": "free-board"},
+  { "content":"IGDC",
+    "filter": "infor"},
+    { "content":"Algrous",
+    "filter": "projects"},
+    { "content":"Webgroue",
+    "filter": "hobby"},
+]
+
 function Group() {
-  const arr =   [
-    { "content":"Ixploit",
-      "filter": "free-board"},
-    { "content":"IGDC",
-      "filter": "infor"},
-      { "content":"Algrous",
-      "filter": "projects"},
-      { "content":"Webgroue",
-      "filter": "hobby"},
-  ]
-
-
   return (
     <>
-      <SideBar arr={arr} />
+      <SideBar posts={arr} />
       <Content>
         <h1>Group</h1>
         <h2>list</h2>

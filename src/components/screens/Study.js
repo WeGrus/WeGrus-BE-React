@@ -8,11 +8,18 @@ const Content = styled.div`
   background-color: white;
 `;
 
+const arr = [
+  {
+    "content": "개인",
+    "filter": ""
+  },
+];
+
 function Study() {
-  const arr = [];
+ 
   return (
     <>
-      <SideBar arr={arr} />
+      <SideBar posts={arr} />
       <Content>
         <h1>Study</h1>
         <h2>list</h2>

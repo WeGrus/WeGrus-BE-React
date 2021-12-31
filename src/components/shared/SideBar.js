@@ -1,12 +1,8 @@
-import React, { useState } from "react";
 import { SideBox, SideContent } from "./SideBarElements";
 
-const bold = {
-  fontweight:"bold"
-}
 
-function SideBar({ contents=[], getFilter=()=>{} }) {
-  const[bold,setBold] = useState(0);
+
+function SideBar({ posts=[], getFilter=()=>{} }) {
   function handleOnClick(e) {
     for (let i = 0; i < printData.length; i++) {
       e.target.parentNode.childNodes[i].style.fontWeight = "";
@@ -15,12 +11,12 @@ function SideBar({ contents=[], getFilter=()=>{} }) {
     getFilter(e.target.id);
   }
 
-  const printData = contents.map((content) => (
-    <SideContent  id={content.filter.toString()} key={content.filter.toString()} onClick={handleOnClick}>
+  const printData = posts.map((content) => (
+    <SideContent  id={content.filter.toString()} key={content.filter.toString()} onClick={handleOnClick} data-index = {posts.indexOf(content)}>
       {content.content}
     </SideContent>
   ));
-
+  console.log(printData[0].props);
   return (
     <>
       <SideBox>{printData}</SideBox>
@@ -28,3 +24,4 @@ function SideBar({ contents=[], getFilter=()=>{} }) {
   );
 }
 export default SideBar;
+
