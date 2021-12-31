@@ -9,17 +9,24 @@ const Content = styled.div`
 `;
 
 function Board() {
-  const arr = [
-    "자유게시판",
-    "정보 공유",
-    "프로젝트 모집",
-    "취미 톡방",
-    "질문/답변",
-    "건의사항",
-  ];
+
+
+  const test = [
+    { "content":"자유게시판",
+      "filter": "free-board"},
+    { "content":"정보 공유",
+      "filter": "infor"},
+      { "content":"프로젝트 모집",
+      "filter": "projects"},
+      { "content":"취미 톡방",
+      "filter": "hobby"},
+      { "content":"건의사항",
+      "filter": "suggestions"},
+  ]
+
   return (
     <>
-      <SideBar arr={arr} />
+      <SideBar arr={test} />
       <Content>
         <h1>Board</h1>
         <h2>list</h2>

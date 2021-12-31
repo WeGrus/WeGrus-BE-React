@@ -1,13 +1,13 @@
 import React from "react";
 import { SideBox, SideContent } from "./SideBarElements";
-
 function SideBar({ arr }) {
   const printData = arr.map((data) => (
-    <SideContent onClick={handleOnClick} key={data.toString()}>
-      {data}
+    <SideContent  key={data.content.toString()}>
+      {data.content}
     </SideContent>
   ));
-  const [datas, setData] = React.useState(printData);
+
+  const [datas, setData] = React.useState(0);
 
   function handleOnClick(e) {
     for (let i = 0; i < printData.length; i++) {
@@ -18,7 +18,7 @@ function SideBar({ arr }) {
 
   return (
     <>
-      <SideBox>{datas}</SideBox>
+      <SideBox>{printData}</SideBox>
     </>
   );
 }

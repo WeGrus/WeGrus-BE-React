@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+
 export const SideBox = styled.div`
   width: 292px;
   height: min-content;
