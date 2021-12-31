@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/WeGrus-FE-React/static/js/main.2e3df7a5.js",
+    "static/js/787.cfd8f164.chunk.js": "/WeGrus-FE-React/static/js/787.cfd8f164.chunk.js",
+    "index.html": "/WeGrus-FE-React/index.html",
+    "main.2e3df7a5.js.map": "/WeGrus-FE-React/static/js/main.2e3df7a5.js.map",
+    "787.cfd8f164.chunk.js.map": "/WeGrus-FE-React/static/js/787.cfd8f164.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.2e3df7a5.js"
+  ]
+}
