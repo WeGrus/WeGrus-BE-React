@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Outlet, Link } from "react-router-dom";
 import styled from "styled-components";
+import PageTitle from "../shared/PageTitle";
 import SideBar from "../shared/SideBar";
 
 const Content = styled.div`
@@ -8,20 +9,17 @@ const Content = styled.div`
   background-color: white;
 `;
 
-const arr =   [
-  { "content":"Ixploit",
-    "filter": "free-board"},
-  { "content":"IGDC",
-    "filter": "infor"},
-    { "content":"Algrous",
-    "filter": "projects"},
-    { "content":"Webgroue",
-    "filter": "hobby"},
-]
+const arr = [
+  { content: "Ixploit", filter: "free-board" },
+  { content: "IGDC", filter: "infor" },
+  { content: "Algrous", filter: "projects" },
+  { content: "Webgroue", filter: "hobby" },
+];
 
 function Group() {
   return (
     <>
+      <PageTitle title="소모임" />
       <SideBar posts={arr} />
       <Content>
         <h1>Group</h1>

@@ -1,10 +1,14 @@
-import * as React from 'react';
+import * as React from "react";
+import PageTitle from "../shared/PageTitle";
 
 function Signup() {
-    return (
+  return (
+    <>
+      <PageTitle title="Sign-up" />
       <div>
-        <h1>Signup</h1>
+        <h1>Sign-up</h1>
       </div>
-    );
-  }
-  export default Signup;
+    </>
+  );
+}
+export default Signup;

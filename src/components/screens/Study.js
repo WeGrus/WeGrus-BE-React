@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Outlet, Link } from "react-router-dom";
 import styled from "styled-components";
+import PageTitle from "../shared/PageTitle";
 import SideBar from "../shared/SideBar";
 
 const Content = styled.div`
@@ -10,15 +11,15 @@ const Content = styled.div`
 
 const arr = [
   {
-    "content": "개인",
-    "filter": ""
+    content: "개인",
+    filter: "",
   },
 ];
 
 function Study() {
- 
   return (
     <>
+      <PageTitle title="스터디" />
       <SideBar posts={arr} />
       <Content>
         <h1>Study</h1>
