@@ -13,6 +13,10 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: white;
   border: 1px solid #bebebe;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   span {
     font-weight: 600;
   }

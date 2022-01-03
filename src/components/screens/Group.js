@@ -13,7 +13,7 @@ const arr = [
   { content: "Ixploit", filter: "free-board" },
   { content: "IGDC", filter: "infor" },
   { content: "Algrous", filter: "projects" },
-  { content: "Webgroue", filter: "hobby" },
+  { content: "Webgrous", filter: "hobby" },
 ];
 
 function Group() {
