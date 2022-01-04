@@ -50,13 +50,11 @@ function Board() {
       <SideBar posts={contents} getFilter={getFilter}></SideBar>
       <Content>
         {text}
-        {/* <h1>Board</h1>
-        <h2>list</h2>
         <nav style={{ borderBottom: "solid 1px", paddingBottom: "1rem" }}>
           <Link to="1">page1</Link> | <Link to="2">page2</Link> |{" "}
           <Link to="3">page3</Link> |{" "}
         </nav>
-        <Link to="write/1234">create</Link> */}
+        <Link to="write/1234">create</Link>
         <Outlet />
       </Content>
     </>
