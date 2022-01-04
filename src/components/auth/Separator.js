@@ -4,7 +4,7 @@ const SSeparator = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 300px;
+  width: 292px;
   margin: 12px 0 20px 0;
   span {
     font-size: 12px;
