@@ -81,6 +81,22 @@ function Signup() {
           </>
         ) : (
           <>
+            <Input
+              {...register("id", {
+                required: "ID is required.",
+              })}
+              type="text"
+              placeholder="Inha id"
+              hasError={Boolean(formState.errors?.id?.message)}
+            />
+            <Input
+              {...register("password", {
+                required: "Password is required.",
+              })}
+              type="password"
+              placeholder="Inha password"
+              hasError={Boolean(formState.errors?.password?.message)}
+            />
             <BottomButton to="/inha-auth" color="#0D655C" ftcolor="white">
               인하대학교 학생 인증
             </BottomButton>
