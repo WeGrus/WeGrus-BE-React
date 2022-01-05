@@ -9,29 +9,44 @@ const Content = styled.div`
   background-color: white;
 `;
 
+const CreateBtnLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0B665C;
+  width: 110px;
+  height: 33px;
+  border-radius: 16.5px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-left: 24px;
+`;
+
+
 const contents = [
-  { content: "자유게시판", filter: "free-board" },
-  { content: "정보 공유", filter: "infor" },
-  { content: "프로젝트 모집", filter: "projects" },
-  { content: "취미 톡방", filter: "hobby" },
-  { content: "건의사항", filter: "suggestions" },
+  { content: "자유게시판", filter: "자유게시판" },
+  { content: "정보 공유", filter: "정보 공유" },
+  { content: "프로젝트 모집", filter: "프로젝트 모집" },
+  { content: "취미 톡방", filter: "취미 톡방" },
+  { content: "건의사항", filter: "건의사항" },
 ];
 
 const datas = [
-  { board_type: "free-board", board_title: "제목:자유게시판" },
-  { board_type: "infor", board_title: "제목:정보 공유" },
-  { board_type: "projects", board_title: "제목:프로젝트 모집" },
-  { board_type: "hobby", board_title: "제목:취미 톡방" },
-  { board_type: "suggestions", board_title: "제목:건의사항" },
-  { board_type: "free-board", board_title: "제목:자유게시판1" },
-  { board_type: "infor", board_title: "제목:정보 공유1" },
-  { board_type: "projects", board_title: "제목:프로젝트 모집1" },
-  { board_type: "hobby", board_title: "제목:취미 톡방1" },
-  { board_type: "suggestions", board_title: "제목:건의사항1" },
+  { board_type: "자유게시판", board_title: "제목:자유게시판" },
+  { board_type: "정보 공유", board_title: "제목:정보 공유" },
+  { board_type: "프로젝트 모집", board_title: "제목:프로젝트 모집" },
+  { board_type: "취미 톡방", board_title: "제목:취미 톡방" },
+  { board_type: "건의사항", board_title: "제목:건의사항" },
+  { board_type: "자유게시판", board_title: "제목:자유게시판1" },
+  { board_type: "정보 공유", board_title: "제목:정보 공유1" },
+  { board_type: "프로젝트 모집", board_title: "제목:프로젝트 모집1" },
+  { board_type: "취미 톡방", board_title: "제목:취미 톡방1" },
+  { board_type: "건의사항", board_title: "제목:건의사항1" },
 ];
 
 function Board() {
-  const [target, setTarget] = React.useState("free-board");
+  const [target, setTarget] = React.useState("자유게시판");
   const [text, setText] = React.useState();
   const getFilter = (filter) => {
     setTarget(filter);
@@ -54,7 +69,11 @@ function Board() {
           <Link to="1">page1</Link> | <Link to="2">page2</Link> |{" "}
           <Link to="3">page3</Link> |{" "}
         </nav>
-        <Link to="write/1234">create</Link>
+        {/* <Link to="write/1234">create</Link> */}
+        <CreateBtnLink to="/board/write/1234" 
+            state={{category:"게시판",
+                   subCategory:{target}}}>
+          create</CreateBtnLink>
         <Outlet />
       </Content>
     </>
