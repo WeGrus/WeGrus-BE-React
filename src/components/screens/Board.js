@@ -1,13 +1,9 @@
 import * as React from "react";
 import { Outlet, Link } from "react-router-dom";
-import styled from "styled-components";
+import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
+import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
-
-const Content = styled.div`
-  width: 924px;
-  background-color: white;
-`;
 
 const contents = [
   { content: "자유게시판", filter: "free-board" },
@@ -18,16 +14,11 @@ const contents = [
 ];
 
 const datas = [
-  { board_type: "free-board", board_title: "제목:자유게시판" },
-  { board_type: "infor", board_title: "제목:정보 공유" },
-  { board_type: "projects", board_title: "제목:프로젝트 모집" },
-  { board_type: "hobby", board_title: "제목:취미 톡방" },
-  { board_type: "suggestions", board_title: "제목:건의사항" },
-  { board_type: "free-board", board_title: "제목:자유게시판1" },
-  { board_type: "infor", board_title: "제목:정보 공유1" },
-  { board_type: "projects", board_title: "제목:프로젝트 모집1" },
-  { board_type: "hobby", board_title: "제목:취미 톡방1" },
-  { board_type: "suggestions", board_title: "제목:건의사항1" },
+  { board_type: "free-board", board_title: "게시판 | 자유게시판" },
+  { board_type: "infor", board_title: "게시판 | 정보 공유" },
+  { board_type: "projects", board_title: "게시판 | 프로젝트 모집" },
+  { board_type: "hobby", board_title: "게시판 | 취미 톡방" },
+  { board_type: "suggestions", board_title: "게시판 | 건의사항" },
 ];
 
 function Board() {
@@ -38,7 +29,7 @@ function Board() {
   };
 
   React.useEffect(() => {
-    let filterData = datas.filter((data) => data.board_type == target);
+    let filterData = datas.filter((data) => data.board_type === target);
     setText(
       filterData.map((data) => <p key={data.board_title}>{data.board_title}</p>)
     );
@@ -49,7 +40,8 @@ function Board() {
       <PageTitle title="게시판" />
       <SideBar posts={contents} getFilter={getFilter}></SideBar>
       <Content>
-        {text}
+        <ScreenTitle>{text}</ScreenTitle>
+
         {/* <h1>Board</h1>
         <h2>list</h2>
         <nav style={{ borderBottom: "solid 1px", paddingBottom: "1rem" }}>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const SHeaderContainer = styled.div`
@@ -18,7 +19,10 @@ const SHeaderContainer = styled.div`
 function HeaderContainer({ children }) {
   return (
     <SHeaderContainer>
-      <img src={require("../../images/logo2.png")} alt="logo" />
+      <Link to={"/"}>
+        <img src={require("../../images/logo2.png")} alt="logo" />
+      </Link>
+
       {children}
     </SHeaderContainer>
   );
