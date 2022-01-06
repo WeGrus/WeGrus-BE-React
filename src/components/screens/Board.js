@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import PageTitle from "../shared/PageTitle";
 import SideBar from "../shared/SideBar";
@@ -46,7 +46,15 @@ const datas = [
 ];
 
 function Board() {
-  const [target, setTarget] = React.useState("자유게시판");
+  const input = useLocation();
+  let subBarTarget;
+  if(input.state != null){
+    subBarTarget = input.state.category;
+  }
+  else{
+    subBarTarget = "자유게시판";
+  }
+  const [target, setTarget] = React.useState(subBarTarget);
   const [text, setText] = React.useState();
   const getFilter = (filter) => {
     setTarget(filter);
