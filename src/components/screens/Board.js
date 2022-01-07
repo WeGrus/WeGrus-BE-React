@@ -29,11 +29,11 @@ const contents = [
 ];
 
 const datas = [
-  { board_type: "free-board", board_title: "게시판 | 자유게시판" },
-  { board_type: "infor", board_title: "게시판 | 정보 공유" },
-  { board_type: "projects", board_title: "게시판 | 프로젝트 모집" },
-  { board_type: "hobby", board_title: "게시판 | 취미 톡방" },
-  { board_type: "suggestions", board_title: "게시판 | 건의사항" },
+  { board_type: "자유게시판", board_title: "게시판 | 자유게시판" },
+  { board_type: "정보 공유", board_title: "게시판 | 정보 공유" },
+  { board_type: "프로젝트 모집", board_title: "게시판 | 프로젝트 모집" },
+  { board_type: "취미 톡방", board_title: "게시판 | 취미 톡방" },
+  { board_type: "건의사항", board_title: "게시판 | 건의사항" },
 ];
 
 function Board() {
@@ -46,6 +46,7 @@ function Board() {
   }
   const [target, setTarget] = React.useState(subBarTarget);
   const [text, setText] = React.useState();
+
   const getFilter = (filter) => {
     setTarget(filter);
   };
@@ -63,13 +64,10 @@ function Board() {
       <SideBar posts={contents} getFilter={getFilter}></SideBar>
       <Content>
         <ScreenTitle>{text}</ScreenTitle>
-        {/* <h1>Board</h1>
-        <h2>list</h2>
-        <nav style={{ borderBottom: "solid 1px", paddingBottom: "1rem" }}>
+         <nav>
           <Link to="1">page1</Link> | <Link to="2">page2</Link> |{" "}
           <Link to="3">page3</Link> |{" "}
         </nav>
-        {/* <Link to="write/1234">create</Link> */}
         <CreateBtnLink
           to="/board/write/1234"
           state={{ category: "게시판", subCategory: { target } }}
