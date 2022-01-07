@@ -1,7 +1,7 @@
 import * as React from 'react';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const Background = styled.div`
@@ -116,6 +116,15 @@ border: none;
 cursor: pointer;
 `
 
+const CommentCorrection = styled.button`
+margin-left: 10px;
+background-color: #6CD2D7;
+border: none;
+border-radius: 10px;
+cursor: pointer;
+color : white;
+`
+
 const CommentWriteSection = styled.div`
 display: flex;
 flex-direction: row;
@@ -178,29 +187,71 @@ font-size: 14px;
 margin-left: 9px;
 cursor: pointer;
 `
+const example = ` <p>본문을 적어주세요.fsdfdsfsdfdsf</p>
+<p>fdsfsfsdf</p><p>fwefwef</p><p>fsfsdfsdf</p><ul>
+  <li class="task-list-item" data-task="true"><p>코드는 깔끔한가?</p></li>
+  <li class="task-list-item" data-task="true"><p>이해하기 쉽게 직관적인가?</p></li>
+  <li class="task-list-item" data-task="true"><p><br class="ProseMirror-trailingBreak"></p></li></ul> `;
+// editor에 넣을 예제값이다.
 
+let getPage = { // page의 정보
+  countOfRecommend: 0, // 게시글의 추천수
+  isRecommend: false,  //서버에서 이 유저가 게시글에 추천을 했는지 확인한다. true면 추천한 것이다.
+  author : "김승태",
+  date : "2021.12.21",
+  time : "23:44"
+}
+
+let userInfor = {
+  userName: "김승태"
+}
+
+
+const checkRecommend = (isRecommend) => {
+  if(isRecommend){
+    return "추천취소"
+  }
+  else{
+    return "추천"
+  }
+
+}
 
 function Page(props) {
     const t = useParams();
-    const test = ` <p>본문을 적어주세요.fsdfdsfsdfdsf</p>
-    <p>fdsfsfsdf</p><p>fwefwef</p><p>fsfsdfsdf</p><ul>
-      <li class="task-list-item" data-task="true"><p>1초라도 안걸리면</p></li>
-      <li class="task-list-item" data-task="true"><p>2렇게 초조한데</p></li>
-      <li class="task-list-item" data-task="true"><p><br class="ProseMirror-trailingBreak"></p></li></ul> `;
+    const filter = useLocation().state;
+    const [countOfRecommend, setCountOfRecommend] = React.useState(getPage.countOfRecommend); // 게시글 추천수
+    const [isRecommend,setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
+
+
+    const postRecommand = () => {
+      if(isRecommend === "추천취소"){
+        setCountOfRecommend((count)=>count-1);
+        setIsRecommend("추천")
+        // 서버에도 변경사항 적용될수 있게 변경사항 보내기.
+      }
+      else{
+        setCountOfRecommend((count)=>count+1);
+        setIsRecommend("추천취소")
+      }
+    }
+  
+
+
 
   return (
     <div>
       <Background>
         <Content>
-          <Category>{"스터디|개인"}</Category>
+          <Category>{filter.category}|{filter.subCategory}</Category>
           <Header>
             <Title>{"플러터 스터디 모집합니다. 초보자 환영입니다."}</Title>
-            <OtherDetail>김승태|2021.12.21|23:44<Right>조회 143|추천 24|댓글3</Right></OtherDetail>
+            <OtherDetail>{getPage.author}|{getPage.date}|{getPage.time}<Right>조회 143|추천 {countOfRecommend}|댓글3</Right></OtherDetail>
           </Header>
           <Description>
-          <Viewer initialValue={test}/>
+          <Viewer initialValue={example}/>
           <CommentInfor>댓글 3개</CommentInfor>
-          <Recommand value="추천">추천</Recommand>
+          <Recommand value="추천" onClick={postRecommand}>{isRecommend}</Recommand>
           </Description>
           <Comments>
             <Comment>
@@ -209,6 +260,7 @@ function Page(props) {
               <Recode>
                 <CommentRecommand>👍️ 추천수:30</CommentRecommand>
                 21/12/21 | 23:14:24
+                <CommentCorrection>수정</CommentCorrection>
                 <CommentDelete>❌</CommentDelete>
                 </Recode>
             </Comment>
@@ -219,10 +271,13 @@ function Page(props) {
           </CommentWriteSection>
           <BtnSection>
             <GoToList>목록으로</GoToList>
-            <div style={{ float: "right"}}>
-              <Correction>수정</Correction>
-              <Delete>삭제</Delete>
-            </div>
+            {(getPage.author === userInfor.userName) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
+              <div style={{ float: "right" }}>
+                <Correction>수정</Correction>
+                <Delete>삭제</Delete>
+              </div>
+            :
+             null}
           </BtnSection>
         </Content>
       </Background>

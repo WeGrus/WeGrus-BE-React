@@ -64,13 +64,17 @@ function Board() {
       <SideBar posts={contents} getFilter={getFilter}></SideBar>
       <Content>
         <ScreenTitle>{text}</ScreenTitle>
+
          <nav>
-          <Link to="1">page1</Link> | <Link to="2">page2</Link> |{" "}
+          <Link to="1"
+                state={{ category: "게시판", subCategory:  target  }}
+          >page1</Link> | <Link to="2">page2</Link> |{" "}
           <Link to="3">page3</Link> |{" "}
         </nav>
+
         <CreateBtnLink
           to="/board/write/1234"
-          state={{ category: "게시판", subCategory: { target } }}
+          state={{ category: "게시판", subCategory:  target  }}
         >
           create
         </CreateBtnLink>
