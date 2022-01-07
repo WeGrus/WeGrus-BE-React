@@ -3,7 +3,10 @@ import styled from "styled-components";
 
 const BottomButton = styled(Link)`
   width: 292px;
-  padding: 10px;
+  span {
+    padding: 10px;
+  }
+
   border-radius: 18px;
   color: ${(props) => props.ftcolor};
   font-weight: bold;

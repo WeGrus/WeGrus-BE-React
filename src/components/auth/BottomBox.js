@@ -5,7 +5,7 @@ const SBottomBox = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 `;
 
 function BottomBox({ children }) {

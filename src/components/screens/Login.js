@@ -1,69 +1,31 @@
 import * as React from "react";
-import { useForm } from "react-hook-form";
 import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
 import AuthLayout from "../auth/AuthLayout";
 import BottomBox from "../auth/BottomBox";
 import BottomButton from "../auth/BottomButton";
-import Button from "../auth/Button";
-import FindLink from "../auth/FindLink";
-import FormBox from "../auth/FormBox";
 import HeaderContainer from "../auth/HeaderContainer";
-import Input from "../auth/Input";
-import Separator from "../auth/Separator";
 import PageTitle from "../shared/PageTitle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
 
 function Login() {
   const location = useLocation();
 
-  const {
-    register,
-    handleSubmit,
-    formState,
-    getValues,
-    setError,
-    clearErrors,
-  } = useForm({
-    mode: "onChange",
-  });
   return (
     <AuthLayout>
       <PageTitle title="Login" />
-      <HeaderContainer />
+      <HeaderContainer>
+        <span>
+          Wegrus는 인하대학교 최대 컴퓨터 동아리 Igrus의 웹사이트입니다.
+        </span>
+        <span>로그인하여 다양한 활동과 커뮤니티를 만나보세요.</span>
+      </HeaderContainer>
 
-      <FormBox>
-        <Input
-          {...register("id", {
-            required: "ID is required.",
-          })}
-          type="text"
-          placeholder="id"
-          hasError={Boolean(formState.errors?.id?.message)}
-        />
-        <Input
-          {...register("password", {
-            required: "Password is required.",
-          })}
-          type="password"
-          placeholder="password"
-          hasError={Boolean(formState.errors?.password?.message)}
-        />
-        <Button
-          type="submit"
-          value={"Log in"}
-          color="#6cd2d7"
-          ftcolor="white"
-        />
-      </FormBox>
       <BottomBox>
-        <Separator />
-        <BottomButton to="/signup" color="#0D655C" ftcolor="white">
-          Sign up
-        </BottomButton>
         <BottomButton to="/" color="#FAE100" ftcolor="black">
-          Kakao Log in
+          <FontAwesomeIcon icon={faComment} />
+          <span>카카오 계정으로 로그인</span>
         </BottomButton>
-        <FindLink />
       </BottomBox>
     </AuthLayout>
   );

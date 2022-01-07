@@ -5,10 +5,10 @@ const SHeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 10px 0 10px 0;
+  margin: 10px 0 40px 0;
   img {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
   }
   span {
     font-size: 14px;
