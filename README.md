@@ -2,7 +2,7 @@
   <a href="https://github.com/WeGrus">
     <img src="https://user-images.githubusercontent.com/68049320/148059706-59c1967d-d035-49e1-9557-2149640a8d2a.png" alt="Logo" width="130" height="130">
   </a>
-  <h3 align="center">WeGrus-BE-Spring</h3>
+  <h3 align="center">WeGrus-FE-Spring</h3>
 
   <p align="center">
     인하대학교 SW 프로그래밍 동아리 <b>IGRUS</b> 웹사이트 제작 프로젝트
