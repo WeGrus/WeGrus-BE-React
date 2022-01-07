@@ -10,7 +10,7 @@ const CreateBtnLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #0B665C;
+  background-color: #0b665c;
   width: 110px;
   height: 33px;
   border-radius: 16.5px;
@@ -39,10 +39,9 @@ const datas = [
 function Board() {
   const input = useLocation();
   let subBarTarget;
-  if(input.state != null){
+  if (input.state != null) {
     subBarTarget = input.state.category;
-  }
-  else{
+  } else {
     subBarTarget = "자유게시판";
   }
   const [target, setTarget] = React.useState(subBarTarget);
@@ -71,10 +70,12 @@ function Board() {
           <Link to="3">page3</Link> |{" "}
         </nav>
         {/* <Link to="write/1234">create</Link> */}
-        <CreateBtnLink to="/board/write/1234" 
-            state={{category:"게시판",
-                   subCategory:{target}}}>
-          create</CreateBtnLink>
+        <CreateBtnLink
+          to="/board/write/1234"
+          state={{ category: "게시판", subCategory: { target } }}
+        >
+          create
+        </CreateBtnLink>
         <Outlet />
       </Content>
     </>
