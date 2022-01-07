@@ -16,7 +16,7 @@ function SideBar({ posts=[], getFilter=()=>{} }) {
       {content.content}
     </SideContent>
   ));
-  console.log(printData[0].props);
+
   return (
     <>
       <SideBox>{printData}</SideBox>

@@ -1,16 +1,31 @@
 import * as React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
 import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
 
+const CreateBtnLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0B665C;
+  width: 110px;
+  height: 33px;
+  border-radius: 16.5px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-left: 24px;
+`;
+
 const contents = [
-  { content: "자유게시판", filter: "free-board" },
-  { content: "정보 공유", filter: "infor" },
-  { content: "프로젝트 모집", filter: "projects" },
-  { content: "취미 톡방", filter: "hobby" },
-  { content: "건의사항", filter: "suggestions" },
+  { content: "자유게시판", filter: "자유게시판" },
+  { content: "정보 공유", filter: "정보 공유" },
+  { content: "프로젝트 모집", filter: "프로젝트 모집" },
+  { content: "취미 톡방", filter: "취미 톡방" },
+  { content: "건의사항", filter: "건의사항" },
 ];
 
 const datas = [
@@ -22,7 +37,15 @@ const datas = [
 ];
 
 function Board() {
-  const [target, setTarget] = React.useState("free-board");
+  const input = useLocation();
+  let subBarTarget;
+  if(input.state != null){
+    subBarTarget = input.state.category;
+  }
+  else{
+    subBarTarget = "자유게시판";
+  }
+  const [target, setTarget] = React.useState(subBarTarget);
   const [text, setText] = React.useState();
   const getFilter = (filter) => {
     setTarget(filter);
@@ -41,14 +64,17 @@ function Board() {
       <SideBar posts={contents} getFilter={getFilter}></SideBar>
       <Content>
         <ScreenTitle>{text}</ScreenTitle>
-
         {/* <h1>Board</h1>
         <h2>list</h2>
         <nav style={{ borderBottom: "solid 1px", paddingBottom: "1rem" }}>
           <Link to="1">page1</Link> | <Link to="2">page2</Link> |{" "}
           <Link to="3">page3</Link> |{" "}
         </nav>
-        <Link to="write/1234">create</Link> */}
+        {/* <Link to="write/1234">create</Link> */}
+        <CreateBtnLink to="/board/write/1234" 
+            state={{category:"게시판",
+                   subCategory:{target}}}>
+          create</CreateBtnLink>
         <Outlet />
       </Content>
     </>
