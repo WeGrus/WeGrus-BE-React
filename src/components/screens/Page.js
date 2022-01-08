@@ -1,12 +1,11 @@
 import * as React from 'react';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Background = styled.div`
-  width: 1240px;
-  height: 1240px;          
+  width: 1240px;        
   background-color: white;
 `;
 
@@ -152,6 +151,7 @@ cursor: pointer;
 
 const BtnSection = styled.div`
 margin-top: 12.5px;
+padding-bottom: 12.5px;
 `
 
 const GoToList = styled.button`
@@ -187,56 +187,77 @@ font-size: 14px;
 margin-left: 9px;
 cursor: pointer;
 `
-const example = ` <p>본문을 적어주세요.fsdfdsfsdfdsf</p>
-<p>fdsfsfsdf</p><p>fwefwef</p><p>fsfsdfsdf</p><ul>
-  <li class="task-list-item" data-task="true"><p>코드는 깔끔한가?</p></li>
-  <li class="task-list-item" data-task="true"><p>이해하기 쉽게 직관적인가?</p></li>
-  <li class="task-list-item" data-task="true"><p><br class="ProseMirror-trailingBreak"></p></li></ul> `;
-// editor에 넣을 예제값이다.
+
 
 let getPage = { // page의 정보
+  title: "플러터 스터디 모집합니다. 초보자 환영입니다.",
+  isSecret: false,
   countOfRecommend: 0, // 게시글의 추천수
   isRecommend: false,  //서버에서 이 유저가 게시글에 추천을 했는지 확인한다. true면 추천한 것이다.
-  author : "김승태",
-  date : "2021.12.21",
-  time : "23:44"
+  author: "김승태",
+  date: "2021.12.21",
+  time: "23:44",
+  example: ` <p>본문을 적어주세요.fsdfdsfsdfdsf</p>
+  <p>fdsfsfsdf</p><p>fwefwef</p><p>fsfsdfsdf</p><ul>
+  <li class="task-list-item" data-task="true"><p>코드는 깔끔한가?</p></li>
+  <li class="task-list-item" data-task="true"><p>이해하기 쉽게 직관적인가?</p></li>
+  <li class="task-list-item" data-task="true"><p><br class="ProseMirror-trailingBreak"></p></li></ul> `
+  // editor에 넣을 예제값이다.
 }
 
 let userInfor = {
-  userName: "김승태"
+  userName: "김승태",
+  userId: "testId"
 }
 
 
 const checkRecommend = (isRecommend) => {
-  if(isRecommend){
+  if (isRecommend) {
     return "추천취소"
   }
-  else{
+  else {
     return "추천"
   }
 
 }
 
 function Page(props) {
-    const t = useParams();
-    const filter = useLocation().state;
-    const [countOfRecommend, setCountOfRecommend] = React.useState(getPage.countOfRecommend); // 게시글 추천수
-    const [isRecommend,setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
+  const params = useParams();
+  const filter = useLocation().state;
+  const [countOfRecommend, setCountOfRecommend] = React.useState(getPage.countOfRecommend); // 게시글 추천수
+  const [isRecommend, setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
 
+  const Navigate = useNavigate();
 
-    const postRecommand = () => {
-      if(isRecommend === "추천취소"){
-        setCountOfRecommend((count)=>count-1);
-        setIsRecommend("추천")
-        // 서버에도 변경사항 적용될수 있게 변경사항 보내기.
-      }
-      else{
-        setCountOfRecommend((count)=>count+1);
-        setIsRecommend("추천취소")
-      }
+  const postRecommand = () => {
+    if (isRecommend === "추천취소") {
+      setCountOfRecommend((count) => count - 1);
+      setIsRecommend("추천")
+      // 서버에도 변경사항 적용될수 있게 변경사항 보내기.
     }
-  
+    else {
+      setCountOfRecommend((count) => count + 1);
+      setIsRecommend("추천취소")
+    }
+  }
 
+  const handleDeleteClick = () => {
+    //axios로 delete하고 다시 보드 보여주기.
+    let value = window.confirm("해당게시물을 삭제하겠습니까?")
+    if (value) {
+      //axios로 delete
+      console.log("삭제");
+      Navigate("/board", {
+        state: { category: filter.subCategory }
+      })
+    }
+
+    return value;
+  }
+
+  const goToList = () => {
+    window.history.back();
+  }
 
 
   return (
@@ -245,13 +266,13 @@ function Page(props) {
         <Content>
           <Category>{filter.category}|{filter.subCategory}</Category>
           <Header>
-            <Title>{"플러터 스터디 모집합니다. 초보자 환영입니다."}</Title>
+            <Title>{getPage.title}</Title>
             <OtherDetail>{getPage.author}|{getPage.date}|{getPage.time}<Right>조회 143|추천 {countOfRecommend}|댓글3</Right></OtherDetail>
           </Header>
           <Description>
-          <Viewer initialValue={example}/>
-          <CommentInfor>댓글 3개</CommentInfor>
-          <Recommand value="추천" onClick={postRecommand}>{isRecommend}</Recommand>
+            <Viewer initialValue={getPage.example} />
+            <CommentInfor>댓글 3개</CommentInfor>
+            <Recommand value="추천" onClick={postRecommand}>{isRecommend}</Recommand>
           </Description>
           <Comments>
             <Comment>
@@ -262,7 +283,7 @@ function Page(props) {
                 21/12/21 | 23:14:24
                 <CommentCorrection>수정</CommentCorrection>
                 <CommentDelete>❌</CommentDelete>
-                </Recode>
+              </Recode>
             </Comment>
           </Comments>
           <CommentWriteSection>
@@ -270,19 +291,32 @@ function Page(props) {
             <CommentSubmit>댓글 등록</CommentSubmit>
           </CommentWriteSection>
           <BtnSection>
-            <GoToList>목록으로</GoToList>
+            <GoToList onClick={goToList}>목록으로</GoToList>
             {(getPage.author === userInfor.userName) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
               <div style={{ float: "right" }}>
-                <Correction>수정</Correction>
-                <Delete>삭제</Delete>
+                <Link
+                  to={`/board/update/${params.pagenum}/${userInfor.userId}`}
+                  state={
+                    {
+                      title: getPage.title,
+                      text: getPage.example,
+                      isSecret: getPage.isSecret,
+                      boardType: filter.category,
+                      subCategory: filter.subCategory
+                    }
+                  }
+                ><Correction>수정</Correction>
+                </Link>
+                <Delete onClick={handleDeleteClick}>삭제</Delete>
+
               </div>
-            :
-             null}
+              :
+              null}
           </BtnSection>
         </Content>
       </Background>
 
     </div>
   );
-  }
-  export default Page;
+}
+export default Page;
