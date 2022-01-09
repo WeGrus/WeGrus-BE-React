@@ -8,7 +8,7 @@ const OAuth = () => {
     let code = params.get("code"); // 인가코드 받는 부분
     let grant_type = "authorization_code";
     let client_id = "65cd2fc55aec40658e2efbc951d47164";
-    console.log(code);
+
     axios
       .post(
         `https://kauth.kakao.com/oauth/token?
@@ -28,7 +28,7 @@ const OAuth = () => {
       });
   }, []);
 
-  return <div>{code1}</div>;
+  return <div>redirect...</div>;
 };
 
 export default OAuth;
