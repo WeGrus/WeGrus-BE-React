@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 
 const OAuth = () => {
+  let code1 = new URL(window.location.href).searchParams.get("code");
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
     let code = params.get("code"); // 인가코드 받는 부분
@@ -27,7 +28,7 @@ const OAuth = () => {
       });
   }, []);
 
-  return <div>hgi</div>;
+  return <div>{code1}</div>;
 };
 
 export default OAuth;
