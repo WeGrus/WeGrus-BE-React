@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
-import Signup from "./components/screens/Signup";
+
 import Study from "./components/screens/Study";
 import Page from "./components/screens/Page";
 import About from "./components/screens/About";
@@ -15,6 +15,8 @@ import { isLoggedIn, isOperator } from "./variables";
 import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
 import { HelmetProvider } from "react-helmet-async";
+
+import OAuth from "./components/auth/OAuth";
 
 function App() {
   return (
@@ -53,7 +55,7 @@ function App() {
             ) : null}
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/oauth/kakao/callback" element={<OAuth />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>

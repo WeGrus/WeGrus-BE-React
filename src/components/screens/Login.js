@@ -7,6 +7,12 @@ import HeaderContainer from "../auth/HeaderContainer";
 import PageTitle from "../shared/PageTitle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
+import KakaoLogin from "../auth/OAuth";
+
+const CLIENT_ID = "65cd2fc55aec40658e2efbc951d47164";
+const REDIRECT_URI = "https://localhost:3000/oauth/kakao/callback";
+
+const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
 function Login() {
   const location = useLocation();
@@ -22,7 +28,7 @@ function Login() {
       </HeaderContainer>
 
       <BottomBox>
-        <BottomButton to="/" color="#FAE100" ftcolor="black">
+        <BottomButton href={KAKAO_AUTH_URL} color="#FAE100" ftcolor="black">
           <FontAwesomeIcon icon={faComment} />
           <span>카카오 계정으로 로그인</span>
         </BottomButton>
