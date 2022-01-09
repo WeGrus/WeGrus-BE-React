@@ -17,6 +17,7 @@ import Layout from "./components/Layout";
 import { HelmetProvider } from "react-helmet-async";
 
 import OAuth from "./components/auth/OAuth";
+import EmailAuth from "./components/screens/EmailAuth";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/oauth/kakao/callback" element={<OAuth />} />
+          <Route path="/login/email-auth" element={<EmailAuth />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>
