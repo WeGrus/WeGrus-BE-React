@@ -188,8 +188,12 @@ margin-left: 9px;
 cursor: pointer;
 `
 
+const CommentNameBox = styled.div`
+  width: 130px;
+`
 
-let getPage = { // page의 정보
+
+let getPage = { // 서버에서 가져온 page의 정보라고 가정.
   title: "플러터 스터디 모집합니다. 초보자 환영입니다.",
   isSecret: false,
   countOfRecommend: 0, // 게시글의 추천수
@@ -205,11 +209,29 @@ let getPage = { // page의 정보
   // editor에 넣을 예제값이다.
 }
 
+const geCommentInfor = [ // 서버에서 가져온 data라고 가정한다면.
+  {
+    commentNumber: 3,
+    commentWriter: "두바이 석유왕자",
+    text: "우와~ 저도 참여할게요.",
+    recommand: 30,
+    date: "21/12/21",
+    time: "23:14:24"
+  },
+  {
+    commentNumber: 4,
+    commentWriter: "김승태",
+    text: "우와~ 저도 참여할게요.!!!!",
+    recommand: 25,
+    date: "21/12/21",
+    time: "23:14:24"
+  }
+]
+
 let userInfor = {
   userName: "김승태",
   userId: "testId"
 }
-
 
 const checkRecommend = (isRecommend) => {
   if (isRecommend) {
@@ -221,13 +243,45 @@ const checkRecommend = (isRecommend) => {
 
 }
 
+const createdTime = () => {
+  const DATE = new Date();
+  let year = DATE.getFullYear(); // 년도
+  let month = DATE.getMonth() + 1;  // 월
+  let date = DATE.getDate();  // 날짜
+  let hours = DATE.getHours(); // 시
+  let minutes = DATE.getMinutes();  // 분
+  let seconds = DATE.getSeconds();  // 초
+
+  let today = (year + '/' + month + '/' + date)
+  let time = (hours + ':' + minutes + ':' + seconds)
+  return {date: today,
+          time: time};
+}
+
+const checkBlank = (value) => { // 댓글을 입력할 때 공백만 입력하는지 확인하는 함수. ex) comment = "         " 이런 값일 때.
+  let isBlank = true;
+  for(let i=0; i<value.length; i++){
+    if(value[i] !== " "){
+      isBlank = false;
+      break;
+    }
+  }
+  return isBlank
+}
+
+
 function Page(props) {
   const params = useParams();
   const filter = useLocation().state;
   const [countOfRecommend, setCountOfRecommend] = React.useState(getPage.countOfRecommend); // 게시글 추천수
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
-
+  const [comment,setComment] = React.useState("")
+  const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
   const Navigate = useNavigate();
+  const [commentRecommand, setCommentRecommand] = React.useState(geCommentInfor);
+  const recommandEl = React.useRef();
+
+  console.log(commentRecommand);
 
   const postRecommand = () => {
     if (isRecommend === "추천취소") {
@@ -255,43 +309,126 @@ function Page(props) {
     return value;
   }
 
-  const goToList = () => {
-    window.history.back();
+  const handleCommentSubmit = (e) => {
+    if(checkBlank(comment)){ // 댓글을 달지 않고 버튼을 클릭했을 때.
+      setPlaceholder("  내용이 없는 댓글은 등록하실 수 없습니다.")
+    }
+    else{
+      const today = createdTime();
+
+      console.log(
+        {
+          userName: userInfor.userName,
+          comment: comment,
+          date: today.date,
+          time: today.time,
+          recommend: 0,
+        }
+      );
+    }
   }
 
+  const toggleCommentRecommand = (e) => {
+    const index = e.target.dataset.index
+    let i = 0;
+    for(i;i<commentRecommand.length; i++){
+      if(commentRecommand[i].commentNumber == index){
+        let temp  = [...commentRecommand];
+        temp[i].recommand = commentRecommand[i].recommand+1;
+        setCommentRecommand(temp)
+      }
+    }
+  }
+  
+  
+
+
+
+  const printComment = commentRecommand.map(comment=>
+      <Comment key={comment.commentNumber}>
+        <CommentNameBox>{comment.commentWriter}</CommentNameBox>
+        <CommentContent>{comment.text}</CommentContent>
+        
+        {(comment.commentWriter === userInfor.userName) ?
+          <Recode>
+            <CommentRecommand onClick={toggleCommentRecommand} data-index={comment.commentNumber} >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
+            {comment.date} | {comment.time}
+            <CommentCorrection>수정</CommentCorrection>
+            <CommentDelete>❌</CommentDelete>
+          </Recode>
+          : 
+          <Recode>
+            <CommentRecommand onClick={toggleCommentRecommand} data-index={comment.commentNumber} >👍️ 추천수:{comment.recommand}</CommentRecommand>
+            {comment.date} | {comment.time}
+          </Recode>
+        }
+      </Comment>
+  )
+
+  const test = () =>{
+    let data=(null);
+    let j;
+
+    for(j = 0; j<Number(geCommentInfor.length); j++){
+       let comment = geCommentInfor[j];
+       data = data + (
+        <Comment key={comment.commentNumber}>
+        <CommentNameBox>{comment.commentWriter}</CommentNameBox>
+        <CommentContent>{comment.text}</CommentContent>
+
+        {(comment.commentWriter === userInfor.userName) ?
+          <Recode>
+            <CommentRecommand onClick={toggleCommentRecommand}>👍️ 추천수:{comment.recommand}</CommentRecommand>
+            {comment.date} | {comment.time}
+            <CommentCorrection>수정</CommentCorrection>
+            <CommentDelete>❌</CommentDelete>
+          </Recode>
+          :
+          <Recode>
+            <CommentRecommand onClick={toggleCommentRecommand} >👍️ 추천수:30</CommentRecommand>
+            {comment.date} | {comment.time}
+          </Recode>
+        }
+      </Comment>
+       )
+    }
+    console.log(data);
+  }
 
   return (
     <div>
       <Background>
         <Content>
           <Category>{filter.category}|{filter.subCategory}</Category>
+
           <Header>
             <Title>{getPage.title}</Title>
             <OtherDetail>{getPage.author}|{getPage.date}|{getPage.time}<Right>조회 143|추천 {countOfRecommend}|댓글3</Right></OtherDetail>
           </Header>
+
           <Description>
             <Viewer initialValue={getPage.example} />
             <CommentInfor>댓글 3개</CommentInfor>
             <Recommand value="추천" onClick={postRecommand}>{isRecommend}</Recommand>
           </Description>
+
           <Comments>
-            <Comment>
-              <div>두바이 석유왕자</div>
-              <CommentContent>우와~ 저도 참여할게요.</CommentContent>
-              <Recode>
-                <CommentRecommand>👍️ 추천수:30</CommentRecommand>
-                21/12/21 | 23:14:24
-                <CommentCorrection>수정</CommentCorrection>
-                <CommentDelete>❌</CommentDelete>
-              </Recode>
-            </Comment>
+            {printComment}
           </Comments>
-          <CommentWriteSection>
-            <CommentWrite placeholder="  댓글 작성 시 네티켓을 지켜주세요."></CommentWrite>
-            <CommentSubmit>댓글 등록</CommentSubmit>
-          </CommentWriteSection>
+
+          {(typeof userInfor != 'undefined') ? // userInfor가 있는 지 확인하면서 회원이 아니라면 댓글 작성 x
+              <CommentWriteSection>
+                <CommentWrite value={comment} onChange={(e)=>{setComment(e.target.value)}} placeholder={placeholder} required></CommentWrite>
+                <CommentSubmit onClick={handleCommentSubmit}>댓글 등록</CommentSubmit>
+              </CommentWriteSection>
+              : null}
+
           <BtnSection>
-            <GoToList onClick={goToList}>목록으로</GoToList>
+          <Link to="/board"
+                  state={
+                    {category:filter.subCategory}
+                  }
+            ><GoToList >목록으로</GoToList></Link>
             {(getPage.author === userInfor.userName) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
               <div style={{ float: "right" }}>
                 <Link

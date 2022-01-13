@@ -38,6 +38,7 @@ const datas = [
 
 function Board() {
   const input = useLocation();
+  
   let subBarTarget;
   if (input.state != null) {
     subBarTarget = input.state.category;
