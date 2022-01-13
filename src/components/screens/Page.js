@@ -317,7 +317,17 @@ function Page(props) {
     }
     else{
       const today = createdTime();
-
+      let temp  = [...commentInfor];
+      temp.push(
+        {
+          commentNumber: commentInfor[commentInfor.length - 1].commentNumber+1,
+          commentWriter: userInfor.userName,
+          text: comment,
+          recommand: 0,
+          date: today.date,
+          time: today.time
+        }
+      )
       console.log(
         {
           userName: userInfor.userName,
@@ -328,6 +338,7 @@ function Page(props) {
         }
       );
       setComment("");
+      setCommentInfor(temp);
     }
   }
 
