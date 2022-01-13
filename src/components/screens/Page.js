@@ -328,15 +328,6 @@ function Page(props) {
           time: today.time
         }
       )
-      console.log(
-        {
-          userName: userInfor.userName,
-          comment: comment,
-          date: today.date,
-          time: today.time,
-          recommend: 0,
-        }
-      );
       setComment("");
       setCommentInfor(temp);
     }
@@ -407,14 +398,22 @@ function Page(props) {
         
         {(comment.commentWriter === userInfor.userName) ?
           <Recode data-index={comment.commentNumber}>
+            {(typeof userInfor != 'undefined')?  
             <CommentRecommand onClick={toggleCommentRecommand}  >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
+            :
+            <CommentRecommand >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
+            }
             {comment.date} | {comment.time}
             <CommentCorrection onClick={handleCommentUpdateBtn}>수정</CommentCorrection>
             <CommentDelete onClick={handleCommentDelete}>❌</CommentDelete>
           </Recode>
           : 
           <Recode  data-index={comment.commentNumber} >
-            <CommentRecommand onClick={toggleCommentRecommand}>👍️ 추천수:{comment.recommand}</CommentRecommand>
+            {(typeof userInfor != 'undefined')?  
+            <CommentRecommand onClick={toggleCommentRecommand}  >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
+            :
+            <CommentRecommand >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
+            }
             {comment.date} | {comment.time}
           </Recode>
         }
