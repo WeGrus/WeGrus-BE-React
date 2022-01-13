@@ -275,13 +275,15 @@ function Page(props) {
   const filter = useLocation().state;
   const [countOfRecommend, setCountOfRecommend] = React.useState(getPage.countOfRecommend); // 게시글 추천수
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
-  const [comment,setComment] = React.useState("")
+  const [comment,setComment] = React.useState("") // 댓글 입력칸
   const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
+  const [commentInfor, setCommentInfor] = React.useState(geCommentInfor);
+  const [checkSubmitBtn, setCheckSubmitBtn] = React.useState(0) // 0이면 댓글 등록이고 다른 숫자이면 수정하는 댓글의 index이다. 
   const Navigate = useNavigate();
-  const [commentRecommand, setCommentRecommand] = React.useState(geCommentInfor);
+ 
   const recommandEl = React.useRef();
 
-  console.log(commentRecommand);
+  //console.log(commentInfor);
 
   const postRecommand = () => {
     if (isRecommend === "추천취소") {
@@ -325,75 +327,88 @@ function Page(props) {
           recommend: 0,
         }
       );
+      setComment("");
     }
   }
 
-  const toggleCommentRecommand = (e) => {
-    const index = e.target.dataset.index
+  const handleCommentUpdate = (e) => { // 댓글 수정버튼 누른 후, 댓글 등록 버튼 누를 시에 동작
     let i = 0;
-    for(i;i<commentRecommand.length; i++){
-      if(commentRecommand[i].commentNumber == index){
-        let temp  = [...commentRecommand];
-        temp[i].recommand = commentRecommand[i].recommand+1;
-        setCommentRecommand(temp)
+    for(i;i<commentInfor.length; i++){
+      if(commentInfor[i].commentNumber == checkSubmitBtn){
+        const today = createdTime();
+        let temp  = [...commentInfor];
+        temp[i].text = comment;
+        temp[i].date =  today.date;
+        temp[i].time = today.time;
+        setCommentInfor(temp);
+        setCheckSubmitBtn(0);
+        break;
+      }
+    }
+    
+  }
+
+  const handleCommentUpdateBtn = (e) => { // 댓글 수정 버튼 누를 시에 동작하는 함수
+    const index = e.target.parentNode.dataset.index
+    let i = 0;
+    for(i;i<commentInfor.length; i++){
+      if(commentInfor[i].commentNumber == index){
+        console.log(commentInfor[i].text)
+        setComment(commentInfor[i].text)
+        setCheckSubmitBtn(index)
+        break;
       }
     }
   }
   
+  const handleCommentDelete = (e) => {
+    const index = e.target.parentNode.dataset.index
+    let i = 0;
+    for(i;i<commentInfor.length; i++){
+      if(commentInfor[i].commentNumber == index){
+        let temp  = [...commentInfor]
+        temp.splice(i,1)
+        setCommentInfor(temp);
+        break;
+        //바뀐 거 보내주기
+      }
+    }
+
+  }
+
+  const toggleCommentRecommand = (e) => { // 댓글 추천 함수
+    const index = e.target.parentNode.dataset.index
+    let i = 0;
+    for(i;i<commentInfor.length; i++){
+      if(commentInfor[i].commentNumber == index){
+        //먼저 추천했는지 확인 만약 추천했다면 추천 취소 
+        let temp  = [...commentInfor];
+        temp[i].recommand = commentInfor[i].recommand+1;
+        setCommentInfor(temp)
+      }
+    }
+  }
   
-
-
-
-  const printComment = commentRecommand.map(comment=>
+  const printComment = commentInfor.map(comment=>
       <Comment key={comment.commentNumber}>
         <CommentNameBox>{comment.commentWriter}</CommentNameBox>
         <CommentContent>{comment.text}</CommentContent>
         
         {(comment.commentWriter === userInfor.userName) ?
-          <Recode>
-            <CommentRecommand onClick={toggleCommentRecommand} data-index={comment.commentNumber} >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
+          <Recode data-index={comment.commentNumber}>
+            <CommentRecommand onClick={toggleCommentRecommand}  >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
             {comment.date} | {comment.time}
-            <CommentCorrection>수정</CommentCorrection>
-            <CommentDelete>❌</CommentDelete>
+            <CommentCorrection onClick={handleCommentUpdateBtn}>수정</CommentCorrection>
+            <CommentDelete onClick={handleCommentDelete}>❌</CommentDelete>
           </Recode>
           : 
-          <Recode>
-            <CommentRecommand onClick={toggleCommentRecommand} data-index={comment.commentNumber} >👍️ 추천수:{comment.recommand}</CommentRecommand>
+          <Recode  data-index={comment.commentNumber} >
+            <CommentRecommand onClick={toggleCommentRecommand}>👍️ 추천수:{comment.recommand}</CommentRecommand>
             {comment.date} | {comment.time}
           </Recode>
         }
       </Comment>
   )
-
-  const test = () =>{
-    let data=(null);
-    let j;
-
-    for(j = 0; j<Number(geCommentInfor.length); j++){
-       let comment = geCommentInfor[j];
-       data = data + (
-        <Comment key={comment.commentNumber}>
-        <CommentNameBox>{comment.commentWriter}</CommentNameBox>
-        <CommentContent>{comment.text}</CommentContent>
-
-        {(comment.commentWriter === userInfor.userName) ?
-          <Recode>
-            <CommentRecommand onClick={toggleCommentRecommand}>👍️ 추천수:{comment.recommand}</CommentRecommand>
-            {comment.date} | {comment.time}
-            <CommentCorrection>수정</CommentCorrection>
-            <CommentDelete>❌</CommentDelete>
-          </Recode>
-          :
-          <Recode>
-            <CommentRecommand onClick={toggleCommentRecommand} >👍️ 추천수:30</CommentRecommand>
-            {comment.date} | {comment.time}
-          </Recode>
-        }
-      </Comment>
-       )
-    }
-    console.log(data);
-  }
 
   return (
     <div>
@@ -419,7 +434,7 @@ function Page(props) {
           {(typeof userInfor != 'undefined') ? // userInfor가 있는 지 확인하면서 회원이 아니라면 댓글 작성 x
               <CommentWriteSection>
                 <CommentWrite value={comment} onChange={(e)=>{setComment(e.target.value)}} placeholder={placeholder} required></CommentWrite>
-                <CommentSubmit onClick={handleCommentSubmit}>댓글 등록</CommentSubmit>
+                <CommentSubmit onClick={(checkSubmitBtn === 0)?handleCommentSubmit:handleCommentUpdate}>댓글 등록</CommentSubmit>
               </CommentWriteSection>
               : null}
 
