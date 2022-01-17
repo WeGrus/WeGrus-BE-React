@@ -3,6 +3,7 @@ import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
 import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import * as ReactDOM from 'react-dom';
 
 const Background = styled.div`
   width: 1240px;        
@@ -234,6 +235,7 @@ border: 1px solid black;
 border-radius: 15px;
 width: 62px;
 height: 29.22;
+cursor: pointer;
 `
 
 let getPage = { // 서버에서 가져온 page의 정보라고 가정.
@@ -259,7 +261,7 @@ const geCommentInfor = [ // 서버에서 가져온 data라고 가정한다면.
     text: "우와~ 저도 참여할게요.",
     recommand: 30,
     date: "21/12/21",
-    time: "23:14:24"
+    time: "23:14:24",
   },
   {
     commentNumber: 4,
@@ -267,7 +269,46 @@ const geCommentInfor = [ // 서버에서 가져온 data라고 가정한다면.
     text: "우와~ 저도 참여할게요.!!!!",
     recommand: 25,
     date: "21/12/21",
-    time: "23:14:24"
+    time: "23:14:24",
+  }
+]
+
+const getReCommentInfor = [
+  {
+    parentNumber: 3,
+    commentNumber: 15,
+    commentWriter: "아랍 제벌부자",
+    text: "좋습니다!",
+    recommand: 2,
+    date: "21/12/21",
+    time: "23:14:24",
+  },
+  {
+    parentNumber: 3,
+    commentNumber: 16,
+    commentWriter: "김승태",
+    text: "저도 좋습니다!",
+    recommand: 2,
+    date: "21/12/21",
+    time: "23:14:24",
+  },
+  {
+    parentNumber: 4,
+    commentNumber: 17,
+    commentWriter: "김승태",
+    text: "저도 좋습니다!",
+    recommand: 2,
+    date: "21/12/21",
+    time: "23:14:24",
+  },
+  {
+    parentNumber: 5,
+    commentNumber: 18,
+    commentWriter: "김승태",
+    text: "저도 좋습니다!",
+    recommand: 2,
+    date: "21/12/21",
+    time: "23:14:24",
   }
 ]
 
@@ -321,13 +362,14 @@ function Page(props) {
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
   const [comment,setComment] = React.useState("") // 댓글 입력칸
   const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
-  const [commentInfor, setCommentInfor] = React.useState(geCommentInfor);
+  const [commentInfor, setCommentInfor] = React.useState(geCommentInfor); // 댓글 정보
+  const [reCommentInfor,setReCommentInfor] = React.useState(getReCommentInfor)
   const [checkSubmitBtn, setCheckSubmitBtn] = React.useState(0) // 0이면 댓글 등록이고 다른 숫자이면 수정하는 댓글의 index이다. 
   const Navigate = useNavigate();
+  const [test,setTest] = React.useState(null);
+  const [commentIndex,setCommentIndex] = React.useState(-1);
  
   const recommandEl = React.useRef();
-
-  //console.log(commentInfor);
 
   const postRecommand = () => {
     if (isRecommend === "추천취소") {
@@ -435,9 +477,43 @@ function Page(props) {
       }
     }
   }
+
+  const handleReCommentWirte = (e) => { // 대댓글을 작성하기 위한 함수
+    const index =e.target.parentNode.parentNode.id;
+    setCommentIndex(index);
+  }
+
+  const handleReCommentSubmit = (e) => { // 대댓글을 전송하는 함수 
+   
+    const index = Number(recommandEl.current.dataset.index)
+    const recomment= recommandEl.current.value;
+    if(checkBlank(recomment)){ // 댓글을 달지 않고 버튼을 클릭했을 때.
+      recommandEl.current.placeholder="  내용이 없는 댓글은 등록하실 수 없습니다."
+    }
+    else{
+      const today = createdTime();
+      let temp  = [...reCommentInfor];
+      console.log(temp);
+      temp.push(
+        {
+          parentNumber: index,
+          commentNumber: reCommentInfor[reCommentInfor.length - 1].commentNumber+1,
+          commentWriter: userInfor.userName,
+          text: recomment,
+          recommand: 0,
+          date: today.date,
+          time: today.time
+        }
+      )
+      recommandEl.current.value = "";
+      recommandEl.current.placeholder="  댓글 작성 시 네티켓을 지켜주세요."
+      setReCommentInfor(temp);
+    }
+  }
   
   const printComment = commentInfor.map(comment=>
-    <Comment key={comment.commentNumber}>
+    <div key={comment.commentNumber}>
+    <Comment key={comment.commentNumber} id = {comment.commentNumber} >
       <CommentLeft>
         <CommentNameBox>
           {(comment.isReComment === true)?
@@ -466,15 +542,62 @@ function Page(props) {
           {(typeof userInfor != 'undefined')?  
             <CommentBtnSection>
                <CommentRecommand data-index={comment.commentNumber} onClick={toggleCommentRecommand}>추천 <span>{comment.recommand}</span></CommentRecommand>
-               <ReCommentWrite>댓글 0</ReCommentWrite>
+               {(comment.isReComment != true)?
+                <ReCommentWrite onClick={handleReCommentWirte}>댓글 {getReCommentInfor.filter(item => item.parentNumber === comment.commentNumber).length}</ReCommentWrite>
+               :
+               null
+               }    
             </CommentBtnSection>
             :
             <CommentBtnSection>
                  <CommentRecommand >추천 <span>{comment.recommand}</span></CommentRecommand>
             </CommentBtnSection>
             }
-        
       </Comment>
+      {reCommentInfor.filter(item => item.parentNumber === comment.commentNumber).map(reComment=>
+          <Comment key={reComment.commentNumber} id = {reComment.commentNumber} >
+          <CommentLeft>
+            <CommentNameBox>
+              <ReCommentName>ㄴ</ReCommentName>
+              <CommentName>{reComment.commentWriter}</CommentName>
+            </CommentNameBox>
+            {(reComment.commentWriter === userInfor.userName) ?
+              <CommentOwnerBtn data-index={reComment.commentNumber}>
+                <CommentUpdate onClick={handleCommentUpdateBtn}>수정</CommentUpdate>
+                <CommentDelete onClick={handleCommentDelete}>삭제</CommentDelete>
+              </CommentOwnerBtn>
+              :
+              null
+            }
+            </CommentLeft>
+            
+            <CommentContent>{reComment.text}</CommentContent>
+            
+              
+              <Recode  data-index={reComment.commentNumber} >
+                {reComment.date} | {reComment.time}
+              </Recode>
+              {(typeof userInfor != 'undefined')?  
+                <CommentBtnSection>
+                   <CommentRecommand data-index={reComment.commentNumber} onClick={toggleCommentRecommand}>추천 <span>{reComment.recommand}</span></CommentRecommand>
+                </CommentBtnSection>
+                :
+                <CommentBtnSection>
+                     <CommentRecommand >추천 <span>{reComment.recommand}</span></CommentRecommand>
+                </CommentBtnSection>
+                }
+          </Comment>
+
+      )}
+      {(comment.isReComment != true && comment.commentNumber == commentIndex) ?
+        <CommentWriteSection>
+          <CommentWrite ref={recommandEl}  onChange={(e) => {}} placeholder={"댓글 작성시 네티켓을 지켜주세요."} required data-index={comment.commentNumber}></CommentWrite>
+          <CommentSubmit onClick={(checkSubmitBtn === 0) ? handleReCommentSubmit : handleCommentUpdate}>답글 등록</CommentSubmit>
+        </CommentWriteSection>
+        :
+       null
+       }     
+      </div>
   )
 
   return (
