@@ -535,11 +535,6 @@ function Page(props) {
         }
       }
 
-
-      // reCommentUpdateEl.current.value = "";
-      // reCommentUpdateEl.current.placeholder="  댓글 작성 시 네티켓을 지켜주세요."
-      // setReCommentInfor(temp);
-
     }
   }
 
@@ -550,6 +545,21 @@ function Page(props) {
     setCommentIndex(index);
   }
   
+  const handleReCommentDelete = (e) => {
+    const index = e.target.parentNode.parentNode.parentNode.id;
+
+    let i = 0;
+    for(i;i<reCommentInfor.length; i++){
+      if(reCommentInfor[i].commentNumber == index){
+        let temp  = [...reCommentInfor]
+        temp.splice(i,1)
+        setReCommentInfor(temp);
+        break;
+        //바뀐 거 보내주기
+      }
+    }
+  }
+
   const printComment = commentInfor.map(comment=>
     <div key={comment.commentNumber}>
     <Comment key={comment.commentNumber} id = {comment.commentNumber} >
@@ -582,7 +592,7 @@ function Page(props) {
             <CommentBtnSection>
                <CommentRecommand data-index={comment.commentNumber} onClick={toggleCommentRecommand}>추천 <span>{comment.recommand}</span></CommentRecommand>
                {(comment.isReComment != true)?
-                <ReCommentWrite onClick={handleReCommentWirte}>댓글 {getReCommentInfor.filter(item => item.parentNumber === comment.commentNumber).length}</ReCommentWrite>
+                <ReCommentWrite onClick={handleReCommentWirte}>댓글 {reCommentInfor.filter(item => item.parentNumber === comment.commentNumber).length}</ReCommentWrite>
                :
                null
                }    
@@ -604,7 +614,7 @@ function Page(props) {
               {(reComment.commentWriter === userInfor.userName) ?
                 <CommentOwnerBtn data-index={reComment.commentNumber}>
                   <CommentUpdate onClick={handleReCommentUpdateBtn}>수정</CommentUpdate>
-                  <CommentDelete onClick={handleCommentDelete}>삭제</CommentDelete>
+                  <CommentDelete onClick={handleReCommentDelete}>삭제</CommentDelete>
                 </CommentOwnerBtn>
                 :
                 null
@@ -636,6 +646,7 @@ function Page(props) {
           }
         </div>
       )}
+
       {(comment.commentNumber == commentIndex) ?
         <CommentWriteSection>
           <CommentWrite ref={reCommentEl}  onChange={(e) => {}} placeholder={"댓글 작성시 네티켓을 지켜주세요."} required data-index={comment.commentNumber}></CommentWrite>
