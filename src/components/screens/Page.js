@@ -64,7 +64,7 @@ position: relative;
 `
 
 const Recommand = styled.button`
-width: 53px;
+width: 88px;
 height: 32px;
 font-size: 14px;
 color: white;
@@ -95,34 +95,34 @@ position: relative
 
 const CommentContent = styled.div`
 margin-left: 49px;
+max-width: 608px;
+min-height: 96.22px;
 `
 
 const Recode = styled.div`
 position: absolute;
+top:10px;
 right: 0
 `
 const CommentRecommand = styled.button`
-margin-right: 10px;
 background-color: white;
-border: none;
+border: 1px solid black;
+border-radius: 15px;
+width: 62px;
+height: 29.22;
 cursor: pointer;
 `
 
 const CommentDelete = styled.button`
-margin-left: 10px;
+margin-right: 2.98px;
 background-color: white;
-border: none;
+border: 1px solid black;
+border-radius: 15px;
+width: 49.02px;
+height: 29.22;
 cursor: pointer;
 `
 
-const CommentCorrection = styled.button`
-margin-left: 10px;
-background-color: #6CD2D7;
-border: none;
-border-radius: 10px;
-cursor: pointer;
-color : white;
-`
 
 const CommentWriteSection = styled.div`
 display: flex;
@@ -188,10 +188,53 @@ margin-left: 9px;
 cursor: pointer;
 `
 
-const CommentNameBox = styled.div`
-  width: 130px;
+const CommentName = styled.div`
+width: 109px;
 `
 
+const CommentLeft = styled.div`
+min-width: 109px;
+`
+
+const CommentNameBox = styled.div`
+min-width: 109px;
+position: relative;
+margin-bottom: 74px;
+display: flex;
+`
+
+const ReCommentName = styled.div`
+width: 20px;
+font-size: 14px;
+`
+const CommentOwnerBtn = styled.div`
+position: absolute;
+bottom: 7.78px;
+`
+
+const CommentUpdate = styled.button`
+margin-right: 2.98px;
+background-color: white;
+border: 1px solid black;
+border-radius: 15px;
+width: 49.02px;
+height: 29.22;
+cursor: pointer;
+`
+
+const CommentBtnSection = styled.div`
+position: absolute;
+bottom: 7.78px;
+right: 0px;
+`
+const ReCommentWrite = styled.button`
+margin-left: 7px;
+background-color: white;
+border: 1px solid black;
+border-radius: 15px;
+width: 62px;
+height: 29.22;
+`
 
 let getPage = { // 서버에서 가져온 page의 정보라고 가정.
   title: "플러터 스터디 모집합니다. 초보자 환영입니다.",
@@ -270,6 +313,7 @@ const checkBlank = (value) => { // 댓글을 입력할 때 공백만 입력하�
 }
 
 
+
 function Page(props) {
   const params = useParams();
   const filter = useLocation().state;
@@ -344,6 +388,7 @@ function Page(props) {
         temp[i].time = today.time;
         setCommentInfor(temp);
         setCheckSubmitBtn(0);
+        setComment("");
         break;
       }
     }
@@ -379,7 +424,7 @@ function Page(props) {
   }
 
   const toggleCommentRecommand = (e) => { // 댓글 추천 함수
-    const index = e.target.parentNode.dataset.index
+    const index = e.target.dataset.index
     let i = 0;
     for(i;i<commentInfor.length; i++){
       if(commentInfor[i].commentNumber == index){
@@ -392,31 +437,43 @@ function Page(props) {
   }
   
   const printComment = commentInfor.map(comment=>
-      <Comment key={comment.commentNumber}>
-        <CommentNameBox>{comment.commentWriter}</CommentNameBox>
+    <Comment key={comment.commentNumber}>
+      <CommentLeft>
+        <CommentNameBox>
+          {(comment.isReComment === true)?
+          <ReCommentName>ㄴ</ReCommentName>
+          :
+          null
+          }
+          <CommentName>{comment.commentWriter}</CommentName>
+        </CommentNameBox>
+        {(comment.commentWriter === userInfor.userName) ?
+          <CommentOwnerBtn data-index={comment.commentNumber}>
+            <CommentUpdate onClick={handleCommentUpdateBtn}>수정</CommentUpdate>
+            <CommentDelete onClick={handleCommentDelete}>삭제</CommentDelete>
+          </CommentOwnerBtn>
+          :
+          null
+        }
+        </CommentLeft>
+        
         <CommentContent>{comment.text}</CommentContent>
         
-        {(comment.commentWriter === userInfor.userName) ?
-          <Recode data-index={comment.commentNumber}>
-            {(typeof userInfor != 'undefined')?  
-            <CommentRecommand onClick={toggleCommentRecommand}  >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
-            :
-            <CommentRecommand >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
-            }
-            {comment.date} | {comment.time}
-            <CommentCorrection onClick={handleCommentUpdateBtn}>수정</CommentCorrection>
-            <CommentDelete onClick={handleCommentDelete}>❌</CommentDelete>
-          </Recode>
-          : 
+          
           <Recode  data-index={comment.commentNumber} >
-            {(typeof userInfor != 'undefined')?  
-            <CommentRecommand onClick={toggleCommentRecommand}  >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
-            :
-            <CommentRecommand >👍️ 추천수:<span>{comment.recommand}</span></CommentRecommand>
-            }
             {comment.date} | {comment.time}
           </Recode>
-        }
+          {(typeof userInfor != 'undefined')?  
+            <CommentBtnSection>
+               <CommentRecommand data-index={comment.commentNumber} onClick={toggleCommentRecommand}>추천 <span>{comment.recommand}</span></CommentRecommand>
+               <ReCommentWrite>댓글 0</ReCommentWrite>
+            </CommentBtnSection>
+            :
+            <CommentBtnSection>
+                 <CommentRecommand >추천 <span>{comment.recommand}</span></CommentRecommand>
+            </CommentBtnSection>
+            }
+        
       </Comment>
   )
 
