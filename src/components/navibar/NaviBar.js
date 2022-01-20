@@ -9,7 +9,7 @@ import {
   LogoLink,
   NavContents,
 } from "./NavBarElements";
-import { isLoggedIn } from "../../variables";
+import { initialState } from "../../variables";
 
 const NaviBar = () => {
   return (
@@ -35,7 +35,7 @@ const NaviBar = () => {
             </NavLink>
           </NavMenu>
           <NavBtn>
-            {isLoggedIn ? (
+            {initialState.authenticated ? (
               <>
                 <ProfileLink to="/profile">
                   <img src={""} alt="profile" />

@@ -11,13 +11,14 @@ import Announce from "./components/screens/Announce";
 import Profile from "./components/screens/Profile";
 import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
-import { isLoggedIn, isOperator } from "./variables";
+import { initialState, isLoggedIn, isOperator } from "./variables";
 import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
 import { HelmetProvider } from "react-helmet-async";
-
-import OAuth from "./components/auth/OAuth";
 import EmailAuth from "./components/screens/EmailAuth";
+import React from "react";
+import OAuth from "./components/auth/OAuth";
+import Loading from "./components/screens/Loading";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {isLoggedIn ? (
+            {initialState.authenticated ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
@@ -53,7 +54,9 @@ function App() {
                   </>
                 ) : null}
               </>
-            ) : null}
+            ) : (
+              <Route path="/" element={<About />} />
+            )}
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/oauth/kakao/callback" element={<OAuth />} />

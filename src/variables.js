@@ -1,3 +1,6 @@
-export const isLoggedIn = true;
+export const initialState = {
+  authenticated: false,
+  token: null,
+};
 export const isOperator = true;
 export const InhaAuth = false;
