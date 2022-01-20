@@ -11,7 +11,7 @@ import Announce from "./components/screens/Announce";
 import Profile from "./components/screens/Profile";
 import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
-import { initialState, isLoggedIn, isOperator } from "./variables";
+import { isOperator } from "./variables";
 import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
 import { HelmetProvider } from "react-helmet-async";

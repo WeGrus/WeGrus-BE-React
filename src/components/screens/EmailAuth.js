@@ -1,12 +1,8 @@
 import * as React from "react";
-import { Link, useLocation } from "react-router-dom";
 import AuthLayout from "../auth/AuthLayout";
-import BottomBox from "../auth/BottomBox";
 import Button from "../auth/Button";
 import HeaderContainer from "../auth/HeaderContainer";
 import PageTitle from "../shared/PageTitle";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
 import Input from "../auth/Input";
 import FormBox from "../auth/FormBox";
 function EmailAuth() {
