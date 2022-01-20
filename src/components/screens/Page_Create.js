@@ -126,7 +126,7 @@ function Page(props) {
      text: printTextBody(),
      isSecret: checked.checked,
      boardType:filter.category,
-     subCategory:filter.subCategory.target
+     subCategory:filter.subCategory
     }
 
     console.log(data);
@@ -141,7 +141,7 @@ function Page(props) {
     <div>
       <Background>
         <Content>
-          <Category>{filter.category}|{filter.subCategory.target}</Category>
+          <Category>{filter.category}|{filter.subCategory}</Category>
           <Header>
             <Title type="text" placeholder="제목" value={title} onChange={(e)=>setTitle(e.target.value)}></Title>
             <OtherDetail>{"이름 들어가야 함."}</OtherDetail>
@@ -157,7 +157,7 @@ function Page(props) {
           <BtnSection>
             <Link to="/board"
                   state={
-                    {category:filter.subCategory.target}
+                    {category:filter.subCategory}
                   }
             ><GoToList >목록으로</GoToList></Link>
             <Right>
