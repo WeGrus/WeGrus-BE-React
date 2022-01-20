@@ -1,25 +1,20 @@
 import axios from "axios";
-import React, { createContext, useEffect, useReducer } from "react";
-import { initialState } from "../../variables";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { actionCreators } from "../../store";
 
-export function reducer(state, action) {
-  switch (action.type) {
-    case "SET_TOKEN":
-      return {
-        ...state,
-        token: action.token,
-        authenticated: action.result,
-      };
-    case "DELETE_TOKEN":
-      return { ...state, token: null, authenticated: false };
-    default:
-      return state;
-  }
+function mapStateToProps(state) {
+  return state;
 }
-function OAuth() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state.authenticated);
+function mapDispatchToProps(dispatch) {
+  return {
+    logInUser: (token) => dispatch(actionCreators.logInUser(token)),
+  };
+}
 
+function OAuth(props) {
+  let navigate = useNavigate();
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
     let code = params.get("code"); // 인가코드 받는 부분
@@ -40,26 +35,14 @@ function OAuth() {
         let REFRESH_TOKEN = res.data.refresh_token;
 
         if (ACCESS_TOKEN) {
-          console.log("로그인 성공!");
-          dispatch({
-            type: "SET_TOKEN",
-            token: ACCESS_TOKEN,
-            result: true,
-          });
+          props.logInUser(ACCESS_TOKEN);
+          navigate("/login/email-auth");
         } else {
-          console.log("로그인 실패");
-          dispatch({
-            type: "SET_TOKEN",
-            token: null,
-            result: false,
-          });
+          props.logOutUser(ACCESS_TOKEN);
         }
       });
   }, []);
-
   return <div>redirecting...</div>;
 }
 
-export const UserContext = createContext(null);
-
-export default OAuth;
+export default connect(mapStateToProps, mapDispatchToProps)(OAuth);

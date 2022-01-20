@@ -6,6 +6,7 @@ const SFormBox = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 40px;
 `;
 
 function FormBox({ children }) {

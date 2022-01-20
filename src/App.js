@@ -19,15 +19,22 @@ import EmailAuth from "./components/screens/EmailAuth";
 import React from "react";
 import OAuth from "./components/auth/OAuth";
 import Loading from "./components/screens/Loading";
+import { connect } from "react-redux";
 
-function App() {
+function mapStateToProps(state) {
+  return state;
+}
+
+function App(props) {
+  const authenticated = props.authenticated;
+
   return (
     <HelmetProvider>
       <BrowserRouter>
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {initialState.authenticated ? (
+            {authenticated ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
@@ -68,4 +75,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(mapStateToProps)(App);
