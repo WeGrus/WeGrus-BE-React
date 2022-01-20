@@ -1335,7 +1335,9 @@ const postData = [
 
 function Board() {
   const input = useLocation();
+
   let subBarTarget; // 페이지에서 뒤로가기를 누르거나 목록을 누를 시 즉 subCategory
+
   if (input.state != null) {
     subBarTarget = input.state.category;
   } else {
@@ -1362,6 +1364,7 @@ function Board() {
       <PageTitle title="게시판" />
       <SideBar posts={subCategory} getFilter={setTarget}></SideBar>
       <Content>
+
         <ScreenTitle>{`게시판 | ${target}`}</ScreenTitle>
         <SearchBarSection>
 
@@ -1382,6 +1385,7 @@ function Board() {
             <option value="">조회순</option>
             <option value="">댓글순</option>
         </SearchBarFilter>
+
 
         <CreateBtnLink
           to="/board/write/1234"
