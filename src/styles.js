@@ -16,4 +16,19 @@ body{
     font-family:'Open Sans', sans-serif;
 
 }
+
+a{
+    color:black;
+}
+a:link { 
+    text-decoration: none;
+   }
+    
+   a:visited { 
+    text-decoration: none;
+   }
+    
+   a:hover { 
+    text-decoration: none;
+   }
 `;
