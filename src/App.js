@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
-import Signup from "./components/screens/Signup";
+
 import Study from "./components/screens/Study";
 import Page from "./components/screens/Page";
 import About from "./components/screens/About";
@@ -11,19 +11,30 @@ import Announce from "./components/screens/Announce";
 import Profile from "./components/screens/Profile";
 import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
-import { isLoggedIn, isOperator } from "./variables";
+import { isOperator } from "./variables";
 import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
 import { HelmetProvider } from "react-helmet-async";
+import EmailAuth from "./components/screens/EmailAuth";
+import React from "react";
+import OAuth from "./components/auth/OAuth";
+import Loading from "./components/screens/Loading";
+import { connect } from "react-redux";
 
-function App() {
+function mapStateToProps(state) {
+  return state;
+}
+
+function App(props) {
+  const authenticated = props.authenticated;
+
   return (
     <HelmetProvider>
       <BrowserRouter>
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {isLoggedIn ? (
+            {authenticated ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
@@ -50,10 +61,13 @@ function App() {
                   </>
                 ) : null}
               </>
-            ) : null}
+            ) : (
+              <Route path="/" element={<About />} />
+            )}
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/oauth/kakao/callback" element={<OAuth />} />
+          <Route path="/login/email-auth" element={<EmailAuth />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>
@@ -61,4 +75,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(mapStateToProps)(App);

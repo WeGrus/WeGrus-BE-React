@@ -15,7 +15,6 @@ function Layout() {
   return (
     <>
       <NaviBar />
-
       <Box>
         <Outlet />
       </Box>

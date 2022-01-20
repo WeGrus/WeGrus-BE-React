@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const BottomButton = styled(Link)`
+const BottomButton = styled.a`
   width: 292px;
   span {
     padding: 10px;

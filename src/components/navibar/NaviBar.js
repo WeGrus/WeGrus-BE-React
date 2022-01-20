@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import {
   Nav,
   NavLink,
@@ -9,9 +10,13 @@ import {
   LogoLink,
   NavContents,
 } from "./NavBarElements";
-import { isLoggedIn } from "../../variables";
 
-const NaviBar = () => {
+function mapStateToProps(state) {
+  return state;
+}
+
+const NaviBar = (props) => {
+  const authenticated = props.authenticated;
   return (
     <>
       <Nav>
@@ -35,7 +40,7 @@ const NaviBar = () => {
             </NavLink>
           </NavMenu>
           <NavBtn>
-            {isLoggedIn ? (
+            {authenticated ? (
               <>
                 <ProfileLink to="/profile">
                   <img src={""} alt="profile" />
@@ -52,4 +57,4 @@ const NaviBar = () => {
   );
 };
 
-export default NaviBar;
+export default connect(mapStateToProps)(NaviBar);
