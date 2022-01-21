@@ -173,20 +173,12 @@ flex-direction: row;
 
 const subCategory = [
   { filter: "자유게시판" },
+  { filter: "익명게시판" },
   { filter: "정보 공유" },
   { filter: "프로젝트 모집" },
   { filter: "취미 톡방" },
   { filter: "건의사항" },
   { filter: "질문/답변" },
-];
-
-const datas = [
-  { board_type: "자유게시판", board_title: "게시판 | 자유게시판" },
-  { board_type: "정보 공유", board_title: "게시판 | 정보 공유" },
-  { board_type: "프로젝트 모집", board_title: "게시판 | 프로젝트 모집" },
-  { board_type: "취미 톡방", board_title: "게시판 | 취미 톡방" },
-  { board_type: "건의사항", board_title: "게시판 | 건의사항" },
-  { board_type: "질문/답변", board_title: "게시판 | 질문/답변" },
 ];
 
 const postData = [
