@@ -1324,6 +1324,11 @@ const postData = [
   },
 ]
 
+const selectDate = [
+  "추천순",
+  "댓글순",
+  "조회순"
+]
 
 function Board() {
   const input = useLocation();
@@ -1341,9 +1346,19 @@ function Board() {
   const [text, setText] = React.useState();
   const [limit, setLimit] = React.useState(19);
   const [page, setPage] = React.useState(1);
+  const [selected, setSelected] = React.useState("")
   const offset = (page-1)*limit;
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
   const onSubmit = data => console.log(data);
+
+  const handleSearchBarFilter = (e) => {
+    setSelected(e.target.value)
+  }
+
+  React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
+  console.log(selected);
+  }, [selected]);
 
   React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
     let test = [...postData.filter(data=> data.categorization === target)]
@@ -1372,10 +1387,13 @@ function Board() {
           </SearchBar>
         </SearchBarForm>
 
-        <SearchBarFilter>
-            <option value="">추천순</option>
-            <option value="">조회순</option>
-            <option value="">댓글순</option>
+        <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
+        {selectDate.map((value)=>
+          <option value={value} key={value}>{value}</option>
+        )}
+            {/* <option value="추천">추천순</option>
+            <option value="조회">조회순</option>
+            <option value="댓글">댓글순</option> */}
         </SearchBarFilter>
 
 
