@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const SFormBox = styled.div`
+const SFormBox = styled.form`
   width: 292px;
   display: flex;
   justify-content: center;
