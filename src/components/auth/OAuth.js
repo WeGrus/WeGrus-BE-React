@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { actionCreators } from "../../store";
+import UserInfo from "./UserInfo";
 
 function mapStateToProps(state) {
   return state;
@@ -36,12 +37,14 @@ function OAuth(props) {
 
         if (ACCESS_TOKEN) {
           props.logInUser(ACCESS_TOKEN);
+
           navigate("/login/email-auth");
         } else {
           props.logOutUser(ACCESS_TOKEN);
         }
       });
   }, []);
+
   return <div>redirecting...</div>;
 }
 

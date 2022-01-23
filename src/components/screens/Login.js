@@ -16,13 +16,14 @@ function Login() {
   return (
     <AuthLayout>
       <PageTitle title="Login" />
-      <HeaderContainer>
-        <span>
-          Wegrus는 인하대학교 최대 컴퓨터 동아리 Igrus의 웹사이트입니다.
-        </span>
-        <span>로그인하여 다양한 활동과 커뮤니티를 만나보세요.</span>
-      </HeaderContainer>
-
+      <Link to={"/"}>
+        <HeaderContainer>
+          <span>
+            Wegrus는 인하대학교 최대 컴퓨터 동아리 Igrus의 웹사이트입니다.
+          </span>
+          <span>로그인하여 다양한 활동과 커뮤니티를 만나보세요.</span>
+        </HeaderContainer>
+      </Link>
       <BottomBox>
         <BottomButton href={KAKAO_AUTH_URL} color="#FAE100" ftcolor="black">
           <FontAwesomeIcon icon={faComment} />

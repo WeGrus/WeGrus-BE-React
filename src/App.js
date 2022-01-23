@@ -20,6 +20,7 @@ import React from "react";
 import OAuth from "./components/auth/OAuth";
 import Loading from "./components/screens/Loading";
 import { connect } from "react-redux";
+import axios from "axios";
 
 function mapStateToProps(state) {
   return state;
