@@ -85,11 +85,6 @@ line-height: 16px;
 color: white;
 padding-left:4px;
 `
-const CheckBox = styled.input`
-margin: 8px 11px 8px 8px;
-width: 16px;
-height: 16px;
-`
 const Write = styled.button`
 width: 53px;
 height: 32px;
