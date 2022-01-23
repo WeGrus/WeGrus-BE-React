@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { actionCreators } from "../../store";
-import UserInfo from "./UserInfo";
 
 function mapStateToProps(state) {
   return state;
