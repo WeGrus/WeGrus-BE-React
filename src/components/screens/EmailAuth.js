@@ -111,27 +111,44 @@ const SSelect = styled.select`
   border: none;
 `;
 
-const Select = React.forwardRef(({ onChange, name, options }, ref) => (
-  <>
-    <SSelect name={name} ref={ref} onChange={onChange}>
-      <option value="hide">*-- {name} --</option>
-      {options.map((value) => (
-        <option key={value} value={value}>
-          {value}
-        </option>
-      ))}
-    </SSelect>
-  </>
-));
+const Select = React.forwardRef(
+  ({ onChange, name, options, placeholder }, ref) => (
+    <>
+      <SSelect name={name} ref={ref} onChange={onChange}>
+        <option value="hide">*-- {placeholder} --</option>
+        {options.map((value) => (
+          <option key={value} value={value}>
+            {value}
+          </option>
+        ))}
+      </SSelect>
+    </>
+  )
+);
 
 function EmailAuth() {
   const { handleSubmit, register, formState } = useForm();
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
-    console.log(data);
+    data.phone = data.phone
+      .replace(/[^0-9]/, "")
+      .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+
+    const body = {
+      academicStatus: data.academicStatus,
+      department: data.department,
+      email: data.email,
+      grade: data.grade,
+      name: data.name,
+      phone: data.phone,
+    };
+    console.log(body);
     axios
-      .post(`${API_HOST}signup`, { data })
+      .post(`${API_HOST}signup`, {
+        headers: { "Content-Type": "application/json" },
+        body,
+      })
       .then((res) => console.log(res))
       .catch((res) => console.log(res));
   };
@@ -155,17 +172,20 @@ function EmailAuth() {
         />
 
         <Select
-          {...register("학과", { required: "department is required." })}
+          {...register("department", { required: "department is required." })}
+          placeholder="학과"
           options={DEPARTMENTS}
         />
         <Select
-          {...register("학년", { required: "grade is required." })}
+          {...register("grade", { required: "grade is required." })}
+          placeholder="학년"
           options={["1학년", "2학년", "3학년", "4학년", "그 외"]}
         />
         <Select
-          {...register("재학 여부", {
+          {...register("academicStatus", {
             required: "academicStatus is required.",
           })}
+          placeholder="재학 여부"
           options={["재학", "휴학", "졸업"]}
         />
 
