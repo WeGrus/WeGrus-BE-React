@@ -26,8 +26,7 @@ function mapStateToProps(state) {
 }
 
 function App(props) {
-  //const authenticated = props.authenticated;
-  const authenticated = true;
+  const authenticated = props.authenticated;
   return (
     <HelmetProvider>
       <BrowserRouter>
