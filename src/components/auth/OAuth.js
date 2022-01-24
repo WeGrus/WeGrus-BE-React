@@ -36,12 +36,14 @@ function OAuth(props) {
 
         if (ACCESS_TOKEN) {
           props.logInUser(ACCESS_TOKEN);
+
           navigate("/login/email-auth");
         } else {
           props.logOutUser(ACCESS_TOKEN);
         }
       });
   }, []);
+
   return <div>redirecting...</div>;
 }
 

@@ -20,6 +20,11 @@ import React from "react";
 import OAuth from "./components/auth/OAuth";
 import Loading from "./components/screens/Loading";
 import { connect } from "react-redux";
+import axios from "axios";
+import Signup from "./components/screens/Signup";
+
+export const API_HOST =
+  "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
 
 function mapStateToProps(state) {
   return state;
@@ -27,6 +32,8 @@ function mapStateToProps(state) {
 
 function App(props) {
   const authenticated = props.authenticated;
+  console.log(authenticated);
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -65,6 +72,7 @@ function App(props) {
             )}
           </Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/oauth/kakao/callback" element={<OAuth />} />
           <Route path="/login/email-auth" element={<EmailAuth />} />
           <Route path="*" element={<Navigate replace to="/" />} />

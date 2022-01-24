@@ -19,9 +19,7 @@ const SHeaderContainer = styled.div`
 function HeaderContainer({ children }) {
   return (
     <SHeaderContainer>
-      <Link to={"/"}>
-        <img src={require("../../images/logo2.png")} alt="logo" />
-      </Link>
+      <img src={require("../../images/logo2.png")} alt="logo" />
 
       {children}
     </SHeaderContainer>

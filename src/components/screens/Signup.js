@@ -15,14 +15,7 @@ import PageTitle from "../shared/PageTitle";
 function Signup() {
   const location = useLocation();
 
-  const {
-    register,
-    handleSubmit,
-    formState,
-    getValues,
-    setError,
-    clearErrors,
-  } = useForm({
+  const { register, formState } = useForm({
     mode: "onChange",
   });
 
@@ -76,16 +69,6 @@ function Signup() {
           ftcolor="white"
         />
       </FormBox>
-      <BottomBox>
-        <Separator />
-        <BottomButton to="/login" color="#0D655C" ftcolor="white">
-          Log in
-        </BottomButton>
-        <BottomButton to="/" color="#FAE100" ftcolor="black">
-          Kakao Log in
-        </BottomButton>
-        <FindLink />
-      </BottomBox>
     </AuthLayout>
   );
 }
