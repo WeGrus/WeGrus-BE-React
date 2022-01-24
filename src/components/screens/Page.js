@@ -132,7 +132,6 @@ height: 62px;
 margin-top: 9px;
 padding-bottom: 13px;
 border-bottom: 2px solid #0B665C;
-
 `
 
 const CommentWrite = styled.textarea`
@@ -560,6 +559,20 @@ function Page(props) {
     }
   }
 
+  const toggleReCommentRecommand = (e) => {
+    const index = e.target.dataset.index
+    let i = 0;
+    for(i;i<reCommentInfor.length; i++){
+      if(reCommentInfor[i].commentNumber == index){
+        //먼저 추천했는지 확인 만약 추천했다면 추천 취소 
+        let temp  = [...reCommentInfor];
+        temp[i].recommand = reCommentInfor[i].recommand+1;
+        setReCommentInfor(temp)
+        break
+      }
+    }
+  }
+
   const printComment = commentInfor.map(comment=>
     <div key={comment.commentNumber}>
     <Comment key={comment.commentNumber} id = {comment.commentNumber} >
@@ -628,7 +641,7 @@ function Page(props) {
             </Recode>
             {(typeof userInfor != 'undefined') ?
               <CommentBtnSection>
-                <CommentRecommand data-index={reComment.commentNumber} onClick={toggleCommentRecommand}>추천 <span>{reComment.recommand}</span></CommentRecommand>
+                <CommentRecommand data-index={reComment.commentNumber} onClick={toggleReCommentRecommand}>추천 <span>{reComment.recommand}</span></CommentRecommand>
               </CommentBtnSection>
               :
               <CommentBtnSection>

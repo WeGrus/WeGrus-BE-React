@@ -23,7 +23,6 @@ font-weight: 700;
 color: #0B665C;
 margin-top: 38px;
 margin-bottom: 16px;
-
 `;
 const Header = styled.div`
 padding-bottom: 16px;
@@ -39,7 +38,6 @@ border: none;
 margin-bottom: 10px;
 `
 const OtherDetail = styled.div`
-
 `
 const DescriptionStyle = `
 background-color: wheat;
@@ -65,7 +63,7 @@ cursor: pointer;
 const Right = styled.div`
 float: right;
 `
-const SetSecret = styled.label`
+const SetOption = styled.label`
 display: inline-flex;
 flex-direction: row;
 align-items: center;
@@ -75,6 +73,7 @@ background-color: #6CD2D7;
 border: none;
 border-radius: 16px;
 cursor: pointer;
+margin-right: 8px;
 `
 const Text = styled.div`
 display: inline-block;
@@ -83,11 +82,6 @@ font-size: 14px;
 line-height: 16px;
 color: white;
 padding-left:4px;
-`
-const CheckBox = styled.input`
-margin: 8px 11px 8px 8px;
-width: 16px;
-height: 16px;
 `
 const Write = styled.button`
 width: 53px;
@@ -103,12 +97,17 @@ cursor: pointer;
 
 function Page(props) {
   const filter = useLocation().state;
-  const [checked,setState] = React.useState( { checked: false })
+  const [checked,setState] = React.useState( false)
+  const [notice, setNotice] = React.useState(false)
   const [title,setTitle] = React.useState("");
   const editorRef = React.createRef();
 
-  const handleCheckboxChange = event => {
-    setState({ checked: event.target.checked })
+  const handleSecretOptionChange = event => {
+    setState(!checked)
+  }
+
+  const handleNoticeOptionChange = event => {
+    setNotice(!notice)
   }
 
   function printTextBody(){
@@ -124,7 +123,8 @@ function Page(props) {
    const data = {
      title: title,
      text: printTextBody(),
-     isSecret: checked.checked,
+     isSecret: checked,
+     isNotice: notice,
      boardType:filter.category,
      subCategory:filter.subCategory
     }
@@ -161,13 +161,20 @@ function Page(props) {
                   }
             ><GoToList >목록으로</GoToList></Link>
             <Right>
-              <SetSecret>
+            <SetOption>
+                <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
+                <Checkbox
+                  checked={notice}
+                  onChange={handleNoticeOptionChange}
+                />
+              </SetOption>
+              <SetOption>
                 <Text><span style={{ marginRight: 8 }}>비밀글 설정하기</span></Text>
                 <Checkbox
-                  checked={checked.checked}
-                  onChange={handleCheckboxChange}
+                  checked={checked}
+                  onChange={handleSecretOptionChange}
                 />
-              </SetSecret>
+              </SetOption>
               <Write onClick={submit}>작성</Write>
             </Right>
           </BtnSection>
