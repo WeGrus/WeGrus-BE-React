@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import img from './../../images/Polygon.jpg'
 
 export const SearchBarSection = styled.div`
   width: 910.07px;
