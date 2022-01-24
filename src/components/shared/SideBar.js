@@ -12,10 +12,11 @@ function SideBar({ posts=[], getFilter=()=>{} }) {
       e.target.parentNode.childNodes[i].style.fontWeight = "";
     }
     getFilter(e.target.id);
-
   }
 
+ 
   if(boldEl.current){
+    console.log(boldEl);
     boldEl.current.childNodes[boldTarget].style.fontWeight="bold";
   }
 

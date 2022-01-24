@@ -23,7 +23,6 @@ font-weight: 700;
 color: #0B665C;
 margin-top: 38px;
 margin-bottom: 16px;
-
 `;
 const Header = styled.div`
 padding-bottom: 16px;
@@ -39,7 +38,6 @@ border: none;
 margin-bottom: 10px;
 `
 const OtherDetail = styled.div`
-
 `
 const DescriptionStyle = `
 background-color: wheat;

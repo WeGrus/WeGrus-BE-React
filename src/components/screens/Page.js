@@ -132,7 +132,6 @@ height: 62px;
 margin-top: 9px;
 padding-bottom: 13px;
 border-bottom: 2px solid #0B665C;
-
 `
 
 const CommentWrite = styled.textarea`
