@@ -173,20 +173,12 @@ flex-direction: row;
 
 const subCategory = [
   { filter: "자유게시판" },
+  { filter: "익명게시판" },
   { filter: "정보 공유" },
   { filter: "프로젝트 모집" },
   { filter: "취미 톡방" },
   { filter: "건의사항" },
   { filter: "질문/답변" },
-];
-
-const datas = [
-  { board_type: "자유게시판", board_title: "게시판 | 자유게시판" },
-  { board_type: "정보 공유", board_title: "게시판 | 정보 공유" },
-  { board_type: "프로젝트 모집", board_title: "게시판 | 프로젝트 모집" },
-  { board_type: "취미 톡방", board_title: "게시판 | 취미 톡방" },
-  { board_type: "건의사항", board_title: "게시판 | 건의사항" },
-  { board_type: "질문/답변", board_title: "게시판 | 질문/답변" },
 ];
 
 const postData = [
@@ -1332,6 +1324,11 @@ const postData = [
   },
 ]
 
+const selectDate = [
+  "추천순",
+  "댓글순",
+  "조회순"
+]
 
 function Board() {
   const input = useLocation();
@@ -1349,9 +1346,19 @@ function Board() {
   const [text, setText] = React.useState();
   const [limit, setLimit] = React.useState(19);
   const [page, setPage] = React.useState(1);
+  const [selected, setSelected] = React.useState("")
   const offset = (page-1)*limit;
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
   const onSubmit = data => console.log(data);
+
+  const handleSearchBarFilter = (e) => {
+    setSelected(e.target.value)
+  }
+
+  React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
+  console.log(selected);
+  }, [selected]);
 
   React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
     let test = [...postData.filter(data=> data.categorization === target)]
@@ -1380,10 +1387,13 @@ function Board() {
           </SearchBar>
         </SearchBarForm>
 
-        <SearchBarFilter>
-            <option value="">추천순</option>
-            <option value="">조회순</option>
-            <option value="">댓글순</option>
+        <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
+        {selectDate.map((value)=>
+          <option value={value} key={value}>{value}</option>
+        )}
+            {/* <option value="추천">추천순</option>
+            <option value="조회">조회순</option>
+            <option value="댓글">댓글순</option> */}
         </SearchBarFilter>
 
 
