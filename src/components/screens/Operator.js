@@ -5,6 +5,9 @@ import SideBar from "../shared/SideBar";
 import { Content } from "../shared/Content";
 import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,InforBar,InforContents,Number,
   Grade,StudentId,Major,Apply,Name,Role,Attendance,Age,Permission,Withdraw,PostInforBar,PostCotent} from "./../shared/OperatorElement"
+import { useForm } from "react-hook-form";
+import Pagination from "../shared/Pagination";
+
 const subCategory = [
   { filter: "회원 목록 조회" },
   { filter: "회원 가입 승인" },
@@ -17,10 +20,14 @@ function Operator() {
 
   const [target, setTarget] = React.useState("회원 목록 조회");
   const [test, setTest] = React.useState("")
+  const [page, setPage] = React.useState(1);
   React.useEffect(()=>{
     console.log(target);
     setTest("test")
   },[target])
+
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const onSubmit = data => console.log(data);
 
   return (
     <>
@@ -29,11 +36,15 @@ function Operator() {
     <Content>
     <ScreenTitle>{target}</ScreenTitle>
     <SearchBarSection>
-      <SearchBarForm>
-        <SearchBarSelect></SearchBarSelect>
+      <SearchBarForm onSubmit={handleSubmit(onSubmit)}>
+        <SearchBarSelect {...register("option")} >
+              <option >소모임</option>
+              <option >이름</option>
+              <option >학번</option>
+          </SearchBarSelect>
         <SearchBar>
-          <SearchBarInput></SearchBarInput>
-          <SearchBarSubmit></SearchBarSubmit>
+        <SearchBarInput {...register("exampleRequired", { required: true })} />
+            <SearchBarSubmit type="submit" value="" />
         </SearchBar>
       </SearchBarForm>
     </SearchBarSection>
@@ -67,6 +78,13 @@ function Operator() {
         <Withdraw></Withdraw>
       </PostCotent>
     </PostInforBar>
+
+    <Pagination
+          total = {4}
+          limit={19}
+          page={page}
+          setPage={setPage}
+        />
     </Content>
     </>
   );
