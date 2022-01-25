@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { actionCreators } from "../../store";
+import { isEmailAuth } from "../../variables";
 
 function mapStateToProps(state) {
   return state;
@@ -36,8 +37,11 @@ function OAuth(props) {
 
         if (ACCESS_TOKEN) {
           props.logInUser(ACCESS_TOKEN);
-
-          navigate("/login/email-auth");
+          if (!isEmailAuth) {
+            navigate("/login/email-auth");
+          } else {
+            navigate("/");
+          }
         } else {
           props.logOutUser(ACCESS_TOKEN);
         }
