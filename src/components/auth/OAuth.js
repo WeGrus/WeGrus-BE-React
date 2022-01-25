@@ -24,14 +24,18 @@ function OAuth(props) {
 
     axios
       .post(
+        /*
         `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${client_id}&redirect_uri=http://localhost:3000/oauth/kakao/callback&code=${code}`,
         {
           headers: {
             "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
           },
         }
+      */
+        `http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/signin?authorizationCode=${code}`
       )
       .then((res) => {
+        /*
         let ACCESS_TOKEN = res.data.access_token;
         let REFRESH_TOKEN = res.data.refresh_token;
 
@@ -44,6 +48,14 @@ function OAuth(props) {
           }
         } else {
           props.logOutUser(ACCESS_TOKEN);
+        }
+      */
+        let USER_ID = res.data.data.userId;
+        let RESULT = res.data.data.status;
+        console.log(USER_ID, RESULT);
+        if (RESULT === "fail") {
+          navigate("/login/email-auth");
+        } else {
         }
       });
   }, []);

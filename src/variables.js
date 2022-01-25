@@ -1,5 +1,5 @@
 export const initialState = {
-  authenticated: false,
+  authenticated: true,
   token: null,
 };
 export const isOperator = true;
