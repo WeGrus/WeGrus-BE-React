@@ -52,6 +52,8 @@ function OAuth(props) {
         if (RESULT === "fail") {
           navigate("/login/email-auth");
         } else {
+          console.log(res.data.data);
+          navigate("/");
         }
       });
   }, []);
