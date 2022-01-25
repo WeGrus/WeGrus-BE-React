@@ -4,7 +4,6 @@ import Button from "../auth/Button";
 import HeaderContainer from "../auth/HeaderContainer";
 import PageTitle from "../shared/PageTitle";
 import Input from "../auth/Input";
-import FormBox from "../auth/FormBox";
 import axios from "axios";
 import { connect } from "react-redux";
 import styled from "styled-components";
