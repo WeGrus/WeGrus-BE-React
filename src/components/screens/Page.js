@@ -377,11 +377,28 @@ function Page(props) {
   const reCommentUpdateEl = React.useRef();
   const postRecommand = () => {
     if (isRecommend === "추천취소") {
+      axios.delete(`/posts/like?postId=6`,{
+        headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        console.log(res);
+      });
       setCountOfRecommend((count) => count - 1);
       setIsRecommend("추천")
-      // 서버에도 변경사항 적용될수 있게 변경사항 보내기.
     }
     else {
+      axios.post(`/posts/like?postId=6`,{},{
+        headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        console.log(res);
+      });
       setCountOfRecommend((count) => count + 1);
       setIsRecommend("추천취소")
     }
@@ -391,7 +408,6 @@ function Page(props) {
     //axios로 delete하고 다시 보드 보여주기.
     let value = window.confirm("해당게시물을 삭제하겠습니까?")
     if (value) {
-      console.log(props.tokenReducer);
       axios.delete(`/posts?postId=5`,{
         headers: {'Authorization': `Bearer ${props.tokenReducer}`}
       })
@@ -401,7 +417,6 @@ function Page(props) {
       .then(function(res){
         console.log(res);
       });
-      console.log("삭제");
       Navigate("/board", {
         state: { category: filter.subCategory }
       })
