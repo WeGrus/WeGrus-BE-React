@@ -54,15 +54,14 @@ const tokenReducer = (state = "", action) => {
   }
 }
 
-const store = createStore(userReducer);
+//const store = createStore(userReducer);
 
 const combinestore = combineReducers({
   userReducer,
   tokenReducer,
-
 })
 
-//const store = createStore(combinestore)
+const store = createStore(combinestore)
 
 export const actionCreators = {
   logInUser,

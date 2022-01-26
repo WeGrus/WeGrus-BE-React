@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import img from './../../images/Polygon.jpg'
 import Pagination from "../shared/Pagination";
 import PostBar from "../shared/PostBar";
+import { connect } from "react-redux";
 
 const SearchBarSection = styled.div`
   width: 910.07px;
@@ -1330,9 +1331,12 @@ const selectDate = [
   "조회순"
 ]
 
-function Board() {
-  const input = useLocation();
+function mapStateToProps(state) {
+  return state;
+}
 
+function Board(props) {
+  const input = useLocation();
   let subBarTarget; // 페이지에서 뒤로가기를 누르거나 목록을 누를 시 즉 subCategory
 
   if (input.state != null) {
@@ -1391,9 +1395,6 @@ function Board() {
         {selectDate.map((value)=>
           <option value={value} key={value}>{value}</option>
         )}
-            {/* <option value="추천">추천순</option>
-            <option value="조회">조회순</option>
-            <option value="댓글">댓글순</option> */}
         </SearchBarFilter>
 
 
@@ -1431,4 +1432,4 @@ function Board() {
     </>
   );
 }
-export default Board;
+export default connect(mapStateToProps)(Board);

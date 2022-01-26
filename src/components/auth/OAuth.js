@@ -14,13 +14,13 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     logInUser: (token) => dispatch(actionCreators.logInUser(token)),
+    setToken: (token) => dispatch(actionCreators.setToken(token))
   };
 }
 
 function OAuth(props) {
   let navigate = useNavigate();
-  // const dispatch = useDispatch();
-  // const test = useSelector(selectAccessToken);
+
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
     let code = params.get("code"); // 인가코드 받는 부분
@@ -61,9 +61,9 @@ function OAuth(props) {
         if (RESULT === "fail") {
           //navigate("/login/email-auth");
         } else {
-          console.log(res.data.data.accessToken);
-          // dispatch(getter(res.data.data))
-          // console.log(test);
+          props.setToken(res.data.data.accessToken)
+          
+          //console.log(res.data.data.accessToken);
           navigate("/");
         }
       });
