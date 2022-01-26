@@ -4,6 +4,8 @@ import { Viewer } from '@toast-ui/react-editor';
 import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as ReactDOM from 'react-dom';
+import axios from "axios";
+import { connect } from 'react-redux';
 
 const Background = styled.div`
   width: 1240px;        
@@ -353,6 +355,9 @@ const checkBlank = (value) => { // 댓글을 입력할 때 공백만 입력하�
 }
 
 
+function mapStateToProps(state) {
+  return state;
+}
 
 function Page(props) {
   const params = useParams();
@@ -386,7 +391,16 @@ function Page(props) {
     //axios로 delete하고 다시 보드 보여주기.
     let value = window.confirm("해당게시물을 삭제하겠습니까?")
     if (value) {
-      //axios로 delete
+      console.log(props.tokenReducer);
+      axios.delete(`/posts?postId=5`,{
+        headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        console.log(res);
+      });
       console.log("삭제");
       Navigate("/board", {
         state: { category: filter.subCategory }
@@ -732,4 +746,4 @@ function Page(props) {
     </div>
   );
 }
-export default Page;
+export default connect(mapStateToProps)(Page);
