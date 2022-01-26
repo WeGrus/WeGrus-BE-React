@@ -1368,6 +1368,7 @@ function Board(props) {
     let test = [...postData.filter(data=> data.categorization === target)]
     setPosts([...test])
     setPage(1)
+    console.log(props.tokenReducer);
   }, [target]);
 
   return (

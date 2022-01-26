@@ -60,9 +60,9 @@ function OAuth(props) {
         console.log(USER_ID, RESULT);
         if (RESULT === "fail") {
           //navigate("/login/email-auth");
-        } else {
+        } 
+        else {
           props.setToken(res.data.data.accessToken)
-          
           //console.log(res.data.data.accessToken);
           navigate("/");
         }

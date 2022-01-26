@@ -5,6 +5,8 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import Checkbox from './../shared/Checkbox'
 import react from 'react';
+import axios from "axios";
+import { connect } from 'react-redux';
 
 const Background = styled.div`
   width: 1240px;
@@ -94,6 +96,11 @@ font-size: 14px;
 margin-left: 9px;
 cursor: pointer;
 `
+axios.defaults.baseURL = 'http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/';
+
+function mapStateToProps(state) {
+  return state;
+}
 
 function Page(props) {
   const filter = useLocation().state;
@@ -120,16 +127,32 @@ function Page(props) {
   }
 
   function submit(){
-   const data = {
-     title: title,
-     text: printTextBody(),
-     isSecret: checked,
-     isNotice: notice,
-     boardType:filter.category,
-     subCategory:filter.subCategory
-    }
+  //  const data = {
+  //    title: title,
+  //    text: printTextBody(),
+  //    isSecret: checked,
+  //    isNotice: notice,
+  //    boardType:filter.category,
+  //    subCategory:filter.subCategory
+  //   }
+    //console.log(data);
 
-    console.log(data);
+    axios.post(`/posts`,{
+      "boardCategory": "BOARD",
+      "boardType": "FREE",
+      "content": printTextBody(),
+      "secretFlag": checked,
+      "title": title
+    },{
+      headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+    });
+    
   }
 
   function backToList(){
@@ -183,4 +206,4 @@ function Page(props) {
     </div>
   );
 }
-export default Page;
+export default connect(mapStateToProps)(Page);
