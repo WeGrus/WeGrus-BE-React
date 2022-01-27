@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const SideBox = styled.div`
   width: 292px;
   height: min-content;
@@ -18,5 +17,6 @@ export const SideContent = styled.button`
   background-color: white;
   border: none;
   width: 100px;
+  font-size: 14px;
   cursor: pointer;
 `;

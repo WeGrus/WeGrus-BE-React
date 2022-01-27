@@ -13,12 +13,15 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    logInUser: (token) => dispatch(actionCreators.logInUser(token)),
+
+    setKakaoId: (kakaoId) => dispatch(actionCreators.setKakaoId(kakaoId)),
+
     setToken: (token) => dispatch(actionCreators.setToken(token))
+
   };
 }
 
-function OAuth(props) {
+function OAuth({ setKakaoId }) {
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -55,15 +58,20 @@ function OAuth(props) {
           props.logOutUser(ACCESS_TOKEN);
         }
       */
-        let USER_ID = res.data.data.userId;
-        let RESULT = res.data.data.status;
+        const USER_ID = res.data.data.userId;
+        const RESULT = res.data.data.status;
+
+        setKakaoId(USER_ID);
         console.log(USER_ID, RESULT);
         if (RESULT === "fail") {
-          //navigate("/login/email-auth");
-        } 
-        else {
+
+          navigate("/login/email-auth");
+        } else {
+          console.log(res.data.data);
+
           props.setToken(res.data.data.accessToken)
           //console.log(res.data.data.accessToken);
+
           navigate("/");
         }
       });

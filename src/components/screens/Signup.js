@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import AuthLayout from "../auth/AuthLayout";
@@ -9,6 +9,8 @@ import PageTitle from "../shared/PageTitle";
 import { API_HOST } from "../../App";
 import styled from "styled-components";
 import axios from "axios";
+import { connect } from "react-redux";
+import { actionCreators } from "../../store";
 
 /*function Signupo() {
   const location = useLocation();
@@ -142,6 +144,16 @@ const DEPARTMENTS = [
   "의류디자인학과",
 ];
 
+function mapStateToProps(state) {
+  console.log(state);
+  return state;
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    logInUser: (text) => dispatch(actionCreators.logInUser(text)),
+  };
+}
+
 const LoginForm = styled.form`
   margin-bottom: 60px;
   display: flex;
@@ -172,8 +184,17 @@ const Select = React.forwardRef(
   )
 );
 
-function Signup() {
+function Signup(props) {
   const { handleSubmit, register, formState } = useForm();
+  const [emailAuth, setEmailAuth] = useState();
+
+  axios
+    .get(`${API_HOST}signup/validate/email?email=${props.email}`)
+    .then((res) => {
+      const result = res.data.data.status;
+      console.log(result);
+      setEmailAuth(result);
+    });
 
   const onSubmit = (data) => {
     data.phone = data.phone
@@ -249,4 +270,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
