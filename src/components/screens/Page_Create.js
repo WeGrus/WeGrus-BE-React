@@ -96,7 +96,7 @@ font-size: 14px;
 margin-left: 9px;
 cursor: pointer;
 `
-axios.defaults.baseURL = 'http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/';
+
 
 function mapStateToProps(state) {
   return state;

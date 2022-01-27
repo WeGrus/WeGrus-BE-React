@@ -4,6 +4,12 @@ import { useParams } from "react-router-dom";
 import {Background,Content,Category,Header,Title,OtherDetail,BtnSection,GoToList,Right,SetOption,Text,Write} from "./../shared/PageElements"
 import { Editor } from '@toast-ui/react-editor';
 import Checkbox from './../shared/Checkbox'
+import axios from "axios";
+import { connect } from 'react-redux';
+
+function mapStateToProps(state) {
+  return state;
+}
 
 function Page(props) {
     const t = useParams();
@@ -15,15 +21,15 @@ function Page(props) {
 
 
     React.useEffect(()=>{
-      const inputText = editorRef.current.getInstance();
+      const inputText = editorRef.current.getInstance(); // 수정하는 내용을 불러옴.
       inputText.setHTML(data.text)
       console.log(data);
     },[])
 
-    const handleNoticeOptionChange = event => {
+    const handleNoticeOptionChange = event => { // 공지사항인지 유무
       setNotice(!notice)
     }
-    const handleSecretOptionChange = event => {
+    const handleSecretOptionChange = event => { // 비밀 글인지 유무
       setState(!checked)
     }
 
@@ -34,7 +40,7 @@ function Page(props) {
       return getContent_html;
     }
 
-    function submit(){
+    function submit(){ // 작성 버튼을 눌렀을 시 작동
       const submitData = {
         title: title,
         text: printTextBody(),
@@ -44,7 +50,21 @@ function Page(props) {
         subCategory:data.subCategory
        }
    
-       console.log(submitData);
+       axios.put(`/posts`,{
+          "boardId": 6,
+          "content": printTextBody(),
+          "secretFlag": checked,
+          "title": title
+       },
+       {
+         headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+       })
+       .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        console.log(res);
+      });
      }
 
 
@@ -95,4 +115,4 @@ function Page(props) {
     </div>
     );
   }
-  export default Page;
+  export default connect(mapStateToProps)(Page);

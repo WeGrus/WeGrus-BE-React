@@ -1361,7 +1361,6 @@ function Board(props) {
   }
 
   React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
-  console.log(selected);
   }, [selected]);
 
   React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
