@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import img from './../../images/Polygon.jpg'
+import {Link} from "react-router-dom"
 
 export const SearchBarSection = styled.div`
   width: 910.07px;
   margin: 0 auto;
-  height: 64px;
+  min-height: 64px;
 
   border-bottom: 2px solid #0B665C;
   font-size: 14px;
@@ -59,13 +60,46 @@ border-color: #C4C4C4;
 background-color:#C4C4C4; 
 `
 
+export const SearchBarFilter = styled.select`
+width: 60.52px;
+height: 16.59px;
+line-height: 16.41px;
+margin-top: 24px;
+margin-left: 100.52px;
+border: none;
+
+-moz-appearance: none;
+-webkit-appearance: none;
+appearance: none;
+
+background:url(${img});
+background-repeat: no-repeat;
+background-size: 12.35px 10.43px;
+background-position: right 2px bottom 2px;
+`
+
+export const CreateBtnLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0b665c;
+  width: 110px;
+  height: 33px;
+  border-radius: 16.5px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-left: 100.32px;
+  margin-top: 15.85px;
+`
+
 export const InforBar = styled.div`
 font-size: 14px;
 font-weight: 700;
 line-height: 16.41px;
 width: 909.07px;
 margin: 0 auto;
-height: 34px;
+min-height: 34px;
 border-bottom: 2px solid #0B665C; 
 `
 export const InforContents = styled.div`
@@ -79,6 +113,46 @@ min-width: 65px;
 text-align: center;
 margin-left: 25px;
 `
+
+export const Categorization = styled.div`
+width: 90px;
+text-align: center;
+margin-left: 4px;
+`
+export const Title = styled.div`
+width: 373px;
+margin-left: 31px;
+`
+
+export const Writer = styled.div`
+width: 77px;
+text-align: center;
+`
+
+export const Date = styled.div`
+width: 63px;
+text-align: center;
+margin-left: 16px;
+`
+
+export const Hits = styled.div`
+width: 40px;
+text-align: center;
+margin-left: 11px;
+`
+
+export const Recommendation = styled.div`
+width: 40px;
+text-align: center;
+margin-left: 9px;
+`
+
+export const Comment = styled.div`
+width: 40px;
+text-align: center;
+margin-left: 7px;
+`
+
 export const Grade = styled.div`
 width: 28px;
 text-align: center;

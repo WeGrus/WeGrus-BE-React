@@ -4,7 +4,7 @@ import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
 import { Content } from "../shared/Content";
 import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,InforBar,InforContents,Number,
-  Grade,StudentId,Major,Apply,Name,Role,Attendance,Age,Permission,Withdraw,PostInforBar,PostCotent} from "./../shared/OperatorElement"
+  Grade,StudentId,Major,Apply,Name,Role,Attendance,Age,Permission,Withdraw,PostInforBar,PostCotent} from "./../shared/BoardElement.js"
 import { useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
 

@@ -6,32 +6,10 @@ import styled from "styled-components";
 import * as ReactDOM from 'react-dom';
 import axios from "axios";
 import { connect } from 'react-redux';
+import {Background,Content,Category,Header,OtherDetail,CommentInfor,Description,Recommand,Comments,Comment,CommentRecommand
+  ,GoToList,CommentContent,Recode,CommentDelete,CommentWriteSection,CommentWrite,CommentSubmit,Correction,Delete,
+  CommentName,CommentLeft,CommentNameBox,ReCommentName,CommentOwnerBtn,CommentUpdate,CommentBtnSection,ReCommentWrite} from "./../shared/PageElements"
 
-const Background = styled.div`
-  width: 1240px;        
-  background-color: white;
-`;
-
-const Content = styled.div`
-width: 924px;
-margin: auto;
-display: flex;
-flex-direction: column;
-`;
-
-const Category = styled.div`
-font-size: 18px;
-font-weight: 700;
-color: #0B665C;
-margin-top: 38px;
-margin-bottom: 16px;
-`;
-
-const Header = styled.div`
-padding-bottom: 16px;
-border-bottom: 2px solid #0B665C;
-margin-bottom: 42px;
-`
 const Title = styled.div`
 width: 924px;
 height: 21px;
@@ -41,202 +19,13 @@ border: none;
 margin-bottom: 10px;
 `
 
-const OtherDetail = styled.div`
-padding-bottom: 16px;
-height: 16px;
-font-size: 14px;
-text-align: justify;
-`
-
 const Right = styled.span`
 float: right;
-`
-
-const CommentInfor = styled.div`
-font-weight: 700;
-font-size: 14px;
-margin-top: 49px;
-margin-bottom: 6px;
-`
-
-const Description = styled.div`
-width: 924px;
-margin: auto;
-border-bottom: 2px solid #0B665C;
-position: relative;
-`
-
-const Recommand = styled.button`
-width: 88px;
-height: 32px;
-font-size: 14px;
-color: white;
-background-color: #6CD2D7;
-border:none;
-border-radius: 15px;
-position: absolute;
-right: 0px;
-bottom: 6px;
-cursor: pointer;
-`
-
-const Comments = styled.div`
-height: max-content;
-`
-
-const Comment = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-padding-top: 10px;
-padding-bottom: 8px;
-font-size: 14px;
-line-height: 16px;
-border-bottom: 1px solid #555555;
-position: relative
-`
-
-const CommentContent = styled.div`
-margin-left: 49px;
-max-width: 608px;
-min-height: 96.22px;
-`
-
-const Recode = styled.div`
-position: absolute;
-top:10px;
-right: 0
-`
-const CommentRecommand = styled.button`
-background-color: white;
-border: 1px solid black;
-border-radius: 15px;
-width: 62px;
-height: 29.22;
-cursor: pointer;
-`
-
-const CommentDelete = styled.button`
-margin-right: 2.98px;
-background-color: white;
-border: 1px solid black;
-border-radius: 15px;
-width: 49.02px;
-height: 29.22;
-cursor: pointer;
-`
-
-
-const CommentWriteSection = styled.div`
-display: flex;
-flex-direction: row;
-height: 62px;
-margin-top: 9px;
-padding-bottom: 13px;
-border-bottom: 2px solid #0B665C;
-`
-
-const CommentWrite = styled.textarea`
-width: 832px;
-border-radius: 15px;
-`
-
-const CommentSubmit = styled.button`
-width: 78.39px;
-color: white;
-background-color: #0B665C;
-border:none;
-border-radius: 15px;
-margin-left: 14px;
-cursor: pointer;
 `
 
 const BtnSection = styled.div`
 margin-top: 12.5px;
 padding-bottom: 12.5px;
-`
-
-const GoToList = styled.button`
-width: 127px;
-height: 32px;
-border: none;
-border-radius: 15px;
-color: white;
-background-color: #6CD2D7;
-font-size: 14px;
-cursor: pointer;
-`
-
-const Correction = styled.button`
-width: 53px;
-height: 32px;
-border: none;
-border-radius: 15px;
-color: white;
-background-color: #6CD2D7;
-font-size: 14px;
-cursor: pointer;
-`
-
-const Delete = styled.button`
-width: 53px;
-height: 32px;
-border: none;
-border-radius: 15px;
-color: white;
-background-color: #6CD2D7;
-font-size: 14px;
-margin-left: 9px;
-cursor: pointer;
-`
-
-const CommentName = styled.div`
-width: 109px;
-`
-
-const CommentLeft = styled.div`
-min-width: 109px;
-`
-
-const CommentNameBox = styled.div`
-min-width: 109px;
-position: relative;
-margin-bottom: 74px;
-display: flex;
-`
-
-const ReCommentName = styled.div`
-width: 20px;
-font-size: 14px;
-`
-const CommentOwnerBtn = styled.div`
-position: absolute;
-bottom: 7.78px;
-`
-
-const CommentUpdate = styled.button`
-margin-right: 2.98px;
-background-color: white;
-border: 1px solid black;
-border-radius: 15px;
-width: 49.02px;
-height: 29.22;
-cursor: pointer;
-`
-
-const CommentBtnSection = styled.div`
-position: absolute;
-bottom: 7.78px;
-right: 0px;
-`
-const ReCommentWrite = styled.button`
-margin-left: 7px;
-background-color: white;
-border: 1px solid black;
-border-radius: 15px;
-width: 62px;
-height: 29.22;
-cursor: pointer;
 `
 
 let getPage = { // 서버에서 가져온 page의 정보라고 가정.
@@ -353,7 +142,6 @@ const checkBlank = (value) => { // 댓글을 입력할 때 공백만 입력하�
   }
   return isBlank
 }
-
 
 function mapStateToProps(state) {
   return state;
