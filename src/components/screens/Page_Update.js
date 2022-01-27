@@ -23,7 +23,7 @@ function Page(props) {
     React.useEffect(()=>{
       const inputText = editorRef.current.getInstance(); // 수정하는 내용을 불러옴.
       inputText.setHTML(data.text)
-      console.log(data);
+      //console.log(data);
     },[])
 
     const handleNoticeOptionChange = event => { // 공지사항인지 유무

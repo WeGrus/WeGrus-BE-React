@@ -442,6 +442,20 @@ function Page(props) {
           time: today.time
         }
       )
+      axios.post(`/comments`,{
+        "boardId": 6, // 추후 수정
+        "content": comment
+      },
+      {
+        headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        console.log(res);
+      });
+
       setComment("");
       setCommentInfor(temp);
     }
@@ -490,6 +504,16 @@ function Page(props) {
         //바뀐 거 보내주기
       }
     }
+    axios.delete(`/comments?commentId=${1}`,
+    {
+      headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+    });
 
   }
 
@@ -504,6 +528,24 @@ function Page(props) {
         setCommentInfor(temp)
       }
     }
+    axios.post(`/comments/like?commentId=${2}`,{},{
+      headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+    })
+    .catch(function (error) {
+      if (error.response){
+        axios.delete(`/comments/like?commentId=${2}`,{
+          headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+        })
+        .then(function(res){
+          console.log(res);
+          console.log("추천 취소");
+        });
+      }
+    })
+    .then(function(res){
+      console.log(res);
+      console.log("추천 완료");
+    });
   }
 
   const handleReCommentWirte = (e) => { // 대댓글을 작성하기 위한 함수
