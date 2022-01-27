@@ -4,24 +4,32 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { actionCreators } from "../../store";
 import { isEmailAuth } from "../../variables";
+import { useSelector,useDispatch } from 'react-redux';
+import {getter, selectAccessToken} from './../../reducer/AccessTokenReducer'
+
 
 function mapStateToProps(state) {
   return state;
 }
 function mapDispatchToProps(dispatch) {
   return {
+
     setKakaoId: (kakaoId) => dispatch(actionCreators.setKakaoId(kakaoId)),
+
+    setToken: (token) => dispatch(actionCreators.setToken(token))
+
   };
 }
 
 function OAuth({ setKakaoId }) {
   let navigate = useNavigate();
+
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
     let code = params.get("code"); // 인가코드 받는 부분
     let grant_type = "authorization_code";
     let client_id = "65cd2fc55aec40658e2efbc951d47164";
-
+    
     axios
       .post(
         /*
@@ -56,9 +64,14 @@ function OAuth({ setKakaoId }) {
         setKakaoId(USER_ID);
         console.log(USER_ID, RESULT);
         if (RESULT === "fail") {
+
           navigate("/login/email-auth");
         } else {
           console.log(res.data.data);
+
+          props.setToken(res.data.data.accessToken)
+          //console.log(res.data.data.accessToken);
+
           navigate("/");
         }
       });

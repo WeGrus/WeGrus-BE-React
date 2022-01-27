@@ -12,3 +12,4 @@ export const initialState = {
 export const isOperator = true;
 export const InhaAuth = false;
 export const isEmailAuth = false;
+
