@@ -16,7 +16,7 @@ function mapStateToProps(state) {
 }
 
 const NaviBar = (props) => {
-  const authenticated = props.authenticated;
+  const authenticated = props.userReducer.authenticated;
   return (
     <>
       <Nav>

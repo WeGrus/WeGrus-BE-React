@@ -5,95 +5,14 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import Checkbox from './../shared/Checkbox'
 import react from 'react';
+import axios from "axios";
+import { connect } from 'react-redux';
+import {Background,Content,Category,Header,Title,OtherDetail,BtnSection,GoToList,Right,SetOption,Text,Write} from "./../shared/PageElements"
 
-const Background = styled.div`
-  width: 1240px;
-  height: 1240px;          
-  background-color: white;
-`;
-const Content = styled.div`
-width: 924px;
-margin: auto;
-display: flex;
-flex-direction: column;
-`;
-const Category = styled.div`
-font-size: 18px;
-font-weight: 700;
-color: #0B665C;
-margin-top: 38px;
-margin-bottom: 16px;
-`;
-const Header = styled.div`
-padding-bottom: 16px;
-border-bottom: 2px solid #0B665C;
-margin-bottom: 42px;
-`
-const Title = styled.input`
-width: 924px;
-height: 21px;
-font-size: 18px;
-font-weight: 700;
-border: none;
-margin-bottom: 10px;
-`
-const OtherDetail = styled.div`
-`
-const DescriptionStyle = `
-background-color: wheat;
-width: 924px;
-height: 300px;
-margin: auto;
-`
-const BtnSection = styled.div`
-margin-top: 71px;
-border-top: 2px solid #0B665C;
-padding-top: 12.5px;
-`
-const GoToList = styled.button`
-width: 127px;
-height: 32px;
-border: none;
-border-radius: 15px;
-color: white;
-background-color: #6CD2D7;
-font-size: 14px;
-cursor: pointer;
-`
-const Right = styled.div`
-float: right;
-`
-const SetOption = styled.label`
-display: inline-flex;
-flex-direction: row;
-align-items: center;
-width:134px;
-height: 32px;
-background-color: #6CD2D7;
-border: none;
-border-radius: 16px;
-cursor: pointer;
-margin-right: 8px;
-`
-const Text = styled.div`
-display: inline-block;
-height: 16px;
-font-size: 14px;
-line-height: 16px;
-color: white;
-padding-left:4px;
-`
-const Write = styled.button`
-width: 53px;
-height: 32px;
-border: none;
-border-radius: 15px;
-color: white;
-background-color: #6CD2D7;
-font-size: 14px;
-margin-left: 9px;
-cursor: pointer;
-`
+
+function mapStateToProps(state) {
+  return state;
+}
 
 function Page(props) {
   const filter = useLocation().state;
@@ -120,16 +39,32 @@ function Page(props) {
   }
 
   function submit(){
-   const data = {
-     title: title,
-     text: printTextBody(),
-     isSecret: checked,
-     isNotice: notice,
-     boardType:filter.category,
-     subCategory:filter.subCategory
-    }
+  //  const data = {
+  //    title: title,
+  //    text: printTextBody(),
+  //    isSecret: checked,
+  //    isNotice: notice,
+  //    boardType:filter.category,
+  //    subCategory:filter.subCategory
+  //   }
+    //console.log(data);
 
-    console.log(data);
+    axios.post(`/posts`,{
+      "boardCategory": "BOARD",
+      "boardType": "FREE",
+      "content": printTextBody(),
+      "secretFlag": checked,
+      "title": title
+    },{
+      headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+    });
+    
   }
 
   function backToList(){
@@ -183,4 +118,4 @@ function Page(props) {
     </div>
   );
 }
-export default Page;
+export default connect(mapStateToProps)(Page);
