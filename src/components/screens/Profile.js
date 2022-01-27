@@ -13,158 +13,58 @@ const Content = styled.div`
   width: 924px;
   background-color: white;
 `;
-const SearchBarSection = styled.div`
-  width: 910.07px;
-  margin: 0 auto;
-  height: 64px;
 
-  border-bottom: 2px solid #0b665c;
-  font-size: 14px;
+const InfoBox = styled.div`
+  width: 100%;
+  height: 360px;
   display: flex;
-  flex-direction: row;
 `;
-const SearchBarForm = styled.form`
-  display: flex;
-  flex-direction: row;
-  margin-left: 20px;
-  margin-top: 16px;
-`;
-const SearchBarSelect = styled.select`
-  width: 117px;
-  height: 32px;
-  padding-left: 8px;
-  border-radius: 50px;
-  line-height: 16.41px;
-  color: #c4c4c4;
-  border: 1px solid #c4c4c4;
 
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background: url(${img});
-  background-repeat: no-repeat;
-  background-size: 17px 17px;
-  background-position: bottom 8px right 11px;
-`;
-const SearchBar = styled.div`
-  margin-left: 9px;
-  position: relative;
-`;
-const SearchBarInput = styled.input`
-  min-width: 331.48px;
-  height: 31.59px;
-  border: 1px solid #c4c4c4;
-  border-radius: 50px;
-  padding-left: 19.87px;
-`;
-const SearchBarSubmit = styled.input`
-  position: absolute;
-  right: 3.71px;
-  top: 4.25px;
-  width: 28.9px;
-  height: 25.27px;
-  border: none;
-  border-radius: 50px;
-  border-color: #c4c4c4;
-  background-color: #c4c4c4;
-`;
-const SearchBarFilter = styled.select`
-  width: 60.52px;
-  height: 16.59px;
-  line-height: 16.41px;
-  margin-top: 24px;
-  margin-left: 100.52px;
-  border: none;
+const SDetailBox = styled.div`
+  width: 50%;
+  height: 100%;
 
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-
-  background: url(${img});
-  background-repeat: no-repeat;
-  background-size: 12.35px 10.43px;
-  background-position: right 2px bottom 2px;
-`;
-const CreateBtnLink = styled(Link)`
-  display: flex;
+  padding: 24px;
   justify-content: center;
   align-items: center;
-  background-color: #0b665c;
-  width: 110px;
-  height: 33px;
-  border-radius: 16.5px;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  margin-left: 100.32px;
-  margin-top: 15.85px;
+  span {
+    font-weight: 600;
+    font-size: 14px;
+  }
 `;
-const InforBar = styled.div`
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 16.41px;
-  width: 909.07px;
-  margin: 0 auto;
-  height: 34px;
-  border-bottom: 2px solid #0b665c;
-`;
-const InforContents = styled.div`
-  padding-top: 10px;
+
+const ProfileContent = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: row;
-  text-align: center;
+  justify-content: center;
+  padding: 24px;
 `;
-const Number = styled.div`
-  min-width: 65px;
-  text-align: center;
-  margin-left: 23px;
+
+const ProfilePhoto = styled.div`
+  height: 134px;
+  width: 134px;
+  background-color: #f4f4f4;
+  border-radius: 50%;
 `;
-const Categorization = styled.div`
-  width: 90px;
-  text-align: center;
-  margin-left: 4px;
-`;
-const Title = styled.div`
-  width: 373px;
-  margin-left: 31px;
-`;
-const Writer = styled.div`
-  width: 77px;
-  text-align: center;
-`;
-const Date = styled.div`
-  width: 63px;
-  text-align: center;
-  margin-left: 16px;
-`;
-const Hits = styled.div`
-  width: 40px;
-  text-align: center;
-  margin-left: 11px;
-`;
-const Recommendation = styled.div`
-  width: 40px;
-  text-align: center;
-  margin-left: 9px;
-`;
-const Comment = styled.div`
-  width: 40px;
-  text-align: center;
-  margin-left: 7px;
-`;
-const PostInforBar = styled.div`
-  width: 909.07px;
-  height: 31px;
-  margin: 0 auto;
-  font-size: 14px;
-  line-height: 16.41px;
-  border-bottom: 1px solid black;
-`;
-const PostCotent = styled.div`
-  padding-top: 8px;
+
+const InfoText = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  span {
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
 `;
+
+function DetailBox({ title, children }) {
+  return (
+    <SDetailBox>
+      <span>{title}</span>
+      <ProfileContent>{children}</ProfileContent>
+    </SDetailBox>
+  );
+}
 
 const subCategory = [
   { content: "내 정보", filter: "내 정보" },
@@ -172,6 +72,7 @@ const subCategory = [
   { content: "내가 쓴 댓글", filter: "내가 쓴 댓글" },
   { content: "계정 설정", filter: "계정 설정" },
 ];
+
 const postData = [
   {
     number: 1,
@@ -184,8 +85,6 @@ const postData = [
     comment: 53,
   },
 ];
-
-const selectDate = ["추천순", "댓글순", "조회순"];
 
 function Profile() {
   const input = useLocation();
@@ -202,23 +101,9 @@ function Profile() {
   const [posts, setPosts] = React.useState(
     postData.filter((data) => data.categorization === target)
   );
-  const [text, setText] = React.useState();
-  const [limit, setLimit] = React.useState(19);
+
   const [page, setPage] = React.useState(1);
   const [selected, setSelected] = React.useState("");
-  const offset = (page - 1) * limit;
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (data) => console.log(data);
-
-  const handleSearchBarFilter = (e) => {
-    setSelected(e.target.value);
-  };
 
   React.useEffect(() => {
     // 서브바에서 필터가 바뀌면 값을 변환.
@@ -238,61 +123,23 @@ function Profile() {
       <SideBar posts={subCategory} getFilter={setTarget}></SideBar>
       <Content>
         <ScreenTitle>{`프로필 | ${target}`}</ScreenTitle>
-        <SearchBarSection>
-          <SearchBarForm onSubmit={handleSubmit(onSubmit)}>
-            <SearchBarSelect {...register("option")}>
-              <option>제목 + 내용</option>
-              <option>제목</option>
-              <option>작성자</option>
-            </SearchBarSelect>
-            <SearchBar>
-              <SearchBarInput
-                {...register("exampleRequired", { required: true })}
-              />
-              <SearchBarSubmit type="submit" value="" />
-            </SearchBar>
-          </SearchBarForm>
 
-          <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
-            {selectDate.map((value) => (
-              <option value={value} key={value}>
-                {value}
-              </option>
-            ))}
-            {/* <option value="추천">추천순</option>
-            <option value="조회">조회순</option>
-            <option value="댓글">댓글순</option> */}
-          </SearchBarFilter>
+        <InfoBox>
+          <DetailBox title="프로필 사진 편집">
+            <ProfilePhoto />
+          </DetailBox>
+          <DetailBox title="회원 정보">
+            <InfoText>
+              <span>이름 | 최희건</span>
+              <span>학번 | 12173944</span>
+              <span>학과 | 의류디자인학과</span>
+              <span>소속 | Webgrus</span>
+              <span>구분 | 일반 회원</span>
+              <span>소개 | 반갑습니다.</span>
+            </InfoText>
+          </DetailBox>
+        </InfoBox>
 
-          <CreateBtnLink
-            to="/board/write/1234"
-            state={{ category: "프로필", subCategory: target }}
-          >
-            create
-          </CreateBtnLink>
-        </SearchBarSection>
-
-        <InforBar>
-          <InforContents>
-            <Number>번호</Number>
-            <Categorization>분류</Categorization>
-            <Title>제목</Title>
-            <Writer>작성자</Writer>
-            <Date>작성일자</Date>
-            <Hits>조회</Hits>
-            <Recommendation>추천</Recommendation>
-            <Comment>댓글</Comment>
-          </InforContents>
-        </InforBar>
-
-        <PostBar target={target} page={page} data={posts} />
-
-        <Pagination
-          total={posts.length}
-          limit={limit}
-          page={page}
-          setPage={setPage}
-        />
         <Outlet />
       </Content>
     </>

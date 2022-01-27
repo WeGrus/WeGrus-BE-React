@@ -10,11 +10,11 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    logInUser: (token) => dispatch(actionCreators.logInUser(token)),
+    setKakaoId: (kakaoId) => dispatch(actionCreators.setKakaoId(kakaoId)),
   };
 }
 
-function OAuth(props) {
+function OAuth({ setKakaoId }) {
   let navigate = useNavigate();
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
@@ -50,8 +50,10 @@ function OAuth(props) {
           props.logOutUser(ACCESS_TOKEN);
         }
       */
-        let USER_ID = res.data.data.userId;
-        let RESULT = res.data.data.status;
+        const USER_ID = res.data.data.userId;
+        const RESULT = res.data.data.status;
+
+        setKakaoId(USER_ID);
         console.log(USER_ID, RESULT);
         if (RESULT === "fail") {
           navigate("/login/email-auth");

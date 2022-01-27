@@ -1,20 +1,35 @@
 import { createStore } from "@reduxjs/toolkit";
 import { initialState } from "./variables";
 
-const SET_TOKEN = "SET_TOKEN";
+const SET_ID = "SET_ID";
+const SET_EMAIL = "SET_EMAIL";
 const DELETE_TOKEN = "DELETE_TOKEN";
 
-export const logInUser = (token) => {
+export const setKakaoId = (
+  //academicStatus,
+  //department,
+  //email,
+  //grade,
+  //name,
+  //phone,
+  userId
+  //token
+) => {
   return {
-    type: "SET_TOKEN",
-    token,
-    result: true,
+    type: SET_ID,
+    userId,
+  };
+};
+export const setEmail = (email) => {
+  return {
+    type: SET_EMAIL,
+    email,
   };
 };
 
 export const logOutUser = () => {
   return {
-    type: "SET_TOKEN",
+    type: DELETE_TOKEN,
     token: null,
     result: false,
   };
@@ -22,11 +37,31 @@ export const logOutUser = () => {
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_TOKEN:
+    case SET_ID:
       return {
         ...state,
-        token: action.token,
         authenticated: action.result,
+        //academicStatus: action.academicStatus,
+        //department: action.department,
+        //email: action.email,
+        //grade: action.grade,
+        //name: action.name,
+        //phone: action.phone,
+        userId: action.userId,
+        //token: action.token,
+      };
+    case SET_EMAIL:
+      return {
+        ...state,
+        authenticated: action.result,
+        //academicStatus: action.academicStatus,
+        //department: action.department,
+        email: action.email,
+        //grade: action.grade,
+        //name: action.name,
+        //phone: action.phone,
+        //userId: action.userId,
+        //token: action.token,
       };
     case DELETE_TOKEN:
       return { ...state, token: null, authenticated: false };
@@ -38,7 +73,8 @@ const userReducer = (state = initialState, action) => {
 const store = createStore(userReducer);
 
 export const actionCreators = {
-  logInUser,
+  setKakaoId,
+  setEmail,
   logOutUser,
 };
 

@@ -36,7 +36,7 @@ const NaviBar = (props) => {
               스터디
             </NavLink>
             <NavLink to="/board" style={({ isActive }) => ({})}>
-              게시판
+              커뮤니티
             </NavLink>
           </NavMenu>
           <NavBtn>

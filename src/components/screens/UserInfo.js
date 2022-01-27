@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import AuthLayout from "../auth/AuthLayout";
 import Button from "../auth/Button";
@@ -82,6 +81,11 @@ const DEPARTMENTS = [
   "의류디자인학과",
 ];
 
+function mapStateToProps(state) {
+  console.log(state);
+  return state;
+}
+
 const LoginForm = styled.form`
   margin-bottom: 60px;
   display: flex;
@@ -112,11 +116,16 @@ const Select = React.forwardRef(
   )
 );
 
-function EmailAuth() {
+function EmailAuth(props) {
+  console.log(props);
   const { handleSubmit, register, formState } = useForm();
-
+  axios
+    .get(
+      `http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/signup/validate/email?email=${data.email}%40inha.edu`
+    )
+    .then((res) => console.log(res));
   const onSubmit = (data) => {
-    data.email = `${data.email}@inha.edu`;
+    const userEmail = `${data.email}@inha.edu`;
     data.phone = data.phone
       .replace(/[^0-9]/, "")
       .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
@@ -124,12 +133,13 @@ function EmailAuth() {
     const body = {
       academicStatus: data.academicStatus,
       department: data.department,
-      email: data.email,
+      email: userEmail,
       grade: data.grade,
       name: data.name,
       phone: data.phone,
     };
     console.log(body);
+
     axios
       .post(`${API_HOST}signup`, {
         headers: { "Content-Type": "application/json" },
@@ -188,5 +198,4 @@ function EmailAuth() {
   );
 }
 
-export default EmailAuth;
-
+export default connect(mapStateToProps)(EmailAuth);

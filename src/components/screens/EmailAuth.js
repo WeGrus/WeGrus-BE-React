@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AuthLayout from "../auth/AuthLayout";
 import Button from "../auth/Button";
 import HeaderContainer from "../auth/HeaderContainer";
@@ -9,9 +9,36 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { API_HOST } from "../../App";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { actionCreators, logInUser, setEmail } from "../../store";
 import BottomButton from "../auth/BottomButton";
-import { Simulate } from "react-dom/cjs/react-dom-test-utils.production.min";
+
+function mapStateToProps(state) {
+  console.log(state);
+  return state;
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setEmail: (text) => dispatch(actionCreators.setEmail(text)),
+  };
+}
+
+const NextButton = styled(Link)`
+  width: 292px;
+  span {
+    padding: 10px;
+  }
+
+  border-radius: 18px;
+  color: ${(props) => props.ftcolor};
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.color};
+`;
 
 const InhaEmail = styled.div`
   width: 292px;
@@ -33,27 +60,31 @@ const LoginForm = styled.form`
   flex-direction: column;
 `;
 
-function EmailAuth() {
+function EmailAuth({ setEmail }) {
   const { handleSubmit, register, formState } = useForm();
   let navigate = useNavigate();
+
+  const [emailAuth, setEmailAuth] = useState(false);
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
     const EMAIL = data.email;
 
-    axios
-      .post(`${API_HOST}signup/check/email?email=${EMAIL}`)
-      .then((res) => {
-        const STATUS = res.data.data.status;
-        if (STATUS === "success") {
-          window.open("https://mail.google.com/mail/u/1/#inbox", "_blank");
-        }
-      })
-      .catch((res) => console.log(res));
+    axios.post(`${API_HOST}signup/check/email?email=${EMAIL}`).then((res) => {
+      const STATUS = res.data.data.status;
+      if (STATUS === "success") {
+        setEmail(data.email);
+        window.open("https://mail.google.com/mail/u/1/#inbox", "_blank");
+        setEmailAuth(true);
+      } else {
+        console.log(res);
+      }
+    });
   };
   function onSubmitInvalid(data) {
-    console.log("hi");
+    console.log("error");
   }
+
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
     let verificationKey = params.get("verificationKey");
@@ -65,7 +96,9 @@ function EmailAuth() {
           const CERTIFIED = res.data.data.certified;
           console.log(CERTIFIED);
           if (CERTIFIED) {
-            navigate("/signup");
+            console.log(
+              "진행하던 회원 가입 브라우저로 이동하여 다음 버튼을 눌러주세요."
+            );
           } else {
             console.log("Authentication expired");
           }
@@ -91,10 +124,16 @@ function EmailAuth() {
           <span>@inha.edu</span>
         </InhaEmail>
 
-        <Button color="#106557" ftcolor="white" type="submit" />
+        {emailAuth ? (
+          <NextButton to="/signup" color="#30B0B0" ftcolor="white">
+            <span>다음 단계</span>
+          </NextButton>
+        ) : (
+          <Button color="#106557" ftcolor="white" type="submit" />
+        )}
       </LoginForm>
     </AuthLayout>
   );
 }
 
-export default EmailAuth;
+export default connect(mapStateToProps, mapDispatchToProps)(EmailAuth);
