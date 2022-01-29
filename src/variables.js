@@ -1,5 +1,5 @@
 export const initialState = {
-  authenticated: true,
+  authenticated: false,
   academicStatus: null,
   department: null,
   email: null,
@@ -7,7 +7,7 @@ export const initialState = {
   name: null,
   phone: null,
   userId: null,
-  token: null,
+  //token: null,
 };
 export const isOperator = true;
 export const InhaAuth = false;
