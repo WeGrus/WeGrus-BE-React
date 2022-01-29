@@ -21,7 +21,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function OAuth({ setKakaoId }) {
+function OAuth({ setKakaoId, setToken }) {
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -69,7 +69,7 @@ function OAuth({ setKakaoId }) {
         } else {
           console.log(res.data.data);
 
-          props.setToken(res.data.data.accessToken)
+          setToken(res.data.data.accessToken)
           //console.log(res.data.data.accessToken);
 
           navigate("/");
