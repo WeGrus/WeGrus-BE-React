@@ -3,6 +3,7 @@ import { initialState } from "./variables";
 
 const SET_ID = "SET_ID";
 const SET_EMAIL = "SET_EMAIL";
+const LOGIN = "LOGIN";
 const DELETE_TOKEN = "DELETE_TOKEN";
 
 export const setKakaoId = (
@@ -24,6 +25,25 @@ export const setEmail = (email) => {
   return {
     type: SET_EMAIL,
     email,
+  };
+};
+export const logUserIn = (
+  academicStatus,
+  department,
+  //email,
+  grade,
+  name,
+  phone
+  //userId
+) => {
+  return {
+    type: LOGIN,
+    result: true,
+    academicStatus,
+    department,
+    grade,
+    name,
+    phone,
   };
 };
 
@@ -60,6 +80,19 @@ const userReducer = (state = initialState, action) => {
         //grade: action.grade,
         //name: action.name,
         //phone: action.phone,
+        //userId: action.userId,
+        //token: action.token,
+      };
+    case LOGIN:
+      return {
+        ...state,
+        authenticated: action.result,
+        academicStatus: action.academicStatus,
+        department: action.department,
+        //email: action.email,
+        grade: action.grade,
+        name: action.name,
+        phone: action.phone,
         //userId: action.userId,
         //token: action.token,
       };

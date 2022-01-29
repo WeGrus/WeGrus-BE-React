@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import AuthLayout from "../auth/AuthLayout";
@@ -10,7 +10,7 @@ import { API_HOST } from "../../App";
 import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
-import { actionCreators } from "../../store";
+import { actionCreators, logUserIn } from "../../store";
 
 /*function Signupo() {
   const location = useLocation();
@@ -144,13 +144,20 @@ const DEPARTMENTS = [
   "의류디자인학과",
 ];
 
+const GRADE = ["FRESHMAN", "SOPHOMORE", "JUNIOR", "SENIOR"];
+
+const STATUS = ["ATTENDING", "ABSENCE", "GRADUATED"];
+
 function mapStateToProps(state) {
   console.log(state);
   return state;
 }
 function mapDispatchToProps(dispatch) {
   return {
-    logInUser: (text) => dispatch(actionCreators.logInUser(text)),
+    logUserIn: (academicStatus, department, grade, name, phone) =>
+      dispatch(
+        actionCreators.logUserIn(academicStatus, department, grade, name, phone)
+      ),
   };
 }
 
@@ -169,52 +176,69 @@ const SSelect = styled.select`
   border: none;
 `;
 
-const Select = React.forwardRef(
-  ({ onChange, name, options, placeholder }, ref) => (
-    <>
-      <SSelect name={name} ref={ref} onChange={onChange}>
-        <option value="hide">*-- {placeholder} --</option>
-        {options.map((value) => (
-          <option key={value} value={value}>
-            {value}
-          </option>
-        ))}
-      </SSelect>
-    </>
-  )
-);
+const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
+  <>
+    <SSelect name={name} ref={ref} onChange={onChange}>
+      <option value="hide">*-- {placeholder} --</option>
+      {options.map((value, dataName) => (
+        <option key={value} value={dataName}>
+          {value}
+        </option>
+      ))}
+    </SSelect>
+  </>
+));
 
 function Signup(props) {
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState();
 
-  axios
-    .get(`${API_HOST}signup/validate/email?email=${props.email}`)
-    .then((res) => {
-      const result = res.data.data.status;
-      console.log(result);
-      setEmailAuth(result);
-    });
+  useEffect(() => {
+    axios
+      .get(`${API_HOST}signup/validate/email?email=${props.email}`)
+      .then((res) => {
+        const result = res.data.data.status;
+        console.log(result);
+        setEmailAuth(result);
+      });
+  }, []);
 
-  const onSubmit = (data) => {
-    data.phone = data.phone
+  const onSubmit = ({ academicStatus, department, grade, name, phone }) => {
+    phone = phone
       .replace(/[^0-9]/, "")
       .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
 
     const body = {
-      academicStatus: data.academicStatus,
-      department: data.department,
-      grade: data.grade,
-      name: data.name,
-      phone: data.phone,
+      academicStatus: STATUS[academicStatus],
+      department: DEPARTMENTS[department],
+      email: props.email,
+      grade: GRADE[grade],
+      name,
+      phone,
+      userId: props.userId,
     };
-    console.log(body);
+
+    console.log(JSON.stringify(body));
+
     axios
-      .post(`${API_HOST}signup`, {
-        headers: { "Content-Type": "application/json" },
-        body,
+      .post(
+        `${API_HOST}signup`,
+        JSON.stringify({
+          academicStatus: STATUS[academicStatus],
+          department: DEPARTMENTS[department],
+          email: props.email,
+          grade: GRADE[grade],
+          name: name,
+          phone: phone,
+          userId: props.userId,
+        }),
+
+        { headers: { "Content-Type": "application/json" } }
+      )
+      .then((res) => {
+        logUserIn(body);
+        console.log(res);
       })
-      .then((res) => console.log(res))
       .catch((res) => console.log(res));
   };
   function onSubmitInvalid(data) {
@@ -247,7 +271,7 @@ function Signup(props) {
         <Select
           {...register("grade", { required: "grade is required." })}
           placeholder="학년"
-          options={["1학년", "2학년", "3학년", "4학년", "그 외"]}
+          options={["1학년", "2학년", "3학년", "4학년"]}
         />
         <Select
           {...register("academicStatus", {
