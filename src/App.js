@@ -23,6 +23,9 @@ import { connect } from "react-redux";
 import axios from "axios";
 import Signup from "./components/screens/Signup";
 
+axios.defaults.baseURL = 'http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/';
+//axios에서 baseURL을 지정해서 반복하는 코드를 없애는 것입니다. 이것때문에 기능이 안되신다면 말씀해주세요.
+
 export const API_HOST =
   "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
 
@@ -31,8 +34,8 @@ function mapStateToProps(state) {
 }
 
 function App(props) {
-  const authenticated = props.authenticated;
-  console.log(authenticated);
+  const authenticated = props.userReducer.authenticated;
+  console.log(authenticated); 
 
   return (
     <HelmetProvider>

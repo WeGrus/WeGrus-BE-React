@@ -16,7 +16,6 @@ function SideBar({ posts=[], getFilter=()=>{} }) {
 
  
   if(boldEl.current){
-    console.log(boldEl);
     boldEl.current.childNodes[boldTarget].style.fontWeight="bold";
   }
 
