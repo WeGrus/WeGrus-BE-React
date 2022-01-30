@@ -4,6 +4,7 @@ import { initialState } from "./variables";
 const SET_ID = "SET_ID";
 const SET_EMAIL = "SET_EMAIL";
 const LOGIN = "LOGIN";
+const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 const DELETE_TOKEN = "DELETE_TOKEN";
 
 export const setKakaoId = (
@@ -45,6 +46,10 @@ export const logUserIn = (
     name,
     phone,
   };
+};
+
+export const loginSuccess = () => {
+  return { type: LOGIN_SUCCESS, result: true };
 };
 
 export const logOutUser = () => {
@@ -96,6 +101,8 @@ const userReducer = (state = initialState, action) => {
         //userId: action.userId,
         //token: action.token,
       };
+    case LOGIN_SUCCESS:
+      return { ...state, authenticated: action.result };
     case DELETE_TOKEN:
       return { ...state, token: null, authenticated: false };
     default:
@@ -108,6 +115,8 @@ const store = createStore(userReducer);
 export const actionCreators = {
   setKakaoId,
   setEmail,
+  logUserIn,
+  loginSuccess,
   logOutUser,
 };
 

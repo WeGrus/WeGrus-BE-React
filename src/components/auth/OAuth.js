@@ -2,7 +2,12 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { actionCreators } from "../../store";
+import {
+  actionCreators,
+  loginSeccess,
+  loginSuccess,
+  logUserIn,
+} from "../../store";
 import { isEmailAuth } from "../../variables";
 
 function mapStateToProps(state) {
@@ -11,6 +16,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setKakaoId: (kakaoId) => dispatch(actionCreators.setKakaoId(kakaoId)),
+    loginSuccess: () => dispatch(actionCreators.loginSuccess()),
   };
 }
 
@@ -60,6 +66,8 @@ function OAuth({ setKakaoId }) {
         } else {
           console.log(res.data.data);
           navigate("/");
+          console.log("hi");
+          loginSuccess();
         }
       });
   }, []);
