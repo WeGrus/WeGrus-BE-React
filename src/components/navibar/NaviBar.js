@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { actionCreators } from "../../store";
 import {
   Nav,
   NavLink,
@@ -17,6 +18,7 @@ function mapStateToProps(state) {
 
 const NaviBar = (props) => {
   const authenticated = props.userReducer.authenticated;
+
   return (
     <>
       <Nav>

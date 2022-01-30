@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useReducer } from "react";
 import { initialState } from "../../variables";
-
+/*
 const LogOut = () => {
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
@@ -25,6 +25,14 @@ const LogOut = () => {
   }, []);
 
   return <div>redirect...</div>;
-};
+};*/
+
+function LogOut() {
+  useEffect(() => {
+    axios.post("/members/signout", {
+      Headers: { Authorization: `Bearer ${TOKEN}` },
+    });
+  }, []);
+}
 
 export default LogOut;

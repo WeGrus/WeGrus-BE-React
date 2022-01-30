@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
-
 import Study from "./components/screens/Study";
 import Page from "./components/screens/Page";
 import About from "./components/screens/About";
@@ -22,8 +21,10 @@ import Loading from "./components/screens/Loading";
 import { connect } from "react-redux";
 import axios from "axios";
 import Signup from "./components/screens/Signup";
+import { actionCreators } from "./store";
 
-axios.defaults.baseURL = 'http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/';
+axios.defaults.baseURL =
+  "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
 //axios에서 baseURL을 지정해서 반복하는 코드를 없애는 것입니다. 이것때문에 기능이 안되신다면 말씀해주세요.
 
 export const API_HOST =
@@ -33,9 +34,42 @@ function mapStateToProps(state) {
   return state;
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    getUserInfo: (
+      id,
+      email,
+      name,
+      studentId,
+      department,
+      grade,
+      phone,
+      createdDate,
+      introduce,
+      imageUrl,
+      academicStatus,
+      roles
+    ) =>
+      actionCreators.getUserInfo(
+        id,
+        email,
+        name,
+        studentId,
+        department,
+        grade,
+        phone,
+        createdDate,
+        introduce,
+        imageUrl,
+        academicStatus,
+        roles
+      ),
+  };
+}
+
 function App(props) {
   const authenticated = props.userReducer.authenticated;
-  console.log(authenticated); 
+  console.log(props.getUserInfo);
 
   return (
     <HelmetProvider>
@@ -85,4 +119,4 @@ function App(props) {
   );
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
