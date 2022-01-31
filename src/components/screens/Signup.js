@@ -14,11 +14,9 @@ import { actionCreators, logUserIn } from "../../store";
 
 /*function Signupo() {
   const location = useLocation();
-
   const { register, formState } = useForm({
     mode: "onChange",
   });
-
   return (
     <AuthLayout>
       <PageTitle title="Sign up" />
@@ -28,7 +26,6 @@ import { actionCreators, logUserIn } from "../../store";
         </span>
         <span>회원 가입하여 다양한 활동과 커뮤니티를 만나보세요.</span>
       </HeaderContainer>
-
       <FormBox>
         <Input
           {...register("email", {

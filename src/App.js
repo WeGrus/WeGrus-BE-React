@@ -34,8 +34,8 @@ function mapStateToProps(state) {
 }
 
 function App(props) {
-  console.log(props);
-  const authenticated = props.userReducer.authenticated;
+  // const authenticated = props.userReducer.authenticated;
+  const authenticated = true;
   console.log(authenticated); 
 
   return (
