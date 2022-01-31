@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { actionCreators } from "../../store";
@@ -18,7 +19,7 @@ function mapStateToProps(state) {
 
 const NaviBar = (props) => {
   const authenticated = props.userReducer.authenticated;
-
+  const DATA = props.userReducer;
   return (
     <>
       <Nav>
@@ -45,7 +46,7 @@ const NaviBar = (props) => {
             {authenticated ? (
               <>
                 <ProfileLink to="/profile">
-                  <img src={""} alt="profile" />
+                  <img src={`${DATA.imageUrl}`} alt="profile" />
                 </ProfileLink>
                 <NavBtnLink to="/login">log out</NavBtnLink>
               </>

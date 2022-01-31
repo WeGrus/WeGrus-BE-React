@@ -8,7 +8,7 @@ const SET_EMAIL = "SET_EMAIL";
 const LOGIN = "LOGIN";
 const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 const DELETE_TOKEN = "DELETE_TOKEN";
-const GET_USER_INFO = "GET_USER_INFO";
+const PUT_USER_INFO = "PUT_USER_INFO";
 
 const initialState = {
   authenticated: false,
@@ -29,10 +29,11 @@ const initialState = {
   roles: null,
 };
 
-const setKakaoId = (userId) => {
+const setKakaoId = (userId, id) => {
   return {
     type: SET_ID,
     userId,
+    id,
   };
 };
 const setEmail = (email) => {
@@ -57,7 +58,7 @@ const loginSuccess = (token) => {
   return { type: LOGIN_SUCCESS, result: true, token };
 };
 
-const getUserInfo = (
+const putUserInfo = (
   id,
   email,
   name,
@@ -72,7 +73,7 @@ const getUserInfo = (
   roles
 ) => {
   return {
-    type: GET_USER_INFO,
+    type: PUT_USER_INFO,
     id,
     email,
     name,
@@ -103,6 +104,7 @@ const userReducer = (state = initialState, action) => {
         ...state,
         authenticated: action.result,
         userId: action.userId,
+        id: action?.id,
       };
     case SET_EMAIL:
       return {
@@ -122,7 +124,7 @@ const userReducer = (state = initialState, action) => {
       };
     case LOGIN_SUCCESS:
       return { ...state, authenticated: action.result, token: action.token };
-    case GET_USER_INFO:
+    case PUT_USER_INFO:
       return {
         ...state,
         id: action.id,
@@ -176,7 +178,7 @@ export const actionCreators = {
   setEmail,
   userSignUp,
   loginSuccess,
-  getUserInfo,
+  putUserInfo,
   logOutUser,
   setToken,
 };
