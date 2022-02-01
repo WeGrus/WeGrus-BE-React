@@ -1,5 +1,7 @@
+import axios from "axios";
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import { connect } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import PageTitle from "../shared/PageTitle";
@@ -8,6 +10,10 @@ import PostBar from "../shared/PostBar";
 import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
 import img from "./../../images/Polygon.jpg";
+
+const mapStateToProps = (state) => {
+  return state;
+};
 
 const Content = styled.div`
   width: 924px;
@@ -46,6 +52,12 @@ const ProfilePhoto = styled.div`
   width: 134px;
   background-color: #f4f4f4;
   border-radius: 50%;
+  overflow: hidden;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
 `;
 
 const InfoText = styled.div`
@@ -86,7 +98,8 @@ const postData = [
   },
 ];
 
-function Profile() {
+function Profile(props) {
+  const DATA = props.userReducer;
   const input = useLocation();
 
   let subBarTarget; // 페이지에서 뒤로가기를 누르거나 목록을 누를 시 즉 subCategory
@@ -104,7 +117,9 @@ function Profile() {
 
   const [page, setPage] = React.useState(1);
   const [selected, setSelected] = React.useState("");
-
+  const handleSearchBarFilter = (e) => {
+    setSelected(e.target.value);
+  };
   React.useEffect(() => {
     // 서브바에서 필터가 바뀌면 값을 변환.
     console.log(selected);
@@ -123,19 +138,20 @@ function Profile() {
       <SideBar posts={subCategory} getFilter={setTarget}></SideBar>
       <Content>
         <ScreenTitle>{`프로필 | ${target}`}</ScreenTitle>
-
         <InfoBox>
           <DetailBox title="프로필 사진 편집">
-            <ProfilePhoto />
+            <ProfilePhoto>
+              <img src={`${DATA.imageUrl}`} alt="profile" />
+            </ProfilePhoto>
           </DetailBox>
           <DetailBox title="회원 정보">
             <InfoText>
-              <span>이름 | 최희건</span>
-              <span>학번 | 12173944</span>
-              <span>학과 | 의류디자인학과</span>
+              <span>이름 | {DATA.name}</span>
+              <span>학번 | {DATA.studentId}</span>
+              <span>학과 | {DATA.department}</span>
               <span>소속 | Webgrus</span>
               <span>구분 | 일반 회원</span>
-              <span>소개 | 반갑습니다.</span>
+              <span>소개 | {DATA.introduce}</span>
             </InfoText>
           </DetailBox>
         </InfoBox>
@@ -145,4 +161,4 @@ function Profile() {
     </>
   );
 }
-export default Profile;
+export default connect(mapStateToProps)(Profile);

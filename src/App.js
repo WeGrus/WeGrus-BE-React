@@ -15,7 +15,7 @@ import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
 import { HelmetProvider } from "react-helmet-async";
 import EmailAuth from "./components/screens/EmailAuth";
-import React from "react";
+import React, { useEffect } from "react";
 import OAuth from "./components/auth/OAuth";
 import Loading from "./components/screens/Loading";
 import { connect } from "react-redux";
@@ -31,12 +31,13 @@ export const API_HOST =
   "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
 
 function mapStateToProps(state) {
+  console.log(state);
   return state;
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUserInfo: (
+    putUserInfo: (
       id,
       email,
       name,
@@ -50,27 +51,43 @@ function mapDispatchToProps(dispatch) {
       academicStatus,
       roles
     ) =>
-      actionCreators.getUserInfo(
-        id,
-        email,
-        name,
-        studentId,
-        department,
-        grade,
-        phone,
-        createdDate,
-        introduce,
-        imageUrl,
-        academicStatus,
-        roles
+      dispatch(
+        actionCreators.putUserInfo(
+          id,
+          email,
+          name,
+          studentId,
+          department,
+          grade,
+          phone,
+          createdDate,
+          introduce,
+          imageUrl,
+          academicStatus,
+          roles
+        )
       ),
   };
 }
 
 function App(props) {
   const authenticated = props.userReducer.authenticated;
-  console.log(props.getUserInfo);
 
+  useEffect(() => {
+    if (authenticated) {
+      axios
+        .get(`/members/info/${props?.userReducer?.id}`, {
+          headers: { Authorization: `Bearer ${props?.userReducer?.token}` },
+        })
+        .then((res) => {
+          const INFO = res.data.data.info;
+          const INFO_ARRAY = Object.values(INFO);
+
+          props.putUserInfo(...INFO_ARRAY);
+        })
+        .catch(console.log("no user info"));
+    }
+  }, [authenticated]);
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -109,9 +126,16 @@ function App(props) {
             )}
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/oauth/kakao/callback" element={<OAuth />} />
-          <Route path="/login/email-auth" element={<EmailAuth />} />
+          {!props?.userReducer?.authenticated ? (
+            <>
+              <Route path="/oauth/kakao/callback" element={<OAuth />} />
+              <Route path="/login/email-auth" element={<EmailAuth />} />
+              <Route path="/signup" element={<Signup />} />
+            </>
+          ) : (
+            <Route path="/" element={<About />} />
+          )}
+
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>

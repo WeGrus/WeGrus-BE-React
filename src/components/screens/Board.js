@@ -6,31 +6,44 @@ import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
 import { useForm } from "react-hook-form";
-import img from './../../images/Polygon.jpg'
+import img from "./../../images/Polygon.jpg";
 import Pagination from "../shared/Pagination";
 import PostBar from "../shared/PostBar";
 import { connect } from "react-redux";
-import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,SearchBarFilter,CreateBtnLink,
-  InforBar,InforContents,Number,Categorization,Title,Writer,Date,Hits,Recommendation,Comment} from "./../shared/BoardElement"
-
-
+import {
+  SearchBarSection,
+  SearchBarForm,
+  SearchBarSelect,
+  SearchBar,
+  SearchBarInput,
+  SearchBarSubmit,
+  SearchBarFilter,
+  CreateBtnLink,
+  InforBar,
+  InforContents,
+  Number,
+  Categorization,
+  Title,
+  Writer,
+  Date,
+  Hits,
+  Recommendation,
+  Comment,
+} from "./../shared/BoardElement";
 
 const PostInforBar = styled.div`
-width: 909.07px;
-height: 31px;
-margin: 0 auto;
-font-size: 14px;
-line-height: 16.41px;
-border-bottom: 1px solid black;
-`
+  width: 909.07px;
+  height: 31px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 16.41px;
+  border-bottom: 1px solid black;
+`;
 const PostCotent = styled.div`
-padding-top: 8px;
-display: flex;
-flex-direction: row;
-`
-
-
-
+  padding-top: 8px;
+  display: flex;
+  flex-direction: row;
+`;
 
 const subCategory = [
   { filter: "자유게시판" },
@@ -51,7 +64,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 2,
@@ -61,7 +74,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 3,
@@ -71,7 +84,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 4,
@@ -81,8 +94,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 5,
     categorization: "프로젝트 모집",
     title: "test",
@@ -90,8 +104,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 6,
     categorization: "프로젝트 모집",
     title: "test",
@@ -99,7 +114,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 7,
@@ -109,7 +124,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 8,
@@ -119,7 +134,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 9,
@@ -129,8 +144,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  
+    comment: 53,
+  },
   {
     number: 10,
     categorization: "프로젝트 모집",
@@ -139,7 +154,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 11,
@@ -149,7 +164,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 12,
@@ -159,7 +174,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 13,
@@ -169,7 +184,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 14,
@@ -179,7 +194,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 15,
@@ -189,7 +204,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 16,
@@ -199,7 +214,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 17,
@@ -209,7 +224,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 18,
@@ -219,7 +234,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 19,
@@ -229,7 +244,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 20,
@@ -239,7 +254,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 21,
@@ -249,7 +264,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 22,
@@ -259,7 +274,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 23,
@@ -269,7 +284,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 1,
@@ -279,7 +294,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 2,
@@ -289,7 +304,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 3,
@@ -299,7 +314,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 4,
@@ -309,8 +324,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 5,
     categorization: "프로젝트 모집",
     title: "test",
@@ -318,8 +334,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 6,
     categorization: "프로젝트 모집",
     title: "test",
@@ -327,7 +344,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 7,
@@ -337,7 +354,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 8,
@@ -347,7 +364,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 9,
@@ -357,8 +374,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  
+    comment: 53,
+  },
   {
     number: 10,
     categorization: "프로젝트 모집",
@@ -367,7 +384,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 11,
@@ -377,7 +394,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 12,
@@ -387,7 +404,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 13,
@@ -397,7 +414,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 14,
@@ -407,7 +424,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 15,
@@ -417,7 +434,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 16,
@@ -427,7 +444,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 17,
@@ -437,7 +454,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 18,
@@ -447,7 +464,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 19,
@@ -457,7 +474,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 20,
@@ -467,7 +484,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 21,
@@ -477,7 +494,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 22,
@@ -487,7 +504,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 23,
@@ -497,7 +514,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 1,
@@ -507,7 +524,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 2,
@@ -517,7 +534,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 3,
@@ -527,7 +544,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 4,
@@ -537,8 +554,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 5,
     categorization: "프로젝트 모집",
     title: "test",
@@ -546,8 +564,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 6,
     categorization: "프로젝트 모집",
     title: "test",
@@ -555,7 +574,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 7,
@@ -565,7 +584,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 8,
@@ -575,7 +594,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 9,
@@ -585,8 +604,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  
+    comment: 53,
+  },
   {
     number: 10,
     categorization: "프로젝트 모집",
@@ -595,7 +614,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 11,
@@ -605,7 +624,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 12,
@@ -615,7 +634,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 13,
@@ -625,7 +644,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 14,
@@ -635,7 +654,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 15,
@@ -645,7 +664,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 16,
@@ -655,7 +674,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 17,
@@ -665,7 +684,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 18,
@@ -675,7 +694,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 19,
@@ -685,7 +704,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 20,
@@ -695,7 +714,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 21,
@@ -705,7 +724,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 22,
@@ -715,7 +734,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 23,
@@ -725,7 +744,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 1,
@@ -735,7 +754,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 2,
@@ -745,7 +764,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 3,
@@ -755,7 +774,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 4,
@@ -765,8 +784,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 5,
     categorization: "프로젝트 모집",
     title: "test",
@@ -774,8 +794,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 6,
     categorization: "프로젝트 모집",
     title: "test",
@@ -783,7 +804,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 7,
@@ -793,7 +814,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 8,
@@ -803,7 +824,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 9,
@@ -813,8 +834,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  
+    comment: 53,
+  },
   {
     number: 10,
     categorization: "프로젝트 모집",
@@ -823,7 +844,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 11,
@@ -833,7 +854,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 12,
@@ -843,7 +864,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 13,
@@ -853,7 +874,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 14,
@@ -863,7 +884,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 15,
@@ -873,7 +894,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 16,
@@ -883,7 +904,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 17,
@@ -893,7 +914,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 18,
@@ -903,7 +924,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 19,
@@ -913,7 +934,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 20,
@@ -923,7 +944,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 21,
@@ -933,7 +954,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 22,
@@ -943,7 +964,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 23,
@@ -953,7 +974,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 1,
@@ -963,7 +984,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 2,
@@ -973,7 +994,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 3,
@@ -983,7 +1004,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 4,
@@ -993,8 +1014,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 5,
     categorization: "프로젝트 모집",
     title: "test",
@@ -1002,8 +1024,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  {
+    comment: 53,
+  },
+  {
     number: 6,
     categorization: "프로젝트 모집",
     title: "test",
@@ -1011,7 +1034,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 7,
@@ -1021,7 +1044,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 8,
@@ -1031,7 +1054,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 9,
@@ -1041,8 +1064,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },  
+    comment: 53,
+  },
   {
     number: 10,
     categorization: "프로젝트 모집",
@@ -1051,7 +1074,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 11,
@@ -1061,7 +1084,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 12,
@@ -1071,7 +1094,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 13,
@@ -1081,7 +1104,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 14,
@@ -1091,7 +1114,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 15,
@@ -1101,7 +1124,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 16,
@@ -1111,7 +1134,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 17,
@@ -1121,7 +1144,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 18,
@@ -1131,7 +1154,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 19,
@@ -1141,7 +1164,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 20,
@@ -1151,7 +1174,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 21,
@@ -1161,7 +1184,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 22,
@@ -1171,7 +1194,7 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
   {
     number: 23,
@@ -1181,15 +1204,11 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
   },
-]
+];
 
-const selectDate = [
-  "추천순",
-  "댓글순",
-  "조회순"
-]
+const selectDate = ["추천순", "댓글순", "조회순"];
 
 function mapStateToProps(state) {
   return state;
@@ -1206,63 +1225,73 @@ function Board(props) {
   }
 
   const [target, setTarget] = React.useState(subBarTarget); // 게시판중 사이드바와 분류를 나눔. 즉 subCategory
-  const [posts, setPosts] = React.useState(postData.filter(data=> data.categorization === target));
+  const [posts, setPosts] = React.useState(
+    postData.filter((data) => data.categorization === target)
+  );
   const [text, setText] = React.useState();
   const [limit, setLimit] = React.useState(19);
   const [page, setPage] = React.useState(1);
-  const [selected, setSelected] = React.useState("")
-  const offset = (page-1)*limit;
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const [selected, setSelected] = React.useState("");
+  const offset = (page - 1) * limit;
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
-  const onSubmit = data => console.log(data);
+  const onSubmit = (data) => console.log(data);
 
   const handleSearchBarFilter = (e) => {
-    setSelected(e.target.value)
-  }
+    setSelected(e.target.value);
+  };
 
-  React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
+  React.useEffect(() => {
+    // 서브바에서 필터가 바뀌면 값을 변환.
   }, [selected]);
 
-  React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
-    let test = [...postData.filter(data=> data.categorization === target)]
-    setPosts([...test])
-    setPage(1)
+  React.useEffect(() => {
+    // 서브바에서 필터가 바뀌면 값을 변환.
+    let test = [...postData.filter((data) => data.categorization === target)];
+    setPosts([...test]);
+    setPage(1);
   }, [target]);
 
   return (
     <>
-      <PageTitle title="게시판" />
+      <PageTitle title="커뮤니티" />
       <SideBar posts={subCategory} getFilter={setTarget}></SideBar>
       <Content>
-
-        <ScreenTitle>{`게시판 | ${target}`}</ScreenTitle>
+        <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
         <SearchBarSection>
+          <SearchBarForm onSubmit={handleSubmit(onSubmit)}>
+            <SearchBarSelect {...register("option")}>
+              <option>제목 + 내용</option>
+              <option>제목</option>
+              <option>작성자</option>
+            </SearchBarSelect>
+            <SearchBar>
+              <SearchBarInput
+                {...register("exampleRequired", { required: true })}
+              />
+              <SearchBarSubmit type="submit" value="" />
+            </SearchBar>
+          </SearchBarForm>
 
-        <SearchBarForm onSubmit={handleSubmit(onSubmit)}>
-          <SearchBarSelect {...register("option")} >
-              <option >제목 + 내용</option>
-              <option >제목</option>
-              <option >작성자</option>
-          </SearchBarSelect>
-          <SearchBar>
-            <SearchBarInput {...register("exampleRequired", { required: true })} />
-            <SearchBarSubmit type="submit" value="" />
-          </SearchBar>
-        </SearchBarForm>
+          <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
+            {selectDate.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))}
+          </SearchBarFilter>
 
-        <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
-        {selectDate.map((value)=>
-          <option value={value} key={value}>{value}</option>
-        )}
-        </SearchBarFilter>
-
-
-        <CreateBtnLink
-          to="/board/write/1234"
-          state={{ category: "게시판", subCategory:  target  }}
-        >
-          create
-        </CreateBtnLink>
+          <CreateBtnLink
+            to="/board/write/1234"
+            state={{ category: "커뮤니티", subCategory: target }}
+          >
+            create
+          </CreateBtnLink>
         </SearchBarSection>
 
         <InforBar>
@@ -1278,10 +1307,10 @@ function Board(props) {
           </InforContents>
         </InforBar>
 
-        <PostBar target={target} page={page} data={posts}/>
+        <PostBar target={target} page={page} data={posts} />
 
         <Pagination
-          total = {posts.length}
+          total={posts.length}
           limit={limit}
           page={page}
           setPage={setPage}
