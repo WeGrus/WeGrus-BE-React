@@ -129,7 +129,7 @@ function Page(props) {
 
   window.onpopstate = function(event){
     console.log("work!");
-    Navigate("/board",{state:{category:filter.subCategory}})
+    Navigate("/board",{state:{category:filter.subCategory, page:filter.page}})
   }
 
   return (

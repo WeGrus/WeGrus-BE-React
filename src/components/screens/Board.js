@@ -1151,6 +1151,7 @@ function Board(props) {
   const [posts, setPosts] = React.useState(postData.filter(data=> data.categorization === target));
   const [limit, setLimit] = React.useState(19);
   const [page, setPage] = React.useState(1);
+  console.log(page);
   const [selected, setSelected] = React.useState("")
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
@@ -1166,7 +1167,7 @@ function Board(props) {
   React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
     let test = [...postData.filter(data=> data.categorization === target)]
     setPosts([...test])
-    setPage(1)
+    setPage((input.state.page)?input.state.page:1)
   }, [target]);
 
   return (

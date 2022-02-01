@@ -149,6 +149,7 @@ export const CommentContent = styled.div`
 margin-left: 49px;
 max-width: 608px;
 min-height: 96.22px;
+white-space: pre-wrap;
 `
 
 export const Recode = styled.div`
@@ -180,6 +181,8 @@ export const CommentWrite = styled.textarea`
 width: 832px;
 border-radius: 15px;
 padding-left: 20px;
+padding-right: 20px;
+height: content-max;
 `
 
 export const CommentSubmit = styled.button`

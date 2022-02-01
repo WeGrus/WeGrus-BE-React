@@ -33,7 +33,7 @@ function PostBar({target,page,data}) {
         :
         <Number>{data.number}</Number>
         }
-        <Link to="1" state={{ category: "게시판", subCategory:  target  }}  key={data.number}>
+        <Link to="1" state={{ category: "게시판", subCategory:  target, page: page }}  key={data.number}>
         <Title>
         {data.title}
         <HashLink to="1#commentTag" state={{ category: "게시판", subCategory:  target  }}  key={data.number}>

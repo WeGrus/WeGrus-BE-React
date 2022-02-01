@@ -88,6 +88,7 @@ function CommentSection(props){
     const [checkSubmitBtn, setCheckSubmitBtn] = React.useState(0) // 0이면 댓글 등록이고 다른 숫자이면 수정하는 댓글의 index이다. 
     const reCommentEl = React.useRef();
     const reCommentUpdateEl = React.useRef();
+    const commentInputEl = React.useRef(); // 추후에 추가할 공백입력
 
     const checkBlank = (value) => { // 댓글을 입력할 때 공백만 입력하는지 확인하는 함수. ex) comment = "         " 이런 값일 때.
       let isBlank = true;
@@ -106,6 +107,7 @@ function CommentSection(props){
       return {date: today,
               time: time};
     }
+
     const handleCommentSubmit = (e) => { //댓글 작성하고 제출하는 함수
       if(checkBlank(comment)){ // 댓글을 달지 않고 버튼을 클릭했을 때.
         setPlaceholder("  내용이 없는 댓글은 등록하실 수 없습니다.")
@@ -438,7 +440,7 @@ function CommentSection(props){
             </Comments>
             {(typeof userInfor != 'undefined') ? // userInfor가 있는 지 확인하면서 회원이 아니라면 댓글 작성 x
               <CommentWriteSection>
-                <CommentWrite value={comment} onChange={(e)=>{setComment(e.target.value)}} placeholder={placeholder} required></CommentWrite>
+                <CommentWrite  value={comment} ref={commentInputEl} onChange={(e)=>{setComment(e.target.value)}}  placeholder={placeholder} required></CommentWrite>
                 <CommentSubmit onClick={(checkSubmitBtn === 0)?handleCommentSubmit:handleCommentUpdate}>댓글 등록</CommentSubmit>
               </CommentWriteSection>
               : null}
