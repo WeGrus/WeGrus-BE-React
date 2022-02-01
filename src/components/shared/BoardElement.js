@@ -111,7 +111,7 @@ text-align: center;
 export const Number = styled.div`
 min-width: 65px;
 text-align: center;
-margin-left: 25px;
+margin-left: 23px;
 `
 
 export const Categorization = styled.div`
@@ -121,12 +121,14 @@ margin-left: 4px;
 `
 export const Title = styled.div`
 width: 373px;
-margin-left: 31px;
+margin-left: 62px;
 `
 
 export const Writer = styled.div`
 width: 77px;
 text-align: center;
+margin-left: 62px;
+word-spacing: -3px;
 `
 
 export const Date = styled.div`
@@ -138,7 +140,7 @@ margin-left: 16px;
 export const Hits = styled.div`
 width: 40px;
 text-align: center;
-margin-left: 11px;
+margin-left: 10px;
 `
 
 export const Recommendation = styled.div`

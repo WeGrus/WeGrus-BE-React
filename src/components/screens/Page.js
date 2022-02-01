@@ -1,7 +1,7 @@
 import * as React from 'react';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
-import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
+import { useParams, useLocation, Link, useNavigate  } from "react-router-dom";
 import styled from "styled-components";
 import * as ReactDOM from 'react-dom';
 import axios from "axios";
@@ -76,7 +76,6 @@ function Page(props) {
   const [countOfRecommend, setCountOfRecommend] = React.useState(getPage.countOfRecommend); // 게시글 추천수
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
   const Navigate = useNavigate();
-
  
   const postRecommand = () => { // 게시글 추천하는 함수
     if (isRecommend === "추천취소") {
@@ -126,6 +125,11 @@ function Page(props) {
     }
 
     return value;
+  }
+
+  window.onpopstate = function(event){
+    console.log("work!");
+    Navigate("/board",{state:{category:filter.subCategory}})
   }
 
   return (

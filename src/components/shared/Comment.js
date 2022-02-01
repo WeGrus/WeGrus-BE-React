@@ -433,7 +433,7 @@ function CommentSection(props){
 
     return(
         <>
-            <Comments>
+            <Comments id="commentTag">
             {printComment}
             </Comments>
             {(typeof userInfor != 'undefined') ? // userInfor가 있는 지 확인하면서 회원이 아니라면 댓글 작성 x

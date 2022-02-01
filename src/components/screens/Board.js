@@ -51,7 +51,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: true
   },
   {
     number: 2,
@@ -61,7 +62,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: true
   },
   {
     number: 3,
@@ -71,7 +73,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: true
   },
   {
     number: 4,
@@ -81,7 +84,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  {
     number: 5,
     categorization: "프로젝트 모집",
@@ -90,7 +94,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  {
     number: 6,
     categorization: "프로젝트 모집",
@@ -99,7 +104,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
     number: 7,
@@ -109,7 +115,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
     number: 8,
@@ -119,7 +126,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
     number: 9,
@@ -129,7 +137,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  
   {
     number: 10,
@@ -140,6 +149,7 @@ const postData = [
     hits: 156,
     recommend: 51,
     comment: 53
+    ,isNotice: false
   },
   {
     number: 11,
@@ -149,7 +159,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
     number: 12,
@@ -159,9 +170,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },
-  {
+    comment: 53,
+    isNotice: false
+  },  {
     number: 13,
     categorization: "프로젝트 모집",
     title: "test",
@@ -169,9 +180,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },
-  {
+    comment: 53,
+    isNotice: false
+  },  {
     number: 14,
     categorization: "프로젝트 모집",
     title: "test",
@@ -179,7 +190,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
     number: 15,
@@ -189,7 +201,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
     number: 16,
@@ -199,7 +212,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
     number: 17,
@@ -209,237 +223,10 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },
-  {
-    number: 18,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 19,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 20,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 21,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 22,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 23,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 1,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 2,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 3,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 4,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },  {
-    number: 5,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },  {
-    number: 6,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 7,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 8,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 9,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  
   {
-    number: 10,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 11,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 12,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 13,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 14,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 15,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 16,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 17,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
     number: 18,
     categorization: "프로젝트 모집",
     title: "test",
@@ -448,6 +235,7 @@ const postData = [
     hits: 156,
     recommend: 51,
     comment: 53
+    ,isNotice: false
   },
   {
     number: 19,
@@ -457,7 +245,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
     number: 20,
@@ -467,9 +256,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },
-  {
+    comment: 53,
+    isNotice: false
+  },  {
     number: 21,
     categorization: "프로젝트 모집",
     title: "test",
@@ -477,9 +266,9 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },
-  {
+    comment: 53,
+    isNotice: false
+  },  {
     number: 22,
     categorization: "프로젝트 모집",
     title: "test",
@@ -487,7 +276,8 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
     number: 23,
@@ -497,98 +287,33 @@ const postData = [
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 1,
+    number: 24,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 2,
+    number: 25,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },
-  {
-    number: 3,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 4,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },  {
-    number: 5,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },  {
-    number: 6,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 7,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 8,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 9,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  
   {
-    number: 10,
+    number: 26,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
@@ -596,227 +321,86 @@ const postData = [
     hits: 156,
     recommend: 51,
     comment: 53
+    ,isNotice: false
   },
   {
-    number: 11,
+    number: 27,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
+  
   {
-    number: 12,
+    number: 28,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },
-  {
-    number: 13,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 14,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 15,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 16,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 17,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 18,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 19,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 20,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 21,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 22,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 23,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 1,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 2,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 3,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 4,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  {
-    number: 5,
+    number: 29,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  {
-    number: 6,
+    number: 30,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 7,
+    number: 31,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 8,
+    number: 32,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 9,
+    number: 33,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  
   {
-    number: 10,
+    number: 34,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
@@ -824,227 +408,85 @@ const postData = [
     hits: 156,
     recommend: 51,
     comment: 53
+    ,isNotice: false
   },
   {
-    number: 11,
+    number: 35,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 12,
+    number: 36,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
-  },
-  {
-    number: 13,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 14,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 15,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 16,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 17,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 18,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 19,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 20,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 21,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 22,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 23,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 1,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 2,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 3,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-  },
-  {
-    number: 4,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  {
-    number: 5,
+    number: 37,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  {
-    number: 6,
+    number: 38,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 7,
+    number: 39,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 8,
+    number: 40,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 9,
+    number: 41,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },  
   {
-    number: 10,
+    number: 42,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
@@ -1052,39 +494,86 @@ const postData = [
     hits: 156,
     recommend: 51,
     comment: 53
+    ,isNotice: false
   },
   {
-    number: 11,
+    number: 43,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
+  },
+  
+  {
+    number: 44,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 45,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 46,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 12,
+    number: 47,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 13,
+    number: 48,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 14,
+    number: 49,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  
+  {
+    number: 50,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
@@ -1092,49 +581,85 @@ const postData = [
     hits: 156,
     recommend: 51,
     comment: 53
+    ,isNotice: false
   },
   {
-    number: 15,
+    number: 51,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 16,
+    number: 52,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 53,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 54,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 17,
+    number: 55,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 18,
+    number: 56,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
   },
   {
-    number: 19,
+    number: 57,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  
+  {
+    number: 58,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
@@ -1142,39 +667,130 @@ const postData = [
     hits: 156,
     recommend: 51,
     comment: 53
+    ,isNotice: false
   },
   {
-    number: 20,
+    number: 59,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: false
+  },
+  
+  {
+    number: 60,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  }, 
+  {
+    number: 61,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
   },
   {
-    number: 21,
+    number: 62,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: true
   },
   {
-    number: 22,
+    number: 63,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
     date: "2022/01/19",
     hits: 156,
     recommend: 51,
-    comment: 53
+    comment: 53,
+    isNotice: true
   },
   {
-    number: 23,
+    number: 64,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 65,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 66,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 67,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 68,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 69,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  
+  {
+    number: 70,
     categorization: "프로젝트 모집",
     title: "test",
     writer: "17 김승태",
@@ -1182,6 +798,331 @@ const postData = [
     hits: 156,
     recommend: 51,
     comment: 53
+    ,isNotice: false
+  },
+  {
+    number: 71,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
+  },
+  {
+    number: 72,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
+  },
+  {
+    number: 73,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
+  },
+  {
+    number: 74,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 75,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 76,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 77,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 78,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 79,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  
+  {
+    number: 80,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53
+    ,isNotice: false
+  },
+  {
+    number: 81,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
+  },
+  {
+    number: 82,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
+  },
+  {
+    number: 83,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
+  },
+  {
+    number: 84,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 85,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 86,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 87,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 88,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 89,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  
+  {
+    number: 90,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53
+    ,isNotice: false
+  },
+  {
+    number: 91,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
+  },
+  {
+    number: 92,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
+  },
+  {
+    number: 93,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: true
+  },
+  {
+    number: 94,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 95,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  {
+    number: 96,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 97,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 98,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },
+  {
+    number: 99,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53,
+    isNotice: false
+  },  
+  {
+    number: 100,
+    categorization: "프로젝트 모집",
+    title: "test",
+    writer: "17 김승태",
+    date: "2022/01/19",
+    hits: 156,
+    recommend: 51,
+    comment: 53
+    ,isNotice: false
   },
 ]
 
@@ -1197,6 +1138,7 @@ function mapStateToProps(state) {
 
 function Board(props) {
   const input = useLocation();
+  console.log(input);
   let subBarTarget; // 페이지에서 뒤로가기를 누르거나 목록을 누를 시 즉 subCategory
 
   if (input.state != null) {
@@ -1207,11 +1149,9 @@ function Board(props) {
 
   const [target, setTarget] = React.useState(subBarTarget); // 게시판중 사이드바와 분류를 나눔. 즉 subCategory
   const [posts, setPosts] = React.useState(postData.filter(data=> data.categorization === target));
-  const [text, setText] = React.useState();
   const [limit, setLimit] = React.useState(19);
   const [page, setPage] = React.useState(1);
   const [selected, setSelected] = React.useState("")
-  const offset = (page-1)*limit;
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
   const onSubmit = data => console.log(data);
@@ -1232,7 +1172,7 @@ function Board(props) {
   return (
     <>
       <PageTitle title="게시판" />
-      <SideBar posts={subCategory} getFilter={setTarget}></SideBar>
+      <SideBar posts={subCategory} getFilter={setTarget} target={target}></SideBar>
       <Content>
 
         <ScreenTitle>{`게시판 | ${target}`}</ScreenTitle>
@@ -1268,12 +1208,11 @@ function Board(props) {
         <InforBar>
           <InforContents>
             <Number>번호</Number>
-            <Categorization>분류</Categorization>
             <Title>제목</Title>
             <Writer>작성자</Writer>
             <Date>작성일자</Date>
-            <Hits>조회</Hits>
             <Recommendation>추천</Recommendation>
+            <Hits>조회</Hits>
             <Comment>댓글</Comment>
           </InforContents>
         </InforBar>

@@ -36,6 +36,8 @@ function Page(props) {
 
   function printTextBody(){
     const deitorInstance = editorRef.current.getInstance();
+
+    console.log(deitorInstance);
     // const getContent_md = deitorInstance.getMarkdown();
     // console.log("마크다운");
     // console.log(getContent_md);
@@ -44,6 +46,7 @@ function Page(props) {
   }
 
   function submit(){
+    
   //  const data = {
   //    title: title,
   //    text: printTextBody(),
@@ -52,8 +55,8 @@ function Page(props) {
   //    boardType:filter.category,
   //    subCategory:filter.subCategory
   //   }
-  //   console.log(data);
-  //   console.log(data.text);
+    // console.log(data);
+    // console.log(data.text);
 
     axios.post(`/posts`,{
       "boardCategory": "BOARD",
