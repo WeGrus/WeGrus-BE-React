@@ -73,6 +73,7 @@ function mapStateToProps(state) {
 function Page(props) {
   const params = useParams();
   const filter = useLocation().state;
+
   const [countOfRecommend, setCountOfRecommend] = React.useState(getPage.countOfRecommend); // 게시글 추천수
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
   const Navigate = useNavigate();
@@ -128,7 +129,7 @@ function Page(props) {
   }
 
   window.onpopstate = function(event){
-    console.log("work!");
+    console.log("페이지JS의 페이지값:"+filter.page);
     Navigate("/board",{state:{category:filter.subCategory, page:filter.page}})
   }
 
@@ -157,7 +158,9 @@ function Page(props) {
           <BtnSection>
           <Link to="/board"
                   state={
-                    {category:filter.subCategory}
+                    {category:filter.subCategory,
+                      page: filter.page
+                    }
                   }
             ><GoToList >목록으로</GoToList></Link>
             {(getPage.author === userInfor.userName) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x

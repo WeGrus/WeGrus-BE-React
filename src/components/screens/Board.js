@@ -1,12 +1,11 @@
 import * as React from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
 import { useForm } from "react-hook-form";
-import img from './../../images/Polygon.jpg'
 import Pagination from "../shared/Pagination";
 import PostBar from "../shared/PostBar";
 import { connect } from "react-redux";
@@ -1127,6 +1126,7 @@ const postData = [
 ]
 
 const selectDate = [
+  "최신순",
   "추천순",
   "댓글순",
   "조회순"
@@ -1138,7 +1138,7 @@ function mapStateToProps(state) {
 
 function Board(props) {
   const input = useLocation();
-  console.log(input);
+  //console.log("보드JS의 페이지값:"+input.state.page);
   let subBarTarget; // 페이지에서 뒤로가기를 누르거나 목록을 누를 시 즉 subCategory
 
   if (input.state != null) {
@@ -1151,10 +1151,8 @@ function Board(props) {
   const [posts, setPosts] = React.useState(postData.filter(data=> data.categorization === target));
   const [limit, setLimit] = React.useState(19);
   const [page, setPage] = React.useState(1);
-  console.log(page);
   const [selected, setSelected] = React.useState("")
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-
   const onSubmit = data => console.log(data);
 
   const handleSearchBarFilter = (e) => {
@@ -1162,12 +1160,19 @@ function Board(props) {
   }
 
   React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
+    console.log("셀렉트");
   }, [selected]);
 
   React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
     let test = [...postData.filter(data=> data.categorization === target)]
+    
     setPosts([...test])
-    setPage((input.state.page)?input.state.page:1)
+    if(input.state != null&&input.state.page != undefined){
+      setPage(input.state.page)
+    }
+    else{
+      setPage(1)
+    }
   }, [target]);
 
   return (

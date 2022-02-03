@@ -23,7 +23,7 @@ font-weight: bold;
 function PostBar({target,page,data}) {
     const limit = 19;
     const offset = (page-1)*limit;
-    
+    console.log("postbar의 페이지값"+page);
     const postdata = data.slice(offset, offset+limit).map((data) => 
   
     <PostInforBar key={data.number}>
