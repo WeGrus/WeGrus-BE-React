@@ -46,7 +46,7 @@ function OAuth(props) {
       const KAKAO_ID = res.data.data.userId;
       const RESULT = res.data.data.status;
       const USER_ID = res.data.data.member.id;
-
+      console.log(res);
       props.setKakaoId(KAKAO_ID, USER_ID);
 
       console.log(KAKAO_ID, RESULT);
@@ -55,18 +55,20 @@ function OAuth(props) {
       } else if ("success") {
         const ACCESS_TOKEN = res.data.data.accessToken;
         props.loginSuccess(ACCESS_TOKEN);
-
-        axios
+        /*axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${ACCESS_TOKEN}`;*/
+        /* axios
           .get(`/members/info/${USER_ID}`, {
             headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
           })
           .then((res) => {
             const INFO = res.data.data.info;
-          });
+          });*/
 
-        setRefreshTokenToCookie(ACCESS_TOKEN);
+        //setRefreshTokenToCookie(ACCESS_TOKEN);
 
-        navigate("/");
+        //navigate("/");
       } else {
         console.log("what the fuck are you doin'");
       }
