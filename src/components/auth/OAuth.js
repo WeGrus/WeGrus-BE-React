@@ -3,10 +3,8 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 import Cookies from "universal-cookie";
 import { actionCreators } from "../../store";
-import getUserInfoFn from "../shared/getUserInfoFn";
 
 const Redirecting = styled.div`
   width: 100vh;
@@ -46,7 +44,7 @@ function OAuth(props) {
       const KAKAO_ID = res.data.data.userId;
       const RESULT = res.data.data.status;
       const USER_ID = res.data.data.member.id;
-
+      console.log(res);
       props.setKakaoId(KAKAO_ID, USER_ID);
 
       console.log(KAKAO_ID, RESULT);
@@ -55,16 +53,11 @@ function OAuth(props) {
       } else if ("success") {
         const ACCESS_TOKEN = res.data.data.accessToken;
         props.loginSuccess(ACCESS_TOKEN);
+        /*axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${ACCESS_TOKEN}`;*/
 
-        axios
-          .get(`/members/info/${USER_ID}`, {
-            headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
-          })
-          .then((res) => {
-            const INFO = res.data.data.info;
-          });
-
-        setRefreshTokenToCookie(ACCESS_TOKEN);
+        //setRefreshTokenToCookie(ACCESS_TOKEN);
 
         navigate("/");
       } else {
