@@ -57,6 +57,10 @@ function OAuth(props) {
           "Authorization"
         ] = `Bearer ${ACCESS_TOKEN}`;*/
 
+
+          props.setToken(res.data.data.accessToken)
+          //console.log(res.data.data.accessToken);
+
         //setRefreshTokenToCookie(ACCESS_TOKEN);
 
         navigate("/");

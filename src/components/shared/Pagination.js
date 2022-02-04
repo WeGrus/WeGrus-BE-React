@@ -1,36 +1,45 @@
 import React from "react";
-import styled from "styled-components";
+import {PaginationSection,Pagebtn,BtnSpan,BtnBox,MovePageInput,MovePageSubmit} from "./PaginationElements"
 
 
-const PaginationSection = styled.nav`
-width:max-content;
-margin: auto;
-margin-top: 34px;
-`
-const Pagebtn = styled.button`
-width: 20px;
-border: none;
-background-color: white;
-
-&:hover{
-  font-weight: 700;
-  cursor: pointer;
-  transform: translateY(-2px);
-}
-
-&[aria-current] {
-  background: deeppink;
-  font-weight: bold;
-  cursor: revert;
-  transform: revert;
-}
-`
-
-
-function Pagination({ total, limit, page, setPage }) {
-    const totalNumPages = Math.ceil(total / limit);
+function Pagination({ total, page, setPage }) {
+    const totalNumPages = Math.ceil(total / 19);
     const numPages = (totalNumPages>4)?5:totalNumPages
     const [current, setCurrent] = React.useState(page)
+    const displayRightEl = React.useRef(null)
+    const displayLeftEl = React.useRef(null)
+
+    const showBtnBox = (e) => {
+      if(e.target.dataset.direction == "right"){
+        if(displayRightEl.current.style.display ===  "block"){
+          displayRightEl.current.style.display = "none"
+        }
+        else{
+          displayRightEl.current.style.display = "block"
+        }
+      }
+      else{
+        if(displayLeftEl.current.style.display === "block"){
+          displayLeftEl.current.style.display = "none"
+        }
+        else{
+          displayLeftEl.current.style.display = "block"
+        }
+      }
+      setCurrent(page)
+      setCurrent(page)
+    }
+
+    const movePage = () => {
+      if(current>0){ // 최대 페이지를 초과한다면?
+        displayLeftEl.current.style.display = "none"
+        displayRightEl.current.style.display = "none"
+        setPage(current);
+      }
+      else{
+        //경고를 넣을 것인지 추후에
+      }
+    }
 
     return (
       <>
@@ -49,7 +58,14 @@ function Pagination({ total, limit, page, setPage }) {
       :
           <PaginationSection>
             <Pagebtn onClick={() => setPage(page - 1)} disabled={page === 1}> {"<"} </Pagebtn>
-            <Pagebtn onClick={() => setPage(page - 1)} disabled={page === 1}> {"..."} </Pagebtn>
+
+            <BtnSpan>
+            <Pagebtn onClick={showBtnBox} disabled={page === totalNumPages} data-direction={"left"}>{"..."}</Pagebtn>
+            <BtnBox ref={displayLeftEl}>
+              <MovePageInput type={"number"} value={current} onChange={(e)=>setCurrent(e.target.value)}></MovePageInput>
+              <MovePageSubmit onClick={movePage}>페이지</MovePageSubmit>
+            </BtnBox>
+            </BtnSpan>
 
             <Pagebtn onClick={() => setPage(page -2 )}>{page -2 }</Pagebtn>
             <Pagebtn onClick={() => setPage(page -1 )}>{page -1 }</Pagebtn>
@@ -64,7 +80,13 @@ function Pagination({ total, limit, page, setPage }) {
             :
             null
             }
-            <Pagebtn onClick={() => setPage(page + 1)} disabled={page === totalNumPages}>{"..."}</Pagebtn>
+            <BtnSpan>
+            <Pagebtn onClick={showBtnBox} disabled={page === totalNumPages} data-direction={"right"}>{"..."}</Pagebtn>
+            <BtnBox ref={displayRightEl}>
+              <MovePageInput type={"number"} value={current} onChange={(e)=>setCurrent(e.target.value)} ></MovePageInput>
+              <MovePageSubmit onClick={movePage} >페이지</MovePageSubmit>
+            </BtnBox>
+            </BtnSpan>
             <Pagebtn onClick={() => setPage(page + 1)} disabled={page === totalNumPages}>{">"}</Pagebtn>
           </PaginationSection>
       }

@@ -70,6 +70,7 @@ function mapDispatchToProps(dispatch) {
 function App(props) {
   const authenticated = props.userReducer.authenticated;
 
+
   useEffect(() => {
     if (authenticated) {
       axios

@@ -19,7 +19,12 @@ function Page(props) {
   const [checked,setState] = React.useState( false)
   const [notice, setNotice] = React.useState(false)
   const [title,setTitle] = React.useState("");
+  const [test, setTest] = React.useState(false) // file이 올라오는 지 아닌지 확인
+  const [url, setURL] = React.useState("") // download할 url link
   const editorRef = React.createRef();
+  const downRef = React.createRef();
+
+  let aBlob;
 
   const handleSecretOptionChange = event => {
     setState(!checked)
@@ -31,6 +36,8 @@ function Page(props) {
 
   function printTextBody(){
     const deitorInstance = editorRef.current.getInstance();
+
+    console.log(deitorInstance);
     // const getContent_md = deitorInstance.getMarkdown();
     // console.log("마크다운");
     // console.log(getContent_md);
@@ -39,6 +46,7 @@ function Page(props) {
   }
 
   function submit(){
+    
   //  const data = {
   //    title: title,
   //    text: printTextBody(),
@@ -47,7 +55,8 @@ function Page(props) {
   //    boardType:filter.category,
   //    subCategory:filter.subCategory
   //   }
-    //console.log(data);
+    // console.log(data);
+    // console.log(data.text);
 
     axios.post(`/posts`,{
       "boardCategory": "BOARD",
@@ -70,6 +79,29 @@ function Page(props) {
   function backToList(){
 
   }
+
+  const handleTest = (e) => {
+    console.log(e.target.files[0]);
+    //console.log(e.target.files);
+
+    // const formData = new FormData();
+    // formData.append('file',e.target.files[0]);
+
+    aBlob = new Blob(e.target.files,{type : e.target.files[0].type})
+    setURL(URL.createObjectURL(aBlob));
+    console.log(url);
+    setTest(true)
+  }
+
+
+  setTimeout(function() {
+    URL.revokeObjectURL(url);
+   }, 1000);
+
+  const handleDownload = (e) => {
+    setTimeout();
+    console.log("지워짐!");
+  }
   
 
   return (
@@ -89,6 +121,10 @@ function Page(props) {
             useCommandShortcut={true}
             ref={editorRef}
           />
+          <input type="file" id="docpicker" onChange={handleTest}></input>
+          {(test)?
+            <a href={url} download onClick={handleDownload} ref={downRef}>download</a>
+          :null}
           <BtnSection>
             <Link to="/board"
                   state={

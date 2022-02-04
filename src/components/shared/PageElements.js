@@ -98,10 +98,9 @@ margin-left: 9px;
 cursor: pointer;
 `
 export const CommentInfor = styled.div`
-font-weight: 700;
-font-size: 14px;
-margin-top: 49px;
-margin-bottom: 6px;
+position: absolute;
+bottom: 10px;
+word-spacing: -3px;
 `
 
 export const Description = styled.div`
@@ -136,22 +135,21 @@ padding-top: 10px;
 padding-bottom: 8px;
 font-size: 14px;
 line-height: 16px;
-border-bottom: 1px solid #555555;
-position: relative
+position: relative;
+width: 924px;
 `
 
-export const CommentRecommand = styled.button`
-background-color: white;
-border: 1px solid black;
-border-radius: 15px;
-width: 62px;
-height: 29.22;
-cursor: pointer;
+export const CommentRecommand = styled.span`
+color: #0B665C;
+opacity: 1;
+font-weight: bold;
+padding-left: 5px;
 `
 export const CommentContent = styled.div`
 margin-left: 49px;
 max-width: 608px;
 min-height: 96.22px;
+white-space: pre-wrap;
 `
 
 export const Recode = styled.div`
@@ -182,6 +180,9 @@ border-bottom: 2px solid #0B665C;
 export const CommentWrite = styled.textarea`
 width: 832px;
 border-radius: 15px;
+padding-left: 20px;
+padding-right: 20px;
+height: content-max;
 `
 
 export const CommentSubmit = styled.button`
@@ -191,6 +192,8 @@ background-color: #0B665C;
 border:none;
 border-radius: 15px;
 margin-left: 14px;
+font-size: 13px;
+word-spacing: -3px;
 cursor: pointer;
 `
 
@@ -264,4 +267,79 @@ border-radius: 15px;
 width: 62px;
 height: 29.22;
 cursor: pointer;
+`
+
+export const PostInfor = styled.div`
+font-weight: 700;
+font-size: 14px;
+margin-top: 3px;
+width: 158px;
+line-height: 16px;
+word-spacing: -3px;
+`
+
+export const PostBtnSection = styled.div`
+margin-top: 9px;
+margin-bottom: 8px;
+`
+
+export const PostRecommand = styled.button`
+width: 59.14px;
+height: 27px;
+font-size: 14px;
+color: white;
+background-color: #6CD2D7;
+border:none;
+border-radius: 15px;
+cursor: pointer;
+`
+
+export const PostScrape = styled.button`
+width: 59.14px;
+height: 27px;
+font-size: 14px;
+color: white;
+background-color: #6CD2D7;
+border:none;
+border-radius: 15px;
+margin-left: 6.72px;
+cursor:pointer;
+`
+
+export const CommentBox = styled.div`
+border-bottom: 1px solid #555555;
+`
+
+export const Date = styled.span`
+opacity: 0.5;
+`
+
+export const BtnBar = styled.div`
+position: absolute;
+top:10px;
+right: 3px;
+font-size: 14px;
+opacity: 50%;
+word-spacing: -3px;
+
+`
+
+export const ReComment = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
+padding-top: 10px;
+padding-bottom: 8px;
+font-size: 14px;
+line-height: 16px;
+border: 1px solid #C5C5C5;
+border-bottom: none;
+position: relative;
+width: 880px;
+margin: 0 auto;
+background-color: #E5E5E5;
+`
+
+export const CommentSpan= styled.span`
+  cursor: pointer;
 `

@@ -19,4 +19,16 @@ export const SideContent = styled.button`
   width: 100px;
   font-size: 14px;
   cursor: pointer;
+  word-spacing: -3px;
+`;
+
+export const SideBoldContent = styled.button`
+  margin: 12px;
+  background-color: white;
+  border: none;
+  width: 100px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight:bold;
+  word-spacing: -3px;
 `;

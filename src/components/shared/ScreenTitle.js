@@ -13,7 +13,7 @@ const SScreenTitle = styled.div`
   flex-direction: column;
   align-items: center;
   div {
-    width: 96%;
+    width: 910.07px;
     height: 2px;
     background-color: #0b665c;
   }
