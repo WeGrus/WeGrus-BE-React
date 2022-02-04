@@ -81,4 +81,10 @@ export const ProfileLink = styled(Link)`
   justify-content: center;
   border-radius: 50%;
   background-color: #f5f5f5;
+  overflow: hidden;
+  img {
+    height: 33px;
+    width: 33px;
+    object-fit: cover;
+  }
 `;

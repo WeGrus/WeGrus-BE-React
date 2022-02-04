@@ -3,15 +3,12 @@ import AuthLayout from "../auth/AuthLayout";
 import Button from "../auth/Button";
 import HeaderContainer from "../auth/HeaderContainer";
 import PageTitle from "../shared/PageTitle";
-import Input from "../auth/Input";
 import axios from "axios";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { API_HOST } from "../../App";
 import { Link, useNavigate } from "react-router-dom";
 import { actionCreators, logInUser, setEmail } from "../../store";
-import BottomButton from "../auth/BottomButton";
 
 function mapStateToProps(state) {
   console.log(state);
@@ -70,7 +67,7 @@ function EmailAuth({ setEmail }) {
     data.email = `${data.email}@inha.edu`;
     const EMAIL = data.email;
 
-    axios.post(`${API_HOST}signup/check/email?email=${EMAIL}`).then((res) => {
+    axios.post(`/signup/check/email?email=${EMAIL}`).then((res) => {
       const STATUS = res.data.data.status;
       if (STATUS === "success") {
         setEmail(data.email);
@@ -91,7 +88,7 @@ function EmailAuth({ setEmail }) {
 
     if (verificationKey) {
       axios
-        .post(`${API_HOST}signup/verify?verificationKey=${verificationKey}`)
+        .post(`/signup/verify?verificationKey=${verificationKey}`)
         .then((res) => {
           const CERTIFIED = res.data.data.certified;
           console.log(CERTIFIED);

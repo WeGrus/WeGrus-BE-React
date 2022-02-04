@@ -6,11 +6,10 @@ import Button from "../auth/Button";
 import HeaderContainer from "../auth/HeaderContainer";
 import Input from "../auth/Input";
 import PageTitle from "../shared/PageTitle";
-import { API_HOST } from "../../App";
 import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
-import { actionCreators, logUserIn } from "../../store";
+import { actionCreators, userSignUp } from "../../store";
 
 /*function Signupo() {
   const location = useLocation();
@@ -151,9 +150,15 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    logUserIn: (academicStatus, department, grade, name, phone) =>
+    userSignUp: (academicStatus, department, grade, name, phone) =>
       dispatch(
-        actionCreators.logUserIn(academicStatus, department, grade, name, phone)
+        actionCreators.userSignUp(
+          academicStatus,
+          department,
+          grade,
+          name,
+          phone
+        )
       ),
   };
 }
@@ -191,13 +196,11 @@ function Signup(props) {
   const [emailAuth, setEmailAuth] = useState();
 
   useEffect(() => {
-    axios
-      .get(`${API_HOST}signup/validate/email?email=${props.email}`)
-      .then((res) => {
-        const result = res.data.data.status;
-        console.log(result);
-        setEmailAuth(result);
-      });
+    axios.get(`/signup/validate/email?email=${props.email}`).then((res) => {
+      const result = res.data.data.status;
+      console.log(result);
+      setEmailAuth(result);
+    });
   }, []);
 
   const onSubmit = ({ academicStatus, department, grade, name, phone }) => {
@@ -219,7 +222,7 @@ function Signup(props) {
 
     axios
       .post(
-        `${API_HOST}signup`,
+        `/signup`,
         JSON.stringify({
           academicStatus: STATUS[academicStatus],
           department: DEPARTMENTS[department],
@@ -233,7 +236,7 @@ function Signup(props) {
         { headers: { "Content-Type": "application/json" } }
       )
       .then((res) => {
-        logUserIn(body);
+        props.userSignUp(body);
         console.log(res);
       })
       .catch((res) => console.log(res));

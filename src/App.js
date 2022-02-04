@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
-
 import Study from "./components/screens/Study";
 import Page from "./components/screens/Page";
 import About from "./components/screens/About";
@@ -16,28 +15,77 @@ import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
 import { HelmetProvider } from "react-helmet-async";
 import EmailAuth from "./components/screens/EmailAuth";
-import React from "react";
+import React, { useEffect } from "react";
 import OAuth from "./components/auth/OAuth";
 import Loading from "./components/screens/Loading";
 import { connect } from "react-redux";
 import axios from "axios";
 import Signup from "./components/screens/Signup";
+import { actionCreators } from "./store";
 
-axios.defaults.baseURL = 'http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/';
+axios.defaults.baseURL =
+  "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
 //axios에서 baseURL을 지정해서 반복하는 코드를 없애는 것입니다. 이것때문에 기능이 안되신다면 말씀해주세요.
 
-export const API_HOST =
-  "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
-
 function mapStateToProps(state) {
+  console.log(state);
   return state;
 }
 
-function App(props) {
-  // const authenticated = props.userReducer.authenticated;
-  const authenticated = true;
-  console.log(authenticated); 
+function mapDispatchToProps(dispatch) {
+  return {
+    putUserInfo: (
+      id,
+      email,
+      name,
+      studentId,
+      department,
+      grade,
+      phone,
+      createdDate,
+      introduce,
+      imageUrl,
+      academicStatus,
+      roles
+    ) =>
+      dispatch(
+        actionCreators.putUserInfo(
+          id,
+          email,
+          name,
+          studentId,
+          department,
+          grade,
+          phone,
+          createdDate,
+          introduce,
+          imageUrl,
+          academicStatus,
+          roles
+        )
+      ),
+  };
+}
 
+function App(props) {
+  const authenticated = props.userReducer.authenticated;
+
+
+  useEffect(() => {
+    if (authenticated) {
+      axios
+        .get(`/members/info/${props?.userReducer?.id}`, {
+          headers: { Authorization: `Bearer ${props?.userReducer?.token}` },
+        })
+        .then((res) => {
+          const INFO = res.data.data.info;
+          const INFO_ARRAY = Object.values(INFO);
+
+          props.putUserInfo(...INFO_ARRAY);
+        })
+        .catch(console.log("no user info"));
+    }
+  }, [authenticated]);
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -76,9 +124,16 @@ function App(props) {
             )}
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/oauth/kakao/callback" element={<OAuth />} />
-          <Route path="/login/email-auth" element={<EmailAuth />} />
+          {!props?.userReducer?.authenticated ? (
+            <>
+              <Route path="/oauth/kakao/callback" element={<OAuth />} />
+              <Route path="/login/email-auth" element={<EmailAuth />} />
+              <Route path="/signup" element={<Signup />} />
+            </>
+          ) : (
+            <Route path="/" element={<About />} />
+          )}
+
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>
@@ -86,4 +141,4 @@ function App(props) {
   );
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

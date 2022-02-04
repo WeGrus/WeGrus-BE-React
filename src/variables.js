@@ -7,9 +7,6 @@ export const initialState = {
   name: null,
   phone: null,
   userId: null,
-  //token: null,
+  token: null,
 };
 export const isOperator = true;
-export const InhaAuth = false;
-export const isEmailAuth = false;
-
