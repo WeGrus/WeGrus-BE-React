@@ -55,7 +55,6 @@ const postData = [
     comment: 53,
 
     isNotice: true
-=======
 
   },
   {
@@ -69,7 +68,6 @@ const postData = [
     comment: 53,
 
     isNotice: true
-=======
 
   },
   {
