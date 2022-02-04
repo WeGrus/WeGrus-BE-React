@@ -1227,7 +1227,6 @@ function Board(props) {
 
         <Pagination
           total = {posts.length}
-          limit={limit}
           page={page}
           setPage={setPage}
         />

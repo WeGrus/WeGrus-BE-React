@@ -1,70 +1,9 @@
 import React from "react";
-import styled from "styled-components";
+import {PaginationSection,Pagebtn,BtnSpan,BtnBox,MovePageInput,MovePageSubmit} from "./PaginationElements"
 
 
-const PaginationSection = styled.nav`
-width:max-content;
-margin: auto;
-margin-top: 34px;
-`
-const Pagebtn = styled.button`
-width: 20px;
-border: none;
-background-color: white;
-&:hover{
-  font-weight: 700;
-  cursor: pointer;
-  transform: translateY(-2px);
-}
-&[aria-current] {
-  background: deeppink;
-  font-weight: bold;
-  cursor: revert;
-  transform: revert;
-}
-`
-const BtnSpan = styled.span`
-  position:relative;
-  
-`
-
-const BtnBox = styled.div`
-position:absolute;
-width: 120px;
-height: 30px;
-bottom: 17px;
-left: 0px;
-display: none;
-font-size: 14px;
-border: 1px solid;
-border-color: #ccc #c6c6c6 #c3c3c3 #ccc;
-border-radius: 10px
-`
-
-const MovePageInput = styled.input`
-margin-top: 4px;
-margin-left: 9px;
-display: inline-block;
-width: 40px;
-border: 1px solid;
-border-color: #ccc #c6c6c6 #c3c3c3 #ccc;
-`
-const MovePageSubmit = styled.button`
-display: inline-block;
-width: 44px;
-padding: 0px;
-margin-left: 8px;
-border-radius: 3px;
-font-size: 13px;
-background: linear-gradient(to bottom,#fff 0,#f3f3f3 100%);
-border-color: #ccc #c6c6c6 #c3c3c3 #ccc;
-`
-
-
-
-
-function Pagination({ total, limit, page, setPage }) {
-    const totalNumPages = Math.ceil(total / limit);
+function Pagination({ total, page, setPage }) {
+    const totalNumPages = Math.ceil(total / 19);
     const numPages = (totalNumPages>4)?5:totalNumPages
     const [current, setCurrent] = React.useState(page)
     const displayRightEl = React.useRef(null)

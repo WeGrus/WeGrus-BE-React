@@ -156,14 +156,19 @@ margin-left: 7px;
 `
 
 export const Grade = styled.div`
-width: 28px;
+width: 40px;
 text-align: center;
-margin-left: 25px;
+margin-left: 45px;
+position: relative;
+text-align: left;
+word-spacing: -3px;
 `
 export const StudentId = styled.div`
 width: 63px;
 text-align: center;
-margin-left: 25px;
+margin-left: 45px;
+position: relative;
+word-spacing: -3px;
 `
 export const Major = styled.div`
 width: 100px;
@@ -175,19 +180,24 @@ margin-left: 25px;
 text-align: center;
 `
 export const Name = styled.div`
-width: 79px;
+width: 80px;
 text-align: center;
-margin-left: 25px;
+margin-left: 45px;
+position: relative;
 `
 export const Role = styled.div`
-width: 56px;
-text-align: center;
-margin-left: 25px;
+width: 64px;
+text-align: left;
+margin-left: 45px;
+word-spacing: -3px;
+position: relative;
 `
 export const Attendance = styled.div`
-width: 30px;
-text-align: center;
-margin-left: 25px;
+width: 42px;
+text-align: left;
+margin-left: 45px;
+word-spacing: -3px;
+position: relative;
 `
 export const Age = styled.div`
 width: 28px;
@@ -199,6 +209,36 @@ width: 28px;
 text-align: center;
 margin-left: 25px;
 height: 16px;
+`
+
+export const PhoneNumber = styled.div`
+width: 100px;
+position: relative;
+margin-left: 45px;
+word-spacing: -10px;
+`
+
+export const Gender = styled.div`
+width: 42px;
+margin-left: 45px;
+position: relative;
+word-spacing: -3px;
+text-align: left;
+`
+
+export const Check = styled.div`
+margin-left: 30px;
+width: 30px;
+`
+
+export const CheckBtn = styled.div`
+margin-left: 30px;
+width: 30px;
+height: 16px;
+background-color: #6CD2D7;
+border: none;
+border-radius: 15px;
+cursor: pointer;
 `
 
 export const Withdraw = styled.div`
@@ -214,9 +254,42 @@ margin: 0 auto;
 font-size: 14px;
 line-height: 16.41px;
 border-bottom: 1px solid black;
+display: flex;
+align-items:center;
 `
 export const PostCotent = styled.div`
-padding-top: 8px;
+align-items:center;
 display: flex;
 flex-direction: row;
+`
+
+export const PostRole = styled.div`
+width: 64px;
+text-align: center;
+margin-left: 45px;
+word-spacing: -3px;
+position: relative;
+`
+
+export const PostAttendance = styled.div`
+width: 42px;
+text-align: center;
+margin-left: 45px;
+word-spacing: -3px;
+position: relative;
+`
+
+export const PostGender = styled.div`
+width: 42px;
+margin-left: 45px;
+position: relative;
+word-spacing: -3px;
+text-align: center;
+`
+
+export const InforSelection = styled.img`
+width: 8px;
+position: absolute;
+right: 0px;
+top: 3px;
 `

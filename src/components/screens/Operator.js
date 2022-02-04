@@ -3,10 +3,22 @@ import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
 import { Content } from "../shared/Content";
-import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,InforBar,InforContents,Number,
-  Grade,StudentId,Major,Apply,Name,Role,Attendance,Age,Permission,Withdraw,PostInforBar,PostCotent} from "./../shared/BoardElement.js"
+import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,InforBar,InforContents,
+  Grade,StudentId,Name,Role,Attendance,PostInforBar,PhoneNumber,Gender,Check,CheckBtn,PostCotent,PostRole,PostAttendance,PostGender,
+  InforSelection} from "./../shared/BoardElement.js"
 import { useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
+import styled from "styled-components";
+import img from './../../images/Polygon.jpg'
+
+const Number = styled.div`
+width: 40px;
+text-align: left;
+margin-left: 44px;
+position: relative;
+word-spacing: -3px;
+`
+
 
 const subCategory = [
   { filter: "회원 목록 조회" },
@@ -19,11 +31,9 @@ const subCategory = [
 function Operator() {
 
   const [target, setTarget] = React.useState("회원 목록 조회");
-  const [test, setTest] = React.useState("")
   const [page, setPage] = React.useState(1);
   React.useEffect(()=>{
-    console.log(target);
-    setTest("test")
+    setPage(1)
   },[target])
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -32,7 +42,7 @@ function Operator() {
   return (
     <>
     <PageTitle title="운영" />
-    <SideBar posts={subCategory} getFilter={setTarget}></SideBar>
+    <SideBar posts={subCategory} getFilter={setTarget} target={target}></SideBar>
     <Content>
     <ScreenTitle>{target}</ScreenTitle>
     <SearchBarSection>
@@ -48,34 +58,32 @@ function Operator() {
         </SearchBar>
       </SearchBarForm>
     </SearchBarSection>
+
     <InforBar>
       <InforContents>
-        <Number>번호</Number>
-        <Grade>학년</Grade>
-        <StudentId>학번</StudentId>
-        <Major>학과</Major>
-        <Apply>소그룹 희망</Apply>
-        <Name>이름</Name>
-        <Role>회원직책</Role>
-        <Attendance>재학</Attendance>
-        <Age>나이</Age>
-        <Permission>허가</Permission>
-        <Withdraw>탈퇴</Withdraw>
+        <Number>번호<InforSelection src={img}></InforSelection></Number>
+        <Grade>학년<InforSelection src={img}></InforSelection></Grade>
+        <StudentId>학번<InforSelection src={img}></InforSelection></StudentId>
+        <PhoneNumber>연락처<InforSelection src={img}></InforSelection></PhoneNumber>
+        <Name>이름<InforSelection src={img}></InforSelection></Name>
+        <Role>회원직책<InforSelection src={img}></InforSelection></Role>
+        <Attendance>학적<InforSelection src={img}></InforSelection></Attendance>
+        <Gender>성별<InforSelection src={img}></InforSelection></Gender>
+        {(target !== "회원 목록 조회")?<Check>버튼</Check>:null}
       </InforContents>
     </InforBar>
+
     <PostInforBar>
       <PostCotent>
-        <Number></Number>
-        <Grade></Grade>
-        <StudentId></StudentId>
-        <Major></Major>
-        <Apply></Apply>
-        <Name></Name>
-        <Role></Role>
-        <Attendance></Attendance>
-        <Age></Age>
-        <Permission></Permission>
-        <Withdraw></Withdraw>
+        <Number>3548</Number>
+        <Grade>2</Grade>
+        <StudentId>15487145</StudentId>
+        <PhoneNumber>101-1542-1424</PhoneNumber>
+        <Name>김승태김승태김승태</Name>
+        <PostRole>운영진</PostRole>
+        <PostAttendance>휴학</PostAttendance>
+        <PostGender>남</PostGender>
+        {(target !== "회원 목록 조회")?<CheckBtn></CheckBtn>:null}
       </PostCotent>
     </PostInforBar>
 

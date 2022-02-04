@@ -19,6 +19,7 @@ export const SideContent = styled.button`
   width: 100px;
   font-size: 14px;
   cursor: pointer;
+  word-spacing: -3px;
 `;
 
 export const SideBoldContent = styled.button`
@@ -29,4 +30,5 @@ export const SideBoldContent = styled.button`
   font-size: 14px;
   cursor: pointer;
   font-weight:bold;
+  word-spacing: -3px;
 `;
