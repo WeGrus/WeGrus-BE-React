@@ -3,10 +3,8 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 import Cookies from "universal-cookie";
 import { actionCreators } from "../../store";
-import getUserInfoFn from "../shared/getUserInfoFn";
 
 const Redirecting = styled.div`
   width: 100vh;
@@ -58,17 +56,10 @@ function OAuth(props) {
         /*axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${ACCESS_TOKEN}`;*/
-        /* axios
-          .get(`/members/info/${USER_ID}`, {
-            headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
-          })
-          .then((res) => {
-            const INFO = res.data.data.info;
-          });*/
 
         //setRefreshTokenToCookie(ACCESS_TOKEN);
 
-        //navigate("/");
+        navigate("/");
       } else {
         console.log("what the fuck are you doin'");
       }
