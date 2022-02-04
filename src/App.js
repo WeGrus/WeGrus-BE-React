@@ -22,6 +22,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import Signup from "./components/screens/Signup";
 import { actionCreators } from "./store";
+import { usePrompt } from "./components/Blocker";
 
 axios.defaults.baseURL =
   "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -68,8 +69,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function App(props) {
-  const authenticated = props.userReducer.authenticated;
-
+  const authenticated = props?.userReducer?.authenticated;
 
   useEffect(() => {
     if (authenticated) {
@@ -86,6 +86,7 @@ function App(props) {
         .catch(console.log("no user info"));
     }
   }, [authenticated]);
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -124,7 +125,7 @@ function App(props) {
             )}
           </Route>
           <Route path="/login" element={<Login />} />
-          {!props?.userReducer?.authenticated ? (
+          {!authenticated ? (
             <>
               <Route path="/oauth/kakao/callback" element={<OAuth />} />
               <Route path="/login/email-auth" element={<EmailAuth />} />
