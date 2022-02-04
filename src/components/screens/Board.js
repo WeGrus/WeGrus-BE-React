@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
 import PostBar from "../shared/PostBar";
 import { connect } from "react-redux";
+import axios from "axios";
 import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,SearchBarFilter,CreateBtnLink,
   InforBar,InforContents,Number,Categorization,Title,Writer,Date,Hits,Recommendation,Comment} from "./../shared/BoardElement"
 
@@ -27,18 +28,16 @@ padding-top: 8px;
 display: flex;
 flex-direction: row;
 `
-
-
-
+const boardCategory = "BOARD";
 
 const subCategory = [
-  { filter: "자유게시판" },
-  { filter: "익명게시판" },
-  { filter: "정보 공유" },
-  { filter: "프로젝트 모집" },
-  { filter: "취미 톡방" },
-  { filter: "건의사항" },
-  { filter: "질문/답변" },
+  { filter: "자유게시판", boardType: "FREE"},
+  { filter: "익명게시판", boardType: "PERSONAL"},
+  { filter: "정보 공유", boardType: "INFO"},
+  { filter: "프로젝트 모집", boardType: "PROJECT"},
+  { filter: "취미 톡방",boardType: "HOBBY"},
+  { filter: "건의사항",boardType: "SUGGEST "},
+  { filter: "질문/답변",boardType: "black"},
 ];
 
 const postData = [
@@ -1148,7 +1147,7 @@ function Board(props) {
   }
 
   const [target, setTarget] = React.useState(subBarTarget); // 게시판중 사이드바와 분류를 나눔. 즉 subCategory
-  const [posts, setPosts] = React.useState(postData.filter(data=> data.categorization === target));
+   const [posts, setPosts] = React.useState(postData.filter(data=> data.categorization === target));
   const [limit, setLimit] = React.useState(19);
   const [page, setPage] = React.useState(1);
   const [selected, setSelected] = React.useState("")
@@ -1165,7 +1164,6 @@ function Board(props) {
 
   React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
     let test = [...postData.filter(data=> data.categorization === target)]
-    
     setPosts([...test])
     if(input.state != null&&input.state.page != undefined){
       setPage(input.state.page)
@@ -1173,6 +1171,18 @@ function Board(props) {
     else{
       setPage(1)
     }
+    
+    const boardType = subCategory.find(element => element.filter == target).boardType
+
+    axios.get(`/boards/${boardType}?page=${page}&pageSize=20&type=lastest`,{
+      headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+    });
   }, [target]);
 
   return (

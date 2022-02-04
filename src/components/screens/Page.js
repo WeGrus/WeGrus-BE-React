@@ -129,7 +129,6 @@ function Page(props) {
   }
 
   window.onpopstate = function(event){
-    console.log("페이지JS의 페이지값:"+filter.page);
     Navigate("/board",{state:{category:filter.subCategory, page:filter.page}})
   }
 

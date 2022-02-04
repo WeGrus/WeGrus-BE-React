@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {PostInforBar,PostCotent,Categorization,Title,Writer,Date,Hits,Recommendation,Comment} from "./BoardElement"
 import { faVolumeOff  } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { HashLink } from 'react-router-hash-link';
+import { HashLink   } from 'react-router-hash-link';
 
 const Number = styled.div`
 min-width: 65px;
@@ -23,7 +23,6 @@ font-weight: bold;
 function PostBar({target,page,data}) {
     const limit = 19;
     const offset = (page-1)*limit;
-    console.log("postbar의 페이지값"+page);
     const postdata = data.slice(offset, offset+limit).map((data) => 
   
     <PostInforBar key={data.number}>
@@ -33,16 +32,18 @@ function PostBar({target,page,data}) {
         :
         <Number>{data.number}</Number>
         }
-        <Link to="1" state={{ category: "게시판", subCategory:  target, page: page }}  key={data.number}>
+     
         <Title>
+        <Link to="1" state={{ category: "게시판", subCategory:  target, page: page }}  key={data.number}>
         {data.title}
-        <HashLink to="1#commentTag" state={{ category: "게시판", subCategory:  target  }}  key={data.number}>
+        </Link> 
+        <HashLink  to="1#commentTag" state={{ category: "게시판", subCategory:  target  }}  key={data.number}>
           <Test>
             [{data.comment}]
             </Test>
-        </HashLink>
+        </HashLink >
         </Title>
-        </Link> 
+    
        
         <Writer>{data.writer}</Writer>
         <Date>{data.date}</Date>
