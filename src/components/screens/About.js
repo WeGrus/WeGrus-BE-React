@@ -46,7 +46,6 @@ const IGImage = styled.div`
   display: flex;
   justify-content: center;
   img {
-    opacity: 90%;
     width: 100%;
     object-fit: cover;
   }
@@ -54,16 +53,6 @@ const IGImage = styled.div`
 
 const DescriptionBox = styled.div`
   width: 922px;
-  height: max-content;
-  background-color: #f5f5f5;
-  overflow: hidden;
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const SmallDescriptionBox = styled.div`
-  width: 456px;
   height: max-content;
   background-color: #f5f5f5;
   overflow: hidden;
@@ -143,7 +132,30 @@ const SNSLink = styled.a`
 
 const TextBox = styled.div`
   width: 100%;
-  padding: 30px;
+  padding: 65px;
+`;
+
+const BoxGroup = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+const SmallDescriptionBox = styled.div`
+  width: 450px;
+  height: 260px;
+  background-color: #f5f5f5;
+  overflow: hidden;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const Hashtag = styled.div`
+  width: 400px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 function About() {
@@ -153,7 +165,9 @@ function About() {
       <AboutContentBox>
         <TitleBox>
           <AboutTitle>| IGRUS는 어떤 동아리인가요?</AboutTitle>
-          <BtnLink to="/login">동아리 가입 신청</BtnLink>
+          <BtnLink to="https://docs.google.com/forms/d/e/1FAIpQLSeZRvnQlGu4h7hEwiM7migxQ069AurA_jZK7EXHKFo94AGvBQ/closedform">
+            동아리 가입 신청
+          </BtnLink>
         </TitleBox>
         <DescriptionBox>
           <IGImage>
@@ -198,11 +212,30 @@ function About() {
         </LinkBox>
         <TitleBox>
           <AboutTitle>| 어떤 활동들이 있나요?</AboutTitle>
+          <Hashtag>
+            <AboutTitle># 소모임</AboutTitle>
+            <AboutTitle># 스터디</AboutTitle>
+            <AboutTitle># 팀 프로젝트</AboutTitle>
+            <AboutTitle>And more...</AboutTitle>
+          </Hashtag>
         </TitleBox>
-        <SmallDescriptionBox>sfsfs</SmallDescriptionBox>
-        <SmallDescriptionBox>sfsfs</SmallDescriptionBox>
-        <SmallDescriptionBox>sfsfs</SmallDescriptionBox>
-        <SmallDescriptionBox>sfsfs</SmallDescriptionBox>
+        <AboutTitle># 소모임</AboutTitle>
+        <BoxGroup>
+          <SmallDescriptionBox>해킹 소모임 IXPLOIT</SmallDescriptionBox>
+          <SmallDescriptionBox>게임 제작 소모임 IGDC</SmallDescriptionBox>
+        </BoxGroup>
+        <BoxGroup>
+          <SmallDescriptionBox>알고리즘 소모임 Algorus</SmallDescriptionBox>
+          <SmallDescriptionBox>웹/앱 소모임 Webgrus</SmallDescriptionBox>
+        </BoxGroup>
+        <AboutTitle># 스터디</AboutTitle>
+        <DescriptionBox>
+          <TextBox></TextBox>
+        </DescriptionBox>
+        <AboutTitle># 팀 프로젝트</AboutTitle>
+        <DescriptionBox>
+          <TextBox></TextBox>
+        </DescriptionBox>
       </AboutContentBox>
     </>
   );
