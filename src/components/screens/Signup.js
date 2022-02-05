@@ -194,18 +194,16 @@ const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
 function Signup(props) {
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState();
-  axios.get(`/signup/validate/email?email=${props.email}`).then((res) => {
-    const result = res.data.data.status;
-    console.log(res.data.data);
-    setEmailAuth(result);
-  });
-  /*useEffect(() => {
-    axios.get(`/signup/validate/email?email=${props.email}`).then((res) => {
-      const result = res.data.data.status;
-      console.log(res);
-      setEmailAuth(result);
-    });
-  }, [emailAuth]);*/
+
+  useEffect(() => {
+    axios
+      .get(`/signup/validate/email?email=${props.userReducer.email}`)
+      .then((res) => {
+        const result = res.data.data.status;
+
+        console.log(result);
+      });
+  }, []);
 
   const onSubmit = ({ academicStatus, department, grade, name, phone }) => {
     phone = phone
@@ -215,32 +213,24 @@ function Signup(props) {
     const body = {
       academicStatus: STATUS[academicStatus],
       department: DEPARTMENTS[department],
-      email: props.email,
+      email: props.userReducer.email,
       grade: GRADE[grade],
       name,
       phone,
-      userId: props.userId,
+      userId: props.userReducer.userId,
     };
 
-    console.log(JSON.stringify(body));
+    console.log(JSON.stringify(...body));
 
     axios
       .post(
         "/signup",
-        JSON.stringify({
-          academicStatus: STATUS[academicStatus],
-          department: DEPARTMENTS[department],
-          email: props.email,
-          grade: GRADE[grade],
-          name: name,
-          phone: phone,
-          userId: props.userId,
-        }),
+        JSON.stringify(body),
 
         { headers: { "Content-Type": "application/json" } }
       )
       .then((res) => {
-        props.userSignUp(body);
+        props.userSignUp(...body);
         console.log(res);
       })
       .catch((res) => console.log(res));

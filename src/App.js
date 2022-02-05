@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import Signup from "./components/screens/Signup";
 import { actionCreators } from "./store";
-import { usePrompt } from "./components/Blocker";
+import jwt_decode from "jwt-decode";
 
 axios.defaults.baseURL =
   "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -69,12 +69,17 @@ function mapDispatchToProps(dispatch) {
 }
 
 function App(props) {
-  const authenticated = props?.userReducer?.authenticated;
+  // const authenticated = props?.userReducer?.authenticated;
+  const token = props?.userReducer?.token;
 
   useEffect(() => {
-    if (authenticated) {
-      axios
-        .get(`/members/info/${props?.userReducer?.id}`, {
+    if (token) {
+      //store에 토큰이 있을 경우(=로그인 했을 경우)
+      var decoded = jwt_decode(token);
+      //토큰을 디코딩하고
+      const ID = decoded.sub;
+      axios //유저 정보를 가져옵니다.
+        .get(`/members/info/${ID}`, {
           headers: { Authorization: `Bearer ${props?.userReducer?.token}` },
         })
         .then((res) => {
@@ -82,10 +87,11 @@ function App(props) {
           const INFO_ARRAY = Object.values(INFO);
 
           props.putUserInfo(...INFO_ARRAY);
+          //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
         })
         .catch(console.log("no user info"));
     }
-  }, [authenticated]);
+  }, [token]);
 
   return (
     <HelmetProvider>
@@ -93,7 +99,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {authenticated ? (
+            {token ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
@@ -125,7 +131,7 @@ function App(props) {
             )}
           </Route>
           <Route path="/login" element={<Login />} />
-          {!authenticated ? (
+          {!token ? (
             <>
               <Route path="/oauth/kakao/callback" element={<OAuth />} />
               <Route path="/login/email-auth" element={<EmailAuth />} />

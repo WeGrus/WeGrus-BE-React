@@ -11,6 +11,7 @@ const DELETE_TOKEN = "DELETE_TOKEN";
 const PUT_USER_INFO = "PUT_USER_INFO";
 
 const initialState = {
+  //userReducer의 기본값입니다.
   authenticated: false,
   id: null,
   academicStatus: null,
@@ -30,18 +31,21 @@ const initialState = {
 };
 
 const setKakaoId = (userId) => {
+  //카카오 로그인 후 kakao_id를 다음 컴포넌트에 넘겨주는 액션 생성함수입니다.
   return {
     type: SET_ID,
     userId,
   };
 };
 const setEmail = (email) => {
+  //이메일 인증 후 회원가입 시 이메일 정보를 signup 컴포넌트에 넘겨주기 위함
   return {
     type: SET_EMAIL,
     email,
   };
 };
 const userSignUp = (academicStatus, department, grade, name, phone) => {
+  //정보 입력 후 회원가입
   return {
     type: LOGIN,
     result: true,
