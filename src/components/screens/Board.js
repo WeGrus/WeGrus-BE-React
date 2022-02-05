@@ -183,7 +183,7 @@ function Board(props) {
           </SearchBarFilter>
 
           <CreateBtnLink
-            to="/board/write/1234"
+            to={`/board/write/${1}`}
             state={{ category: "커뮤니티", subCategory: target }}
           >
             create

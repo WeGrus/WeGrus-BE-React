@@ -79,7 +79,7 @@ function Page(props) {
   const [countOfRecommend, setCountOfRecommend] = React.useState(0); // 게시글 추천수
   const [countOfScrape, setCountOfScrape] = React.useState(0); // 게시글 스크랩수
   const [countOfComment, setCountOfComment] = React.useState(0); // 게시글 댓글수
-  const [isRecommend, setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
+  const [isRecommend, setIsRecommend] = React.useState(checkRecommend(false)); // 게시글 추천 유무 확인에 따라 값 변경.
   const Navigate = useNavigate();
   let data, time;
 
