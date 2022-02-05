@@ -57,11 +57,16 @@ const LoginForm = styled.form`
   flex-direction: column;
 `;
 
-function EmailAuth({ setEmail }) {
-  const { handleSubmit, register, formState } = useForm();
+function EmailAuth(props) {
   let navigate = useNavigate();
 
+  const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState(false);
+
+  if (!props.userReducer.userId) {
+    window.alert("유효하지 않은 접근입니다. 다시 시도해주세요.");
+    navigate("/");
+  }
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
@@ -70,7 +75,7 @@ function EmailAuth({ setEmail }) {
     axios.post(`/signup/check/email?email=${EMAIL}`).then((res) => {
       const STATUS = res.data.data.status;
       if (STATUS === "success") {
-        setEmail(data.email);
+        props.setEmail(data.email);
         window.open("https://mail.google.com/mail/u/1/#inbox", "_blank");
         setEmailAuth(true);
       } else {

@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthLayout from "../auth/AuthLayout";
 import Button from "../auth/Button";
 import HeaderContainer from "../auth/HeaderContainer";
@@ -194,14 +194,18 @@ const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
 function Signup(props) {
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState();
-
-  useEffect(() => {
+  axios.get(`/signup/validate/email?email=${props.email}`).then((res) => {
+    const result = res.data.data.status;
+    console.log(res.data.data);
+    setEmailAuth(result);
+  });
+  /*useEffect(() => {
     axios.get(`/signup/validate/email?email=${props.email}`).then((res) => {
       const result = res.data.data.status;
-      console.log(result);
+      console.log(res);
       setEmailAuth(result);
     });
-  }, []);
+  }, [emailAuth]);*/
 
   const onSubmit = ({ academicStatus, department, grade, name, phone }) => {
     phone = phone
@@ -222,7 +226,7 @@ function Signup(props) {
 
     axios
       .post(
-        `/signup`,
+        "/signup",
         JSON.stringify({
           academicStatus: STATUS[academicStatus],
           department: DEPARTMENTS[department],

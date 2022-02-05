@@ -48,11 +48,11 @@ function OAuth(props) {
       .then((res) => {
         const KAKAO_ID = res.data.data.userId;
         const RESULT = res.data.data.status;
-        const USER_ID = res.data.data.member.id;
-        console.log(res);
-        props.setKakaoId(KAKAO_ID, USER_ID);
 
-        console.log(KAKAO_ID, RESULT);
+        console.log(res);
+        props.setKakaoId(KAKAO_ID);
+
+        //console.log(KAKAO_ID, RESULT);
         if (RESULT === "fail") {
           navigate("/login/email-auth");
         } else if ("success") {
@@ -69,13 +69,16 @@ function OAuth(props) {
 
           navigate("/");
         } else {
+          window.alert("로그인 실패하였습니다. 다시 시도해주세요.");
+          navigate("/");
           console.log("what the fuck are you doin'");
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         console.log("Not Found");
-        window.alert("페이지를 찾을 수 없습니다.");
-        navigate("/");
+        //window.alert("페이지를 찾을 수 없습니다.");
+        //navigate("/");
       });
   }, []);
 

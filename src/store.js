@@ -29,11 +29,10 @@ const initialState = {
   roles: null,
 };
 
-const setKakaoId = (userId, id) => {
+const setKakaoId = (userId) => {
   return {
     type: SET_ID,
     userId,
-    id,
   };
 };
 const setEmail = (email) => {
@@ -104,7 +103,6 @@ const userReducer = (state = initialState, action) => {
         ...state,
         authenticated: action.result,
         userId: action.userId,
-        id: action?.id,
       };
     case SET_EMAIL:
       return {
