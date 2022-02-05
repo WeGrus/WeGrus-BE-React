@@ -2,13 +2,13 @@ import React from "react";
 import {PaginationSection,Pagebtn,BtnSpan,BtnBox,MovePageInput,MovePageSubmit} from "./PaginationElements"
 
 
-function Pagination({ total, page, setPage }) {
-    const totalNumPages = Math.ceil(total / 19);
+function Pagination({ total, limit ,page, setPage }) {
+    const totalNumPages = Math.ceil(total / limit);
     const numPages = (totalNumPages>4)?5:totalNumPages
     const [current, setCurrent] = React.useState(page)
     const displayRightEl = React.useRef(null)
     const displayLeftEl = React.useRef(null)
-
+    const test = null;
     const showBtnBox = (e) => {
       if(e.target.dataset.direction == "right"){
         if(displayRightEl.current.style.display ===  "block"){

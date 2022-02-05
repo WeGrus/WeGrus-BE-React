@@ -33,7 +33,7 @@ flex-direction: row;
 const boardCategory = "BOARD";
 
 
-const subCategory = [
+const subCategory = [ //서브 카테고리는 게시판 조회로 지정할 예정.
   { filter: "자유게시판", boardType: "FREE"},
   { filter: "익명게시판", boardType: "PERSONAL"},
   { filter: "정보 공유", boardType: "INFO"},
@@ -43,7 +43,7 @@ const subCategory = [
   { filter: "질문/답변",boardType: "black"},
 ];
 
-const postData = [
+const postData = [ // 게시물 조회 기능 동작을 위한 테스트 데이터 이후 삭제할 예정.
   {
     number: 1,
     categorization: "프로젝트 모집",
@@ -626,7 +626,7 @@ const postData = [
 ];
 
 
-const selectDate = [
+const selectDate = [ // 게시물 나열할 때, 어떤 순으로 나열할지.
   "최신순",
   "추천순",
   "댓글순",
@@ -644,7 +644,7 @@ function Board(props) {
   let subBarTarget; // 페이지에서 뒤로가기를 누르거나 목록을 누를 시 즉 subCategory
 
   if (input.state != null) {
-    subBarTarget = input.state.category;
+    subBarTarget = input.state.category; 
   } else {
     subBarTarget = "자유게시판";
   }
@@ -692,6 +692,7 @@ function Board(props) {
     <>
       <PageTitle title="커뮤니티" />
       <SideBar posts={subCategory} getFilter={setTarget} target={target}></SideBar>
+      {/* posts는 하위카테고리의 수를 나타내는 것입니다.[ex) 자유게시판, 비밀게시판 등등] target과 setTaget을 보냄으로써 bold및 target이 바뀌게 구현했습니다. */}
       <Content>
         <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
         <SearchBarSection>
@@ -725,7 +726,7 @@ function Board(props) {
           </CreateBtnLink>
         </SearchBarSection>
 
-        <InforBar>
+        <InforBar> {/* 프로필의 내가 쓴 게시글, 내가 쓴 댓글 부분에 사용하시면 좋을 듯 합니다.*/}
           <InforContents>
             <Number>번호</Number>
             <Title>제목</Title>
@@ -738,12 +739,15 @@ function Board(props) {
         </InforBar>
 
         <PostBar target={target} page={page} data={posts} />
+         {/* PostBar는 PostBar.js에서 주석달겠습니다. target은 sidebar에서 클릭한 하위카테고리입니다. */}       
 
         <Pagination
           total = {posts.length}
+          limit = {19}
           page={page}
           setPage={setPage}
         />
+        {/* total은 총 게시글의 길이. limit은 한 페이지 안의 게시글의 개수, page는 현재 페이지이고 setPage를 보내줌으로써 페이지네이션 구현했습니다.*/}
         <Outlet />
       </Content>
     </>
