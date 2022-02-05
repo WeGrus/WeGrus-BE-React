@@ -7,25 +7,19 @@ function SideBar({ posts=[], getFilter=()=>{}, target }) {
   const [boldTarget,setBoldTarget] = React.useState(0);
 
   function handleOnClick(e) {
-    // setBoldTarget(e.target.dataset.index)
-    // for (let i = 0; i < printData.length; i++) {
-    //   e.target.parentNode.childNodes[i].style.fontWeight = "";
-    // }
     getFilter(e.target.id);
   }
 
-  // if(boldEl.current){
-  //   boldEl.current.childNodes[boldTarget].style.fontWeight="bold";
-  // }
 
+  // 기존의 content.filter 에서 boardName으로 바꾸었습니다. 혹시 버그가 생기신다면 한번 확인해주세요.
   const printData = posts.map((content) => (
-    (content.filter.toString() === target)?
-    <SideBoldContent  id={content.filter.toString()} key={content.filter.toString()} onClick={handleOnClick} data-index = {posts.indexOf(content)}>
-    {content.filter}
+    (content.boardName.toString() === target)?
+    <SideBoldContent  id={content.boardName} key={content.boardName} onClick={handleOnClick} data-index = {posts.indexOf(content)}>
+    {content.boardName}
     </SideBoldContent>
     :
-    <SideContent  id={content.filter.toString()} key={content.filter.toString()} onClick={handleOnClick} data-index = {posts.indexOf(content)}>
-      {content.filter}
+    <SideContent  id={content.boardName} key={content.boardName} onClick={handleOnClick} data-index = {posts.indexOf(content)}>
+      {content.boardName}
     </SideContent>
   ));
 

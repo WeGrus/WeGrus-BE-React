@@ -288,7 +288,7 @@ width: 59.14px;
 height: 27px;
 font-size: 14px;
 color: white;
-background-color: #6CD2D7;
+background-color: ${props => (props.checked?"#0B665C":"#6CD2D7")};
 border:none;
 border-radius: 15px;
 cursor: pointer;

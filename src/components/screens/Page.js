@@ -71,17 +71,38 @@ function mapStateToProps(state) {
 }
 
 function Page(props) {
+  
   const params = useParams();
-  const filter = useLocation().state;
-
-  const [countOfRecommend, setCountOfRecommend] = React.useState(getPage.countOfRecommend); // 게시글 추천수
+  const location = useLocation().state;
+  console.log(location);
+  const [pageDate, setPageData] = React.useState(null);
+  const [countOfRecommend, setCountOfRecommend] = React.useState(0); // 게시글 추천수
+  const [countOfScrape, setCountOfScrape] = React.useState(0); // 게시글 스크랩수
+  const [countOfComment, setCountOfComment] = React.useState(0); // 게시글 댓글수
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(getPage.isRecommend)); // 게시글 추천 유무 확인에 따라 값 변경.
   const Navigate = useNavigate();
- 
+  let data, time;
+
+  React.useEffect(()=>{
+    axios.get(`/posts/${location.postId}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res.data.data.board);
+      setPageData(res.data.data.board)
+      setCountOfRecommend(res.data.data.board.postLike)
+      setCountOfScrape(0) // 스크랩 이후 수정
+      setCountOfComment(res.data.data.board.postReplies)
+    });
+  },[])
+
   const postRecommand = () => { // 게시글 추천하는 함수
     if (isRecommend === "추천취소") {
-      axios.delete(`/posts/like?postId=6`,{
-        headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+      axios.delete(`/posts/like?postId=${location.postId}`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -93,8 +114,8 @@ function Page(props) {
       setIsRecommend("추천")
     }
     else {
-      axios.post(`/posts/like?postId=6`,{},{
-        headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+      axios.post(`/posts/like?postId=${location.postId}`,{},{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -111,8 +132,8 @@ function Page(props) {
     //axios로 delete하고 다시 보드 보여주기.
     let value = window.confirm("해당게시물을 삭제하겠습니까?")
     if (value) {
-      axios.delete(`/posts?postId=5`,{
-        headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+      axios.delete(`/posts?postId=${location.postId}`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -121,7 +142,7 @@ function Page(props) {
         console.log(res);
       });
       Navigate("/board", {
-        state: { category: filter.subCategory }
+        state: { category: location.subCategory }
       })
     }
 
@@ -129,25 +150,30 @@ function Page(props) {
   }
 
   window.onpopstate = function(event){
-    Navigate("/board",{state:{category:filter.subCategory, page:filter.page}})
+    Navigate("/board",{state:{category:location.subCategory, page:location.page}})
   }
 
   return (
     <div>
+      {(pageDate!==null)?
       <Background>
         <Content>
-          <Category>{filter.category}|{filter.subCategory}</Category>
+          <Category>{location.category}|{location.subCategory}</Category>
 
           <Header>
-            <Title>{getPage.title}</Title>
-            <OtherDetail>{getPage.author}|{getPage.date}|{getPage.time}<Right>조회 143|추천 {countOfRecommend}|댓글3</Right></OtherDetail>
+            <Title>{pageDate.title}</Title>
+            <OtherDetail>{pageDate.memberName}|{pageDate.updatedDate}|{pageDate.updatedDate}<Right>조회 {pageDate.postView}|추천 {countOfRecommend}|댓글 {countOfComment}</Right></OtherDetail>
           </Header>
 
           <Description>
-            <Viewer initialValue={getPage.example} />
-            <PostInfor><span>댓글 {3}</span> | <span>추천 {24}</span> | <span>스크랩 {3}</span></PostInfor>
+            <Viewer initialValue={pageDate.content} />
+            <PostInfor><span>댓글 {countOfComment}</span> | <span>추천 {countOfRecommend}</span> | <span>스크랩 {countOfScrape}</span></PostInfor>
             <PostBtnSection>
-              <PostRecommand value="추천" onClick={postRecommand}>{isRecommend}</PostRecommand>
+            {(isRecommend === "추천취소")?
+            <PostRecommand value="추천" onClick={postRecommand} checked>{"추천"}</PostRecommand>
+            :
+            <PostRecommand value="추천" onClick={postRecommand}>{"추천"}</PostRecommand>}
+              
               <PostScrape>스크랩</PostScrape>
             </PostBtnSection>
           </Description>
@@ -157,8 +183,8 @@ function Page(props) {
           <BtnSection>
           <Link to="/board"
                   state={
-                    {category:filter.subCategory,
-                      page: filter.page
+                    {category:location.subCategory,
+                      page: location.page
                     }
                   }
             ><GoToList >목록으로</GoToList></Link>
@@ -171,8 +197,8 @@ function Page(props) {
                       title: getPage.title,
                       text: getPage.example,
                       isSecret: getPage.isSecret,
-                      boardType: filter.category,
-                      subCategory: filter.subCategory
+                      boardType: location.category,
+                      subCategory: location.subCategory
                     }
                   }
                 ><Correction>수정</Correction>
@@ -184,8 +210,9 @@ function Page(props) {
               null}
           </BtnSection>
         </Content>
-      </Background>
-
+      </Background>:
+      null
+      }
     </div>
   );
 }
