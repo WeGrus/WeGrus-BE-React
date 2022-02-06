@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Cookies from "universal-cookie";
+import { JWT_EXPIRY_TIME, onSilentRefresh } from "../../App";
 import { actionCreators } from "../../store";
 
 const Redirecting = styled.div`
@@ -49,7 +50,7 @@ function OAuth(props) {
         const KAKAO_ID = res.data.data.userId;
         const RESULT = res.data.data.status;
 
-        console.log(res);
+        console.log(KAKAO_ID);
         props.setKakaoId(KAKAO_ID);
 
         //console.log(KAKAO_ID, RESULT);
@@ -58,14 +59,9 @@ function OAuth(props) {
         } else if ("success") {
           const ACCESS_TOKEN = res.data.data.accessToken;
           props.loginSuccess(ACCESS_TOKEN);
-          /*axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${ACCESS_TOKEN}`;*/
 
           props.setToken(res.data.data.accessToken);
-          //console.log(res.data.data.accessToken);
-
-          //setRefreshTokenToCookie(ACCESS_TOKEN);
+          console.log(res.data.data.accessToken);
 
           navigate("/");
         } else {
@@ -77,8 +73,8 @@ function OAuth(props) {
       .catch((err) => {
         console.log(err);
         console.log("Not Found");
-        //window.alert("페이지를 찾을 수 없습니다.");
-        //navigate("/");
+        window.alert("페이지를 찾을 수 없습니다.");
+        navigate("/");
       });
   }, []);
 

@@ -144,17 +144,20 @@ const GRADE = ["FRESHMAN", "SOPHOMORE", "JUNIOR", "SENIOR"];
 
 const STATUS = ["ATTENDING", "ABSENCE", "GRADUATED"];
 
+const GENDER = ["MAN", "WOMAN"];
+
 function mapStateToProps(state) {
   console.log(state);
   return state;
 }
 function mapDispatchToProps(dispatch) {
   return {
-    userSignUp: (academicStatus, department, grade, name, phone) =>
+    userSignUp: (academicStatus, department, gender, grade, name, phone) =>
       dispatch(
         actionCreators.userSignUp(
           academicStatus,
           department,
+          gender,
           grade,
           name,
           phone
@@ -192,6 +195,7 @@ const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
 ));
 
 function Signup(props) {
+  let navigate = useNavigate();
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState();
 
@@ -205,7 +209,14 @@ function Signup(props) {
       });
   }, []);
 
-  const onSubmit = ({ academicStatus, department, grade, name, phone }) => {
+  const onSubmit = ({
+    academicStatus,
+    department,
+    gender,
+    grade,
+    name,
+    phone,
+  }) => {
     phone = phone
       .replace(/[^0-9]/, "")
       .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
@@ -214,13 +225,14 @@ function Signup(props) {
       academicStatus: STATUS[academicStatus],
       department: DEPARTMENTS[department],
       email: props.userReducer.email,
+      gender: GENDER[gender],
       grade: GRADE[grade],
       name,
       phone,
       userId: props.userReducer.userId,
     };
 
-    console.log(JSON.stringify(...body));
+    console.log(JSON.stringify(body));
 
     axios
       .post(
@@ -230,8 +242,10 @@ function Signup(props) {
         { headers: { "Content-Type": "application/json" } }
       )
       .then((res) => {
-        props.userSignUp(...body);
+        //props.userSignUp(body);
         console.log(res);
+        window.alert("회원가입이 성공적으로 완료되었습니다.");
+        navigate("/login");
       })
       .catch((res) => console.log(res));
   };
@@ -257,6 +271,11 @@ function Signup(props) {
           hasError={Boolean(formState.errors?.name?.message)}
         />
 
+        <Select
+          {...register("gender", { required: "gender is required." })}
+          placeholder="성별"
+          options={["남성", "여성"]}
+        />
         <Select
           {...register("department", { required: "department is required." })}
           placeholder="학과"

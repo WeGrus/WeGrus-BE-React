@@ -17,6 +17,7 @@ const initialState = {
   academicStatus: null,
   department: null,
   email: null,
+  gender: null,
   studentId: null,
   grade: null,
   name: null,
@@ -44,13 +45,14 @@ const setEmail = (email) => {
     email,
   };
 };
-const userSignUp = (academicStatus, department, grade, name, phone) => {
+const userSignUp = (academicStatus, department, gender, grade, name, phone) => {
   //정보 입력 후 회원가입
   return {
     type: LOGIN,
     result: true,
     academicStatus,
     department,
+    gender,
     grade,
     name,
     phone,
@@ -67,6 +69,7 @@ const putUserInfo = (
   name,
   studentId,
   department,
+  gender,
   grade,
   phone,
   createdDate,
@@ -82,6 +85,7 @@ const putUserInfo = (
     name,
     studentId,
     department,
+    gender,
     grade,
     phone,
     createdDate,
@@ -120,6 +124,7 @@ const userReducer = (state = initialState, action) => {
         authenticated: action.result,
         academicStatus: action.academicStatus,
         department: action.department,
+        gender: action.gender,
         grade: action.grade,
         name: action.name,
         phone: action.phone,
@@ -134,6 +139,7 @@ const userReducer = (state = initialState, action) => {
         name: action.name,
         studentId: action.studentId,
         department: action.department,
+        gender: action.gender,
         grade: action.grade,
         phone: action.phone,
         createdDate: action.createdDate,

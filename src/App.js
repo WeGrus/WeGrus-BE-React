@@ -41,6 +41,7 @@ function mapDispatchToProps(dispatch) {
       name,
       studentId,
       department,
+      gender,
       grade,
       phone,
       createdDate,
@@ -56,6 +57,7 @@ function mapDispatchToProps(dispatch) {
           name,
           studentId,
           department,
+          gender,
           grade,
           phone,
           createdDate,
@@ -67,21 +69,58 @@ function mapDispatchToProps(dispatch) {
       ),
   };
 }
+export const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
+
+function getCookie() {
+  var result = null;
+  var cookie = document.cookie;
+  console.log(cookie);
+  const split_token = cookie.split("=");
+  result = split_token[1];
+  onSilentRefresh(result);
+}
+
+export const onSilentRefresh = (refresh_token) => {
+  if (refresh_token) {
+    console.log(refresh_token);
+    /* axios
+      .post(
+        "/reissue",
+        { headers: { Cookie: `refesh_token=${refresh_token};` } },
+        { withCredentials: true }
+      )*/
+    axios
+      .post(`/reissue`)
+      .then((res) => console.log(res))
+      .catch((err) => {
+        console.log(err);
+        // ... 로그인 실패 처리
+      });
+  }
+};
 
 function App(props) {
-  // const authenticated = props?.userReducer?.authenticated;
+  const authenticated = props?.userReducer?.authenticated;
   const token = props?.userReducer?.token;
 
+  // onSilentRefresh(refresh_token);
+
   useEffect(() => {
+    console.log(document.cookie);
+    getCookie();
     if (token) {
       //store에 토큰이 있을 경우(=로그인 했을 경우)
       var decoded = jwt_decode(token);
-      //토큰을 디코딩하고
-      const ID = decoded.sub;
+      console.log(decoded);
+      //토큰을 디코딩합니다
+      const ID = decoded.sub; //회원번호
+
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${props?.userReducer?.token}`;
+
       axios //유저 정보를 가져옵니다.
-        .get(`/members/info/${ID}`, {
-          headers: { Authorization: `Bearer ${props?.userReducer?.token}` },
-        })
+        .get(`/members/info/${ID}`)
         .then((res) => {
           const INFO = res.data.data.info;
           const INFO_ARRAY = Object.values(INFO);
