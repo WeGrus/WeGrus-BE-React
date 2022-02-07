@@ -71,6 +71,8 @@ function Page(props) {
   const [countOfScrape, setCountOfScrape] = React.useState(0); // 게시글 스크랩수
   const [countOfComment, setCountOfComment] = React.useState(0); // 게시글 댓글수
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(false)); // 게시글 추천 유무 확인에 따라 값 변경.
+  const [isScraped, setIsScraped] = React.useState(false)
+  const [trigger, setTrigger] = React.useState(true)
   const Navigate = useNavigate();
   let data, time;
 
@@ -85,12 +87,14 @@ function Page(props) {
       //console.log(res.data.data.replies);
       console.log(res.data.data.board);
       setPageData(res.data.data.board)
-      setCommentData(res.data.data.replies)
+      setCommentData((current) => res.data.data.replies)
       setCountOfRecommend(res.data.data.board.postLike)
       setCountOfScrape(0) // 스크랩 이후 수정
       setCountOfComment(res.data.data.board.postReplies)
+      console.log("반복!");
     });
-  },[])
+  },[trigger])
+
 
   const postRecommand = () => { // 게시글 추천하는 함수
     if (isRecommend === "추천취소") {
@@ -118,6 +122,38 @@ function Page(props) {
       });
       setCountOfRecommend((count) => count + 1);
       setIsRecommend("추천취소")
+    }
+  }
+
+  const handlePostScrape = () => {
+    if(isScraped === true){ // 이미 추가했다면 북마크 해제
+      console.log("북마크 해제");
+      
+      axios.delete(`/members/bookmarks?postId=${pageDate.postId}`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        console.log(res);
+      });
+      setIsScraped(false);
+      setCountOfScrape((count)=>count-1)
+    }
+    else{
+      console.log("북마크 성공");
+      setIsScraped(true);
+      axios.post(`/members/bookmarks?postId=${pageDate.postId}`,{},{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        console.log(res);
+      });
+      setCountOfScrape((count)=>count+1)
     }
   }
 
@@ -166,12 +202,17 @@ function Page(props) {
             <PostRecommand value="추천" onClick={postRecommand} checked>{"추천"}</PostRecommand>
             :
             <PostRecommand value="추천" onClick={postRecommand}>{"추천"}</PostRecommand>}
+
+            {(isScraped === true)?
+              <PostScrape onClick={handlePostScrape} checked>스크랩</PostScrape>
+              :
+              <PostScrape onClick={handlePostScrape}>스크랩</PostScrape>
+            } 
               
-              <PostScrape>스크랩</PostScrape>
             </PostBtnSection>
           </Description>
           
-          <CommentSection pageData={pageDate} commentData={commentData}/>
+          <CommentSection pageData={pageDate} commentData={commentData} trigger={setTrigger}/>
 
           <BtnSection>
           <Link to="/board"

@@ -129,7 +129,6 @@ function CommentSection(props){
   const pageData = props.pageData
   const postId = pageData.postId
   const commentData = props.commentData
-  console.log(commentData);
 
     const [comment,setComment] = React.useState("") // 댓글 입력칸
     const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
@@ -142,6 +141,10 @@ function CommentSection(props){
     const reCommentUpdateEl = React.useRef();
     const commentInputEl = React.useRef(); // 추후에 추가할 공백입력
 
+
+    const triggerSwitch = () => {
+      props.trigger((current)=> !current)
+    }
 
 
     const checkBlank = (value) => { // 댓글을 입력할 때 공백만 입력하는지 확인하는 함수. ex) comment = "         " 이런 값일 때.
@@ -167,8 +170,6 @@ function CommentSection(props){
         setPlaceholder("  내용이 없는 댓글은 등록하실 수 없습니다.")
       }
       else{
-        //const today = createdTime();
-        //props.pageData
         axios.post(`/comments`,{
           "content": comment,
           "postId": postId, 
@@ -182,9 +183,9 @@ function CommentSection(props){
         .then(function(res){
           console.log(res);
         });
-  
+        console.log(props);
+        triggerSwitch()
         setComment("");
-        //setCommentInfor();
       }
     }
   
@@ -232,7 +233,7 @@ function CommentSection(props){
       })
       .then(function(res){
         console.log(res);
-       
+        triggerSwitch()
       });
   
     }
