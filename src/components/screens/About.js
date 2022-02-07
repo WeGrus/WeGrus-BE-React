@@ -98,7 +98,7 @@ const BtnLink = styled(Link)`
 `;
 
 const LinkBox = styled.div`
-  width: 100%;
+  width: 88%;
   display: flex;
   justify-content: space-between;
 `;
@@ -110,11 +110,11 @@ const SNSLink = styled.a`
   background-color: white;
   border: 2px solid #808080;
   color: #808080;
-  width: 290px;
+  width: 250px;
   height: 50px;
   border-radius: 25px;
   font-size: 17px;
-  margin: 24px 0 24px 0;
+  margin: 0 0 24px 0;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -122,7 +122,6 @@ const SNSLink = styled.a`
     margin-right: 5px;
     font-size: 15px;
   }
-
   &:hover {
     transition: all 0.2s ease-in-out;
     color: black;
@@ -196,20 +195,21 @@ function About() {
             </Paragraph>
             <Paragraph weight="700">📍위치 : 인하대학교 5동 003호</Paragraph>
           </TextBox>
+          <LinkBox>
+            <SNSLink href="http://pf.kakao.com/_BfRNs">
+              <span>카카오톡 채널</span>
+              <FontAwesomeIcon icon={faComment} />
+            </SNSLink>
+            <SNSLink href="https://www.instagram.com/igrus_inha/">
+              <span>IGRUS 인스타그램</span>
+              <FontAwesomeIcon icon={faInstagramSquare} />
+            </SNSLink>
+            <SNSLink href="https://classic-domain-27e.notion.site/2021-2-IGRUS-4e8434cdd25841dfa3b16b7291923964">
+              <span>IGRUS Notion</span> <FontAwesomeIcon icon={faBook} />
+            </SNSLink>
+          </LinkBox>
         </DescriptionBox>
-        <LinkBox>
-          <SNSLink href="http://pf.kakao.com/_BfRNs">
-            <span>카카오톡 채널</span>
-            <FontAwesomeIcon icon={faComment} />
-          </SNSLink>
-          <SNSLink href="https://www.instagram.com/igrus_inha/">
-            <span>IGRUS 인스타그램</span>
-            <FontAwesomeIcon icon={faInstagramSquare} />
-          </SNSLink>
-          <SNSLink href="https://classic-domain-27e.notion.site/2021-2-IGRUS-4e8434cdd25841dfa3b16b7291923964">
-            <span>IGRUS Notion</span> <FontAwesomeIcon icon={faBook} />
-          </SNSLink>
-        </LinkBox>
+
         <TitleBox>
           <AboutTitle>| 어떤 활동들이 있나요?</AboutTitle>
           <Hashtag>

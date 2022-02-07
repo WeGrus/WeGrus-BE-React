@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store";
-import { Token } from "./store";
 
 ReactDOM.render(
   <React.StrictMode>
