@@ -74,7 +74,7 @@ export const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 function getCookie() {
   var result = null;
   var cookie = document.cookie;
-  console.log(cookie);
+
   const split_token = cookie.split("=");
   result = split_token[1];
   onSilentRefresh(result);
@@ -83,14 +83,12 @@ function getCookie() {
 export const onSilentRefresh = (refresh_token) => {
   if (refresh_token) {
     console.log(refresh_token);
-    /* axios
-      .post(
-        "/reissue",
-        { headers: { Cookie: `refesh_token=${refresh_token};` } },
-        { withCredentials: true }
-      )*/
+
     axios
-      .post(`/reissue`)
+      .post("/reissue", {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        withCredentials: true,
+      })
       .then((res) => console.log(res))
       .catch((err) => {
         console.log(err);
@@ -106,9 +104,8 @@ function App(props) {
   // onSilentRefresh(refresh_token);
 
   useEffect(() => {
-    console.log(document.cookie);
-    getCookie();
-    if (token) {
+    //getCookie(); 도메인 코드 활성화 이후 이 코드를 활성화시켜야 합니다. reissue api를 요청합니다.
+    if (authenticated) {
       //store에 토큰이 있을 경우(=로그인 했을 경우)
       var decoded = jwt_decode(token);
       console.log(decoded);
@@ -124,13 +121,13 @@ function App(props) {
         .then((res) => {
           const INFO = res.data.data.info;
           const INFO_ARRAY = Object.values(INFO);
-
+          console.log(INFO_ARRAY);
           props.putUserInfo(...INFO_ARRAY);
           //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
         })
         .catch(console.log("no user info"));
     }
-  }, [token]);
+  }, [authenticated]);
 
   return (
     <HelmetProvider>
@@ -138,7 +135,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {token ? (
+            {authenticated ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
@@ -170,7 +167,7 @@ function App(props) {
             )}
           </Route>
           <Route path="/login" element={<Login />} />
-          {!token ? (
+          {!authenticated ? (
             <>
               <Route path="/oauth/kakao/callback" element={<OAuth />} />
               <Route path="/login/email-auth" element={<EmailAuth />} />

@@ -81,12 +81,13 @@ function EmailAuth(props) {
       }
     });
   };
+
   function onSubmitInvalid(data) {
     console.log("error");
   }
 
   useEffect(() => {
-    /*  if (!props.userReducer.userId) {
+    /*if (!props.userReducer.userId) {
       //window.alert(message);
       navigate("/");
     }*/
