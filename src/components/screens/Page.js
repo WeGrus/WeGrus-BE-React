@@ -230,11 +230,10 @@ function Page(props) {
                   to={`/board/update/${params.pagenum}/${userInfor.userId}`}
                   state={
                     {
-                      title: getPage.title,
-                      text: getPage.example,
-                      isSecret: getPage.isSecret,
                       boardType: location.category,
-                      subCategory: location.subCategory
+                      subCategory: location.subCategory,
+                      postId: pageDate.postId,
+                      pageData: pageDate
                     }
                   }
                 ><Correction>수정</Correction>
