@@ -62,11 +62,7 @@ function EmailAuth(props) {
 
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState(false);
-
-  if (!props.userReducer.userId) {
-    window.alert("유효하지 않은 접근입니다. 다시 시도해주세요.");
-    navigate("/");
-  }
+  //const [message, setMessage] = useState("");
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
@@ -78,16 +74,24 @@ function EmailAuth(props) {
         props.setEmail(data.email);
         window.open("https://mail.google.com/mail/u/1/#inbox", "_blank");
         setEmailAuth(true);
+        console.log(res.data.message);
+        //setMessage(res.data);
       } else {
         console.log(res);
       }
     });
   };
+
   function onSubmitInvalid(data) {
     console.log("error");
   }
 
   useEffect(() => {
+    /*if (!props.userReducer.userId) {
+      //window.alert(message);
+      navigate("/");
+    }*/
+
     let params = new URL(document.location.toString()).searchParams;
     let verificationKey = params.get("verificationKey");
 
@@ -96,7 +100,7 @@ function EmailAuth(props) {
         .post(`/signup/verify?verificationKey=${verificationKey}`)
         .then((res) => {
           const CERTIFIED = res.data.data.certified;
-          console.log(CERTIFIED);
+          console.log(res);
           if (CERTIFIED) {
             console.log(
               "진행하던 회원 가입 브라우저로 이동하여 다음 버튼을 눌러주세요."

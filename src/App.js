@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import Signup from "./components/screens/Signup";
 import { actionCreators } from "./store";
-import { usePrompt } from "./components/Blocker";
+import jwt_decode from "jwt-decode";
 
 axios.defaults.baseURL =
   "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -41,6 +41,7 @@ function mapDispatchToProps(dispatch) {
       name,
       studentId,
       department,
+      gender,
       grade,
       phone,
       createdDate,
@@ -56,6 +57,7 @@ function mapDispatchToProps(dispatch) {
           name,
           studentId,
           department,
+          gender,
           grade,
           phone,
           createdDate,
@@ -67,21 +69,61 @@ function mapDispatchToProps(dispatch) {
       ),
   };
 }
+export const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
+
+function getCookie() {
+  var result = null;
+  var cookie = document.cookie;
+
+  const split_token = cookie.split("=");
+  result = split_token[1];
+  onSilentRefresh(result);
+}
+
+export const onSilentRefresh = (refresh_token) => {
+  if (refresh_token) {
+    console.log(refresh_token);
+
+    axios
+      .post("/reissue", {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        withCredentials: true,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => {
+        console.log(err);
+        // ... 로그인 실패 처리
+      });
+  }
+};
 
 function App(props) {
   const authenticated = props?.userReducer?.authenticated;
+  const token = props?.userReducer?.token;
+
+  // onSilentRefresh(refresh_token);
 
   useEffect(() => {
+    //getCookie(); 도메인 코드 활성화 이후 이 코드를 활성화시켜야 합니다. reissue api를 요청합니다.
     if (authenticated) {
-      axios
-        .get(`/members/info/${props?.userReducer?.id}`, {
-          headers: { Authorization: `Bearer ${props?.userReducer?.token}` },
-        })
+      //store에 토큰이 있을 경우(=로그인 했을 경우)
+      var decoded = jwt_decode(token);
+      console.log(decoded);
+      //토큰을 디코딩합니다
+      const ID = decoded.sub; //회원번호
+
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${props?.userReducer?.token}`;
+
+      axios //유저 정보를 가져옵니다.
+        .get(`/members/info/${ID}`)
         .then((res) => {
           const INFO = res.data.data.info;
           const INFO_ARRAY = Object.values(INFO);
-
+          console.log(INFO_ARRAY);
           props.putUserInfo(...INFO_ARRAY);
+          //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
         })
         .catch(console.log("no user info"));
     }

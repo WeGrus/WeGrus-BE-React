@@ -12,23 +12,24 @@ const PUT_USER_INFO = "PUT_USER_INFO";
 
 const initialState = {
   //userReducer의 기본값입니다.
-  authenticated: false,
+
   id: null,
-  academicStatus: null,
-  department: null,
   email: null,
-  gender: null,
-  studentId: null,
-  grade: null,
   name: null,
+  studentId: null,
+  department: null,
+  grade: null,
   phone: null,
-  userId: null,
-  token: null,
   createdDate: null,
   introduce: null,
   imageUrl:
     "https://igrus-webservice-bucket.s3.ap-northeast-2.amazonaws.com/basic.jpeg",
+  academicStatus: null,
   roles: null,
+  authenticated: false,
+  gender: null,
+  userId: null,
+  token: null,
 };
 
 const setKakaoId = (userId) => {
