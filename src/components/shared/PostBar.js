@@ -35,10 +35,10 @@ function PostBar({target,page,data}) {
           }
        
           <Title>
-          <Link to={`${(i+1)+number}`} state={{ category: "게시판", subCategory:  target, page: page, postId: data.postId }}  >
+          <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, page: page, postId: data.postId }}  >
           {data.title}
           </Link> 
-          <HashLink  to="1#commentTag" state={{ category: "게시판", subCategory:  target  }} >
+          <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, page: page, postId: data.postId }} >
             <Test>
               [{data.postReplies}]
               </Test>

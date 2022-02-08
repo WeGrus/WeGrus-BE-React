@@ -92,7 +92,6 @@ function Page(props) {
       setCountOfRecommend(res.data.data.board.postLike)
       setCountOfScrape(0) // 스크랩 이후 수정
       setCountOfComment(res.data.data.board.postReplies)
-      console.log("반복!");
       setPreviousTrigger(!trigger)
     });
   },[trigger])
@@ -181,7 +180,10 @@ function Page(props) {
   }
 
   window.onpopstate = function(event){
-    Navigate("/board",{state:{category:location.subCategory, page:location.page}})
+    console.log("page에서의 location값");
+    console.log(location);
+    Navigate(`/board`,{state:{category:location.subCategory, page:location.page}})
+
   }
 
   return (

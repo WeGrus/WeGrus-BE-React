@@ -5,7 +5,7 @@ import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
 import PostBar from "../shared/PostBar";
 import { connect } from "react-redux";
@@ -57,31 +57,26 @@ let isSearch = false;
 let option = {}
 
 function Board(props) {
-  const input = useLocation();
+  const location = useLocation();
   //console.log("보드JS의 페이지값:"+input.state.page);
   let subBarTarget; // 페이지에서 뒤로가기를 누르거나 목록을 누를 시 즉 subCategory
-  if (input.state != null) {
-    subBarTarget = input.state.category; 
+  if (location.state != null) {
+    subBarTarget = location.state.category; 
   } else {
     subBarTarget = "INFO";
   }
-
-  const [target, setTarget] = React.useState(""); // 게시판중 사이드바와 분류를 나눔. 즉 subCategory
+  console.log(location);
+  const [target, setTarget] = React.useState((location.state)?location.state.category:"INFO"); // 게시판중 사이드바와 분류를 나눔. 즉 subCategory
   const [posts, setPosts] = React.useState(null);
   const [totalPage, settotalPage] = React.useState(1);
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = React.useState(0);
   const [selected, setSelected] = React.useState("") // 필터값
   const [subCategory,setSubCategory] =React.useState(undefined);
   const [currentBoardType, setCurrentBoardType] = React.useState("")
   const [currentType, setCurrentType] = React.useState("")
   const inputEl = React.useRef(null)
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  
-  
 
-  if(target === ""){
-    setTarget(subBarTarget)
-  }
 
   const handleSearchFunction = (data, currentBoardType, currentType, page) => {
     if(data.option === "제목 + 내용"){
@@ -141,28 +136,36 @@ function Board(props) {
       setCurrentType("LASTEST")
       setSubCategory((previous) => (category));
     });
+    
   },[])
 
   React.useEffect(()=>{ // 최초 실행
     if(subCategory !== undefined){
       const boardType = subCategory.find(element => element.boardName == target).boardId
       setCurrentBoardType(boardType)
+      let page = (location.state)?location.state.page:1;
+      setPage(page)
+      // let t = (location.state)?location.state.category:"INFO"
+      
+      //console.log(page);
+      
      // console.log(subCategory);
       //console.log(boardType);
      // console.log(props.userReducer.token);
-      axios.get(`/boards/${boardType}?page=${0}&pageSize=${19}&type=${"LASTEST"}`,{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function(res){
-        console.log("서브 카테고리가 바뀐 뒤에");
-        //console.log(res.data.data.posts.content);
-        settotalPage(res.data.data.posts.totalPages)
-        setPosts(res.data.data.posts.content)
-      });
+      // axios.get(`/boards/${boardType}?page=${page-1}&pageSize=${19}&type=${"LASTEST"}`,{
+      //   headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      // })
+      // .catch(function (error) {
+      //   console.log(error.toJSON());
+      // })
+      // .then(function(res){
+      //   console.log("서브 카테고리가 바뀐 뒤에");
+      //   console.log(res.data.data.posts.content);
+      //   settotalPage(res.data.data.posts.totalPages)
+      //   setPosts(res.data.data.posts.content)
+      // });
     }
+    
   },[subCategory])
 
   React.useEffect(() => { // 서브바에서 타겟이 바뀌면 값을 변환.
@@ -186,11 +189,8 @@ function Board(props) {
         });
       }
       else{
-        setPage(1)
+          setPage(1)
       }
-        
-
-
     }
    
   }, [target]);
