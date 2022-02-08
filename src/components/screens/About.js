@@ -210,7 +210,6 @@ function About() {
             </SNSLink>
           </LinkBox>
         </DescriptionBox>
-
         <TitleBox>
           <AboutTitle>| 어떤 활동들이 있나요?</AboutTitle>
           <Hashtag>

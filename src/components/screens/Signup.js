@@ -140,7 +140,7 @@ const DEPARTMENTS = [
   "의류디자인학과",
 ];
 
-const GRADE = ["FRESHMAN", "SOPHOMORE", "JUNIOR", "SENIOR"];
+const GRADE = ["FRESHMAN", "SOPHOMORE", "JUNIOR", "SENIOR"]; //5학년 이상
 
 const STATUS = ["ATTENDING", "ABSENCE", "GRADUATED"];
 
