@@ -73,6 +73,7 @@ function Page(props) {
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(false)); // 게시글 추천 유무 확인에 따라 값 변경.
   const [isScraped, setIsScraped] = React.useState(false)
   const [trigger, setTrigger] = React.useState(true)
+  const [previousTrigger, setPreviousTrigger]=React.useState(trigger)
   const Navigate = useNavigate();
   let data, time;
 
@@ -92,6 +93,7 @@ function Page(props) {
       setCountOfScrape(0) // 스크랩 이후 수정
       setCountOfComment(res.data.data.board.postReplies)
       console.log("반복!");
+      setPreviousTrigger(!trigger)
     });
   },[trigger])
 
@@ -184,7 +186,7 @@ function Page(props) {
 
   return (
     <div>
-      {(pageDate!==null && commentData !== null)?
+      {((pageDate!==null && commentData !== null))?
       <Background>
         <Content>
           <Category>{location.category}|{location.subCategory}</Category>
@@ -212,7 +214,7 @@ function Page(props) {
             </PostBtnSection>
           </Description>
           
-          <CommentSection pageData={pageDate} commentData={commentData} trigger={setTrigger}/>
+          <CommentSection pageData={pageDate} commentData={commentData} trigger={setTrigger} test={trigger}/>
 
           <BtnSection>
           <Link to="/board"

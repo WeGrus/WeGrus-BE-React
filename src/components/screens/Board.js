@@ -42,18 +42,19 @@ const boardCategory = "BOARD";
 
 
 const selectDate = [ // 게시물 나열할 때, 어떤 순으로 나열할지.
-  "최신순",
-  "추천순",
-  "댓글순",
-  "조회순"
+  {viewValue: "최신순", value: "LASTEST"},
+  {viewValue: "추천순", value: "LIKEEST"},
+  {viewValue: "댓글순", value: "REPLYEST"},
+  {viewValue: "조회순", value: "none"},
 ]
-
+//LASTEST, LIKEEST, REPLYEST
 
 function mapStateToProps(state) {
   return state;
 }
 
-
+let isSearch = false;
+let option = {}
 
 function Board(props) {
   const input = useLocation();
@@ -69,19 +70,63 @@ function Board(props) {
   const [posts, setPosts] = React.useState(null);
   const [totalPage, settotalPage] = React.useState(1);
   const [page, setPage] = React.useState(1);
-  const [selected, setSelected] = React.useState("")
+  const [selected, setSelected] = React.useState("") // 필터값
   const [subCategory,setSubCategory] =React.useState(undefined);
+  const [currentBoardType, setCurrentBoardType] = React.useState("")
+  const [currentType, setCurrentType] = React.useState("")
+  const inputEl = React.useRef(null)
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+  
+  
 
   if(target === ""){
     setTarget(subBarTarget)
   }
 
-  const handleSearchBarFilter = (e) => {
-    setSelected(e.target.value);
-  };
-
+  const handleSearchFunction = (data, currentBoardType, currentType, page) => {
+    if(data.option === "제목 + 내용"){
+      axios.get(`/search/all/${currentBoardType}?keyword=${data.keyword}&page=${page-1}&pageSize=19&type=${currentType}`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        //console.log(res);
+        settotalPage(res.data.data.posts.totalPages)
+        setPosts(res.data.data.posts.content)
+        console.log("제목+내용검색");
+      });
+    }
+    else if(data.option === "제목"){
+      axios.get(`/search/title/${currentBoardType}?keyword=${data.keyword}&page=${page -1}&pageSize=19&type=${'LASTEST'}`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        //console.log(res);
+        settotalPage(res.data.data.posts.totalPages)
+        setPosts(res.data.data.posts.content)
+        console.log("제목검색");
+      });
+    }
+    else{
+      axios.get(`/search/writer/${currentBoardType}?keyword=${data.keyword}&page=${page-1}&pageSize=19&type=${'LASTEST'}`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        console.log(res);
+        settotalPage(res.data.data.posts.totalPages)
+        setPosts(res.data.data.posts.content)
+        console.log("글쓴이검색");
+      });
+    }
+  }
 
   React.useEffect(() =>{ // sidebar에 필요한 목록 불러오기.
     axios.get(`/club/executives/boards`,{
@@ -91,26 +136,28 @@ function Board(props) {
       console.log(error.toJSON());
     })
     .then(function(res){
+
       let category = [...res.data.data.boards.filter(element => element.boardCategoryName === boardCategory)]
+      setCurrentType("LASTEST")
       setSubCategory((previous) => (category));
     });
   },[])
 
   React.useEffect(()=>{ // 최초 실행
     if(subCategory !== undefined){
-
       const boardType = subCategory.find(element => element.boardName == target).boardId
+      setCurrentBoardType(boardType)
      // console.log(subCategory);
       //console.log(boardType);
      // console.log(props.userReducer.token);
-      axios.get(`/boards/${boardType}?page=${page-1}&pageSize=${19}&type=${"LASTEST"}`,{
+      axios.get(`/boards/${boardType}?page=${0}&pageSize=${19}&type=${"LASTEST"}`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
       })
       .then(function(res){
-        //console.log(res);
+        console.log("서브 카테고리가 바뀐 뒤에");
         //console.log(res.data.data.posts.content);
         settotalPage(res.data.data.posts.totalPages)
         setPosts(res.data.data.posts.content)
@@ -118,39 +165,104 @@ function Board(props) {
     }
   },[subCategory])
 
-
-  React.useEffect(() => { // 검색 바에서 순서가 바뀌면 값을 변환.
-    console.log("셀렉트");
-
-  }, [selected]);
-
-  React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
+  React.useEffect(() => { // 서브바에서 타겟이 바뀌면 값을 변환.
     if(subCategory !== undefined){
-      if(input.state != null&&input.state.page != undefined){
-        setPage(input.state.page)
+      const boardType = subCategory.find(element => element.boardName == target).boardId
+      setCurrentBoardType(boardType)
+      setCurrentType('LASTEST')
+      isSearch = false
+      inputEl.current.value=""
+      if(page === 1){
+        axios.get(`/boards/${boardType}?page=${0}&pageSize=20&type=${'LASTEST'}`,{
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function(res){
+          console.log("타겟이 바뀐뒤에 호출");
+          settotalPage(res.data.data.posts.totalPages)
+          setPosts(res.data.data.posts.content)
+        });
       }
       else{
         setPage(1)
       }
-      //console.log("target!");
-      //console.log(subCategory);
+        
 
-       const boardType = subCategory.find(element => element.boardName == target).boardId
 
-      axios.get(`/boards/${boardType}?page=${0}&pageSize=20&type=${'LASTEST'}`,{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function(res){
-        //console.log(res);
-        settotalPage(res.data.data.posts.totalPages)
-        setPosts(res.data.data.posts.content)
-      });
     }
    
   }, [target]);
+
+  React.useEffect(() => { // 검색 바에서 순서가 바뀌면 값을 변환.
+    if(subCategory !== undefined){
+      if(page === 1){
+        if(isSearch === false){
+          console.log("셀렉트에서 값"+ selected);
+          axios.get(`/boards/${currentBoardType}?page=${0}&pageSize=19&type=${selected}`,{
+            headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+          })
+          .catch(function (error) {
+            console.log(error.toJSON());
+          })
+          .then(function(res){
+            console.log("셀렉트 값이 바뀐뒤에 호출");
+            settotalPage(res.data.data.posts.totalPages)
+            setPosts(res.data.data.posts.content)
+          });
+        }
+        else{
+          handleSearchFunction(option, currentBoardType, selected, 1)
+        }
+      }
+      setCurrentType(selected)
+      setPage(1)
+    }
+
+  }, [selected]);
+
+  const handleSearchBarFilter = (e) => { //사용자가 검색바 필터를 바꾸었을 때.
+    setSelected((current) => e.target.value);
+  };
+
+  React.useEffect(()=>{
+    if(subCategory !== undefined){
+      if(isSearch === false){
+        axios.get(`/boards/${currentBoardType}?page=${page-1}&pageSize=20&type=${currentType}`,{
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function(res){
+          console.log("페이지에서 호출");
+          settotalPage(res.data.data.posts.totalPages)
+          setPosts(res.data.data.posts.content)
+        });
+      }
+      else{
+        handleSearchFunction(option, currentBoardType, currentType, page)
+      }
+  }
+  },[page])
+
+
+
+  const handleSearching = (data) => { // 사용자가 검색을 했을때
+    option = {option: data.option, keyword: data.keyword};
+    isSearch = true
+    if(page === 1){
+      handleSearchFunction(option, currentBoardType, currentType, 1)
+    }
+    else{
+      setPage(1)
+    }
+    
+    console.log(data.option);
+    console.log(data.keyword);
+
+  }
 
   return (
     <>
@@ -160,7 +272,7 @@ function Board(props) {
       <Content>
         <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
         <SearchBarSection>
-          <SearchBarForm onSubmit={handleSubmit(onSubmit)}>
+          <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
             <SearchBarSelect {...register("option")}>
               <option>제목 + 내용</option>
               <option>제목</option>
@@ -168,7 +280,7 @@ function Board(props) {
             </SearchBarSelect>
             <SearchBar>
               <SearchBarInput
-                {...register("exampleRequired", { required: true })}
+                {...register("keyword", { required: true })}  ref={inputEl}
               />
               <SearchBarSubmit type="submit" value="" />
             </SearchBar>
@@ -176,8 +288,8 @@ function Board(props) {
 
           <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
             {selectDate.map((value) => (
-              <option value={value} key={value}>
-                {value}
+              <option value={value.value} key={value.viewValue}>
+                {value.viewValue}
               </option>
             ))}
           </SearchBarFilter>

@@ -141,7 +141,6 @@ function CommentSection(props){
     const reCommentUpdateEl = React.useRef();
     const commentInputEl = React.useRef(); // 추후에 추가할 공백입력
 
-
     const triggerSwitch = () => {
       props.trigger((current)=> !current)
     }

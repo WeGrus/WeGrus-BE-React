@@ -46,7 +46,7 @@ function Page(props) {
   function printTextBody(){
     const deitorInstance = editorRef.current.getInstance();
 
-    console.log(deitorInstance);
+    //console.log(deitorInstance);
     // const getContent_md = deitorInstance.getMarkdown();
     // console.log("마크다운");
     // console.log(getContent_md);
