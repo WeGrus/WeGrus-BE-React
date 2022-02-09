@@ -3,7 +3,7 @@ import {PaginationSection,Pagebtn,BtnSpan,BtnBox,MovePageInput,MovePageSubmit} f
 
 
 function Pagination({ total, limit ,page, setPage }) {
-    const totalNumPages = Math.ceil(total / limit);
+    const totalNumPages = total;
     const numPages = (totalNumPages>4)?5:totalNumPages
     const [current, setCurrent] = React.useState(page)
     const displayRightEl = React.useRef(null)

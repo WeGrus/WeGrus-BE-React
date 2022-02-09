@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, Link, useNavigate } from 'react-router-dom'
 import styled from "styled-components";
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
@@ -15,19 +15,28 @@ function mapStateToProps(state) {
 }
 
 function Page(props) {
-  const filter = useLocation().state;
-  const [checked,setState] = React.useState( false)
+  const location = useLocation().state;
+  const [secret,setSecret] = React.useState( false)
   const [notice, setNotice] = React.useState(false)
   const [title,setTitle] = React.useState("");
   const [test, setTest] = React.useState(false) // file이 올라오는 지 아닌지 확인
   const [url, setURL] = React.useState("") // download할 url link
   const editorRef = React.createRef();
   const downRef = React.createRef();
-
+  const Navigate = useNavigate();
   let aBlob;
 
   const handleSecretOptionChange = event => {
-    setState(!checked)
+    setSecret(!secret)
+  }
+
+  const isNotice = () => {
+    if(notice === false){
+      return "NORMAL"
+    }
+    else{
+      return "NOTICE"
+    }
   }
 
   const handleNoticeOptionChange = event => {
@@ -37,7 +46,7 @@ function Page(props) {
   function printTextBody(){
     const deitorInstance = editorRef.current.getInstance();
 
-    console.log(deitorInstance);
+    //console.log(deitorInstance);
     // const getContent_md = deitorInstance.getMarkdown();
     // console.log("마크다운");
     // console.log(getContent_md);
@@ -59,11 +68,11 @@ function Page(props) {
     // console.log(data.text);
 
     axios.post(`/posts`,{
-      "boardCategory": "BOARD",
-      "boardType": "FREE",
+      "boardName": location.subCategory,
       "content": printTextBody(),
-      "secretFlag": checked,
-      "title": title
+      "secretFlag": secret,
+      "title": title,
+      "type": isNotice()
     },{
       headers: {'Authorization': `Bearer ${props.tokenReducer}`}
     })
@@ -72,8 +81,9 @@ function Page(props) {
     })
     .then(function(res){
       console.log(res);
+      Navigate("/board", {state:{category:location.subCategory, page:1}});
     });
-    
+  
   }
 
   function backToList(){
@@ -108,7 +118,7 @@ function Page(props) {
     <div>
       <Background>
         <Content>
-          <Category>{filter.category}|{filter.subCategory}</Category>
+          <Category>{location.category}|{location.subCategory}</Category>
           <Header>
             <Title type="text" placeholder="제목" value={title} onChange={(e)=>setTitle(e.target.value)}></Title>
             <OtherDetail>{"이름 들어가야 함."}</OtherDetail>
@@ -128,7 +138,7 @@ function Page(props) {
           <BtnSection>
             <Link to="/board"
                   state={
-                    {category:filter.subCategory}
+                    {category:location.subCategory}
                   }
             ><GoToList >목록으로</GoToList></Link>
             <Right>
@@ -142,7 +152,7 @@ function Page(props) {
               <SetOption>
                 <Text><span style={{ marginRight: 8 }}>비밀글 설정하기</span></Text>
                 <Checkbox
-                  checked={checked}
+                  checked={secret}
                   onChange={handleSecretOptionChange}
                 />
               </SetOption>

@@ -12,6 +12,7 @@ const PUT_USER_INFO = "PUT_USER_INFO";
 
 const initialState = {
   //userReducer의 기본값입니다.
+
   id: null,
   email: null,
   name: null,

@@ -122,7 +122,6 @@ const SNSLink = styled.a`
     margin-right: 5px;
     font-size: 15px;
   }
-
   &:hover {
     transition: all 0.2s ease-in-out;
     color: black;
@@ -210,6 +209,7 @@ function About() {
             </SNSLink>
           </LinkBox>
         </DescriptionBox>
+
         <TitleBox>
           <AboutTitle>| 어떤 활동들이 있나요?</AboutTitle>
           <Hashtag>

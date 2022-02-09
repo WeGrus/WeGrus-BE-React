@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, Link, useNavigate } from 'react-router-dom'
 import { useParams } from "react-router-dom";
 import {Background,Content,Category,Header,Title,OtherDetail,BtnSection,GoToList,Right,SetOption,Text,Write} from "./../shared/PageElements"
 import { Editor } from '@toast-ui/react-editor';
@@ -11,18 +11,30 @@ function mapStateToProps(state) {
   return state;
 }
 
+const checkNotice = (type) => { // 공지글인지 아닌지 확인
+  if(type === "NORMAL"){
+    return false;
+  }
+  else{
+    return true
+  }
+}
+
 function Page(props) {
     const t = useParams();
+    const location = useLocation().state;
+    const pageData = location.pageData
     const data = useLocation().state;
-    const editorRef = React.createRef();
-    const [notice, setNotice] = React.useState(data.isSecret)
-    const [checked,setState] = React.useState(false)
-    const [title,setTitle] = React.useState(data.title);
+    const editorRef = React.createRef();checkNotice()
+    const [notice, setNotice] = React.useState(pageData.type)
+    const [secret,setSecret] = React.useState(pageData.secretFlag)
+    const [title,setTitle] = React.useState(pageData.title);
+    const Navigate = useNavigate()
 
 
     React.useEffect(()=>{
-      const inputText = editorRef.current.getInstance(); // 수정하는 내용을 불러옴.
-      inputText.setHTML(data.text)
+      const inputText = editorRef.current.getInstance(); // 수정할 내용을 불러옴.
+      inputText.setHTML(pageData.content)
       //console.log(data);
     },[])
 
@@ -30,7 +42,7 @@ function Page(props) {
       setNotice(!notice)
     }
     const handleSecretOptionChange = event => { // 비밀 글인지 유무
-      setState(!checked)
+      setSecret(!secret)
     }
 
 
@@ -41,45 +53,38 @@ function Page(props) {
     }
 
     function submit(){ // 작성 버튼을 눌렀을 시 작동
-      const submitData = {
-        title: title,
-        text: printTextBody(),
-        isSecret: checked,
-        isNotice: notice,
-        boardType:data.boardType,
-        subCategory:data.subCategory
-       }
-   
        axios.put(`/posts`,{
-          "boardId": 6,
-          "content": printTextBody(),
-          "secretFlag": checked,
+        "content": printTextBody(),
+          "postId": pageData.postId,
+          "secretFlag": secret,
           "title": title
        },
        {
-         headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
        })
        .catch(function (error) {
         console.log(error.toJSON());
       })
       .then(function(res){
         console.log(res);
+        Navigate("/board", {state:{category:location.subCategory, page:1}});
       });
      }
 
+//initialValue={data.title}
 
 
     return (
       <div>
       <Background>
         <Content>
-          <Category>{data.boardType}|{data.subCategory}</Category>
+          <Category>{location.boardType}|{location.subCategory}</Category>
           <Header>
           <Title type="text" placeholder="제목" value={title} onChange={(e)=>setTitle(e.target.value)}></Title>
             <OtherDetail>{"이름 들어가야 함."}</OtherDetail>
           </Header>
           <Editor
-            initialValue={data.title}
+            
             previewStyle="vertical"
             height="600px"
             initialEditType="wysiwyg"
@@ -88,9 +93,9 @@ function Page(props) {
           />
           <BtnSection>
             <Link to="/board"
-                  state={
-                    {}
-                  }
+                     state={
+                      {category:location.subCategory}
+                    }
             ><GoToList >목록으로</GoToList></Link>
             <Right>
             <SetOption>
@@ -103,7 +108,7 @@ function Page(props) {
               <SetOption>
                 <Text><span style={{ marginRight: 8 }}>비밀글 설정하기</span></Text>
                 <Checkbox
-                  checked={checked}
+                  checked={secret}
                   onChange={handleSecretOptionChange}
                 />
               </SetOption>

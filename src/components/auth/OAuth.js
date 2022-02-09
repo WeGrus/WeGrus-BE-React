@@ -69,11 +69,13 @@ function OAuth(props) {
 
           props.setToken(res.data.data.accessToken);
 
+
           var result = null;
           var cookie = document.cookie;
           const split_token = cookie.split("=");
           result = split_token[1]; //서버에서 쿠키로 전송한 refresh_token을 확인하는 코드입니다
           //sameSite - lax의 경우 다른 도메인간 쿠키 전송이 불가능 하기 때문에 sameSite none으로 설정하고 https를 통해 secure 설정을 하여 전송하거나 도메인을 통합해야 합니다.
+
 
           //setRefreshTokenToCookie(result);
           //console.log(res.data.data.accessToken);

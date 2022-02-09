@@ -5,16 +5,13 @@ import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
 import PostBar from "../shared/PostBar";
 import { connect } from "react-redux";
 import axios from "axios";
 import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,SearchBarFilter,CreateBtnLink,
   InforBar,InforContents,Number,Categorization,Title,Writer,Date,Hits,Recommendation,Comment} from "./../shared/BoardElement"
-
-
-
 
 
 const PostInforBar = styled.div`
@@ -33,670 +30,249 @@ flex-direction: row;
 const boardCategory = "BOARD";
 
 
-const subCategory = [ //서브 카테고리는 게시판 조회로 지정할 예정.
-  { filter: "자유게시판", boardType: "FREE"},
-  { filter: "익명게시판", boardType: "PERSONAL"},
-  { filter: "정보 공유", boardType: "INFO"},
-  { filter: "프로젝트 모집", boardType: "PROJECT"},
-  { filter: "취미 톡방",boardType: "HOBBY"},
-  { filter: "건의사항",boardType: "SUGGEST "},
-  { filter: "질문/답변",boardType: "black"},
-];
-
-const postData = [ // 게시물 조회 기능 동작을 위한 테스트 데이터 이후 삭제할 예정.
-  {
-    number: 1,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-
-    isNotice: true
-
-  },
-  {
-    number: 2,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-
-    isNotice: true
-
-  },
-  {
-    number: 3,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-
-    isNotice: true
-  },
-  {
-    number: 4,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-
-    isNotice: false
-  },  {
-    number: 5,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-
-    number: 6,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-
-  },
-  {
-    number: 7,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-
-    isNotice: false
-  },
-  {
-    number: 8,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-
-    isNotice: false
-  },
-  {
-    number: 9,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-
-    isNotice: false
-  },  
-  {
-    number: 10,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-
-    comment: 53
-    ,isNotice: false
-
-  },
-  {
-    number: 11,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-
-  },
-  {
-    number: 12,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-
-    number: 13,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-    number: 14,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 15,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 16,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 17,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  
-  {
-    number: 18,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-    ,isNotice: false
-  },
-  {
-    number: 19,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 20,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-    number: 21,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-    number: 22,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 23,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 24,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 25,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  
-  {
-    number: 26,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-    ,isNotice: false
-  },
-  {
-    number: 27,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  
-  {
-    number: 28,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-    number: 29,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-    number: 30,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-
-  },
-  {
-    number: 31,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-
-  },
-  {
-    number: 32,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 33,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  
-  {
-    number: 34,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-    ,isNotice: false
-  },
-  {
-    number: 35,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 36,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-    number: 37,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-    number: 38,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 39,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 40,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 41,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  
-  {
-    number: 42,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-    ,isNotice: false
-  },
-  {
-    number: 43,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  
-  {
-    number: 44,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-    number: 45,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  {
-    number: 46,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 47,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 48,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 49,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },  
-  {
-    number: 50,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53
-    ,isNotice: false
-  },
-  {
-    number: 51,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  },
-  {
-    number: 52,
-    categorization: "프로젝트 모집",
-    title: "test",
-    writer: "17 김승태",
-    date: "2022/01/19",
-    hits: 156,
-    recommend: 51,
-    comment: 53,
-    isNotice: false
-  }, 
-];
+// const subCategory = [ //서브 카테고리는 게시판 조회로 지정할 예정.
+//   { filter: "자유게시판", boardType: "FREE"},
+//   { filter: "익명게시판", boardType: "PERSONAL"},
+//   { filter: "정보 공유", boardType: "INFO"},
+//   { filter: "프로젝트 모집", boardType: "PROJECT"},
+//   { filter: "취미 톡방",boardType: "HOBBY"},
+//   { filter: "건의사항",boardType: "SUGGEST "},
+//   { filter: "질문/답변",boardType: "black"},
+// ];
 
 
 const selectDate = [ // 게시물 나열할 때, 어떤 순으로 나열할지.
-  "최신순",
-  "추천순",
-  "댓글순",
-  "조회순"
+  {viewValue: "최신순", value: "LASTEST"},
+  {viewValue: "추천순", value: "LIKEEST"},
+  {viewValue: "댓글순", value: "REPLYEST"},
+  {viewValue: "조회순", value: "none"},
 ]
-
+//LASTEST, LIKEEST, REPLYEST
 
 function mapStateToProps(state) {
   return state;
 }
 
+let isSearch = false;
+let option = {}
+
 function Board(props) {
-  const input = useLocation();
+  const location = useLocation();
   //console.log("보드JS의 페이지값:"+input.state.page);
   let subBarTarget; // 페이지에서 뒤로가기를 누르거나 목록을 누를 시 즉 subCategory
-
-  if (input.state != null) {
-    subBarTarget = input.state.category; 
+  if (location.state != null) {
+    subBarTarget = location.state.category; 
   } else {
-    subBarTarget = "자유게시판";
+    subBarTarget = "INFO";
   }
-
-  const [target, setTarget] = React.useState(subBarTarget); // 게시판중 사이드바와 분류를 나눔. 즉 subCategory
-   const [posts, setPosts] = React.useState(postData.filter(data=> data.categorization === target));
-  const [limit, setLimit] = React.useState(19);
-  const [page, setPage] = React.useState(1);
-  const [selected, setSelected] = React.useState("")
+  console.log(location);
+  const [target, setTarget] = React.useState((location.state)?location.state.category:"INFO"); // 게시판중 사이드바와 분류를 나눔. 즉 subCategory
+  const [posts, setPosts] = React.useState(null);
+  const [totalPage, settotalPage] = React.useState(1);
+  const [page, setPage] = React.useState(0);
+  const [selected, setSelected] = React.useState("") // 필터값
+  const [subCategory,setSubCategory] =React.useState(undefined);
+  const [currentBoardType, setCurrentBoardType] = React.useState("")
+  const [currentType, setCurrentType] = React.useState("")
+  const inputEl = React.useRef(null)
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
 
-  const handleSearchBarFilter = (e) => {
-    setSelected(e.target.value);
-  };
 
-  React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
-    console.log("셀렉트");
-  }, [selected]);
-
-  React.useEffect(() => { // 서브바에서 필터가 바뀌면 값을 변환.
-    let test = [...postData.filter(data=> data.categorization === target)]
-    setPosts([...test])
-    if(input.state != null&&input.state.page != undefined){
-      setPage(input.state.page)
+  const handleSearchFunction = (data, currentBoardType, currentType, page) => {
+    if(data.option === "제목 + 내용"){
+      axios.get(`/search/all/${currentBoardType}?keyword=${data.keyword}&page=${page-1}&pageSize=19&type=${currentType}`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        //console.log(res);
+        settotalPage(res.data.data.posts.totalPages)
+        setPosts(res.data.data.posts.content)
+        console.log("제목+내용검색");
+      });
+    }
+    else if(data.option === "제목"){
+      axios.get(`/search/title/${currentBoardType}?keyword=${data.keyword}&page=${page -1}&pageSize=19&type=${'LASTEST'}`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        //console.log(res);
+        settotalPage(res.data.data.posts.totalPages)
+        setPosts(res.data.data.posts.content)
+        console.log("제목검색");
+      });
     }
     else{
-      setPage(1)
+      axios.get(`/search/writer/${currentBoardType}?keyword=${data.keyword}&page=${page-1}&pageSize=19&type=${'LASTEST'}`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        console.log(res);
+        settotalPage(res.data.data.posts.totalPages)
+        setPosts(res.data.data.posts.content)
+        console.log("글쓴이검색");
+      });
     }
-    
-    const boardType = subCategory.find(element => element.filter == target).boardType
+  }
 
-    axios.get(`/boards/${boardType}?page=${page}&pageSize=20&type=lastest`,{
-      headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+  React.useEffect(() =>{ // sidebar에 필요한 목록 불러오기.
+    axios.get(`/club/executives/boards`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
     })
     .catch(function (error) {
       console.log(error.toJSON());
     })
     .then(function(res){
-      console.log(res);
+
+      let category = [...res.data.data.boards.filter(element => element.boardCategoryName === boardCategory)]
+      setCurrentType("LASTEST")
+      setSubCategory((previous) => (category));
     });
+    
+  },[])
+
+  React.useEffect(()=>{ // 최초 실행
+    if(subCategory !== undefined){
+      const boardType = subCategory.find(element => element.boardName == target).boardId
+      setCurrentBoardType(boardType)
+      let page = (location.state)?location.state.page:1;
+      setPage(page)
+      // let t = (location.state)?location.state.category:"INFO"
+      
+      //console.log(page);
+      
+     // console.log(subCategory);
+      //console.log(boardType);
+     // console.log(props.userReducer.token);
+      // axios.get(`/boards/${boardType}?page=${page-1}&pageSize=${19}&type=${"LASTEST"}`,{
+      //   headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      // })
+      // .catch(function (error) {
+      //   console.log(error.toJSON());
+      // })
+      // .then(function(res){
+      //   console.log("서브 카테고리가 바뀐 뒤에");
+      //   console.log(res.data.data.posts.content);
+      //   settotalPage(res.data.data.posts.totalPages)
+      //   setPosts(res.data.data.posts.content)
+      // });
+    }
+    
+  },[subCategory])
+
+  React.useEffect(() => { // 서브바에서 타겟이 바뀌면 값을 변환.
+    if(subCategory !== undefined){
+      const boardType = subCategory.find(element => element.boardName == target).boardId
+      setCurrentBoardType(boardType)
+      setCurrentType('LASTEST')
+      isSearch = false
+      inputEl.current.value=""
+      if(page === 1){
+        axios.get(`/boards/${boardType}?page=${0}&pageSize=20&type=${'LASTEST'}`,{
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function(res){
+          console.log("타겟이 바뀐뒤에 호출");
+          settotalPage(res.data.data.posts.totalPages)
+          setPosts(res.data.data.posts.content)
+        });
+      }
+      else{
+          setPage(1)
+      }
+    }
+   
   }, [target]);
+
+  React.useEffect(() => { // 검색 바에서 순서가 바뀌면 값을 변환.
+    if(subCategory !== undefined){
+      if(page === 1){
+        if(isSearch === false){
+          console.log("셀렉트에서 값"+ selected);
+          axios.get(`/boards/${currentBoardType}?page=${0}&pageSize=19&type=${selected}`,{
+            headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+          })
+          .catch(function (error) {
+            console.log(error.toJSON());
+          })
+          .then(function(res){
+            console.log("셀렉트 값이 바뀐뒤에 호출");
+            settotalPage(res.data.data.posts.totalPages)
+            setPosts(res.data.data.posts.content)
+          });
+        }
+        else{
+          handleSearchFunction(option, currentBoardType, selected, 1)
+        }
+      }
+      setCurrentType(selected)
+      setPage(1)
+    }
+
+  }, [selected]);
+
+  const handleSearchBarFilter = (e) => { //사용자가 검색바 필터를 바꾸었을 때.
+    setSelected((current) => e.target.value);
+  };
+
+  React.useEffect(()=>{
+    if(subCategory !== undefined){
+      if(isSearch === false){
+        axios.get(`/boards/${currentBoardType}?page=${page-1}&pageSize=20&type=${currentType}`,{
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function(res){
+          console.log("페이지에서 호출");
+          settotalPage(res.data.data.posts.totalPages)
+          setPosts(res.data.data.posts.content)
+        });
+      }
+      else{
+        handleSearchFunction(option, currentBoardType, currentType, page)
+      }
+  }
+  },[page])
+
+
+
+  const handleSearching = (data) => { // 사용자가 검색을 했을때
+    option = {option: data.option, keyword: data.keyword};
+    isSearch = true
+    if(page === 1){
+      handleSearchFunction(option, currentBoardType, currentType, 1)
+    }
+    else{
+      setPage(1)
+    }
+    
+    console.log(data.option);
+    console.log(data.keyword);
+
+  }
 
   return (
     <>
       <PageTitle title="커뮤니티" />
-      <SideBar posts={subCategory} getFilter={setTarget} target={target}></SideBar>
+      <SideBar posts={subCategory} getFilter={setTarget} target={target} item={"boardName"}></SideBar>
       {/* posts는 하위카테고리의 수를 나타내는 것입니다.[ex) 자유게시판, 비밀게시판 등등] target과 setTaget을 보냄으로써 bold및 target이 바뀌게 구현했습니다. */}
       <Content>
         <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
         <SearchBarSection>
-          <SearchBarForm onSubmit={handleSubmit(onSubmit)}>
+          <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
             <SearchBarSelect {...register("option")}>
               <option>제목 + 내용</option>
               <option>제목</option>
@@ -704,7 +280,7 @@ function Board(props) {
             </SearchBarSelect>
             <SearchBar>
               <SearchBarInput
-                {...register("exampleRequired", { required: true })}
+                {...register("keyword", { required: true })}  ref={inputEl}
               />
               <SearchBarSubmit type="submit" value="" />
             </SearchBar>
@@ -712,14 +288,14 @@ function Board(props) {
 
           <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
             {selectDate.map((value) => (
-              <option value={value} key={value}>
-                {value}
+              <option value={value.value} key={value.viewValue}>
+                {value.viewValue}
               </option>
             ))}
           </SearchBarFilter>
 
           <CreateBtnLink
-            to="/board/write/1234"
+            to={`/board/write/${1}`}
             state={{ category: "커뮤니티", subCategory: target }}
           >
             create
@@ -738,11 +314,16 @@ function Board(props) {
           </InforContents>
         </InforBar>
 
-        <PostBar target={target} page={page} data={posts} />
+        {
+          (posts !== null)?
+          <PostBar target={target} page={page} data={posts} />
+          :
+          null
+        }
          {/* PostBar는 PostBar.js에서 주석달겠습니다. target은 sidebar에서 클릭한 하위카테고리입니다. */}       
 
         <Pagination
-          total = {posts.length}
+          total = {totalPage}
           limit = {19}
           page={page}
           setPage={setPage}

@@ -23,37 +23,38 @@ font-weight: bold;
 function PostBar({target,page,data}) {
     const limit = 19;
     const offset = (page-1)*limit;
-    const postdata = data.slice(offset, offset+limit).map((data) => 
-  
-    <PostInforBar key={data.number}>
-      <PostCotent>
-        {(data.isNotice === true)?
-        <Number><FontAwesomeIcon icon={faVolumeOff} color="#0B665C" /></Number>
-        :
-        <Number>{data.number}</Number>
-        }
-     
-        <Title>
-        <Link to="1" state={{ category: "게시판", subCategory:  target, page: page }}  key={data.number}>
-        {data.title}
-        </Link> 
-        <HashLink  to="1#commentTag" state={{ category: "게시판", subCategory:  target  }}  key={data.number}>
-          <Test>
-            [{data.comment}]
-            </Test>
-        </HashLink >
-        </Title>
-    
+    const number = (page-1)*16;
+
+      const postdata = data.map((data,i) => 
+      <PostInforBar key={i+1}>
+        <PostCotent>
+          {(data.type !== "NORMAL")?
+          <Number><FontAwesomeIcon icon={faVolumeOff} color="#0B665C" /></Number>
+          :
+          <Number>{(i+1)+number}</Number>
+          }
        
-        <Writer>{data.writer}</Writer>
-        <Date>{data.date}</Date>
-        <Recommendation>{data.recommend}</Recommendation>
-        <Hits>{data.hits}</Hits>
-        <Comment>{data.comment}</Comment>
-      </PostCotent>
-    </PostInforBar>
-  
-    )
+          <Title>
+          <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, page: page, postId: data.postId }}  >
+          {data.title}
+          </Link> 
+          <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, page: page, postId: data.postId }} >
+            <Test>
+              [{data.postReplies}]
+              </Test>
+          </HashLink >
+          </Title>
+      
+         
+          <Writer>{data.memberName}</Writer>
+          <Date>{data.createdDate}</Date>
+          <Recommendation>{data.postLike}</Recommendation>
+          <Hits>{data.postView}</Hits>
+        </PostCotent>
+      </PostInforBar>
+
+      )
+    
 
     return (
         <>
