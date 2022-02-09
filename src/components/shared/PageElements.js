@@ -1,345 +1,343 @@
 import styled from "styled-components";
 
 export const Background = styled.div`
-  width: 1240px;       
+  width: 1240px;
   background-color: white;
 `;
 export const Content = styled.div`
-width: 924px;
-margin: auto;
-display: flex;
-flex-direction: column;
+  width: 924px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
 `;
 export const Category = styled.div`
-font-size: 18px;
-font-weight: 700;
-color: #0B665C;
-margin-top: 38px;
-margin-bottom: 16px;
-
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b665c;
+  margin-top: 38px;
+  margin-bottom: 16px;
 `;
 export const Header = styled.div`
-padding-bottom: 16px;
-border-bottom: 2px solid #0B665C;
-margin-bottom: 42px;
-`
+  padding-bottom: 16px;
+  border-bottom: 2px solid #0b665c;
+  margin-bottom: 42px;
+`;
 export const Title = styled.input`
-width: 924px;
-height: 21px;
-font-size: 18px;
-font-weight: 700;
-border: none;
-margin-bottom: 10px;
-`
+  width: 924px;
+  height: 21px;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  margin-bottom: 10px;
+`;
 export const OtherDetail = styled.div`
-padding-bottom: 16px;
-height: 16px;
-font-size: 14px;
-text-align: justify;
-`
+  padding-bottom: 16px;
+  height: 16px;
+  font-size: 14px;
+  text-align: justify;
+`;
 export const DescriptionStyle = `
 background-color: wheat;
 width: 924px;
 height: 300px;
 margin: auto;
-`
+`;
 export const BtnSection = styled.div`
-margin-top: 71px;
-border-top: 2px solid #0B665C;
-padding-top: 12.5px;
-`
+  margin-top: 71px;
+  border-top: 2px solid #0b665c;
+  padding-top: 12.5px;
+`;
 export const GoToList = styled.button`
-width: 127px;
-height: 32px;
-border: none;
-border-radius: 15px;
-color: white;
-background-color: #6CD2D7;
-font-size: 14px;
-cursor: pointer;
-`
+  width: 127px;
+  height: 32px;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  background-color: #6cd2d7;
+  font-size: 14px;
+  cursor: pointer;
+`;
 export const Right = styled.div`
-float: right;
-`
+  float: right;
+`;
 export const SetOption = styled.label`
-display: inline-flex;
-flex-direction: row;
-align-items: center;
-width:134px;
-height: 32px;
-background-color: #6CD2D7;
-border: none;
-border-radius: 16px;
-cursor: pointer;
-margin-right: 8px;
-`
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  width: 134px;
+  height: 32px;
+  background-color: #6cd2d7;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  margin-right: 8px;
+`;
 export const Text = styled.div`
-display: inline-block;
-height: 16px;
-font-size: 14px;
-line-height: 16px;
-color: white;
-padding-left:4px;
-`
+  display: inline-block;
+  height: 16px;
+  font-size: 14px;
+  line-height: 16px;
+  color: white;
+  padding-left: 4px;
+`;
 export const CheckBox = styled.input`
-margin: 8px 11px 8px 8px;
-width: 16px;
-height: 16px;
-`
+  margin: 8px 11px 8px 8px;
+  width: 16px;
+  height: 16px;
+`;
 export const Write = styled.button`
-width: 53px;
-height: 32px;
-border: none;
-border-radius: 15px;
-color: white;
-background-color: #6CD2D7;
-font-size: 14px;
-margin-left: 9px;
-cursor: pointer;
-`
+  width: 53px;
+  height: 32px;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  background-color: #6cd2d7;
+  font-size: 14px;
+  margin-left: 9px;
+  cursor: pointer;
+`;
 export const CommentInfor = styled.div`
-position: absolute;
-bottom: 10px;
-word-spacing: -3px;
-`
+  position: absolute;
+  bottom: 10px;
+  word-spacing: -3px;
+`;
 
 export const Description = styled.div`
-width: 924px;
-margin: auto;
-border-bottom: 2px solid #0B665C;
-position: relative;
-`
+  width: 924px;
+  margin: auto;
+  border-bottom: 2px solid #0b665c;
+  position: relative;
+`;
 export const Recommand = styled.button`
-width: 88px;
-height: 32px;
-font-size: 14px;
-color: white;
-background-color: #6CD2D7;
-border:none;
-border-radius: 15px;
-position: absolute;
-right: 0px;
-bottom: 6px;
-cursor: pointer;
-`
+  width: 88px;
+  height: 32px;
+  font-size: 14px;
+  color: white;
+  background-color: #6cd2d7;
+  border: none;
+  border-radius: 15px;
+  position: absolute;
+  right: 0px;
+  bottom: 6px;
+  cursor: pointer;
+`;
 
 export const Comments = styled.div`
-height: max-content;
-`
+  height: max-content;
+`;
 
 export const Comment = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-padding-top: 10px;
-padding-bottom: 8px;
-font-size: 14px;
-line-height: 16px;
-position: relative;
-width: 924px;
-`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 8px;
+  font-size: 14px;
+  line-height: 16px;
+  position: relative;
+  width: 924px;
+`;
 
 export const CommentRecommand = styled.span`
-color: #0B665C;
-opacity: 1;
-font-weight: bold;
-padding-left: 5px;
-`
+  color: #0b665c;
+  opacity: 1;
+  font-weight: bold;
+  padding-left: 5px;
+`;
 export const CommentContent = styled.div`
-margin-left: 49px;
-max-width: 608px;
-min-height: 96.22px;
-white-space: pre-wrap;
-`
+  margin-left: 49px;
+  max-width: 608px;
+  min-height: 96.22px;
+  white-space: pre-wrap;
+`;
 
 export const Recode = styled.div`
-position: absolute;
-top:10px;
-right: 0
-`
+  position: absolute;
+  top: 10px;
+  right: 0;
+`;
 
 export const CommentDelete = styled.button`
-margin-right: 2.98px;
-background-color: white;
-border: 1px solid black;
-border-radius: 15px;
-width: 49.02px;
-height: 29.22;
-cursor: pointer;
-`
+  margin-right: 2.98px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 15px;
+  width: 49.02px;
+  height: 29.22;
+  cursor: pointer;
+`;
 
 export const CommentWriteSection = styled.div`
-display: flex;
-flex-direction: row;
-height: 62px;
-margin-top: 9px;
-padding-bottom: 13px;
-border-bottom: 2px solid #0B665C;
-`
+  display: flex;
+  flex-direction: row;
+  height: 62px;
+  margin-top: 9px;
+  padding-bottom: 13px;
+  border-bottom: 2px solid #0b665c;
+`;
 
 export const CommentWrite = styled.textarea`
-width: 832px;
-border-radius: 15px;
-padding-left: 20px;
-padding-right: 20px;
-height: content-max;
-`
+  width: 832px;
+  border-radius: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: content-max;
+`;
 
 export const CommentSubmit = styled.button`
-width: 78.39px;
-color: white;
-background-color: #0B665C;
-border:none;
-border-radius: 15px;
-margin-left: 14px;
-font-size: 13px;
-word-spacing: -3px;
-cursor: pointer;
-`
+  width: 78.39px;
+  color: white;
+  background-color: #0b665c;
+  border: none;
+  border-radius: 15px;
+  margin-left: 14px;
+  font-size: 13px;
+  word-spacing: -3px;
+  cursor: pointer;
+`;
 
 export const Correction = styled.button`
-width: 53px;
-height: 32px;
-border: none;
-border-radius: 15px;
-color: white;
-background-color: #6CD2D7;
-font-size: 14px;
-cursor: pointer;
-`
+  width: 53px;
+  height: 32px;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  background-color: #6cd2d7;
+  font-size: 14px;
+  cursor: pointer;
+`;
 
 export const Delete = styled.button`
-width: 53px;
-height: 32px;
-border: none;
-border-radius: 15px;
-color: white;
-background-color: #6CD2D7;
-font-size: 14px;
-margin-left: 9px;
-cursor: pointer;
-`
+  width: 53px;
+  height: 32px;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  background-color: #6cd2d7;
+  font-size: 14px;
+  margin-left: 9px;
+  cursor: pointer;
+`;
 
 export const CommentName = styled.div`
-width: 109px;
-`
+  width: 109px;
+`;
 
 export const CommentLeft = styled.div`
-min-width: 109px;
-`
+  min-width: 109px;
+`;
 
 export const CommentNameBox = styled.div`
-min-width: 109px;
-position: relative;
-margin-bottom: 74px;
-display: flex;
-`
+  min-width: 109px;
+  position: relative;
+  margin-bottom: 74px;
+  display: flex;
+`;
 
 export const ReCommentName = styled.div`
-width: 20px;
-font-size: 14px;
-`
+  width: 20px;
+  font-size: 14px;
+`;
 export const CommentOwnerBtn = styled.div`
-position: absolute;
-bottom: 7.78px;
-`
+  position: absolute;
+  bottom: 7.78px;
+`;
 
 export const CommentUpdate = styled.button`
-margin-right: 2.98px;
-background-color: white;
-border: 1px solid black;
-border-radius: 15px;
-width: 49.02px;
-height: 29.22;
-cursor: pointer;
-`
+  margin-right: 2.98px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 15px;
+  width: 49.02px;
+  height: 29.22;
+  cursor: pointer;
+`;
 
 export const CommentBtnSection = styled.div`
-position: absolute;
-bottom: 7.78px;
-right: 0px;
-`
+  position: absolute;
+  bottom: 7.78px;
+  right: 0px;
+`;
 export const ReCommentWrite = styled.button`
-margin-left: 7px;
-background-color: white;
-border: 1px solid black;
-border-radius: 15px;
-width: 62px;
-height: 29.22;
-cursor: pointer;
-`
+  margin-left: 7px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 15px;
+  width: 62px;
+  height: 29.22;
+  cursor: pointer;
+`;
 
 export const PostInfor = styled.div`
-font-weight: 700;
-font-size: 14px;
-margin-top: 3px;
-width: 158px;
-line-height: 16px;
-word-spacing: -3px;
-`
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: 3px;
+  width: 158px;
+  line-height: 16px;
+  word-spacing: -3px;
+`;
 
 export const PostBtnSection = styled.div`
-margin-top: 9px;
-margin-bottom: 8px;
-`
+  margin-top: 9px;
+  margin-bottom: 8px;
+`;
 
 export const PostRecommand = styled.button`
-width: 59.14px;
-height: 27px;
-font-size: 14px;
-color: white;
-background-color: ${props => (props.checked?"#0B665C":"#6CD2D7")};
-border:none;
-border-radius: 15px;
-cursor: pointer;
-`
+  width: 59.14px;
+  height: 27px;
+  font-size: 14px;
+  color: white;
+  background-color: ${(props) => (props.checked ? "#0B665C" : "#6CD2D7")};
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+`;
 
 export const PostScrape = styled.button`
-width: 59.14px;
-height: 27px;
-font-size: 14px;
-color: white;
-background-color: ${props => (props.checked?"#0B665C":"#6CD2D7")};
-border:none;
-border-radius: 15px;
-margin-left: 6.72px;
-cursor:pointer;
-`
+  width: 59.14px;
+  height: 27px;
+  font-size: 14px;
+  color: white;
+  background-color: ${(props) => (props.checked ? "#0B665C" : "#6CD2D7")};
+  border: none;
+  border-radius: 15px;
+  margin-left: 6.72px;
+  cursor: pointer;
+`;
 
 export const CommentBox = styled.div`
-border-bottom: 1px solid #555555;
-`
+  border-bottom: 1px solid #555555;
+`;
 
 export const Date = styled.span`
-opacity: 0.5;
-`
+  opacity: 0.5;
+`;
 
 export const BtnBar = styled.div`
-position: absolute;
-top:10px;
-right: 3px;
-font-size: 14px;
-opacity: 50%;
-word-spacing: -3px;
-
-`
+  position: absolute;
+  top: 10px;
+  right: 3px;
+  font-size: 14px;
+  opacity: 50%;
+  word-spacing: -3px;
+`;
 
 export const ReComment = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-padding-top: 10px;
-padding-bottom: 8px;
-font-size: 14px;
-line-height: 16px;
-border: 1px solid #C5C5C5;
-border-bottom: none;
-position: relative;
-width: 880px;
-margin: 0 auto;
-background-color: #E5E5E5;
-`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 8px;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #c5c5c5;
+  border-bottom: none;
+  position: relative;
+  width: 880px;
+  margin: 0 auto;
+  background-color: #e5e5e5;
+`;
 
-export const CommentSpan= styled.span`
+export const CommentSpan = styled.span`
   cursor: pointer;
-`
+`;
