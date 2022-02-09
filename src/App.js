@@ -15,7 +15,7 @@ import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
 import { HelmetProvider } from "react-helmet-async";
 import EmailAuth from "./components/screens/EmailAuth";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import OAuth from "./components/auth/OAuth";
 import Loading from "./components/screens/Loading";
 import { connect } from "react-redux";
@@ -41,7 +41,6 @@ function mapDispatchToProps(dispatch) {
       name,
       studentId,
       department,
-      gender,
       grade,
       phone,
       createdDate,
@@ -57,7 +56,6 @@ function mapDispatchToProps(dispatch) {
           name,
           studentId,
           department,
-          gender,
           grade,
           phone,
           createdDate,
@@ -100,7 +98,7 @@ export const onSilentRefresh = (refresh_token) => {
 function App(props) {
   const authenticated = props?.userReducer?.authenticated;
   const token = props?.userReducer?.token;
-
+  const [userInfo, setUserInfo] = useState(false);
   // onSilentRefresh(refresh_token);
 
   useEffect(() => {
@@ -120,14 +118,18 @@ function App(props) {
         .get(`/members/info/${ID}`)
         .then((res) => {
           const INFO = res.data.data.info;
+          console.log(INFO);
           const INFO_ARRAY = Object.values(INFO);
+
           console.log(INFO_ARRAY);
           props.putUserInfo(...INFO_ARRAY);
+          setUserInfo(true);
+          console.log(props.userReducer);
           //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
         })
         .catch(console.log("no user info"));
     }
-  }, [authenticated]);
+  }, [authenticated, userInfo]);
 
   return (
     <HelmetProvider>

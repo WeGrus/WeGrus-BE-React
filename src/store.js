@@ -12,7 +12,6 @@ const PUT_USER_INFO = "PUT_USER_INFO";
 
 const initialState = {
   //userReducer의 기본값입니다.
-
   id: null,
   email: null,
   name: null,
@@ -27,9 +26,9 @@ const initialState = {
   academicStatus: null,
   roles: null,
   authenticated: false,
-  gender: null,
-  userId: null,
   token: null,
+  userId: null,
+  gender: null,
 };
 
 const setKakaoId = (userId) => {
@@ -70,7 +69,6 @@ const putUserInfo = (
   name,
   studentId,
   department,
-  gender,
   grade,
   phone,
   createdDate,
@@ -86,7 +84,6 @@ const putUserInfo = (
     name,
     studentId,
     department,
-    gender,
     grade,
     phone,
     createdDate,
