@@ -112,6 +112,12 @@ function Page(props) {
     setTimeout();
     console.log("지워짐!");
   }
+
+  window.onpopstate = function(event){ // 뒤로가기
+    console.log("page에서의 location값");
+    console.log(location);
+    Navigate(`/board`,{state:{category:location.subCategory, page:location.page, search:location.search, seleted:location.seleted}})
+  }
   
 
   return (

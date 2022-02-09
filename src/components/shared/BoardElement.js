@@ -58,6 +58,7 @@ border:none;
 border-radius: 50px;
 border-color: #C4C4C4; 
 background-color:#C4C4C4; 
+cursor: pointer;
 `
 
 export const SearchBarFilter = styled.select`

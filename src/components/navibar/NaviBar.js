@@ -32,13 +32,13 @@ const NaviBar = (props) => {
               About
             </NavLink>
             <NavLink to="/announce">공지사항</NavLink>
-            <NavLink to="/group" style={({ isActive }) => ({})}>
+            <NavLink to="/group"  style={({ isActive }) => ({})}>
               소모임
             </NavLink>
             <NavLink to="/study" style={({ isActive }) => ({})}>
               스터디
             </NavLink>
-            <NavLink to="/board" style={({ isActive }) => ({})}>
+            <NavLink to="/board" state={{category:"INFO", page:1, search: {isSearch:false}, selected:"LASTEST", isNavi:true}} style={({ isActive }) => ({})}>
               커뮤니티
             </NavLink>
           </NavMenu>

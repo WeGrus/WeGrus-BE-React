@@ -20,10 +20,13 @@ const activeBoldWeight = `
 font-weight: bold;
 `
 
-function PostBar({target,page,data}) {
+function PostBar({target,page,data,search,selected}) {
     const limit = 19;
     const offset = (page-1)*limit;
     const number = (page-1)*16;
+
+    // console.log("PostBar에서의 location값");
+    // console.log(selected);
 
       const postdata = data.map((data,i) => 
       <PostInforBar key={i+1}>
@@ -35,7 +38,7 @@ function PostBar({target,page,data}) {
           }
        
           <Title>
-          <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, page: page, postId: data.postId }}  >
+          <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, page: page, postId: data.postId, search:search, selected:selected}}  >
           {data.title}
           </Link> 
           <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, page: page, postId: data.postId }} >
