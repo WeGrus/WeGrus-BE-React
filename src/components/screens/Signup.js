@@ -10,6 +10,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
 import { actionCreators, userSignUp } from "../../store";
+import SingleImageUploadComponent from "./Profile/SingleImageUploadComponent";
 
 /*function Signupo() {
   const location = useLocation();
@@ -69,7 +70,7 @@ import { actionCreators, userSignUp } from "../../store";
   );
 }*/
 
-const DEPARTMENTS = [
+export const DEPARTMENTS = [
   "기계공학과",
   "항공우주공학과",
   "조선해양공학과",
@@ -293,7 +294,6 @@ function Signup(props) {
           placeholder="재학 여부"
           options={["재학", "휴학", "졸업"]}
         />
-
         <Input
           {...register("phone", { required: "academicStatus is required." })}
           type="tel"

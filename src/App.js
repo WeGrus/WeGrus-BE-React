@@ -7,7 +7,7 @@ import Group from "./components/screens/Group";
 import CreatePage from "./components/screens/Page_Create.js";
 import UpdatePage from "./components/screens/Page_Update.js";
 import Announce from "./components/screens/Announce";
-import Profile from "./components/screens/Profile";
+import Profile from "./components/screens/Profile/Profile";
 import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
 import { isOperator } from "./variables";
@@ -106,7 +106,6 @@ function App(props) {
     if (authenticated) {
       //store에 토큰이 있을 경우(=로그인 했을 경우)
       var decoded = jwt_decode(token);
-      console.log(decoded);
       //토큰을 디코딩합니다
       const ID = decoded.sub; //회원번호
 
@@ -118,13 +117,11 @@ function App(props) {
         .get(`/members/info/${ID}`)
         .then((res) => {
           const INFO = res.data.data.info;
-          console.log(INFO);
           const INFO_ARRAY = Object.values(INFO);
 
-          console.log(INFO_ARRAY);
           props.putUserInfo(...INFO_ARRAY);
           setUserInfo(true);
-          console.log(props.userReducer);
+
           //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
         })
         .catch(console.log("no user info"));
