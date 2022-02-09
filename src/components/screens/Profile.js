@@ -79,10 +79,10 @@ function DetailBox({ title, children }) {
 }
 
 const subCategory = [
-  { content: "내 정보", filter: "내 정보" },
-  { content: "내가 쓴 게시글", filter: "내가 쓴 게시글" },
-  { content: "내가 쓴 댓글", filter: "내가 쓴 댓글" },
-  { content: "계정 설정", filter: "계정 설정" },
+  { content: "내 정보", boardName: "내 정보" },
+  { content: "내가 쓴 게시글", boardName: "내가 쓴 게시글" },
+  { content: "내가 쓴 댓글", boardName: "내가 쓴 댓글" },
+  { content: "계정 설정", boardName: "계정 설정" },
 ];
 
 const postData = [
@@ -135,7 +135,7 @@ function Profile(props) {
   return (
     <>
       <PageTitle title="프로필" />
-      <SideBar posts={subCategory} getFilter={setTarget}></SideBar>
+      <SideBar posts={subCategory} getFilter={setTarget} target={target}></SideBar>
       <Content>
         <ScreenTitle>{`프로필 | ${target}`}</ScreenTitle>
         <InfoBox>
