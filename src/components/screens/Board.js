@@ -154,6 +154,8 @@ function Board(props) {
         setTarget((current) => boardTarget)
         setPage(PageReducer.page)
         setSubCategory((previous) => (category))
+        console.log(PageReducer.selected);
+        setSelected(PageReducer.selected)
         
       });
 
@@ -180,7 +182,8 @@ function Board(props) {
       console.log(subCategory);
       const boardId = subCategory.find(element => element.boardName === target).boardId // 그 중에서 현재 타겟의 board이름
       console.log(boardId);
-      props.setAll(boardId,1,[false],PageReducer.selected)
+      setSelected("LASTEST")
+      props.setAll(boardId,1,[false],"LASTEST")
     }
   },[target])
 
@@ -244,7 +247,7 @@ function Board(props) {
               </SearchBarFilter>
 
           <CreateBtnLink
-                to={`/board/write/${1}`}
+                to={`/board/write/${props.userReducer.id}`} state={{ category: "커뮤니티", subCategory:  target}}
               >
                 create
               </CreateBtnLink>

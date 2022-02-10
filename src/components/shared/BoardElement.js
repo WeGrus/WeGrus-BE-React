@@ -257,11 +257,18 @@ line-height: 16.41px;
 border-bottom: 1px solid black;
 display: flex;
 align-items:center;
+
+&:hover{
+  font-weight: 700;
+  cursor: pointer;
+  transform: translateY(-2px);
+}
 `
 export const PostCotent = styled.div`
 align-items:center;
 display: flex;
 flex-direction: row;
+font-weight: ${props => (props.bold?"700":"400")};
 `
 
 export const PostRole = styled.div`
@@ -293,4 +300,8 @@ width: 8px;
 position: absolute;
 right: 0px;
 top: 3px;
+`
+
+export const Bold = styled.div`
+font-weight:bold;
 `

@@ -8,7 +8,7 @@ import axios from "axios";
 import { connect } from 'react-redux';
 import CommentSection from './../shared/Comment';
 import {Background,Content,Category,Header,OtherDetail,Description,Recommand,GoToList,Correction,Delete,
-  PostInfor, PostBtnSection, PostRecommand, PostScrape} from "./../shared/PageElements"
+  PostInfor, PostBtnSection, PostRecommand, PostScrape,HeaderContent,PageImage} from "./../shared/PageElements"
   import { actionCreators } from "../../store";
 
 const Title = styled.div`
@@ -17,7 +17,7 @@ height: 21px;
 font-size: 18px;
 font-weight: 700;
 border: none;
-margin-bottom: 10px;
+margin-bottom: 4px;
 `
 
 const Right = styled.span`
@@ -92,8 +92,6 @@ function Page(props) {
       console.log(error.toJSON());
     })
     .then(function(res){
-      console.log("page에서의 댓글값");
-      console.log(res.data.data.replies);
       //console.log(res.data.data.board);
       console.log("work!");
       setPageData(res.data.data.board)
@@ -209,8 +207,11 @@ function Page(props) {
               <Category>{location.category}|{location.subCategory}</Category>
     
               <Header>
+                <PageImage src={`${props.userReducer.imageUrl}`}></PageImage>
+              <HeaderContent>
                 <Title>{pageDate.title}</Title>
-                <OtherDetail>{pageDate.memberName}|{pageDate.updatedDate}|{pageDate.updatedDate}<Right>조회 {pageDate.postView}|추천 {countOfRecommend}|댓글 {countOfComment}</Right></OtherDetail>
+                <OtherDetail>{pageDate.memberName} | {pageDate.updatedDate} | {pageDate.updatedDate}<Right>조회 {pageDate.postView} | 추천 {countOfRecommend} | 댓글 {countOfComment}</Right></OtherDetail>
+                </HeaderContent>
               </Header>
     
               <Description>
@@ -240,7 +241,7 @@ function Page(props) {
                 {(getPage.author === userInfor.userName) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
                   <div style={{ float: "right" }}>
                     <Link
-                      to={`/board/update/${1}/${userInfor.userId}`}
+                      to={`/board/update/${props.userReducer.id}/${props.userReducer.name}`}
                       state={
                         {
                           boardType: location.category,

@@ -15,7 +15,6 @@ background-color: white;
   transform: translateY(-2px);
 }
 &[aria-current] {
-  background: deeppink;
   font-weight: bold;
   cursor: revert;
   transform: revert;

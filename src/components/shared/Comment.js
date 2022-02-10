@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {Comments,Comment
     ,CommentContent,CommentWriteSection,CommentWrite,CommentSubmit,
     CommentName,CommentLeft,CommentNameBox,
-    CommentBox,Date,CommentRecommand,BtnBar, CommentInfor,ReComment,CommentSpan} from "./PageElements"
+    CommentBox,Date,CommentRecommand,BtnBar, CommentInfor,ReComment,CommentSpan,CommentLeftContent,CommentImage} from "./PageElements"
 
       
       const getReCommentInfor = [
@@ -130,13 +130,16 @@ function CommentSection(props){
   const postId = pageData.postId
   const commentData = props.commentData
 
+  console.log(props);
+  console.log(commentData);
+
     const [comment,setComment] = React.useState("") // 댓글 입력칸
     const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
-    const [commentInfor, setCommentInfor] = React.useState(commentData); // 댓글 정보
+    //const [commentInfor, setCommentInfor] = React.useState(commentData); // 댓글 정보
     const [reCommentInfor,setReCommentInfor] = React.useState(getReCommentInfor)
     const [commentIndex,setCommentIndex] = React.useState(-1);
     const [checkSubmitBtn, setCheckSubmitBtn] = React.useState(0) // 0이면 댓글 등록이고 다른 숫자이면 수정하는 댓글의 index이다. 
-    const [isRecommand, setIsRecommand] = React.useState(0)
+    //const [isRecommand, setIsRecommand] = React.useState(0)
     const reCommentEl = React.useRef();
     const reCommentUpdateEl = React.useRef();
     const commentInputEl = React.useRef(); // 추후에 추가할 공백입력
@@ -172,6 +175,7 @@ function CommentSection(props){
         axios.post(`/comments`,{
           "content": comment,
           "postId": postId, 
+          "replyId": -1
         },
         {
           headers: {'Authorization': `Bearer ${props.tokenReducer}`}
@@ -206,18 +210,6 @@ function CommentSection(props){
       
     }
 
-    const handleCommentUpdateBtn = (e) => { // 댓글 수정 버튼 누를 시에 동작하는 함수
-        const index = e.target.parentNode.dataset.index
-        let i = 0;
-        // for(i;i<commentInfor.length; i++){
-        //   if(commentInfor[i].commentNumber == index){
-        //     console.log(commentInfor[i].text)
-        //     setComment(commentInfor[i].text)
-        //     setCheckSubmitBtn(index)
-        //     break;
-        //   }
-        // }
-    }
       
     const handleCommentDelete = (e) => { // 댓글 삭제 함수
       const info = e.target.parentNode.parentNode.dataset.info;
@@ -378,6 +370,8 @@ function CommentSection(props){
         <CommentBox key={i + 1}>
           <Comment data-info={`commentNo: '${comment.replyId}'`} >
             <CommentLeft>
+              <CommentImage src={`${props.userReducer.imageUrl}`}></CommentImage>
+              <CommentLeftContent>
               <CommentNameBox>
                 <CommentName>{comment.memberName}</CommentName>
               </CommentNameBox>
@@ -385,12 +379,14 @@ function CommentSection(props){
                 <Date>{comment.updatedDate} | {comment.updatedDate}</Date>
                 <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} color="#0B665C" />{comment.replyLike}</CommentRecommand>
               </CommentInfor>
+            </CommentLeftContent>
+
             </CommentLeft>
 
             <CommentContent>{comment.content}</CommentContent>
 
-            {(comment.memberId === 3) ? // 이후 JWT 디코딩 이후 수정할 부분이다.
-              <BtnBar data-index={comment.replyId}><CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> | <CommentSpan onClick={handleCommentUpdateBtn}>수정</CommentSpan> | <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan></BtnBar>
+            {(comment.memberId === props.userReducer.id) ? // 이후 JWT 디코딩 이후 수정할 부분이다.
+              <BtnBar data-index={comment.replyId}><CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> | <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan></BtnBar>
               :
               <BtnBar data-index={comment.replyId}><CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan></BtnBar>
             }

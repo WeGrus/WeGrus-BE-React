@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import * as React from "react"
 import { Link } from "react-router-dom";
-import {PostInforBar,PostCotent,Categorization,Title,Writer,Date,Hits,Recommendation,Comment} from "./BoardElement"
+import {PostInforBar,PostCotent,Categorization,Title,Writer,Date,Hits,Recommendation,Bold} from "./BoardElement"
 import { faVolumeOff  } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { HashLink   } from 'react-router-hash-link';
@@ -24,36 +24,52 @@ function PostBar({target,page,data}) {
     const limit = 19;
     const offset = (page-1)*limit;
     const number = (page-1)*16;
+    console.log(data);
 
     // console.log("PostBar에서의 location값");
     // console.log(selected);
 
       const postdata = data.map((data,i) => 
       <PostInforBar key={i+1}>
-        <PostCotent>
-          {(data.type !== "NORMAL")?
-          <Number><FontAwesomeIcon icon={faVolumeOff} color="#0B665C" /></Number>
-          :
+        {(data.type === "NORMAL")?
+         <PostCotent>
           <Number>{(i+1)+number}</Number>
-          }
-       
-          <Title>
-          <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, postId: data.postId}}  >
-          {data.title}
-          </Link> 
-          <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, postId: data.postId }} >
-            <Test>
-              [{data.postReplies}]
-              </Test>
-          </HashLink >
-          </Title>
-      
          
-          <Writer>{data.memberName}</Writer>
-          <Date>{data.createdDate}</Date>
-          <Recommendation>{data.postLike}</Recommendation>
-          <Hits>{data.postView}</Hits>
-        </PostCotent>
+         <Title>
+         <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, postId: data.postId}}  >
+         {data.title}
+         </Link> 
+         <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, postId: data.postId }} >
+           <Test>
+             [{data.postReplies}]
+             </Test>
+         </HashLink >
+         </Title>
+         <Writer>{data.memberName}</Writer>
+         <Date>{data.createdDate}</Date>
+         <Recommendation>{data.postLike}</Recommendation>
+         <Hits>{data.postView}</Hits>
+       </PostCotent>
+        :
+        <PostCotent bold>
+        <Number><FontAwesomeIcon icon={faVolumeOff} color="#0B665C" /></Number>
+        <Title>
+        <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, postId: data.postId}}  >
+        {data.title}
+        </Link> 
+        <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, postId: data.postId }} >
+          <Test>
+            [{data.postReplies}]
+            </Test>
+        </HashLink >
+        </Title>
+        <Writer>{data.memberName}</Writer>
+        <Date>{data.createdDate}</Date>
+        <Recommendation>{data.postLike}</Recommendation>
+        <Hits>{data.postView}</Hits>
+      </PostCotent>
+        }
+       
       </PostInforBar>
 
       )
