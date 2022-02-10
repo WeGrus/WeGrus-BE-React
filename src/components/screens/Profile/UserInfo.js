@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { DEPARTMENTS } from "../Signup";
+import FileUploadComponent from "./fileUpload.component";
 import DetailBox, {
   ButtonBox,
   ContentBox,
@@ -55,23 +56,9 @@ function UserInfo(props) {
               <img src={`${DATA.imageUrl}`} alt="profile" />
             </ProfilePhoto>
             <ButtonBox>
-              <EditButton type="file" onChange={() => handleEditPhoto()}>
-                수정
-              </EditButton>
+              <FileUploadComponent />
               <EditButton type="file">삭제</EditButton>
             </ButtonBox>
-            <EditPhoto
-              ref={inputRef}
-              name="file_upload"
-              type="file"
-              accept="image/*"
-              onChange={(input) => {
-                console.log(input);
-                handleEditPhoto(input);
-              }}
-            >
-              수정
-            </EditPhoto>
           </ContentBox>
         </DetailBox>
         <DetailBox title="회원 정보">
