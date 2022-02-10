@@ -181,10 +181,10 @@ function CommentSection(props){
         })
         .then(function(res){
           console.log(res);
+          triggerSwitch()
+          setComment("");
         });
-        console.log(props);
-        triggerSwitch()
-        setComment("");
+
       }
     }
   

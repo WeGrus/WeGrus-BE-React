@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import CommentSection from './../shared/Comment';
 import {Background,Content,Category,Header,OtherDetail,Description,Recommand,GoToList,Correction,Delete,
   PostInfor, PostBtnSection, PostRecommand, PostScrape} from "./../shared/PageElements"
+  import { actionCreators } from "../../store";
 
 const Title = styled.div`
 width: 924px;
@@ -60,6 +61,12 @@ function mapStateToProps(state) {
   return state;
 }
 
+function mapDispatchToProps(dispatch){
+  return{
+    setAll: (boardId,page,isSearching,seleted) => dispatch(actionCreators.setAll(boardId,page,isSearching,seleted))
+  }
+}
+
 function Page(props) {
   
   //const params = useParams();
@@ -85,18 +92,19 @@ function Page(props) {
       console.log(error.toJSON());
     })
     .then(function(res){
-      //console.log(res.data.data.replies);
+      console.log("page에서의 댓글값");
+      console.log(res.data.data.replies);
       //console.log(res.data.data.board);
+      console.log("work!");
       setPageData(res.data.data.board)
       setCommentData((current) => res.data.data.replies)
       setCountOfRecommend(res.data.data.board.postLike)
       setCountOfScrape(0) // 스크랩 이후 수정
       setCountOfComment(res.data.data.board.postReplies)
-     
+      //props.setAll(7,2,false,'LASTEST')
       //setPreviousTrigger(!trigger)
     });
-    console.log("page에서의 location값");
-    console.log(location);
+
   },[location,trigger])
 
   React.useEffect(()=>{
@@ -181,7 +189,7 @@ function Page(props) {
         console.log(res);
       });
       Navigate("/board", {
-        state: {category:location.subCategory, page:location.page, search:location.search, seleted:location.seleted }
+        state: {category:location.subCategory}
       })
     }
 
@@ -189,9 +197,8 @@ function Page(props) {
   }
 
   window.onpopstate = function(event){ // 뒤로가기
-    if(load === true){
-      Navigate(`/board`,{state:{category:location.subCategory, page:location.page, search:location.search, selected:location.selected}})
-    }
+    event.preventDefault();
+    Navigate(`/board`,{state:{category:location.subCategory}})
   }
 
   return (
@@ -228,7 +235,7 @@ function Page(props) {
     
               <BtnSection>
               <Link to="/board" 
-              state={{category:location.subCategory, page:location.page, search:location.search, seleted:location.seleted }}
+              state={{category:location.subCategory}}
                 ><GoToList >목록으로</GoToList></Link>
                 {(getPage.author === userInfor.userName) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
                   <div style={{ float: "right" }}>
@@ -259,4 +266,4 @@ function Page(props) {
     </div>
   );
 }
-export default connect(mapStateToProps)(Page);
+export default connect(mapStateToProps,mapDispatchToProps)(Page);

@@ -20,7 +20,7 @@ const activeBoldWeight = `
 font-weight: bold;
 `
 
-function PostBar({target,page,data,search,selected}) {
+function PostBar({target,page,data}) {
     const limit = 19;
     const offset = (page-1)*limit;
     const number = (page-1)*16;
@@ -38,10 +38,10 @@ function PostBar({target,page,data,search,selected}) {
           }
        
           <Title>
-          <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, page: page, postId: data.postId, search:search, selected:selected}}  >
+          <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, postId: data.postId}}  >
           {data.title}
           </Link> 
-          <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, page: page, postId: data.postId }} >
+          <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, postId: data.postId }} >
             <Test>
               [{data.postReplies}]
               </Test>
