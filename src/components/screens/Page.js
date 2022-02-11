@@ -180,10 +180,9 @@ function Page(props) {
       })
       .then(function(res){
         console.log(res);
+        Navigate(props.PageReducer.boardCategoryName)
       });
-      Navigate(props.PageReducer.boardCategoryName, {
-        state: {category:location.subCategory}
-      })
+     
     }
   }
 
