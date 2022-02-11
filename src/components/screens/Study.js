@@ -85,7 +85,6 @@ function Study(props) {
         console.log(error.toJSON());
       })
       .then(function(res){
-        //console.log(res);
         settotalPage(res.data.data.posts.totalPages)
         setPosts(res.data.data.posts.content)
         console.log("제목+내용검색");
@@ -156,7 +155,7 @@ function Study(props) {
         setSubCategory((previous) => (category))
         console.log(PageReducer.selected);
         setSelected(PageReducer.selected)
-        
+        setLoad(current => !current)
       });
 
       if(PageReducer.isSearching[0] === true){
@@ -217,8 +216,11 @@ function Study(props) {
 
 
   return (
+    
     <>
-      <PageTitle title="스터디" />
+      {(load === true)?
+      <>
+         <PageTitle title="스터디" />
       <SideBar posts={subCategory} getFilter={setTarget} target={target} item={"boardName"}></SideBar>
       {/* posts는 하위카테고리의 수를 나타내는 것입니다.[ex) 자유게시판, 비밀게시판 등등] target과 setTaget을 보냄으로써 bold및 target이 바뀌게 구현했습니다. */}
       <Content>
@@ -281,6 +283,12 @@ function Study(props) {
           {/* total은 총 게시글의 길이. limit은 한 페이지 안의 게시글의 개수, page는 현재 페이지이고 setPage를 보내줌으로써 페이지네이션 구현했습니다.*/}
           <Outlet />
       </Content>
+      </>
+      :
+      <>
+        null
+      </>}
+   
     </>
   );
 }

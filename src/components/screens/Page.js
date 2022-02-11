@@ -171,7 +171,7 @@ function Page(props) {
   const handleDeleteClick = () => { // 게시글 삭제하는 함수
     //axios로 delete하고 다시 보드 보여주기.
     let value = window.confirm("해당 게시물을 삭제하겠습니까?")
-    if (value) {
+    if (value === true) {
       axios.delete(`/posts?postId=${pageDate.postId}`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
@@ -181,12 +181,10 @@ function Page(props) {
       .then(function(res){
         console.log(res);
       });
-      Navigate("/board", {
+      Navigate(props.PageReducer.boardCategoryName, {
         state: {category:location.subCategory}
       })
     }
-
-    return value;
   }
 
   window.onpopstate = function(event){ // 뒤로가기
