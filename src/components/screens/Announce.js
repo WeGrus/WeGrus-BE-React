@@ -66,13 +66,11 @@ function Board(props) {
   const [subCategory,setSubCategory] =React.useState(undefined);
   const [page, setPage] = React.useState(0);
   const [selected, setSelected] = React.useState("") // 필터값
-  //const [currentBoardType, setCurrentBoardType] = React.useState("") // 현재 타겟의 boardType(숫자)
-  // const [currentType, setCurrentType] = React.useState("") // 현재 타겟의 selected(숫자)
-  let currentBoardType = ""
-  let currentType = ""
   const [load, setLoad] = React.useState(false) // load유무로 location의 값이 바뀐 뒤에 렌더
   const [posts, setPosts] = React.useState(null); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
+  const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+
 
   const { register, handleSubmit} = useForm();
 
@@ -245,12 +243,16 @@ function Board(props) {
                   </option>
                 ))}
               </SearchBarFilter>
-
-          <CreateBtnLink
-                to={`/board/write/${props.userReducer.id}`} state={{ category: "공지사항", subCategory:  target}}
-              >
-                create
-              </CreateBtnLink>
+          {(isAuthority === true)?
+   <CreateBtnLink
+   to={`/board/write/${props.userReducer.id}`} state={{ category: "공지사항", subCategory:  target}}
+ >
+   create
+ </CreateBtnLink>
+          :
+          null
+          }
+       
             </SearchBarSection> 
 
           <InforBar> {/* 프로필의 내가 쓴 게시글, 내가 쓴 댓글 부분에 사용하시면 좋을 듯 합니다.*/}

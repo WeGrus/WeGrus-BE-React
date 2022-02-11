@@ -75,6 +75,7 @@ function Page(props) {
   const [trigger, setTrigger] = React.useState(true)
   const [load, setLoad]=React.useState(false)
   const Navigate = useNavigate();
+  const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
   let data, time;
 
   React.useEffect(()=>{
@@ -101,6 +102,8 @@ function Page(props) {
   React.useEffect(()=>{
     if(pageDate !== null){
       setLoad(true)
+      setIsScraped(pageDate.userPostBookmarked)
+      setIsRecommend(pageDate.userPostLiked)
       console.log(pageDate);
       console.log(props);
     }
@@ -225,7 +228,7 @@ function Page(props) {
                 <Viewer initialValue={pageDate.content} />
                 <PostInfor><span>댓글 {countOfComment}</span> | <span>추천 {countOfRecommend}</span> | <span>스크랩 {countOfScrape}</span></PostInfor>
                 <PostBtnSection>
-                {(isRecommend === "추천취소")?
+                {(isRecommend === true)?
                 <PostRecommand value="추천" onClick={postRecommand} checked>{"추천"}</PostRecommand>
                 :
                 <PostRecommand value="추천" onClick={postRecommand}>{"추천"}</PostRecommand>}
@@ -245,7 +248,7 @@ function Page(props) {
               <Link to="/board" 
               state={{category:location.subCategory}}
                 ><GoToList >목록으로</GoToList></Link>
-                {(props.userReducer.id === pageDate.memberId) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
+                {(props.userReducer.id === pageDate.memberId||isAuthority === true) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
                   <div style={{ float: "right" }}>
                     <Link
                       to={`/board/update/${props.userReducer.id}/${props.userReducer.name}`}
