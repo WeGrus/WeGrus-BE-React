@@ -24,6 +24,7 @@ function Page(props) {
   const editorRef = React.createRef();
   const downRef = React.createRef();
   const Navigate = useNavigate();
+  const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
   let aBlob;
 
   const handleSecretOptionChange = event => {
@@ -81,7 +82,8 @@ function Page(props) {
     })
     .then(function(res){
       console.log(res);
-      Navigate("/board");
+      console.log(props.PageReducer.boardCategoryName);
+      Navigate(props.PageReducer.boardCategoryName);
     });
   
   }
@@ -112,6 +114,7 @@ function Page(props) {
     setTimeout();
     console.log("지워짐!");
   }
+  console.log();
   
 
   return (
@@ -121,7 +124,7 @@ function Page(props) {
           <Category>{location.category}|{location.subCategory}</Category>
           <Header>
             <Title type="text" placeholder="제목" value={title} onChange={(e)=>setTitle(e.target.value)}></Title>
-            <OtherDetail>{"이름 들어가야 함."}</OtherDetail>
+            <OtherDetail>{props.userReducer.name}</OtherDetail>
           </Header>
           <Editor
             initialValue="본문을 적어주세요."
@@ -142,13 +145,17 @@ function Page(props) {
                   }
             ><GoToList >목록으로</GoToList></Link>
             <Right>
-            <SetOption>
-                <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
-                <Checkbox
-                  checked={notice}
-                  onChange={handleNoticeOptionChange}
-                />
-              </SetOption>
+              {(isAuthority === true)?
+                          <SetOption>
+                          <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
+                          <Checkbox
+                            checked={notice}
+                            onChange={handleNoticeOptionChange}
+                          />
+                        </SetOption>
+              :
+              null}
+
               <SetOption>
                 <Text><span style={{ marginRight: 8 }}>비밀글 설정하기</span></Text>
                 <Checkbox

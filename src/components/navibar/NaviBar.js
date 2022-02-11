@@ -20,7 +20,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
   return{
-    setAll: (boardId,page,isSearching,seleted) => dispatch(actionCreators.setAll(boardId,page,isSearching,seleted))
+    setAll: (boardId,page,isSearching,selected,boardCategoryName) => dispatch(actionCreators.setAll(boardId,page,isSearching,selected,boardCategoryName))
   }
 }
 
@@ -29,10 +29,27 @@ const NaviBar = (props) => {
   const DATA = props.userReducer;
   const Navigate = useNavigate();
 
-  const handleLink = (e) => {
+  const handleLink = (e, boardCategoryName) => {
     e.preventDefault();
-    props.setAll(7,1,[false],'LASTEST')
-    Navigate(`/board`, {state:{category:"INFO", page:1, search:{isSearch:false}, selected:"LASTEST"}})
+    console.log("chedk");
+    if(boardCategoryName === "BOARD"){
+      console.log("네비 확인!");
+      props.setAll(7,1,[false],'LASTEST', '/board')
+      Navigate(`/board`, {state:{category:"INFO", page:1, search:{isSearch:false}, selected:"LASTEST"}})
+    }
+    else if(boardCategoryName === "STUDY"){
+      props.setAll(6,1,[false],'LASTEST', "/study")
+      Navigate(`/study`, {state:{category:"INFO", page:1, search:{isSearch:false}, selected:"LASTEST"}})
+    }
+    else if(boardCategoryName === "GROUP"){
+      props.setAll(2,1,[false],'LASTEST', "/group")
+      Navigate(`/group`, {state:{category:"INFO", page:1, search:{isSearch:false}, selected:"LASTEST"}})
+    }
+    else if(boardCategoryName === "NOTICE"){
+      props.setAll(1,1,[false],'LASTEST', "/announce")
+      Navigate(`/announce`, {state:{category:"INFO", page:1, search:{isSearch:false}, selected:"LASTEST"}})
+    }
+
   }
 
 
@@ -47,14 +64,14 @@ const NaviBar = (props) => {
             <NavLink to="/" style={({ isActive }) => ({})}>
               About
             </NavLink>
-            <NavLink to="/announce">공지사항</NavLink>
-            <NavLink to="/group"  style={({ isActive }) => ({})}>
+            <NavLink to="/announce" onClick={(e) => {handleLink(e,"NOTICE")}}>공지사항</NavLink>
+            <NavLink to="/group" onClick={(e) => {handleLink(e,"GROUP")}}  style={({ isActive }) => ({})}>
               소모임
             </NavLink>
-            <NavLink to="/study" style={({ isActive }) => ({})}>
+            <NavLink to="/study" onClick={(e) => {handleLink(e,"STUDY")}} style={({ isActive }) => ({})}>
               스터디
             </NavLink>
-            <NavLink to="/board?isNavi=true" onClick={handleLink} style={({ isActive }) => ({})}>
+            <NavLink to="/board" onClick={(e) => {handleLink(e,"BOARD")}} style={({ isActive }) => ({})}>
               커뮤니티
             </NavLink>
           </NavMenu>

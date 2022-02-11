@@ -142,6 +142,12 @@ function App(props) {
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
                 <Route path="/group" element={<Group />} />
+                <Route path="/group/:pagenum" element={<Page />} />
+                <Route path="/group/write/:userid" element={<CreatePage />} />
+                <Route
+                  path="/group/update/:pagenum/:userid"
+                  element={<UpdatePage />}
+                />
                 <Route path="/study" element={<Study />} />
                 <Route path="/study/:pagenum" element={<Page />} />
                 <Route path="/study/write/:userid" element={<CreatePage />} />

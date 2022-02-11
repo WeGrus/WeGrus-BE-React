@@ -7,7 +7,7 @@ import * as ReactDOM from 'react-dom';
 import axios from "axios";
 import { connect } from 'react-redux';
 import CommentSection from './../shared/Comment';
-import {Background,Content,Category,Header,OtherDetail,Description,Recommand,GoToList,Correction,Delete,
+import {Background,Content,Category,OtherDetail,Description,Recommand,GoToList,Correction,Delete,
   PostInfor, PostBtnSection, PostRecommand, PostScrape,HeaderContent,PageImage} from "./../shared/PageElements"
   import { actionCreators } from "../../store";
 
@@ -29,23 +29,16 @@ margin-top: 12.5px;
 padding-bottom: 12.5px;
 `
 
-let getPage = { // 서버에서 가져온 page의 정보라고 가정.
-  title: "플러터 스터디 모집합니다. 초보자 환영입니다.",
-  isSecret: false,
-  countOfRecommend: 0, // 게시글의 추천수
-  isRecommend: false,  //서버에서 이 유저가 게시글에 추천을 했는지 확인한다. true면 추천한 것이다.
-  author: "김승태",
-  date: "2021.12.21",
-  time: "23:44",
-  // editor에 넣을 예제값이다.
-}
-
-
-
-let userInfor = {
-  userName: "김승태",
-  userId: "testId"
-}
+export const Header = styled.div`
+padding-bottom: 16px;
+border-bottom: 2px solid #0B665C;
+margin-bottom: 42px;
+width: 924px;
+padding-top: 16px;
+margin: auto;
+display: flex;
+flex-direction: row;
+`
 
 const checkRecommend = (isRecommend) => {
   if (isRecommend) {
@@ -108,6 +101,8 @@ function Page(props) {
   React.useEffect(()=>{
     if(pageDate !== null){
       setLoad(true)
+      console.log(pageDate);
+      console.log(props);
     }
   },[pageDate])
 
@@ -175,7 +170,7 @@ function Page(props) {
 
   const handleDeleteClick = () => { // 게시글 삭제하는 함수
     //axios로 delete하고 다시 보드 보여주기.
-    let value = window.confirm("해당게시물을 삭제하겠습니까?")
+    let value = window.confirm("해당 게시물을 삭제하겠습니까?")
     if (value) {
       axios.delete(`/posts?postId=${pageDate.postId}`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
@@ -196,7 +191,7 @@ function Page(props) {
 
   window.onpopstate = function(event){ // 뒤로가기
     event.preventDefault();
-    Navigate(`/board`,{state:{category:location.subCategory}})
+    Navigate(props.PageReducer.boardCategoryName,{state:{category:location.subCategory}})
   }
 
   const splitDate = (data) => {
@@ -253,7 +248,7 @@ function Page(props) {
               <Link to="/board" 
               state={{category:location.subCategory}}
                 ><GoToList >목록으로</GoToList></Link>
-                {(getPage.author === userInfor.userName) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
+                {(props.userReducer.id === pageDate.memberId) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
                   <div style={{ float: "right" }}>
                     <Link
                       to={`/board/update/${props.userReducer.id}/${props.userReducer.name}`}

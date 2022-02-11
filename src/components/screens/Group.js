@@ -55,7 +55,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
   return{
-    setAll: (boardId,page,isSearching,seleted) => dispatch(actionCreators.setAll(boardId,page,isSearching,seleted)),
+    setAll: (boardId,page,isSearching,seleted,boardCategoryName) => dispatch(actionCreators.setAll(boardId,page,isSearching,seleted,boardCategoryName)),
   }
 }
 
@@ -183,14 +183,14 @@ function Group(props) {
       const boardId = subCategory.find(element => element.boardName === target).boardId // 그 중에서 현재 타겟의 board이름
       console.log(boardId);
       setSelected("LASTEST")
-      props.setAll(boardId,1,[false],"LASTEST")
+      props.setAll(boardId,1,[false],"LASTEST",PageReducer.boardCategoryName)
     }
   },[target])
 
   const handleSearching = (data,e) => { // 사용자가 검색을 했을때
     console.log(data);
     const PageReducer = props.PageReducer
-    props.setAll(PageReducer.boardId,1,[true,data.option,data.keyword],'LASTEST')
+    props.setAll(PageReducer.boardId,1,[true,data.option,data.keyword],'LASTEST',PageReducer.boardCategoryName)
     setSelected("최신순")
   }
 
@@ -204,13 +204,13 @@ function Group(props) {
     const type = e.target.value;
     const PageReducer = props.PageReducer
     setSelected(e.target.value)
-    props.setAll(PageReducer.boardId,1,PageReducer.isSearching,type)
+    props.setAll(PageReducer.boardId,1,PageReducer.isSearching,type,PageReducer.boardCategoryName)
   };
 
   React.useEffect(()=>{
     if(subCategory !== undefined){
       const PageReducer = props.PageReducer
-      props.setAll(PageReducer.boardId,page,PageReducer.isSearching,PageReducer.selected)
+      props.setAll(PageReducer.boardId,page,PageReducer.isSearching,PageReducer.selected,PageReducer.boardCategoryName)
     }
   },[page])
 
@@ -218,11 +218,11 @@ function Group(props) {
 
   return (
     <>
-      <PageTitle title="커뮤니티" />
+      <PageTitle title="소모임" />
       <SideBar posts={subCategory} getFilter={setTarget} target={target} item={"boardName"}></SideBar>
       {/* posts는 하위카테고리의 수를 나타내는 것입니다.[ex) 자유게시판, 비밀게시판 등등] target과 setTaget을 보냄으로써 bold및 target이 바뀌게 구현했습니다. */}
       <Content>
-        <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
+        <ScreenTitle>{`소모임 | ${target}`}</ScreenTitle>
         <SearchBarSection>
           <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
             <SearchBarSelect {...register("option")}>
@@ -247,7 +247,7 @@ function Group(props) {
               </SearchBarFilter>
 
           <CreateBtnLink
-                to={`/board/write/${props.userReducer.id}`} state={{ category: "커뮤니티", subCategory:  target}}
+                to={`/board/group/${props.userReducer.id}`} state={{ category: "소그룹", subCategory:  target}}
               >
                 create
               </CreateBtnLink>

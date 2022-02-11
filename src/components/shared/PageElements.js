@@ -22,12 +22,10 @@ export const Header = styled.div`
 padding-bottom: 16px;
 border-bottom: 2px solid #0B665C;
 margin-bottom: 42px;
-
 width: 924px;
 padding-top: 16px;
 margin: auto;
-display: flex;
-flex-direction: row;
+
 `
 export const Title = styled.input`
 width: 924px;
@@ -41,7 +39,7 @@ export const OtherDetail = styled.div`
 padding-bottom: 16px;
 height: 16px;
 font-size: 14px;
-text-align: justify;
+
 word-spacing: -3px;
 `
 export const DescriptionStyle = `

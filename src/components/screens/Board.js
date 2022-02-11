@@ -55,7 +55,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
   return{
-    setAll: (boardId,page,isSearching,seleted) => dispatch(actionCreators.setAll(boardId,page,isSearching,seleted)),
+    setAll: (boardId,page,isSearching,selected,boardCategoryName) => dispatch(actionCreators.setAll(boardId,page,isSearching,selected,boardCategoryName)),
   }
 }
 
@@ -150,7 +150,7 @@ function Board(props) {
       .then(function(res){
         const category = [...res.data.data.boards.filter(element => element.boardCategoryName === boardCategory)] // 사이드바에 넣을 콘텐츠의 종류
         const boardTarget = category.find(element => element.boardId === PageReducer.boardId).boardName // 그 중에서 현재 타겟의 board이름
-
+        console.log(res);
         setTarget((current) => boardTarget)
         setPage(PageReducer.page)
         setSubCategory((previous) => (category))
@@ -183,14 +183,14 @@ function Board(props) {
       const boardId = subCategory.find(element => element.boardName === target).boardId // 그 중에서 현재 타겟의 board이름
       console.log(boardId);
       setSelected("LASTEST")
-      props.setAll(boardId,1,[false],"LASTEST")
+      props.setAll(boardId,1,[false],"LASTEST",PageReducer.boardCategoryName)
     }
   },[target])
 
   const handleSearching = (data,e) => { // 사용자가 검색을 했을때
     console.log(data);
     const PageReducer = props.PageReducer
-    props.setAll(PageReducer.boardId,1,[true,data.option,data.keyword],'LASTEST')
+    props.setAll(PageReducer.boardId,1,[true,data.option,data.keyword],'LASTEST',PageReducer.boardCategoryName)
     setSelected("최신순")
   }
 
@@ -204,13 +204,13 @@ function Board(props) {
     const type = e.target.value;
     const PageReducer = props.PageReducer
     setSelected(e.target.value)
-    props.setAll(PageReducer.boardId,1,PageReducer.isSearching,type)
+    props.setAll(PageReducer.boardId,1,PageReducer.isSearching,type,PageReducer.boardCategoryName)
   };
 
   React.useEffect(()=>{
     if(subCategory !== undefined){
       const PageReducer = props.PageReducer
-      props.setAll(PageReducer.boardId,page,PageReducer.isSearching,PageReducer.selected)
+      props.setAll(PageReducer.boardId,page,PageReducer.isSearching,PageReducer.selected,PageReducer.boardCategoryName)
     }
   },[page])
 

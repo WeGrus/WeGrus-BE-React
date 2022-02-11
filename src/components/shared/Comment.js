@@ -101,21 +101,22 @@ function CommentSection(props){
       }
     }
   
-    const handleCommentDelete = (e) => { // 댓글 삭제 함수 수정 필요!
+    const handleCommentDelete = (e) => { // 댓글 삭제 함수
       const replyId = e.target.parentNode.parentNode.dataset.id;
-
-      axios.delete(`/comments?replyId=${replyId}`,
-      {
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function(res){
-        console.log(res);
-        triggerSwitch()
-      });
-  
+      let value = window.confirm("해당 댓글을 삭제하겠습니까?")
+      if(value){
+        axios.delete(`/comments?replyId=${replyId}`,
+        {
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function(res){
+          console.log(res);
+          triggerSwitch()
+        });
+      }
     }
     
     const handleCommentRecommandCancel = (e, commentId) => { // 댓글 추천 취소함수
@@ -200,18 +201,20 @@ function CommentSection(props){
       
   const handleReCommentDelete = (e) => { // 대댓글 삭제함수
         const index = e.target.parentNode.parentNode.dataset.id;
-
-        axios.delete(`/comments?replyId=${index}`,
-        {
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-        })
-        .catch(function (error) {
-          console.log(error.toJSON());
-        })
-        .then(function(res){
-          console.log(res);
-          triggerSwitch()
-        });
+        let value = window.confirm("해당 댓글을 삭제하겠습니까?")
+        if(value){
+          axios.delete(`/comments?replyId=${index}`,
+          {
+            headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+          })
+          .catch(function (error) {
+            console.log(error.toJSON());
+          })
+          .then(function(res){
+            console.log(res);
+            triggerSwitch()
+          });
+        }
   }
 
   const handleReCommentRecommandCancel = (e, replyId) => { // 댓글 추천 취소함수

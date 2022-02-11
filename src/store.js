@@ -179,16 +179,18 @@ const pageState = {
   boardId:null,
   page:null,
   isSearching:[false,],
-  seleted:null
+  selected:null,
+  boardCategoryName:null
 }
 
-const setAll = (boardId,page,isSearching,selected) =>{
+const setAll = (boardId,page,isSearching,selected,boardCategoryName) =>{
   return{
     type: "SET_ALL",
     boardId,
     page,
     isSearching,
-    selected
+    selected,
+    boardCategoryName
   }
 }
 
@@ -228,7 +230,8 @@ const PageReducer = (state = pageState, action) => {
         boardId: action.boardId,
         page: action.page,
         isSearching: action.isSearching,
-        selected: action.selected
+        selected: action.selected,
+        boardCategoryName: action.boardCategoryName
       };
     case "SET_BOARD_ID":
       return {
