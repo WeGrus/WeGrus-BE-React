@@ -20,11 +20,17 @@ const activeBoldWeight = `
 font-weight: bold;
 `
 
+const splitDate = (data) => {
+  const date = data.split('|')
+  const ymd = date[0]
+  return ymd
+}
+
 function PostBar({target,page,data}) {
     const limit = 19;
     const offset = (page-1)*limit;
     const number = (page-1)*16;
-    console.log(data);
+    //console.log(data);
 
     // console.log("PostBar에서의 location값");
     // console.log(selected);
@@ -46,7 +52,7 @@ function PostBar({target,page,data}) {
          </HashLink >
          </Title>
          <Writer>{data.memberName}</Writer>
-         <Date>{data.createdDate}</Date>
+         <Date>{splitDate(data.createdDate)}</Date>
          <Recommendation>{data.postLike}</Recommendation>
          <Hits>{data.postView}</Hits>
        </PostCotent>
@@ -64,7 +70,7 @@ function PostBar({target,page,data}) {
         </HashLink >
         </Title>
         <Writer>{data.memberName}</Writer>
-        <Date>{data.createdDate}</Date>
+        <Date>{splitDate(data.createdDate)}</Date>
         <Recommendation>{data.postLike}</Recommendation>
         <Hits>{data.postView}</Hits>
       </PostCotent>

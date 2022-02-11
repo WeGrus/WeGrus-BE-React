@@ -93,7 +93,7 @@ function Page(props) {
     })
     .then(function(res){
       //console.log(res.data.data.board);
-      console.log("work!");
+      //console.log("work!");
       setPageData(res.data.data.board)
       setCommentData((current) => res.data.data.replies)
       setCountOfRecommend(res.data.data.board.postLike)
@@ -199,6 +199,21 @@ function Page(props) {
     Navigate(`/board`,{state:{category:location.subCategory}})
   }
 
+  const splitDate = (data) => {
+    const date = data.split('|')
+    const ymd = date[0]
+    const time = date[1].substr(0,5)
+    // console.log(date);
+    // console.log(ymd);
+    // console.log(time);
+    
+    const result = `${ymd} | ${time}`
+    //console.log(result);
+    //createTime()
+
+    return result
+  }
+
   return (
     <div>
       {(load !== false)?
@@ -210,7 +225,7 @@ function Page(props) {
                 <PageImage src={`${props.userReducer.imageUrl}`}></PageImage>
               <HeaderContent>
                 <Title>{pageDate.title}</Title>
-                <OtherDetail>{pageDate.memberName} | {pageDate.updatedDate} | {pageDate.updatedDate}<Right>조회 {pageDate.postView} | 추천 {countOfRecommend} | 댓글 {countOfComment}</Right></OtherDetail>
+                <OtherDetail>{pageDate.memberName} | {splitDate(pageDate.updatedDate)}<Right>조회 {pageDate.postView} | 추천 {countOfRecommend} | 댓글 {countOfComment}</Right></OtherDetail>
                 </HeaderContent>
               </Header>
     
