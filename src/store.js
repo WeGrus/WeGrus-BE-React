@@ -9,6 +9,7 @@ const LOGIN = "LOGIN";
 const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 const DELETE_TOKEN = "DELETE_TOKEN";
 const PUT_USER_INFO = "PUT_USER_INFO";
+const EDIT_PHOTO = "EDIT_PHOTO";
 
 const initialState = {
   //userReducer의 기본값입니다.
@@ -94,6 +95,10 @@ const putUserInfo = (
   };
 };
 
+const editPhoto = (imageUrl) => {
+  return { type: EDIT_PHOTO, imageUrl };
+};
+
 export const logOutUser = () => {
   return {
     type: DELETE_TOKEN,
@@ -146,6 +151,8 @@ const userReducer = (state = initialState, action) => {
         academicStatus: action.academicStatus,
         roles: action.roles,
       };
+    case EDIT_PHOTO:
+      return { ...state, imageUrl: action.imageUrl };
     case DELETE_TOKEN:
       return { ...state, token: null, authenticated: false };
     default:
@@ -295,6 +302,7 @@ export const actionCreators = {
   setIsSearching,
   setSelected,
   setViewCategoryName
+  editPhoto,
 };
 
 export default store;
