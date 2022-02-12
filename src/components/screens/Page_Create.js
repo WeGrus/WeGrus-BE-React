@@ -124,6 +124,9 @@ function Page(props) {
 
   const handleTest = (e) => {
     console.log(e.target.files[0]);
+    const formData = new FormData()
+    formData.append('file',e.target.files[0])
+    console.log(formData);
     //console.log(e.target.files);
 
     // const formData = new FormData();
@@ -141,8 +144,7 @@ function Page(props) {
    }, 1000);
 
   const handleDownload = (e) => {
-    setTimeout();
-    console.log("지워짐!");
+
   }
   console.log();
   
@@ -166,7 +168,7 @@ function Page(props) {
           />
           <input type="file" id="docpicker" onChange={handleTest}></input>
           {(test)?
-            <a href={url} download onClick={handleDownload} ref={downRef}>download</a>
+            <a href={url} download ref={downRef}>download</a>
           :null}
           <BtnSection>
             <Link to="/board"
