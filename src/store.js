@@ -176,11 +176,12 @@ const tokenReducer = (state = "", action) => {
 // 지금은 page,boardId,검색유무,나열 기준(최신순, 추천순) 등의 기능밖에 없지만 스터디와 소모임의 경우에도 사용할 정도로 수정할 예정입니다.
 
 const pageState = {
-  boardId:null,
-  page:null,
-  isSearching:[false,],
-  selected:null,
-  boardCategoryName:null
+  boardId:null, // 백엔드와 통신 때 이용하는 번호입니다.
+  page:null, // 페이지입니다.
+  isSearching:[false,], // 검색유무를 파악합니다. 총 3개의 원소가 있으며 0번째는 검색유무, 1번째는 검색옵션(글쓴이만, 제목만) 2번째는 키워드입니다.
+  selected:null,  // 정렬 순을 의미합니다.(최신순, 추천순)
+  boardCategoryName:null, // boardCategoryName 은 경로를 의미합니다.
+  viewCategoryName:null // 보여지는 CategoryName 를 의미합니다.
 }
 
 const setAll = (boardId,page,isSearching,selected,boardCategoryName) =>{
@@ -192,6 +193,13 @@ const setAll = (boardId,page,isSearching,selected,boardCategoryName) =>{
     selected,
     boardCategoryName
   }
+}
+
+const setViewCategoryName = (viewCategoryName) => {
+return{
+  type:"SET_VIEW_CATEGORY_NAME",
+  viewCategoryName
+}
 }
 
 const setBoardId = (boardId) => {
@@ -253,6 +261,12 @@ const PageReducer = (state = pageState, action) => {
           ...state,
           selected: action.selected
       }
+    case "SET_VIEW_CATEGORY_NAME":{
+      return{
+        ...state,
+      viewCategoryName: action.viewCategoryName
+      }
+    }
     default:
       return state;
   }
@@ -280,6 +294,7 @@ export const actionCreators = {
   setPage,
   setIsSearching,
   setSelected,
+  setViewCategoryName
 };
 
 export default store;

@@ -96,7 +96,7 @@ function Page(props) {
       <div>
       <Background>
         <Content>
-          <Category>{location.boardType}|{location.subCategory}</Category>
+          <Category>{props.PageReducer.viewCategoryName}|{location.subCategory}</Category>
           <Header>
           <Title type="text" placeholder="제목" value={title} onChange={(e)=>setTitle(e.target.value)}></Title>
             <OtherDetail>{props.userReducer.name}</OtherDetail>

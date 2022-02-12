@@ -214,7 +214,7 @@ function Page(props) {
       {(load !== false)?
             <Background>
             <Content>
-              <Category>{location.category}|{location.subCategory}</Category>
+              <Category>{props.PageReducer.viewCategoryName}|{location.subCategory}</Category>
     
               <Header>
                 <PageImage src={`${props.userReducer.imageUrl}`}></PageImage>
@@ -245,13 +245,12 @@ function Page(props) {
               <CommentSection pageData={pageDate} commentData={commentData} trigger={setTrigger} test={trigger}/>
     
               <BtnSection>
-              <Link to="/board" 
-              state={{category:location.subCategory}}
+              <Link to={`${props.PageReducer.boardCategoryName}`}
                 ><GoToList >목록으로</GoToList></Link>
                 {(props.userReducer.id === pageDate.memberId||isAuthority === true) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
                   <div style={{ float: "right" }}>
                     <Link
-                      to={`/board/update/${props.userReducer.id}/${props.userReducer.name}`}
+                      to={`${props.PageReducer.boardCategoryName}/update/${props.userReducer.id}/${props.userReducer.name}`}
                       state={
                         {
                           boardType: location.category,

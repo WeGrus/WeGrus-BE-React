@@ -20,7 +20,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch){
   return{
-    setAll: (boardId,page,isSearching,selected,boardCategoryName) => dispatch(actionCreators.setAll(boardId,page,isSearching,selected,boardCategoryName))
+    setAll: (boardId,page,isSearching,selected,boardCategoryName) => dispatch(actionCreators.setAll(boardId,page,isSearching,selected,boardCategoryName)),
+    setViewCategoryName: (viewCategoryName) => dispatch(actionCreators.setViewCategoryName(viewCategoryName))
   }
 }
 
@@ -34,19 +35,23 @@ const NaviBar = (props) => {
     if(boardCategoryName === "BOARD"){
       console.log("네비 확인!");
       props.setAll(7,1,[false],'LASTEST', '/board')
-      Navigate(`/board`, {state:{category:"INFO", page:1, search:{isSearch:false}, selected:"LASTEST"}})
+      props.setViewCategoryName("커뮤니티")
+      Navigate(`/board`)
     }
     else if(boardCategoryName === "STUDY"){
       props.setAll(6,1,[false],'LASTEST', "/study")
-      Navigate(`/study`, {state:{category:"INFO", page:1, search:{isSearch:false}, selected:"LASTEST"}})
+      props.setViewCategoryName("스터디")
+      Navigate(`/study`)
     }
     else if(boardCategoryName === "GROUP"){
       props.setAll(2,1,[false],'LASTEST', "/group")
-      Navigate(`/group`, {state:{category:"INFO", page:1, search:{isSearch:false}, selected:"LASTEST"}})
+      props.setViewCategoryName("그룹")
+      Navigate(`/group`)
     }
     else if(boardCategoryName === "NOTICE"){
       props.setAll(1,1,[false],'LASTEST', "/announce")
-      Navigate(`/announce`, {state:{category:"INFO", page:1, search:{isSearch:false}, selected:"LASTEST"}})
+      props.setViewCategoryName("공지사항")
+      Navigate(`/announce`)
     }
 
   }

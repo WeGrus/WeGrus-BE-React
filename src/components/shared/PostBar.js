@@ -26,28 +26,28 @@ const splitDate = (data) => {
   return ymd
 }
 
-function PostBar({target,page,data,userReducer}) {
+function PostBar({target,page,data,userReducer}) { // 기존의 postBar에서 userReducer가 추가되었습니다. 변경하고 나서 문제가 생기실 수도 있으니 한번 확인해주시길 바랍니다.
     const limit = 19;
     const offset = (page-1)*limit;
     const number = (page-1)*16;
     console.log(data);
     console.log(userReducer);
     const isAuthority = userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
-    // console.log("PostBar에서의 location값");
-    // console.log(selected);
+
+     
 
   const postdata = data.map((data, i) =>
     <PostInforBar key={i + 1}>
       {(data.secretFlag === true) ? // 비밀글일때,
         <>
-          {(isAuthority === true || data.memberId === userReducer.id) ?
+          {(isAuthority === true || data.memberId === userReducer.id) ? // 동아리 임원진이거나 자신이 쓴 글일 경우 링크와 보이게 해놨습니다.
             <PostCotent>
               <Number>{(i + 1) + number}</Number>
               <Title>
-                <Link to={`${(i + 1) + number}`} state={{ category: "커뮤니티", subCategory: target, postId: data.postId }}  >
+                <Link to={`${(i + 1) + number}`} state={{ subCategory: target, postId: data.postId }}  >
                   {"비밀글 "+ data.title}
                 </Link>
-                <HashLink to="1#commentTag" state={{ category: "커뮤니티", subCategory: target, postId: data.postId }} >
+                <HashLink to="1#commentTag" state={{ subCategory: target, postId: data.postId }} >
                   <Test>
                     [{data.postReplies}]
                   </Test>
