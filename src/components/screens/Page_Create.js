@@ -21,7 +21,7 @@ function Page(props) {
   const [title,setTitle] = React.useState("");
   const [test, setTest] = React.useState(false) // file이 올라오는 지 아닌지 확인
   const [url, setURL] = React.useState("") // download할 url link
-  const editorRef = React.createRef();
+  const editorRef = React.useRef();
   const downRef = React.createRef();
   const Navigate = useNavigate();
   const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
@@ -85,12 +85,42 @@ function Page(props) {
       console.log(props.PageReducer.boardCategoryName);
       Navigate(props.PageReducer.boardCategoryName);
     });
-  
   }
 
-  function backToList(){
+  React.useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.getInstance().removeHook("addImageBlobHook");
+      editorRef.current
+        .getInstance()
+        .addHook("addImageBlobHook", (blob, callback) => {
+          (async () => {
+            let formData = new FormData();
+            formData.append("file", blob);
 
-  }
+            console.log("이미지가 업로드 됐습니다.");
+
+            // const { data: filename } = await axios.post(
+            //   "/file/upload",
+            //   formData,
+            //   {
+            //     header: { "content-type": "multipart/formdata" },
+            //   }
+            // );
+            // .then((response) => {
+            //   console.log(response);
+            // });
+
+            const imageUrl = "http://localhost:8080/file/upload/" //+ filename;
+
+            // Image 를 가져올 수 있는 URL 을 callback 메서드에 넣어주면 자동으로 이미지를 가져온다.
+            callback(imageUrl, "iamge");
+          })();
+          return false;
+        });
+    }
+
+    return () => {};
+  }, [editorRef]);
 
   const handleTest = (e) => {
     console.log(e.target.files[0]);
@@ -127,7 +157,7 @@ function Page(props) {
             <OtherDetail>{props.userReducer.name}</OtherDetail>
           </Header>
           <Editor
-            initialValue="본문을 적어주세요."
+            placeholder="본문을 적어주세요."
             previewStyle="vertical"
             height="600px"
             initialEditType="wysiwyg"
