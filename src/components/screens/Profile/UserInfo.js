@@ -1,8 +1,10 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { connect } from "react-redux";
 import styled from "styled-components";
-import { DEPARTMENTS } from "../Signup";
+import { actionCreators } from "../../../store";
+import { DEPARTMENTS, GRADE, STATUS } from "../Signup";
 import FileUploadComponent from "./fileUpload.component";
 import DetailBox, {
   ButtonBox,
@@ -14,26 +16,131 @@ import DetailBox, {
   ProfilePhoto,
 } from "./ProfileElements";
 
-const EditForm = styled.form``;
-const EditInput = styled.form``;
-const Select = styled.select``;
+function mapStateToProps(state) {
+  console.log(state);
+  return state;
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    editPhoto: (imageUrl) => dispatch(actionCreators.editPhoto(imageUrl)),
+    putUserInfo: (
+      id,
+      email,
+      name,
+      studentId,
+      department,
+      grade,
+      phone,
+      createdDate,
+      introduce,
+      imageUrl,
+      academicStatus,
+      roles
+    ) =>
+      dispatch(
+        actionCreators.putUserInfo(
+          id,
+          email,
+          name,
+          studentId,
+          department,
+          grade,
+          phone,
+          createdDate,
+          introduce,
+          imageUrl,
+          academicStatus,
+          roles
+        )
+      ),
+  };
+}
+
+const EditForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+const EditInput = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 13px;
+
+  span {
+    font-weight: 400;
+  }
+`;
+
+const SSelect = styled.select`
+  width: 80%;
+`;
+
+const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
+  <>
+    <SSelect name={name} ref={ref} onChange={onChange}>
+      <option value="hide">*--{placeholder}--</option>
+      {options.map((value, dataName) => (
+        <option key={value} value={dataName}>
+          {value}
+        </option>
+      ))}
+    </SSelect>
+  </>
+));
+
+const EditProfileInput = styled.input`
+  border: 1px solid gray;
+  border-radius: 3px;
+  width: 75%;
+`;
+
+const SubmitButton = styled.input`
+  width: 63px;
+  height: 33px;
+  background-color: #0b665c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+`;
 
 function UserInfo(props) {
+  console.log(props);
   const { handleSubmit, register, formState } = useForm();
   const [infoPage, setInfoPage] = useState(true);
+  const [emtyFile, setEmtyFile] = useState();
 
   const DATA = props.data;
-  const inputRef = useRef(null);
-  const handleEditPhoto = async (e) => {
-    console.log(e);
-    const formData = new FormData();
-    const o = formData.append("file", e.target.files[0]);
-    console.log(o);
+  const emtyData = new FormData();
+
+  useState(() => {
+    console.log("delete photo");
+  }, [DATA]);
+
+  const config = {
+    header: { "content-type": "multipart/form-data" },
+  };
+  const formData = new FormData();
+  formData.append("emtyData", null);
+
+  const handleDeletePhoto = () => {
     axios
-      .patch("/members/image", {
-        headers: { "Content-Type": "multipart/form-data" },
+      .patch("/members/image", formData, config)
+      .then((res) => {
+        console.log(props);
+        setEmtyFile(res.data.data.status);
+        props.editPhoto(
+          "https://igrus-webservice-bucket.s3.ap-northeast-2.amazonaws.com/basic.jpeg"
+        );
       })
-      .then((res) => console.log(res));
+      .catch((err) => {
+        console.log("회원 이미지가 이미 기본 이미지입니다.");
+      });
   };
 
   function handleEditProfile() {
@@ -47,6 +154,52 @@ function UserInfo(props) {
     console.log(infoPage);
   }, [infoPage]);
 
+  const onSubmit = ({
+    department,
+    academicStatus,
+    grade,
+    phone,
+    introduce,
+  }) => {
+    phone = phone
+      .replace(/[^0-9]/, "")
+      .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+    const body = {
+      academicStatus: STATUS[academicStatus],
+      department: DEPARTMENTS[department],
+      grade: GRADE[grade],
+      introduce,
+      name: DATA.name,
+      phone,
+    };
+
+    console.log(JSON.stringify(body));
+
+    axios
+      .patch("/members/info", body, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        console.log(res);
+        props.putUserInfo(
+          DATA.id,
+          DATA.email,
+          DATA.name,
+          DATA.studentId,
+          DEPARTMENTS[department],
+          GRADE[grade],
+          phone,
+          DATA.createdDate,
+          introduce,
+          DATA.imageUrl,
+          STATUS[academicStatus],
+          DATA.roles
+        );
+        handleEditProfile();
+      })
+      .catch((res) => console.log(res));
+  };
+
   return (
     <>
       <InfoBox>
@@ -57,7 +210,9 @@ function UserInfo(props) {
             </ProfilePhoto>
             <ButtonBox>
               <FileUploadComponent />
-              <EditButton type="file">삭제</EditButton>
+              <EditButton type="file" onClick={() => handleDeletePhoto()}>
+                삭제
+              </EditButton>
             </ButtonBox>
           </ContentBox>
         </DetailBox>
@@ -81,50 +236,79 @@ function UserInfo(props) {
             </>
           ) : (
             <>
-              <EditForm>
-                <EditInput
-                  {...register("name", {
-                    required: "name is required.",
-                  })}
-                  type="text"
-                  placeholder="*이름"
-                  hasError={Boolean(formState.errors?.name?.message)}
-                />
+              <EditForm onSubmit={handleSubmit(onSubmit)}>
+                <EditInput>
+                  <div>이름 | {DATA.name}</div>
+                  {/*<EditProfileInput
+                    {...register("name", {
+                      required: "name is required.",
+                    })}
+                    value={DATA.name}
+                    type="text"
+                    placeholder="*이름"
+                    hasError={Boolean(formState.errors?.name?.message)}
+                  />*/}
+                </EditInput>
+                <EditInput>
+                  <div>학번 | {DATA.studentId}</div>
+                </EditInput>
+                <EditInput>
+                  <div>학과 | </div>
+                  <Select
+                    {...register("department", {
+                      required: "department is required.",
+                    })}
+                    placeholder="학과"
+                    options={DEPARTMENTS}
+                  />
+                </EditInput>
+                <EditInput>
+                  <div>학년 | </div>
+                  <Select
+                    {...register("grade", { required: "grade is required." })}
+                    placeholder="학년"
+                    options={["1학년", "2학년", "3학년", "4학년", "그 외"]}
+                  />
+                </EditInput>
+                <EditInput>
+                  <div>상태 | </div>
+                  <Select
+                    {...register("academicStatus", {
+                      required: "academicStatus is required.",
+                    })}
+                    placeholder="재학 여부"
+                    options={["재학", "휴학", "졸업"]}
+                  />
+                </EditInput>
+                <EditInput>
+                  <div>연락처 | </div>
+                  <EditProfileInput
+                    {...register("phone", {
+                      required: "phone is required.",
+                    })}
+                    defaultValue={DATA.phone.replace(/-/g, "")}
+                    type="tel"
+                    placeholder="*전화번호"
+                    hasError={Boolean(formState.errors?.password?.message)}
+                  />
+                </EditInput>
+                <EditInput>
+                  <div>소개 | </div>
+                  <EditProfileInput
+                    {...register("introduce", {
+                      required: "introduce is required.",
+                    })}
+                    defaultValue={DATA.introduce}
+                    type="text"
+                    placeholder="소개"
+                    hasError={Boolean(formState.errors?.password?.message)}
+                  />
+                </EditInput>
 
-                <Select
-                  {...register("gender", { required: "gender is required." })}
-                  placeholder="성별"
-                  options={["남성", "여성"]}
-                />
-                <Select
-                  {...register("department", {
-                    required: "department is required.",
-                  })}
-                  placeholder="학과"
-                  options={DEPARTMENTS}
-                />
-                <Select
-                  {...register("grade", { required: "grade is required." })}
-                  placeholder="학년"
-                  options={["1학년", "2학년", "3학년", "4학년"]}
-                />
-                <Select
-                  {...register("academicStatus", {
-                    required: "academicStatus is required.",
-                  })}
-                  placeholder="재학 여부"
-                  options={["재학", "휴학", "졸업"]}
-                />
-                <EditInput
-                  {...register("phone", {
-                    required: "academicStatus is required.",
-                  })}
-                  type="tel"
-                  placeholder="*전화번호"
-                  hasError={Boolean(formState.errors?.password?.message)}
-                />
+                <ButtonBox>
+                  <SubmitButton type="submit" />
+                </ButtonBox>
               </EditForm>
-              <EditButton onClick={() => handleEditProfile()}>저장</EditButton>
             </>
           )}
         </DetailBox>
@@ -133,4 +317,4 @@ function UserInfo(props) {
   );
 }
 
-export default UserInfo;
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);

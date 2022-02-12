@@ -141,11 +141,11 @@ export const DEPARTMENTS = [
   "의류디자인학과",
 ];
 
-const GRADE = ["FRESHMAN", "SOPHOMORE", "JUNIOR", "SENIOR"]; //5학년 이상
+export const GRADE = ["FRESHMAN", "SOPHOMORE", "JUNIOR", "SENIOR", "ETC"]; //5학년 이상
 
-const STATUS = ["ATTENDING", "ABSENCE", "GRADUATED"];
+export const STATUS = ["ATTENDING", "ABSENCE", "GRADUATED"];
 
-const GENDER = ["MAN", "WOMAN"];
+export const GENDER = ["MAN", "WOMAN"];
 
 function mapStateToProps(state) {
   console.log(state);
@@ -285,7 +285,7 @@ function Signup(props) {
         <Select
           {...register("grade", { required: "grade is required." })}
           placeholder="학년"
-          options={["1학년", "2학년", "3학년", "4학년"]}
+          options={["1학년", "2학년", "3학년", "4학년", "그 외"]}
         />
         <Select
           {...register("academicStatus", {
