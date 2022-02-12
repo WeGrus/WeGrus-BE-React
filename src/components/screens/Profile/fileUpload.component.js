@@ -50,7 +50,6 @@ const FileUploadComponent = (props) => {
     return new Promise((resolve) => {
       getDroppedOrSelectedFiles(e).then((chosenFiles) => {
         const file = chosenFiles[0].fileObject;
-        console.log(file);
         const config = {
           header: { "content-type": "multipart/form-data" },
         };

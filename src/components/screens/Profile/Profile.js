@@ -22,11 +22,11 @@ const mapStateToProps = (state) => {
 };
 
 const subCategory = [
-  { content: "1", boardName: "내 정보" },
-  { content: "2", boardName: "내가 쓴 게시글" },
-  { content: "3", boardName: "내가 쓴 댓글" },
-  { content: "4", boardName: "저장한 게시글" },
-  { content: "5", boardName: "계정 설정" },
+  { content: "내 정보", boardName: "내 정보" },
+  { content: "내가 쓴 게시글", boardName: "내가 쓴 게시글" },
+  { content: "내가 쓴 댓글", boardName: "내가 쓴 댓글" },
+  { content: "저장한 게시글", boardName: "저장한 게시글" },
+  { content: "계정 설정", boardName: "계정 설정" },
 ];
 
 const postData = [
