@@ -7,8 +7,9 @@ import * as ReactDOM from 'react-dom';
 import axios from "axios";
 import { connect } from 'react-redux';
 import CommentSection from './../shared/Comment';
-import {Background,Content,Category,Header,OtherDetail,Description,Recommand,GoToList,Correction,Delete,
-  PostInfor, PostBtnSection, PostRecommand, PostScrape} from "./../shared/PageElements"
+import {Background,Content,Category,OtherDetail,Description,Recommand,GoToList,Correction,Delete,
+  PostInfor, PostBtnSection, PostRecommand, PostScrape,HeaderContent,PageImage} from "./../shared/PageElements"
+  import { actionCreators } from "../../store";
 
 const Title = styled.div`
 width: 924px;
@@ -16,7 +17,7 @@ height: 21px;
 font-size: 18px;
 font-weight: 700;
 border: none;
-margin-bottom: 10px;
+margin-bottom: 4px;
 `
 
 const Right = styled.span`
@@ -28,23 +29,16 @@ margin-top: 12.5px;
 padding-bottom: 12.5px;
 `
 
-let getPage = { // 서버에서 가져온 page의 정보라고 가정.
-  title: "플러터 스터디 모집합니다. 초보자 환영입니다.",
-  isSecret: false,
-  countOfRecommend: 0, // 게시글의 추천수
-  isRecommend: false,  //서버에서 이 유저가 게시글에 추천을 했는지 확인한다. true면 추천한 것이다.
-  author: "김승태",
-  date: "2021.12.21",
-  time: "23:44",
-  // editor에 넣을 예제값이다.
-}
-
-
-
-let userInfor = {
-  userName: "김승태",
-  userId: "testId"
-}
+export const Header = styled.div`
+padding-bottom: 16px;
+border-bottom: 2px solid #0B665C;
+margin-bottom: 42px;
+width: 924px;
+padding-top: 16px;
+margin: auto;
+display: flex;
+flex-direction: row;
+`
 
 const checkRecommend = (isRecommend) => {
   if (isRecommend) {
@@ -60,9 +54,15 @@ function mapStateToProps(state) {
   return state;
 }
 
+function mapDispatchToProps(dispatch){
+  return{
+    setAll: (boardId,page,isSearching,seleted) => dispatch(actionCreators.setAll(boardId,page,isSearching,seleted))
+  }
+}
+
 function Page(props) {
   
-  const params = useParams();
+  //const params = useParams();
   const location = useLocation().state;
 
   const [pageDate, setPageData] = React.useState(null);
@@ -73,8 +73,9 @@ function Page(props) {
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(false)); // 게시글 추천 유무 확인에 따라 값 변경.
   const [isScraped, setIsScraped] = React.useState(false)
   const [trigger, setTrigger] = React.useState(true)
-  const [previousTrigger, setPreviousTrigger]=React.useState(trigger)
+  const [load, setLoad]=React.useState(false)
   const Navigate = useNavigate();
+  const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
   let data, time;
 
   React.useEffect(()=>{
@@ -85,16 +86,28 @@ function Page(props) {
       console.log(error.toJSON());
     })
     .then(function(res){
-      //console.log(res.data.data.replies);
-      console.log(res.data.data.board);
+      //console.log(res.data.data.board);
+      //console.log("work!");
       setPageData(res.data.data.board)
       setCommentData((current) => res.data.data.replies)
       setCountOfRecommend(res.data.data.board.postLike)
       setCountOfScrape(0) // 스크랩 이후 수정
       setCountOfComment(res.data.data.board.postReplies)
-      setPreviousTrigger(!trigger)
+      //props.setAll(7,2,false,'LASTEST')
+      //setPreviousTrigger(!trigger)
     });
-  },[trigger])
+
+  },[location,trigger])
+
+  React.useEffect(()=>{
+    if(pageDate !== null){
+      setLoad(true)
+      setIsScraped(pageDate.userPostBookmarked)
+      setIsRecommend(pageDate.userPostLiked)
+      console.log(pageDate);
+      console.log(props);
+    }
+  },[pageDate])
 
 
   const postRecommand = () => { // 게시글 추천하는 함수
@@ -160,8 +173,8 @@ function Page(props) {
 
   const handleDeleteClick = () => { // 게시글 삭제하는 함수
     //axios로 delete하고 다시 보드 보여주기.
-    let value = window.confirm("해당게시물을 삭제하겠습니까?")
-    if (value) {
+    let value = window.confirm("해당 게시물을 삭제하겠습니까?")
+    if (value === true) {
       axios.delete(`/posts?postId=${pageDate.postId}`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
@@ -170,87 +183,97 @@ function Page(props) {
       })
       .then(function(res){
         console.log(res);
+        Navigate(props.PageReducer.boardCategoryName)
       });
-      Navigate("/board", {
-        state: { category: location.subCategory }
-      })
+     
     }
-
-    return value;
   }
 
-  window.onpopstate = function(event){
-    console.log("page에서의 location값");
-    console.log(location);
-    Navigate(`/board`,{state:{category:location.subCategory, page:location.page}})
+  window.onpopstate = function(event){ // 뒤로가기
+    event.preventDefault();
+    Navigate(props.PageReducer.boardCategoryName,{state:{category:location.subCategory}})
+  }
 
+  const splitDate = (data) => {
+    const date = data.split('|')
+    const ymd = date[0]
+    const time = date[1].substr(0,5)
+    // console.log(date);
+    // console.log(ymd);
+    // console.log(time);
+    
+    const result = `${ymd} | ${time}`
+    //console.log(result);
+    //createTime()
+
+    return result
   }
 
   return (
     <div>
-      {((pageDate!==null && commentData !== null))?
-      <Background>
-        <Content>
-          <Category>{location.category}|{location.subCategory}</Category>
-
-          <Header>
-            <Title>{pageDate.title}</Title>
-            <OtherDetail>{pageDate.memberName}|{pageDate.updatedDate}|{pageDate.updatedDate}<Right>조회 {pageDate.postView}|추천 {countOfRecommend}|댓글 {countOfComment}</Right></OtherDetail>
-          </Header>
-
-          <Description>
-            <Viewer initialValue={pageDate.content} />
-            <PostInfor><span>댓글 {countOfComment}</span> | <span>추천 {countOfRecommend}</span> | <span>스크랩 {countOfScrape}</span></PostInfor>
-            <PostBtnSection>
-            {(isRecommend === "추천취소")?
-            <PostRecommand value="추천" onClick={postRecommand} checked>{"추천"}</PostRecommand>
-            :
-            <PostRecommand value="추천" onClick={postRecommand}>{"추천"}</PostRecommand>}
-
-            {(isScraped === true)?
-              <PostScrape onClick={handlePostScrape} checked>스크랩</PostScrape>
-              :
-              <PostScrape onClick={handlePostScrape}>스크랩</PostScrape>
-            } 
+      {(load !== false)?
+            <Background>
+            <Content>
+              <Category>{props.PageReducer.viewCategoryName}|{location.subCategory}</Category>
+    
+              <Header>
+                <PageImage src={`${props.userReducer.imageUrl}`}></PageImage>
+              <HeaderContent>
+                <Title>{pageDate.title}</Title>
+                <OtherDetail>{pageDate.memberName} | {splitDate(pageDate.updatedDate)}<Right>조회 {pageDate.postView} | 추천 {countOfRecommend} | 댓글 {countOfComment}</Right></OtherDetail>
+                </HeaderContent>
+              </Header>
+    
+              <Description>
+                <Viewer initialValue={pageDate.content} />
+                <PostInfor><span>댓글 {countOfComment}</span> | <span>추천 {countOfRecommend}</span> | <span>스크랩 {countOfScrape}</span></PostInfor>
+                <PostBtnSection>
+                {(isRecommend === true)?
+                <PostRecommand value="추천" onClick={postRecommand} checked>{"추천"}</PostRecommand>
+                :
+                <PostRecommand value="추천" onClick={postRecommand}>{"추천"}</PostRecommand>}
+    
+                {(isScraped === true)?
+                  <PostScrape onClick={handlePostScrape} checked>스크랩</PostScrape>
+                  :
+                  <PostScrape onClick={handlePostScrape}>스크랩</PostScrape>
+                } 
+                  
+                </PostBtnSection>
+              </Description>
               
-            </PostBtnSection>
-          </Description>
-          
-          <CommentSection pageData={pageDate} commentData={commentData} trigger={setTrigger} test={trigger}/>
-
-          <BtnSection>
-          <Link to="/board"
-                  state={
-                    {category:location.subCategory,
-                      page: location.page
-                    }
-                  }
-            ><GoToList >목록으로</GoToList></Link>
-            {(getPage.author === userInfor.userName) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
-              <div style={{ float: "right" }}>
-                <Link
-                  to={`/board/update/${params.pagenum}/${userInfor.userId}`}
-                  state={
-                    {
-                      boardType: location.category,
-                      subCategory: location.subCategory,
-                      postId: pageDate.postId,
-                      pageData: pageDate
-                    }
-                  }
-                ><Correction>수정</Correction>
-                </Link>
-                <Delete onClick={handleDeleteClick}>삭제</Delete>
-
-              </div>
-              :
-              null}
-          </BtnSection>
-        </Content>
-      </Background>:
+              <CommentSection pageData={pageDate} commentData={commentData} trigger={setTrigger} test={trigger}/>
+    
+              <BtnSection>
+              <Link to={`${props.PageReducer.boardCategoryName}`}
+                ><GoToList >목록으로</GoToList></Link>
+                {(props.userReducer.id === pageDate.memberId||isAuthority === true) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
+                  <div style={{ float: "right" }}>
+                    <Link
+                      to={`${props.PageReducer.boardCategoryName}/update/${props.userReducer.id}/${props.userReducer.name}`}
+                      state={
+                        {
+                          boardType: location.category,
+                          subCategory: location.subCategory,
+                          postId: pageDate.postId,
+                          pageData: pageDate
+                        }
+                      }
+                    ><Correction>수정</Correction>
+                    </Link>
+                    <Delete onClick={handleDeleteClick}>삭제</Delete>
+    
+                  </div>
+                  :
+                  null}
+              </BtnSection>
+            </Content>
+          </Background>
+      :
       null
       }
+
     </div>
   );
 }
-export default connect(mapStateToProps)(Page);
+export default connect(mapStateToProps,mapDispatchToProps)(Page);

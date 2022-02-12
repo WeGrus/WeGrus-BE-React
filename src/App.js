@@ -100,7 +100,12 @@ function App(props) {
   const token = props?.userReducer?.token;
   const [userInfo, setUserInfo] = useState(false);
   // onSilentRefresh(refresh_token);
-
+  let isAuthority = false
+  let isJoinGroup = false
+  if(props.userReducer.roles !== null){ // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
+    isAuthority =   props?.userReducer?.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+    isJoinGroup =  props?.userReducer?.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT","ROLE_MEMBER"].includes(i))
+  }
   useEffect(() => {
     //getCookie(); 도메인 코드 활성화 이후 이 코드를 활성화시켜야 합니다. reissue api를 요청합니다.
     if (authenticated) {
@@ -138,7 +143,26 @@ function App(props) {
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
+                <Route path="/announce/:pagenum" element={<Page />} />
+                <Route path="/announce/write/:userid" element={<CreatePage />} />
+                <Route
+                  path="/announce/update/:pagenum/:userid"
+                  element={<UpdatePage />}
+                />
+                {(isJoinGroup === true)?
+                <>
                 <Route path="/group" element={<Group />} />
+                <Route path="/group/:pagenum" element={<Page />} />
+                <Route path="/group/write/:userid" element={<CreatePage />} />
+                <Route
+                  path="/group/update/:pagenum/:userid"
+                  element={<UpdatePage />}
+                />
+                </>
+                :
+                null
+                }
+
                 <Route path="/study" element={<Study />} />
                 <Route path="/study/:pagenum" element={<Page />} />
                 <Route path="/study/write/:userid" element={<CreatePage />} />
@@ -157,7 +181,7 @@ function App(props) {
                 <Route path="/profile" element={<Profile />} />
                 {isOperator ? (
                   <>
-                    <Route path="/operator" element={<Operator />} />
+                  {(isAuthority === true)? <Route path="/operator" element={<Operator />} /> : null}
                   </>
                 ) : null}
               </>

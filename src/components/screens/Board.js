@@ -1,32 +1,32 @@
 import * as React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import styled from "styled-components";
+//import styled from "styled-components";
 import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBar";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
 import PostBar from "../shared/PostBar";
 import { connect } from "react-redux";
 import axios from "axios";
 import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,SearchBarFilter,CreateBtnLink,
-  InforBar,InforContents,Number,Categorization,Title,Writer,Date,Hits,Recommendation,Comment} from "./../shared/BoardElement"
+  InforBar,InforContents,Number,Title,Writer,Date,Hits,Recommendation} from "./../shared/BoardElement"
+  import { actionCreators } from "../../store";
 
-
-const PostInforBar = styled.div`
-  width: 909.07px;
-  height: 31px;
-  margin: 0 auto;
-  font-size: 14px;
-  line-height: 16.41px;
-  border-bottom: 1px solid black;
-`;
-const PostCotent = styled.div`
-padding-top: 8px;
-display: flex;
-flex-direction: row;
-`
+// const PostInforBar = styled.div`
+//   width: 909.07px;
+//   height: 31px;
+//   margin: 0 auto;
+//   font-size: 14px;
+//   line-height: 16.41px;
+//   border-bottom: 1px solid black;
+// `;
+// const PostCotent = styled.div`
+// padding-top: 8px;
+// display: flex;
+// flex-direction: row;
+// `
 const boardCategory = "BOARD";
 
 
@@ -53,34 +53,32 @@ function mapStateToProps(state) {
   return state;
 }
 
-let isSearch = false;
-let option = {}
+function mapDispatchToProps(dispatch){
+  return{
+    setAll: (boardId,page,isSearching,selected,boardCategoryName) => dispatch(actionCreators.setAll(boardId,page,isSearching,selected,boardCategoryName)),
+  }
+}
 
 function Board(props) {
   const location = useLocation();
-  //console.log("보드JS의 페이지값:"+input.state.page);
-  let subBarTarget; // 페이지에서 뒤로가기를 누르거나 목록을 누를 시 즉 subCategory
-  if (location.state != null) {
-    subBarTarget = location.state.category; 
-  } else {
-    subBarTarget = "INFO";
-  }
-  console.log(location);
-  const [target, setTarget] = React.useState((location.state)?location.state.category:"INFO"); // 게시판중 사이드바와 분류를 나눔. 즉 subCategory
-  const [posts, setPosts] = React.useState(null);
-  const [totalPage, settotalPage] = React.useState(1);
+
+  const [target, setTarget] = React.useState(null); // subCategory중 지금 선택한 부분.
+  const [subCategory,setSubCategory] =React.useState(undefined);
   const [page, setPage] = React.useState(0);
   const [selected, setSelected] = React.useState("") // 필터값
-  const [subCategory,setSubCategory] =React.useState(undefined);
-  const [currentBoardType, setCurrentBoardType] = React.useState("")
-  const [currentType, setCurrentType] = React.useState("")
-  const inputEl = React.useRef(null)
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  //const [currentBoardType, setCurrentBoardType] = React.useState("") // 현재 타겟의 boardType(숫자)
+  // const [currentType, setCurrentType] = React.useState("") // 현재 타겟의 selected(숫자)
+  let currentBoardType = ""
+  let currentType = ""
+  const [load, setLoad] = React.useState(false) // load유무로 location의 값이 바뀐 뒤에 렌더
+  const [posts, setPosts] = React.useState(null); // API로 받은 값
+  const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
 
+  const { register, handleSubmit} = useForm();
 
-  const handleSearchFunction = (data, currentBoardType, currentType, page) => {
-    if(data.option === "제목 + 내용"){
-      axios.get(`/search/all/${currentBoardType}?keyword=${data.keyword}&page=${page-1}&pageSize=19&type=${currentType}`,{
+  const handleSearchFunction = (option,keyword, currentBoardType, page, currentType) => { // 검색일 경우 실행
+    if(option === "제목 + 내용"){
+      axios.get(`/search/all/${currentBoardType}?keyword=${keyword}&page=${page-1}&pageSize=19&type=${currentType}`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
@@ -93,8 +91,8 @@ function Board(props) {
         console.log("제목+내용검색");
       });
     }
-    else if(data.option === "제목"){
-      axios.get(`/search/title/${currentBoardType}?keyword=${data.keyword}&page=${page -1}&pageSize=19&type=${'LASTEST'}`,{
+    else if(option === "제목"){
+      axios.get(`/search/title/${currentBoardType}?keyword=${keyword}&page=${page -1}&pageSize=19&type=${currentType}`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
@@ -108,7 +106,7 @@ function Board(props) {
       });
     }
     else{
-      axios.get(`/search/writer/${currentBoardType}?keyword=${data.keyword}&page=${page-1}&pageSize=19&type=${'LASTEST'}`,{
+      axios.get(`/search/writer/${currentBoardType}?keyword=${keyword}&page=${page-1}&pageSize=19&type=${currentType}`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
@@ -123,146 +121,100 @@ function Board(props) {
     }
   }
 
-  React.useEffect(() =>{ // sidebar에 필요한 목록 불러오기.
-    axios.get(`/club/executives/boards`,{
-      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+
+
+  const loadPageList = (boardId,page,type) => {
+    axios.get(`/boards/${boardId}?page=${page - 1}&pageSize=19&type=${type}`, {
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
-    .catch(function (error) {
-      console.log(error.toJSON());
-    })
-    .then(function(res){
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function (res) {
+        settotalPage(res.data.data.posts.totalPages)
+        setPosts(res.data.data.posts.content)
+      });
+  }
 
-      let category = [...res.data.data.boards.filter(element => element.boardCategoryName === boardCategory)]
-      setCurrentType("LASTEST")
-      setSubCategory((previous) => (category));
-    });
-    
-  },[])
 
-  React.useEffect(()=>{ // 최초 실행
-    if(subCategory !== undefined){
-      const boardType = subCategory.find(element => element.boardName == target).boardId
-      setCurrentBoardType(boardType)
-      let page = (location.state)?location.state.page:1;
-      setPage(page)
-      // let t = (location.state)?location.state.category:"INFO"
-      
-      //console.log(page);
-      
-     // console.log(subCategory);
-      //console.log(boardType);
-     // console.log(props.userReducer.token);
-      // axios.get(`/boards/${boardType}?page=${page-1}&pageSize=${19}&type=${"LASTEST"}`,{
-      //   headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      // })
-      // .catch(function (error) {
-      //   console.log(error.toJSON());
-      // })
-      // .then(function(res){
-      //   console.log("서브 카테고리가 바뀐 뒤에");
-      //   console.log(res.data.data.posts.content);
-      //   settotalPage(res.data.data.posts.totalPages)
-      //   setPosts(res.data.data.posts.content)
-      // });
-    }
-    
-  },[subCategory])
+  React.useEffect(()=>{
+    const PageReducer = props.PageReducer
+    console.log("props호출!");
+    if(subCategory === undefined){
+      axios.get(`/club/executives/boards`,{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function(res){
+        const category = [...res.data.data.boards.filter(element => element.boardCategoryName === boardCategory)] // 사이드바에 넣을 콘텐츠의 종류
+        const boardTarget = category.find(element => element.boardId === PageReducer.boardId).boardName // 그 중에서 현재 타겟의 board이름
+        console.log(res);
+        setTarget((current) => boardTarget)
+        setPage(PageReducer.page)
+        setSubCategory((previous) => (category))
+        console.log(PageReducer.selected);
+        setSelected(PageReducer.selected)
+        
+      });
 
-  React.useEffect(() => { // 서브바에서 타겟이 바뀌면 값을 변환.
-    if(subCategory !== undefined){
-      const boardType = subCategory.find(element => element.boardName == target).boardId
-      setCurrentBoardType(boardType)
-      setCurrentType('LASTEST')
-      isSearch = false
-      inputEl.current.value=""
-      if(page === 1){
-        axios.get(`/boards/${boardType}?page=${0}&pageSize=20&type=${'LASTEST'}`,{
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-        })
-        .catch(function (error) {
-          console.log(error.toJSON());
-        })
-        .then(function(res){
-          console.log("타겟이 바뀐뒤에 호출");
-          settotalPage(res.data.data.posts.totalPages)
-          setPosts(res.data.data.posts.content)
-        });
+      if(PageReducer.isSearching[0] === true){
+        handleSearchFunction(PageReducer.isSearching[1],PageReducer.isSearching[2],PageReducer.boardId,PageReducer.page,PageReducer.selected)
       }
       else{
-          setPage(1)
+        loadPageList(PageReducer.boardId,PageReducer.page,PageReducer.selected)
       }
     }
-   
-  }, [target]);
+    else{
+      if(PageReducer.isSearching[0] === true){
+        handleSearchFunction(PageReducer.isSearching[1],PageReducer.isSearching[2],PageReducer.boardId,PageReducer.page,PageReducer.selected)
+      }
+      else{
+        loadPageList(PageReducer.boardId,PageReducer.page,PageReducer.selected)
+      }
+    }
+  },[props])
 
-  React.useEffect(() => { // 검색 바에서 순서가 바뀌면 값을 변환.
+  React.useEffect(()=>{
     if(subCategory !== undefined){
-      if(page === 1){
-        if(isSearch === false){
-          console.log("셀렉트에서 값"+ selected);
-          axios.get(`/boards/${currentBoardType}?page=${0}&pageSize=19&type=${selected}`,{
-            headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-          })
-          .catch(function (error) {
-            console.log(error.toJSON());
-          })
-          .then(function(res){
-            console.log("셀렉트 값이 바뀐뒤에 호출");
-            settotalPage(res.data.data.posts.totalPages)
-            setPosts(res.data.data.posts.content)
-          });
-        }
-        else{
-          handleSearchFunction(option, currentBoardType, selected, 1)
-        }
-      }
-      setCurrentType(selected)
-      setPage(1)
+      const PageReducer = props.PageReducer
+      console.log(subCategory);
+      const boardId = subCategory.find(element => element.boardName === target).boardId // 그 중에서 현재 타겟의 board이름
+      console.log(boardId);
+      setSelected("LASTEST")
+      props.setAll(boardId,1,[false],"LASTEST",PageReducer.boardCategoryName)
     }
+  },[target])
 
-  }, [selected]);
+  const handleSearching = (data,e) => { // 사용자가 검색을 했을때
+    console.log(data);
+    const PageReducer = props.PageReducer
+    props.setAll(PageReducer.boardId,1,[true,data.option,data.keyword],'LASTEST',PageReducer.boardCategoryName)
+    setSelected("최신순")
+  }
+
+  const OnError = (error,e) => {
+    console.log(error);
+    console.log("error");
+  }
 
   const handleSearchBarFilter = (e) => { //사용자가 검색바 필터를 바꾸었을 때.
-    setSelected((current) => e.target.value);
+    console.log(e.target.value);
+    const type = e.target.value;
+    const PageReducer = props.PageReducer
+    setSelected(e.target.value)
+    props.setAll(PageReducer.boardId,1,PageReducer.isSearching,type,PageReducer.boardCategoryName)
   };
 
   React.useEffect(()=>{
     if(subCategory !== undefined){
-      if(isSearch === false){
-        axios.get(`/boards/${currentBoardType}?page=${page-1}&pageSize=20&type=${currentType}`,{
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-        })
-        .catch(function (error) {
-          console.log(error.toJSON());
-        })
-        .then(function(res){
-          console.log("페이지에서 호출");
-          settotalPage(res.data.data.posts.totalPages)
-          setPosts(res.data.data.posts.content)
-        });
-      }
-      else{
-        handleSearchFunction(option, currentBoardType, currentType, page)
-      }
-  }
+      const PageReducer = props.PageReducer
+      props.setAll(PageReducer.boardId,page,PageReducer.isSearching,PageReducer.selected,PageReducer.boardCategoryName)
+    }
   },[page])
 
 
-
-  const handleSearching = (data) => { // 사용자가 검색을 했을때
-    option = {option: data.option, keyword: data.keyword};
-    isSearch = true
-    if(page === 1){
-      handleSearchFunction(option, currentBoardType, currentType, 1)
-    }
-    else{
-      setPage(1)
-    }
-    
-    console.log(data.option);
-    console.log(data.keyword);
-
-  }
 
   return (
     <>
@@ -272,7 +224,7 @@ function Board(props) {
       <Content>
         <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
         <SearchBarSection>
-          <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
+          <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
             <SearchBarSelect {...register("option")}>
               <option>제목 + 내용</option>
               <option>제목</option>
@@ -280,58 +232,58 @@ function Board(props) {
             </SearchBarSelect>
             <SearchBar>
               <SearchBarInput
-                {...register("keyword", { required: true })}  ref={inputEl}
+                {...register("keyword", { required: true })}
               />
               <SearchBarSubmit type="submit" value="" />
             </SearchBar>
           </SearchBarForm>
 
           <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
-            {selectDate.map((value) => (
-              <option value={value.value} key={value.viewValue}>
-                {value.viewValue}
-              </option>
-            ))}
-          </SearchBarFilter>
+                {selectDate.map((value) => (
+                  <option value={value.value} key={value.viewValue}>
+                    {value.viewValue}
+                  </option>
+                ))}
+              </SearchBarFilter>
 
           <CreateBtnLink
-            to={`/board/write/${1}`}
-            state={{ category: "커뮤니티", subCategory: target }}
-          >
-            create
-          </CreateBtnLink>
-        </SearchBarSection>
+                to={`/board/write/${props.userReducer.id}`} state={{ category: "커뮤니티", subCategory:  target}}
+              >
+                create
+              </CreateBtnLink>
+            </SearchBarSection> 
 
-        <InforBar> {/* 프로필의 내가 쓴 게시글, 내가 쓴 댓글 부분에 사용하시면 좋을 듯 합니다.*/}
-          <InforContents>
-            <Number>번호</Number>
-            <Title>제목</Title>
-            <Writer>작성자</Writer>
-            <Date>작성일자</Date>
-            <Recommendation>추천</Recommendation>
-            <Hits>조회</Hits>
-            <Comment>댓글</Comment>
-          </InforContents>
-        </InforBar>
+          <InforBar> {/* 프로필의 내가 쓴 게시글, 내가 쓴 댓글 부분에 사용하시면 좋을 듯 합니다.*/}
+            <InforContents>
+              <Number >번호</Number>
+              <Title>제목</Title>
+              <Writer>작성자</Writer>
+              <Date>작성일자</Date>
+              <Recommendation>추천</Recommendation>
+              <Hits>조회</Hits>
+            </InforContents>
+          </InforBar>
 
-        {
-          (posts !== null)?
-          <PostBar target={target} page={page} data={posts} />
-          :
-          null
-        }
-         {/* PostBar는 PostBar.js에서 주석달겠습니다. target은 sidebar에서 클릭한 하위카테고리입니다. */}       
+          {
+            (posts !== null) ?
+              <PostBar target={target} page={page} data={posts} userReducer={props.userReducer}/>
+              :
+              null
+          }
+          {/* PostBar는 PostBar.js에서 주석달겠습니다. target은 sidebar에서 클릭한 하위카테고리입니다. */}
 
-        <Pagination
-          total = {totalPage}
-          limit = {19}
-          page={page}
-          setPage={setPage}
-        />
-        {/* total은 총 게시글의 길이. limit은 한 페이지 안의 게시글의 개수, page는 현재 페이지이고 setPage를 보내줌으로써 페이지네이션 구현했습니다.*/}
-        <Outlet />
+          <Pagination
+            total={totalPage}
+            limit={19}
+            page={page}
+            setPage={setPage}
+          />
+          {/* total은 총 게시글의 길이. limit은 한 페이지 안의 게시글의 개수, page는 현재 페이지이고 setPage를 보내줌으로써 페이지네이션 구현했습니다.*/}
+          <Outlet />
       </Content>
     </>
   );
 }
-export default connect(mapStateToProps)(Board);
+export default connect(mapStateToProps,mapDispatchToProps)(Board);
+
+

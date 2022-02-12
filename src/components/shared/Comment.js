@@ -2,122 +2,17 @@ import axios from "axios";
 import * as React from 'react';
 import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
-import { faThumbsUp  } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp  } from "@fortawesome/free-regular-svg-icons";
+import {faThumbsUp as solidFaThumbsUp} from "@fortawesome/free-solid-svg-icons"
 import {Comments,Comment
     ,CommentContent,CommentWriteSection,CommentWrite,CommentSubmit,
     CommentName,CommentLeft,CommentNameBox,
-    CommentBox,Date,CommentRecommand,BtnBar, CommentInfor,ReComment,CommentSpan} from "./PageElements"
+    CommentBox,Date,CommentRecommand,BtnBar, CommentInfor,ReComment,CommentSpan,CommentLeftContent,CommentImage,ReCommentImage} from "./PageElements"
 
       
-      const getReCommentInfor = [
-        {
-          parentNumber: 3,
-          commentNumber: 15,
-          commentWriter: "아랍 제벌부자",
-          text: "좋습니다!",
-          recommand: 2,
-          date: "21/12/21",
-          time: "23:14:24",
-        },
-        {
-          parentNumber: 3,
-          commentNumber: 16,
-          commentWriter: "김승태",
-          text: "저도 좋습니다!",
-          recommand: 2,
-          date: "21/12/21",
-          time: "23:14:24",
-        },
-        {
-          parentNumber: 4,
-          commentNumber: 17,
-          commentWriter: "김승태",
-          text: "저도 좋습니다!",
-          recommand: 2,
-          date: "21/12/21",
-          time: "23:14:24",
-        },
-        {
-          parentNumber: 5,
-          commentNumber: 18,
-          commentWriter: "김승태",
-          text: "저도 좋습니다!",
-          recommand: 2,
-          date: "21/12/21",
-          time: "23:14:24",
-        }
-      ]
 
 
-      const recommentLogic = `
-      {reCommentInfor.filter(item => item.parentNumber === comment.commentNumber).map(reComment=> // 대댓글
-        <div  key={reComment.commentNumber}>
-          <ReComment key={reComment.commentNumber} id={reComment.commentNumber} >
-            <CommentLeft>
-              <CommentNameBox>
-                <CommentName>{reComment.commentWriter}</CommentName>
-              </CommentNameBox>
-
-              <CommentInfor data-index={reComment.commentNumber}>
-                <Date>{reComment.date} | {reComment.time}</Date>
-                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} color="#0B665C" />{reComment.recommand}</CommentRecommand>
-              </CommentInfor>
-              </CommentLeft>
-              {/* {(reComment.commentWriter === userInfor.userName) ?
-                <CommentOwnerBtn data-index={reComment.commentNumber}>
-                  <CommentUpdate onClick={handleReCommentUpdateBtn}>수정</CommentUpdate>
-                  <CommentDelete onClick={handleReCommentDelete}>삭제</CommentDelete>
-                </CommentOwnerBtn>
-                :
-                null
-              } */}
-            
-
-            <CommentContent>{reComment.text}</CommentContent>
-
-
-            {(reComment.commentWriter === userInfor.userName) ?
-              <BtnBar data-index={reComment.commentNumber}><CommentSpan onClick={toggleReCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentUpdateBtn}>수정</CommentSpan> | <CommentSpan onClick={handleReCommentDelete}>삭제</CommentSpan></BtnBar>
-              :
-              <BtnBar data-index={reComment.commentNumber}><CommentSpan  onClick={toggleReCommentRecommand}>추천</CommentSpan></BtnBar>
-            }
-
-            {/* {(typeof userInfor != 'undefined') ?
-              <CommentBtnSection>
-                <CommentRecommand data-index={reComment.commentNumber} onClick={toggleReCommentRecommand}>추천 <span>{reComment.recommand}</span></CommentRecommand>
-              </CommentBtnSection>
-              :
-              <CommentBtnSection>
-                <CommentRecommand >추천 <span>{reComment.recommand}</span></CommentRecommand>
-              </CommentBtnSection>
-            } */}
-          </ReComment>
-          {(reComment.commentNumber == commentIndex) ?
-            <CommentWriteSection>
-              <CommentWrite ref={reCommentUpdateEl} placeholder={"댓글 수정시 네티켓을 지켜주세요."} required data-index={reComment.commentNumber}></CommentWrite>
-              <CommentSubmit onClick={handleReCommentUpdate}>대댓글 등록</CommentSubmit>
-            </CommentWriteSection>
-            :
-            null
-          }
-        </div>
-      )}
-
-      {(comment.commentNumber == commentIndex) ?
-        <CommentWriteSection>
-          <CommentWrite ref={reCommentEl}  onChange={(e) => {}} placeholder={"댓글 작성시 네티켓을 지켜주세요."} required data-index={comment.commentNumber}></CommentWrite>
-          <CommentSubmit onClick={handleReCommentSubmit}>답글 등록</CommentSubmit>
-        </CommentWriteSection>
-        :
-       null
-       }     
-      `
-
-      let userInfor = {
-        userName: "김승태",
-        userId: "testId"
-      }
 
 
 
@@ -128,17 +23,18 @@ function mapStateToProps(state) {
 function CommentSection(props){
   const pageData = props.pageData
   const postId = pageData.postId
-  const commentData = props.commentData
+  const commentData = props.commentData.filter(item => item.replyParentId === -1)
+  const reCommentData = props.commentData.filter(item => item.replyParentId !== -1)
 
+  //console.log(props);
+  //console.log(commentData);
+  //console.log(reCommentData);
+
+  console.log(commentData);
     const [comment,setComment] = React.useState("") // 댓글 입력칸
     const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
-    const [commentInfor, setCommentInfor] = React.useState(commentData); // 댓글 정보
-    const [reCommentInfor,setReCommentInfor] = React.useState(getReCommentInfor)
-    const [commentIndex,setCommentIndex] = React.useState(-1);
-    const [checkSubmitBtn, setCheckSubmitBtn] = React.useState(0) // 0이면 댓글 등록이고 다른 숫자이면 수정하는 댓글의 index이다. 
-    const [isRecommand, setIsRecommand] = React.useState(0)
+    const [commentIndex,setCommentIndex] = React.useState(-1); // 대댓글 작성을 위해 이용한다.
     const reCommentEl = React.useRef();
-    const reCommentUpdateEl = React.useRef();
     const commentInputEl = React.useRef(); // 추후에 추가할 공백입력
 
     const triggerSwitch = () => {
@@ -157,12 +53,30 @@ function CommentSection(props){
       return isBlank
     }
 
-    const createdTime = () => {
-      let today = ("2021" + '/' + "12" + '/' + "03")
-      let time = ("01" + ':' + "05" + ':' + "63")
-      return {date: today,
-              time: time};
+    const createTime = () => {
+       let today = new Date().toString(); 
+      let year = today.getFullYear(); // 년도
+      let month = today.getMonth() + 1;  // 월
+      let day = today.getDate();  // 날짜
+      const test = year + '/' + month + '/' + day
+      console.log(test);
     }
+
+    const splitDate = (data) => {
+      const date = data.split('|')
+      const ymd = date[0]
+      const time = date[1].substr(0,5)
+      // console.log(date);
+      // console.log(ymd);
+      // console.log(time);
+      
+      const result = `${ymd} | ${time}`
+      //console.log(result);
+      //createTime()
+
+      return result
+    }
+
 
     const handleCommentSubmit = (e) => { //댓글 작성하고 제출하는 함수
       if(checkBlank(comment)){ // 댓글을 달지 않고 버튼을 클릭했을 때.
@@ -172,229 +86,254 @@ function CommentSection(props){
         axios.post(`/comments`,{
           "content": comment,
           "postId": postId, 
+          "replyId": -1
         },
         {
-          headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
         })
         .catch(function (error) {
           console.log(error.toJSON());
         })
         .then(function(res){
           console.log(res);
+          triggerSwitch()
+          setComment("");
         });
-        console.log(props);
-        triggerSwitch()
-        setComment("");
+
       }
     }
   
-    const handleCommentUpdate = (e) => { // 댓글 수정버튼 누른 후, 댓글 등록 버튼 누를 시에 동작
-      let i = 0;
-      // for(i;i<commentInfor.length; i++){
-      //   if(commentInfor[i].commentNumber == checkSubmitBtn){
-      //     const today = createdTime();
-      //     let temp  = [...commentInfor];
-      //     temp[i].text = comment;
-      //     temp[i].date =  today.date;
-      //     temp[i].time = today.time;
-      //     setCommentInfor(temp);
-      //     setCheckSubmitBtn(0);
-      //     setComment("");
-      //     break;
-      //   }
-      // }
-      
-    }
-
-    const handleCommentUpdateBtn = (e) => { // 댓글 수정 버튼 누를 시에 동작하는 함수
-        const index = e.target.parentNode.dataset.index
-        let i = 0;
-        // for(i;i<commentInfor.length; i++){
-        //   if(commentInfor[i].commentNumber == index){
-        //     console.log(commentInfor[i].text)
-        //     setComment(commentInfor[i].text)
-        //     setCheckSubmitBtn(index)
-        //     break;
-        //   }
-        // }
-    }
-      
     const handleCommentDelete = (e) => { // 댓글 삭제 함수
-      const info = e.target.parentNode.parentNode.dataset.info;
-      const commentinfo = info.split(['\''])
+      const replyId = e.target.parentNode.parentNode.dataset.id;
+      let value = window.confirm("해당 댓글을 삭제하겠습니까?")
+      if(value){
+        axios.delete(`/comments?replyId=${replyId}`,
+        {
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function(res){
+          console.log(res);
+          triggerSwitch()
+        });
+      }
+    }
+    
+    const handleCommentRecommandCancel = (e, commentId) => { // 댓글 추천 취소함수
 
-      axios.delete(`/comments?replyId=${commentinfo[1]}`,
+      axios.delete(`/comments/like?replyId=${commentId}`, {
+        headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+      })
+      .then(function (res) {
+          console.log(res);
+          console.log("추천 취소");
+          const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) -1
+          console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum);
+      });
+    }
+
+  const handleCommentRecommand = (e) => { // 댓글 추천 함수
+    const info = e.target.parentNode.parentNode.dataset.id;
+    const commentId = Number(info);
+    //console.log(e.target.parentNode.parentNode);
+    axios.post(`/comments/like?replyId=${commentId}`, {}, {
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+      .catch(function (error) {
+        console.log(error);
+        handleCommentRecommandCancel(e, commentId)
+      })
+      .then(function (res, error) {
+        if (res === undefined) {
+        }
+        else {
+          const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) + 1
+          console.log("추천 완료");
+          e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum
+          // console.log(e);
+          // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1]);
+          // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1]);
+
+        }
+      });
+  }
+    
+  const handleReCommentWirte = (e) => { // 댓글에서 답글 버튼을 눌렀을 때 동작하는 함수
+    let index = e.target.parentNode.parentNode.dataset.id;
+    if (index === commentIndex)
+      index = -1
+    setCommentIndex(index);
+    //console.log(e);
+  }
+    
+  const handleReCommentSubmit = (e) => { // 대댓글을 전송하는 함수 
+    const parentId = Number(reCommentEl.current.dataset.id)
+    
+    const recomment= reCommentEl.current.value;
+    
+    if(checkBlank(recomment)){ // 댓글을 달지 않고 버튼을 클릭했을 때.
+      reCommentEl.current.placeholder="  내용이 없는 댓글은 등록하실 수 없습니다."
+    }
+    else{
+      axios.post(`/comments`,{
+        "content": recomment,
+        "postId": postId, 
+        "replyId": parentId
+      },
       {
-        headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
       })
       .then(function(res){
         console.log(res);
+        console.log(parentId);
+        console.log(recomment);
+        reCommentEl.current.value = "";
+        reCommentEl.current.placeholder="  댓글 작성 시 네티켓을 지켜주세요."
+        setCommentIndex(-1);
         triggerSwitch()
-      });
-  
-    }
-    
-    const handleCommentRecommandCancel = (e, commentId) => {
-
-      axios.delete(`/comments/like?replyId=${commentId}`, {
-        headers: { 'Authorization': `Bearer ${props.tokenReducer}` }
-      })
-      .then(function (res) {
-          console.log(res);
-          console.log("추천 취소");
-          const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].innerText)-1
-          console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum);
+        
       });
     }
-
-    const handleCommentRecommand = (e) => { // 댓글 추천 함수
-      const info = e.target.parentNode.parentNode.dataset.info;
-      const commentinfo = info.split(['\''])
-      const commentId = Number(commentinfo[1]);
-
-      axios.post(`/comments/like?replyId=${commentId}`, {}, {
-        headers: { 'Authorization': `Bearer ${props.tokenReducer}` }
-      })
-        .catch(function (error) {
-          console.log(error);
-          handleCommentRecommandCancel(e,commentId)
-        })
-        .then(function (res, error) {
-          if (res === undefined) {
-          }
-          else{
-            const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].innerText)+1
-            console.log("추천 완료");
-            // console.log(e);
-            // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1]);
-            // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1]);
-            console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum);
-          }
-        });
-    }
-    
-      const handleReCommentWirte = (e) => { // 대댓글을 작성하기 위한 함수
-        let index =e.target.parentNode.parentNode.id;
-        if(index === commentIndex)
-          index = -1
-        setCommentIndex(index);
-      }
-    
-      const handleReCommentSubmit = (e) => { // 대댓글을 전송하는 함수 
-        const index = Number(reCommentEl.current.dataset.index)
-        const recomment= reCommentEl.current.value;
-        if(checkBlank(recomment)){ // 댓글을 달지 않고 버튼을 클릭했을 때.
-          reCommentEl.current.placeholder="  내용이 없는 댓글은 등록하실 수 없습니다."
-        }
-        else{
-          const today = createdTime();
-          let temp  = [...reCommentInfor];
-          console.log(temp);
-          temp.push(
-            {
-              parentNumber: index,
-              commentNumber: reCommentInfor[reCommentInfor.length - 1].commentNumber+1,
-              commentWriter: userInfor.userName,
-              text: recomment,
-              recommand: 0,
-              date: today.date,
-              time: today.time
-            }
-          )
-          reCommentEl.current.value = "";
-          reCommentEl.current.placeholder="  댓글 작성 시 네티켓을 지켜주세요."
-          setReCommentInfor(temp);
-          setCommentIndex(-1);
-        }
-      }
-    
-      const handleReCommentUpdate = (e) => { // 대댓글 수정함수
-        const index = Number(reCommentUpdateEl.current.dataset.index)
-        const recomment= reCommentUpdateEl.current.value;
-        if(checkBlank(recomment)){ // 댓글을 달지 않고 버튼을 클릭했을 때.
-          reCommentUpdateEl.current.placeholder="  내용이 없는 댓글은 등록하실 수 없습니다."
-        }
-        else{
-          const today = createdTime();
-    
-          let i = 0;
-    
-          for(i;i<reCommentInfor.length; i++){
-            if(reCommentInfor[i].commentNumber == index){
-              let temp  = [...reCommentInfor];
-              temp[i].text = recomment;
-              temp[i].date =  today.date;
-              temp[i].time = today.time;
-              setReCommentInfor(temp);
-              setCommentIndex(-1)
-              break;
-            }
-          }
-    
-        }
-      }
-    
-      const handleReCommentUpdateBtn = (e) => { // 대댓글 수정 버튼을 눌렀을 때 함수 실행
-        console.log(e);
-        let index =e.target.parentNode.parentNode.id;
-        if(index === commentIndex)
-        index = -1
-        setCommentIndex(index);
-      }
+  }
       
-      const handleReCommentDelete = (e) => { // 대댓글 삭제함수
-        const index = e.target.parentNode.parentNode.parentNode.id;
-    
-        let i = 0;
-        for(i;i<reCommentInfor.length; i++){
-          if(reCommentInfor[i].commentNumber == index){
-            let temp  = [...reCommentInfor]
-            temp.splice(i,1)
-            setReCommentInfor(temp);
-            break;
-            //바뀐 거 보내주기
-          }
+  const handleReCommentDelete = (e) => { // 대댓글 삭제함수
+        const index = e.target.parentNode.parentNode.dataset.id;
+        let value = window.confirm("해당 댓글을 삭제하겠습니까?")
+        if(value){
+          axios.delete(`/comments?replyId=${index}`,
+          {
+            headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+          })
+          .catch(function (error) {
+            console.log(error.toJSON());
+          })
+          .then(function(res){
+            console.log(res);
+            triggerSwitch()
+          });
         }
+  }
+
+  const handleReCommentRecommandCancel = (e, replyId) => { // 댓글 추천 취소함수
+
+    axios.delete(`/comments/like?replyId=${replyId}`, {
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+    .then(function (res) {
+        console.log(res);
+        console.log("추천 취소");
+        const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) -1
+        e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum;
+    });
+  }
+
+  const handleReCommentRecommand = (e) => { // 댓글 추천 함수
+  const replyId  = e.target.parentNode.parentNode.dataset.id;
+  axios.post(`/comments/like?replyId=${replyId}`, {}, {
+    headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+  })
+    .catch(function (error) {
+      console.log(error);
+      handleReCommentRecommandCancel(e, replyId)
+    })
+    .then(function (res, error) {
+      if (res === undefined) {
       }
+      else {
+
+        const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) + 1
+        console.log("추천 완료");
+        e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum
+        
+        // console.log(e);
+        // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1]);
+        // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1]);
+
+      }
+    });
+  }
     
-      const toggleReCommentRecommand = (e) => {
-        const index = e.target.dataset.index
-        let i = 0;
-        for(i;i<reCommentInfor.length; i++){
-          if(reCommentInfor[i].commentNumber == index){
-            //먼저 추천했는지 확인 만약 추천했다면 추천 취소 
-            let temp  = [...reCommentInfor];
-            temp[i].recommand = reCommentInfor[i].recommand+1;
-            setReCommentInfor(temp)
-            break
-          }
-        }
-      }
+
     
       const printComment = commentData.map((comment,i)=>
-        <CommentBox key={i + 1}>
-          <Comment data-info={`commentNo: '${comment.replyId}'`} >
+        <CommentBox key={comment.replyId}>
+          <Comment data-id={`${comment.replyId}`} >
             <CommentLeft>
+              <CommentImage src={`${props.userReducer.imageUrl}`}></CommentImage>
+              <CommentLeftContent>
               <CommentNameBox>
                 <CommentName>{comment.memberName}</CommentName>
               </CommentNameBox>
               <CommentInfor data-index={comment.replyId}>
-                <Date>{comment.updatedDate} | {comment.updatedDate}</Date>
+                <Date>{splitDate(comment.updatedDate)} </Date>
                 <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} color="#0B665C" />{comment.replyLike}</CommentRecommand>
+                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} color="#0B665C" />{comment.replyLike}</CommentRecommand>
               </CommentInfor>
+            </CommentLeftContent>
+
             </CommentLeft>
 
             <CommentContent>{comment.content}</CommentContent>
 
-            {(comment.memberId === 3) ? // 이후 JWT 디코딩 이후 수정할 부분이다.
-              <BtnBar data-index={comment.replyId}><CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> | <CommentSpan onClick={handleCommentUpdateBtn}>수정</CommentSpan> | <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan></BtnBar>
+            {(comment.memberId === props.userReducer.id) ? // 이후 JWT 디코딩 이후 수정할 부분이다.
+              <BtnBar data-index={comment.replyId}><CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> | <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan></BtnBar>
               :
               <BtnBar data-index={comment.replyId}><CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan></BtnBar>
             }
           </Comment>
+          
+          {reCommentData.filter(item => item.replyParentId === comment.replyId).map(reComment =>
+            <>
+              <ReComment key={reComment.replyId} data-id={`${reComment.replyId}`}>
+              <CommentLeft>
+              <ReCommentImage src={`${props.userReducer.imageUrl}`}></ReCommentImage>
+              <CommentLeftContent>
+              <CommentNameBox>
+                <CommentName>{reComment.memberName}</CommentName>
+              </CommentNameBox>
+              <CommentInfor data-index={reComment.replyId}>
+                <Date>{splitDate(comment.updatedDate)} </Date>
+                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} color="#0B665C" />{reComment.replyLike}</CommentRecommand>
+              </CommentInfor>
+              </CommentLeftContent>
+              </CommentLeft>
+            
+            <CommentContent>{reComment.content}</CommentContent>
+
+            {(reComment.memberId === props.userReducer.id) ?
+              <BtnBar data-index={reComment.replyId}><CommentSpan onClick={handleReCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentDelete}>삭제</CommentSpan></BtnBar>
+              :
+              <BtnBar data-index={reComment.replyId}><CommentSpan  onClick={handleReCommentRecommand}>추천</CommentSpan></BtnBar>
+            }
+
+            {/* {(typeof userInfor != 'undefined') ?
+              <CommentBtnSection>
+                <CommentRecommand data-index={reComment.commentNumber} onClick={toggleReCommentRecommand}>추천 <span>{reComment.recommand}</span></CommentRecommand>
+              </CommentBtnSection>
+              :
+              <CommentBtnSection>
+                <CommentRecommand >추천 <span>{reComment.recommand}</span></CommentRecommand>
+              </CommentBtnSection>
+            } */}
+          </ReComment>
+            </>
+            )}
+
+
+
+          {(comment.replyId == commentIndex) ?
+          <CommentWriteSection>
+          <CommentWrite ref={reCommentEl}  onChange={(e) => {}} placeholder={"댓글 작성시 네티켓을 지켜주세요."} required data-id={comment.replyId}></CommentWrite>
+          <CommentSubmit onClick={handleReCommentSubmit}>답글 등록</CommentSubmit>
+          </CommentWriteSection>
+          :
+            null
+          }    
         </CommentBox>
       )
 
@@ -403,10 +342,10 @@ function CommentSection(props){
             <Comments id="commentTag">
             {printComment}
             </Comments>
-            {(typeof userInfor != 'undefined') ? // userInfor가 있는 지 확인하면서 회원이 아니라면 댓글 작성 x
+            {(typeof props.userReducer != 'undefined') ? // userInfor가 있는 지 확인하면서 회원이 아니라면 댓글 작성 x
               <CommentWriteSection>
                 <CommentWrite  value={comment} ref={commentInputEl} onChange={(e)=>{setComment(e.target.value)}}  placeholder={placeholder} required></CommentWrite>
-                <CommentSubmit onClick={(checkSubmitBtn === 0)?handleCommentSubmit:handleCommentUpdate}>댓글 등록</CommentSubmit>
+                <CommentSubmit onClick={handleCommentSubmit}>댓글 등록</CommentSubmit>
               </CommentWriteSection>
               : null}
         </>

@@ -25,20 +25,37 @@ function Page(props) {
     const location = useLocation().state;
     const pageData = location.pageData
     const data = useLocation().state;
-    const editorRef = React.createRef();checkNotice()
-    const [notice, setNotice] = React.useState(pageData.type)
+    const editorRef = React.createRef();
+    const [notice, setNotice] = React.useState(checkNotice(pageData.type))
     const [secret,setSecret] = React.useState(pageData.secretFlag)
     const [title,setTitle] = React.useState(pageData.title);
     const Navigate = useNavigate()
-
+    const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
 
     React.useEffect(()=>{
       const inputText = editorRef.current.getInstance(); // 수정할 내용을 불러옴.
       inputText.setHTML(pageData.content)
-      //console.log(data);
+      console.log(pageData);
     },[])
 
     const handleNoticeOptionChange = event => { // 공지사항인지 유무
+      console.log(!notice);
+      if(!notice === true){ //공지글로 설정했을 때
+        axios.patch(`/club/executives/boards/pin`,{
+            "postId": pageData.postId,
+            "type": "NOTICE"
+        },{
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        })
+      }
+      else{
+        axios.patch(`/club/executives/boards/pin`,{
+          "postId": pageData.postId,
+          "type": "NORMAL"
+      },{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      }
       setNotice(!notice)
     }
     const handleSecretOptionChange = event => { // 비밀 글인지 유무
@@ -67,7 +84,8 @@ function Page(props) {
       })
       .then(function(res){
         console.log(res);
-        Navigate("/board", {state:{category:location.subCategory, page:1}});
+        //Navigate("/board", {state:{category:location.subCategory, page:1}});
+        Navigate(props.PageReducer.boardCategoryName);
       });
      }
 
@@ -78,10 +96,10 @@ function Page(props) {
       <div>
       <Background>
         <Content>
-          <Category>{location.boardType}|{location.subCategory}</Category>
+          <Category>{props.PageReducer.viewCategoryName}|{location.subCategory}</Category>
           <Header>
           <Title type="text" placeholder="제목" value={title} onChange={(e)=>setTitle(e.target.value)}></Title>
-            <OtherDetail>{"이름 들어가야 함."}</OtherDetail>
+            <OtherDetail>{props.userReducer.name}</OtherDetail>
           </Header>
           <Editor
             
@@ -98,13 +116,17 @@ function Page(props) {
                     }
             ><GoToList >목록으로</GoToList></Link>
             <Right>
-            <SetOption>
-                <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
-                <Checkbox
-                  checked={notice}
-                  onChange={handleNoticeOptionChange}
-                />
-              </SetOption>
+
+            {(isAuthority === true)?
+                          <SetOption>
+                          <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
+                          <Checkbox
+                            checked={notice}
+                            onChange={handleNoticeOptionChange}
+                          />
+                        </SetOption>
+              :
+              null}
               <SetOption>
                 <Text><span style={{ marginRight: 8 }}>비밀글 설정하기</span></Text>
                 <Checkbox

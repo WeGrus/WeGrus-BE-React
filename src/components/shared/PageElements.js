@@ -18,10 +18,16 @@ export const Category = styled.div`
   margin-bottom: 16px;
 `;
 export const Header = styled.div`
-  padding-bottom: 16px;
-  border-bottom: 2px solid #0b665c;
-  margin-bottom: 42px;
-`;
+
+padding-bottom: 16px;
+border-bottom: 2px solid #0B665C;
+margin-bottom: 42px;
+width: 924px;
+padding-top: 16px;
+margin: auto;
+
+`
+
 export const Title = styled.input`
   width: 924px;
   height: 21px;
@@ -31,11 +37,12 @@ export const Title = styled.input`
   margin-bottom: 10px;
 `;
 export const OtherDetail = styled.div`
-  padding-bottom: 16px;
-  height: 16px;
-  font-size: 14px;
-  text-align: justify;
-`;
+padding-bottom: 16px;
+height: 16px;
+font-size: 14px;
+
+word-spacing: -3px;
+`
 export const DescriptionStyle = `
 background-color: wheat;
 width: 924px;
@@ -97,17 +104,17 @@ export const Write = styled.button`
   cursor: pointer;
 `;
 export const CommentInfor = styled.div`
-  position: absolute;
-  bottom: 10px;
-  word-spacing: -3px;
-`;
+word-spacing: -3px;
+`
 
 export const Description = styled.div`
-  width: 924px;
-  margin: auto;
-  border-bottom: 2px solid #0b665c;
-  position: relative;
-`;
+width: 924px;
+margin: auto;
+border-bottom: 2px solid #0B665C;
+padding-top: 10px;
+position: relative;
+`
+
 export const Recommand = styled.button`
   width: 88px;
   height: 32px;
@@ -145,11 +152,13 @@ export const CommentRecommand = styled.span`
   padding-left: 5px;
 `;
 export const CommentContent = styled.div`
-  margin-left: 49px;
-  max-width: 608px;
-  min-height: 96.22px;
-  white-space: pre-wrap;
-`;
+padding-top:10px;
+margin-left: 49px;
+max-width: 608px;
+min-height: 96.22px;
+white-space: pre-wrap;
+`
+
 
 export const Recode = styled.div`
   position: absolute;
@@ -224,15 +233,16 @@ export const CommentName = styled.div`
 `;
 
 export const CommentLeft = styled.div`
-  min-width: 109px;
-`;
+min-width: 109px;
+display: flex;
+`
 
 export const CommentNameBox = styled.div`
-  min-width: 109px;
-  position: relative;
-  margin-bottom: 74px;
-  display: flex;
-`;
+min-width: 109px;
+position: relative;
+margin-bottom: 2px;
+
+`
 
 export const ReCommentName = styled.div`
   width: 20px;
@@ -340,4 +350,35 @@ export const ReComment = styled.div`
 
 export const CommentSpan = styled.span`
   cursor: pointer;
-`;
+`
+
+export const HeaderContent = styled.div`
+min-width: 870px;
+margin-left: 12px;
+`
+
+export const PageImage = styled.img`
+width: 40px;
+height: 40px;
+border-radius: 50%;
+object-fit: cover;
+`
+
+export const CommentImage = styled.img`
+width: 40px;
+height: 40px;
+border-radius: 50%;
+object-fit: cover;
+`
+
+export const ReCommentImage = styled.img`
+margin-left: 5px;
+width: 40px;
+height: 40px;
+border-radius: 50%;
+object-fit: cover;
+`
+
+export const CommentLeftContent = styled.div`
+margin-left: 11px;
+`
