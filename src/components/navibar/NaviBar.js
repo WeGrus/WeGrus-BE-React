@@ -53,6 +53,11 @@ const NaviBar = (props) => {
       props.setViewCategoryName("공지사항")
       Navigate(`/announce`)
     }
+    else if(boardCategoryName === "ADMIN"){
+      props.setAll("회원 목록 조회",1,[false],"ID", "/operator")
+      props.setViewCategoryName(null)
+      Navigate(`/operator`)
+    }
 
   }
 
@@ -62,7 +67,7 @@ const NaviBar = (props) => {
       <Nav>
         <NavContents>
           <NavMenu>
-            <LogoLink to="/operator">
+            <LogoLink to="/operator" onClick={(e) => {handleLink(e,"ADMIN")}}>
               <img src={require("../../images/logo2.png")} alt="logo" />
             </LogoLink>
             <NavLink to="/" style={({ isActive }) => ({})}>

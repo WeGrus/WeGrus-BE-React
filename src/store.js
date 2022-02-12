@@ -301,8 +301,8 @@ export const actionCreators = {
   setPage,
   setIsSearching,
   setSelected,
-  setViewCategoryName
-  editPhoto,
+  setViewCategoryName,
+  editPhoto
 };
 
 export default store;
