@@ -100,7 +100,10 @@ function App(props) {
   const token = props?.userReducer?.token;
   const [userInfo, setUserInfo] = useState(false);
   // onSilentRefresh(refresh_token);
-
+  let isAuthority = false
+  if(props.userReducer.roles !== null){
+    isAuthority =   props?.userReducer?.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+  }
   useEffect(() => {
     //getCookie(); 도메인 코드 활성화 이후 이 코드를 활성화시켜야 합니다. reissue api를 요청합니다.
     if (authenticated) {
@@ -166,7 +169,7 @@ function App(props) {
                 <Route path="/profile" element={<Profile />} />
                 {isOperator ? (
                   <>
-                    <Route path="/operator" element={<Operator />} />
+                  {(isAuthority === true)? <Route path="/operator" element={<Operator />} /> : null}
                   </>
                 ) : null}
               </>

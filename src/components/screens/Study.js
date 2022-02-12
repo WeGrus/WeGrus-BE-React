@@ -268,7 +268,7 @@ function Study(props) {
 
           {
             (posts !== null) ?
-              <PostBar target={target} page={page} data={posts}/>
+            <PostBar target={target} page={page} data={posts} userReducer={props.userReducer}/>
               :
               null
           }

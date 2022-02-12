@@ -26,59 +26,102 @@ const splitDate = (data) => {
   return ymd
 }
 
-function PostBar({target,page,data}) {
+function PostBar({target,page,data,userReducer}) {
     const limit = 19;
     const offset = (page-1)*limit;
     const number = (page-1)*16;
-    //console.log(data);
-
+    console.log(data);
+    console.log(userReducer);
+    const isAuthority = userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
     // console.log("PostBar에서의 location값");
     // console.log(selected);
 
-      const postdata = data.map((data,i) => 
-      <PostInforBar key={i+1}>
-        {(data.type === "NORMAL")?
-         <PostCotent>
-          <Number>{(i+1)+number}</Number>
-         
-         <Title>
-         <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, postId: data.postId}}  >
-         {data.title}
-         </Link> 
-         <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, postId: data.postId }} >
-           <Test>
-             [{data.postReplies}]
-             </Test>
-         </HashLink >
-         </Title>
-         <Writer>{data.memberName}</Writer>
-         <Date>{splitDate(data.createdDate)}</Date>
-         <Recommendation>{data.postLike}</Recommendation>
-         <Hits>{data.postView}</Hits>
-       </PostCotent>
+  const postdata = data.map((data, i) =>
+    <PostInforBar key={i + 1}>
+      {(data.secretFlag === true) ? // 비밀글일때,
+        <>
+          {(isAuthority === true || data.memberId === userReducer.id) ?
+            <PostCotent>
+              <Number>{(i + 1) + number}</Number>
+              <Title>
+                <Link to={`${(i + 1) + number}`} state={{ category: "커뮤니티", subCategory: target, postId: data.postId }}  >
+                  {"비밀글 "+ data.title}
+                </Link>
+                <HashLink to="1#commentTag" state={{ category: "커뮤니티", subCategory: target, postId: data.postId }} >
+                  <Test>
+                    [{data.postReplies}]
+                  </Test>
+                </HashLink >
+              </Title>
+              <Writer>{data.memberName}</Writer>
+              <Date>{splitDate(data.createdDate)}</Date>
+              <Recommendation>{data.postLike}</Recommendation>
+              <Hits>{data.postView}</Hits>
+            </PostCotent>
+            :
+            <PostCotent>
+            <Number>{(i + 1) + number}</Number>
+            <Title>
+                {"비밀글 입니다."} 
+                <Test>
+                  [{data.postReplies}]
+                </Test>
+            </Title>
+            <Writer>{"작성자"}</Writer>
+            <Date>{splitDate(data.createdDate)}</Date>
+            <Recommendation>{data.postLike}</Recommendation>
+            <Hits>{data.postView}</Hits>
+          </PostCotent>
+          }
+        </>
         :
-        <PostCotent bold>
-        <Number><FontAwesomeIcon icon={faVolumeOff} color="#0B665C" /></Number>
-        <Title>
-        <Link to={`${(i+1)+number}`} state={{ category: "커뮤니티", subCategory:  target, postId: data.postId}}  >
-        {data.title}
-        </Link> 
-        <HashLink  to="1#commentTag" state={{ category: "커뮤니티", subCategory:  target, postId: data.postId }} >
-          <Test>
-            [{data.postReplies}]
-            </Test>
-        </HashLink >
-        </Title>
-        <Writer>{data.memberName}</Writer>
-        <Date>{splitDate(data.createdDate)}</Date>
-        <Recommendation>{data.postLike}</Recommendation>
-        <Hits>{data.postView}</Hits>
-      </PostCotent>
-        }
-       
-      </PostInforBar>
+        <> 
+          {(data.type === "NORMAL") ? // 비밀글이 아닐때.
+            <PostCotent>
+              <Number>{(i + 1) + number}</Number>
 
-      )
+              <Title>
+                <Link to={`${(i + 1) + number}`} state={{ category: "커뮤니티", subCategory: target, postId: data.postId }}  >
+                  {data.title}
+                </Link>
+                <HashLink to="1#commentTag" state={{ category: "커뮤니티", subCategory: target, postId: data.postId }} >
+                  <Test>
+                    [{data.postReplies}]
+                  </Test>
+                </HashLink >
+              </Title>
+              <Writer>{data.memberName}</Writer>
+              <Date>{splitDate(data.createdDate)}</Date>
+              <Recommendation>{data.postLike}</Recommendation>
+              <Hits>{data.postView}</Hits>
+            </PostCotent>
+            :
+            <PostCotent bold>
+              <Number><FontAwesomeIcon icon={faVolumeOff} color="#0B665C" /></Number>
+              <Title>
+                <Link to={`${(i + 1) + number}`} state={{ category: "커뮤니티", subCategory: target, postId: data.postId }}  >
+                  {data.title}
+                </Link>
+                <HashLink to="1#commentTag" state={{ category: "커뮤니티", subCategory: target, postId: data.postId }} >
+                  <Test>
+                    [{data.postReplies}]
+                  </Test>
+                </HashLink >
+              </Title>
+              <Writer>{data.memberName}</Writer>
+              <Date>{splitDate(data.createdDate)}</Date>
+              <Recommendation>{data.postLike}</Recommendation>
+              <Hits>{data.postView}</Hits>
+            </PostCotent>
+          }
+        </>
+
+      }
+
+
+    </PostInforBar>
+
+  )
     
 
     return (

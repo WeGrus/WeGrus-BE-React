@@ -2,8 +2,9 @@ import axios from "axios";
 import * as React from 'react';
 import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
-import { faThumbsUp  } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp  } from "@fortawesome/free-regular-svg-icons";
+import {faThumbsUp as solidFaThumbsUp} from "@fortawesome/free-solid-svg-icons"
 import {Comments,Comment
     ,CommentContent,CommentWriteSection,CommentWrite,CommentSubmit,
     CommentName,CommentLeft,CommentNameBox,
@@ -29,6 +30,7 @@ function CommentSection(props){
   //console.log(commentData);
   //console.log(reCommentData);
 
+  console.log(commentData);
     const [comment,setComment] = React.useState("") // 댓글 입력칸
     const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
     const [commentIndex,setCommentIndex] = React.useState(-1); // 대댓글 작성을 위해 이용한다.
@@ -270,6 +272,7 @@ function CommentSection(props){
               <CommentInfor data-index={comment.replyId}>
                 <Date>{splitDate(comment.updatedDate)} </Date>
                 <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} color="#0B665C" />{comment.replyLike}</CommentRecommand>
+                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} color="#0B665C" />{comment.replyLike}</CommentRecommand>
               </CommentInfor>
             </CommentLeftContent>
 

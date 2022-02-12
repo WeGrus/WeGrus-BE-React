@@ -31,7 +31,6 @@ const NaviBar = (props) => {
 
   const handleLink = (e, boardCategoryName) => {
     e.preventDefault();
-    console.log("chedk");
     if(boardCategoryName === "BOARD"){
       console.log("네비 확인!");
       props.setAll(7,1,[false],'LASTEST', '/board')

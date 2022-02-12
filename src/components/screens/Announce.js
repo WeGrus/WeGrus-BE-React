@@ -69,7 +69,7 @@ function Board(props) {
   const [load, setLoad] = React.useState(false) // load유무로 location의 값이 바뀐 뒤에 렌더
   const [posts, setPosts] = React.useState(null); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
-  const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+  const isAuthority = props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
 
 
   const { register, handleSubmit} = useForm();
@@ -268,7 +268,7 @@ function Board(props) {
 
           {
             (posts !== null) ?
-              <PostBar target={target} page={page} data={posts}/>
+            <PostBar target={target} page={page} data={posts} userReducer={props.userReducer}/>
               :
               null
           }
