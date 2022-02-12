@@ -247,7 +247,7 @@ function Group(props) {
               </SearchBarFilter>
 
           <CreateBtnLink
-                to={`/board/group/${props.userReducer.id}`} state={{ category: "소그룹", subCategory:  target}}
+                to={`/group/write/${props.userReducer.id}`} state={{ category: "소그룹", subCategory:  target}}
               >
                 create
               </CreateBtnLink>

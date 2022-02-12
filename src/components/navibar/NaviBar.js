@@ -45,7 +45,7 @@ const NaviBar = (props) => {
     }
     else if(boardCategoryName === "GROUP"){
       props.setAll(2,1,[false],'LASTEST', "/group")
-      props.setViewCategoryName("그룹")
+      props.setViewCategoryName("소모임")
       Navigate(`/group`)
     }
     else if(boardCategoryName === "NOTICE"){

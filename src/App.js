@@ -146,6 +146,12 @@ function App(props) {
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
+                <Route path="/announce/:pagenum" element={<Page />} />
+                <Route path="/announce/write/:userid" element={<CreatePage />} />
+                <Route
+                  path="/announce/update/:pagenum/:userid"
+                  element={<UpdatePage />}
+                />
                 {(isJoinGroup === true)?
                 <>
                 <Route path="/group" element={<Group />} />

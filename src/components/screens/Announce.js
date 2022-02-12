@@ -245,7 +245,7 @@ function Board(props) {
               </SearchBarFilter>
           {(isAuthority === true)?
    <CreateBtnLink
-   to={`/board/write/${props.userReducer.id}`} state={{ category: "공지사항", subCategory:  target}}
+   to={`/announce/write/${props.userReducer.id}`} state={{ category: "공지사항", subCategory:  target}}
  >
    create
  </CreateBtnLink>
