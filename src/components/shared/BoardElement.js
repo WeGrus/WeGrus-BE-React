@@ -163,7 +163,7 @@ text-align: ${(props) => (props.post ? "center" : "left")};
 margin-left: 45px;
 position: relative;
 word-spacing: -3px;
-cursor: ${(props) => (props.post ? "none" : "pointer")};
+cursor: ${(props) => (props.post ? "default" : "pointer")};
 `
 export const StudentId = styled.div`
 width: 63px;

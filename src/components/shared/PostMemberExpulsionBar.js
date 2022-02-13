@@ -43,8 +43,8 @@ function mapStateToProps(state) {
   }
 
 function PostMemberExpulsionBar(props){
-    console.log(props.data);
-    console.log(props);
+    //console.log(props.data);
+    //console.log(props);
     
 
     const expulsionMember = (memberId) => {
@@ -63,6 +63,14 @@ function PostMemberExpulsionBar(props){
 
     const handleExpulsion = (e) => {
         console.log(e);
+        const name = e.target.parentNode.childNodes[4].innerText
+        console.log(e);
+        const check = window.confirm(`${name}을(를) 정말 강제로 탈퇴시키겠습니까?`)
+        console.log(check);
+        if(check){
+            const id = e.target.dataset.id
+            expulsionMember(id)
+        }
     }
 
     const postdata = props.data.map((data)=>
