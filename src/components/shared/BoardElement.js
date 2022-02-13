@@ -223,7 +223,7 @@ position: relative;
 text-align: ${(props) => (props.post ? "center" : "")};
 margin-left: 45px;
 word-spacing: -10px;
-cursor: ${(props) => (props.post ? "none" : "pointer")};
+cursor: ${(props) => (props.post ? "pointer" : "auto")};
 `
 
 export const Gender = styled.div`
@@ -244,7 +244,7 @@ export const CheckBtn = styled.div`
 margin-left: 30px;
 width: 30px;
 height: 16px;
-background-color: #6CD2D7;
+background-color: ${(props) => (props.red ? "red" : "#6CD2D7")};
 border: none;
 border-radius: 15px;
 cursor: pointer;
@@ -267,9 +267,8 @@ display: flex;
 align-items:center;
 
 &:hover{
-  font-weight: 700;
+  
   cursor: pointer;
-  transform: translateY(-2px);
 }
 `
 export const PostCotent = styled.div`
@@ -277,6 +276,8 @@ align-items:center;
 display: flex;
 flex-direction: row;
 font-weight: ${props => (props.bold?"700":"400")};
+
+
 `
 
 export const PostRole = styled.div`

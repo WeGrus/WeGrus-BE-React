@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import * as React from "react"
-import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber} from "./BoardElement"
+import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,CheckBtn} from "./BoardElement"
 
 
 
@@ -62,7 +62,7 @@ const printRole = (value) => {
 
 function PostMemberBar(props) { // 기존의 postBar에서 userReducer가 추가되었습니다. 변경하고 나서 문제가 생기실 수도 있으니 한번 확인해주시길 바랍니다.
     //console.log(props);
-
+    //console.log("렌더링문제?");
     const postdata = props.data.map((data)=>
     <PostInforBar key={data.id}>
         <PostCotent>
@@ -85,4 +85,34 @@ function PostMemberBar(props) { // 기존의 postBar에서 userReducer가 추가
     );
 }
 
-export default PostMemberBar;
+export default React.memo(PostMemberBar);
+
+
+
+
+function PostMemberOutBar(props){
+
+    const postdata = props.data.map((data)=>
+    <PostInforBar key={data.id}>
+        <PostCotent>
+            <PostNumber>{data.id}</PostNumber>
+            <Grade post>{data.grade}</Grade>
+            <StudentId>{data.studentId}</StudentId>
+            <PhoneNumber post>{data.phone}</PhoneNumber>
+            <Name>{data.name}</Name>
+            <PostRole>{printRole(data.roles)}</PostRole>
+            <PostAttendance>{data.academicStatus}</PostAttendance>
+            <PostGender>{data.gender}</PostGender>
+            <CheckBtn></CheckBtn>
+        </PostCotent>
+    </PostInforBar>
+    )
+
+    return (
+        <>
+           {postdata}
+        </>
+    );
+}
+
+export {PostMemberOutBar};

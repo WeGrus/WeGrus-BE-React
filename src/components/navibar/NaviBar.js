@@ -54,7 +54,7 @@ const NaviBar = (props) => {
       Navigate(`/announce`)
     }
     else if(boardCategoryName === "ADMIN"){
-      props.setAll("회원 목록 조회",1,[false],"ID", "/operator")
+      props.setAll("회원 목록 조회",1,[false],"ID", true)
       props.setViewCategoryName(null)
       Navigate(`/operator`)
     }

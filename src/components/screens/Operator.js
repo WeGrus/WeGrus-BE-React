@@ -13,6 +13,8 @@ import img from './../../images/Polygon.jpg'
 import { connect } from "react-redux";
 import axios from "axios";
 import PostMemberBar from './../shared/PostMemberBar'
+import PostMemberPermissionBar from './../shared/PostMemberPermissionBar'
+import PostMemberExpulsionBar from './../shared/PostMemberExpulsionBar'
 import { actionCreators } from "./../../store";
 
 const Number = styled.div`
@@ -81,6 +83,7 @@ function Operator(props) {
 
 
   //'ROLE_GUEST', 'ROLE_CLUB_EXECUTIVE', 'ROLE_MEMBER'
+  const [load, setLoad] = React.useState(true);
 
   const [target, setTarget] = React.useState(null);
   const [page, setPage] = React.useState(0);
@@ -101,6 +104,7 @@ function Operator(props) {
   const [genderDirection, setGenderDirection] = React.useState(true);
   
   
+// 회원 목록 조회탭에 관련된 함수들.
 
   const loadMemberList = (direction,page,type) => { //회원 목록 조회
     axios.get(`/club/executives/members?direction=${direction}&page=${page}&size=19&type=${type}`,{
@@ -112,7 +116,8 @@ function Operator(props) {
     .then(function (res) {
      //console.log(res);
      settotalPage(res.data.data.totalPages)
-     setPosts(res.data.data.content)
+     setPosts((current) => res.data.data.content)
+     setLoad(true)
     });
   }
 
@@ -127,6 +132,7 @@ function Operator(props) {
      console.log(res);
      settotalPage(res.data.data.totalPages)
      setPosts(res.data.data.content)
+     setLoad(true)
     });
   }
 
@@ -141,6 +147,7 @@ function Operator(props) {
       console.log(res);
       settotalPage(res.data.data.totalPages)
       setPosts(res.data.data.content)
+      setLoad(true)
     });
   }
 
@@ -199,8 +206,6 @@ function Operator(props) {
       setPosts(res.data.data.content)
     });
   }
-
-
 
   const handleSearchFunction = (option) => {
     const PageReducer = props.PageReducer
@@ -354,9 +359,26 @@ function Operator(props) {
     }
   }
 
+  // 회원 가입 승인 탭에 관련된 함수
+  const loadMemberPermissionList = (page) => { // 회원 권한 요청 목록 조회
+    axios.get(`/club/executives/requests?page=${page}&role=ROLE_MEMBER&size=${19}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+      settotalPage(res.data.data.totalPages)
+      setPosts((current) => res.data.data.content)
+      setLoad(true)
+    });
+  }
+
   React.useEffect(()=>{
    const PageReducer = props.PageReducer
     console.log("props 값 변환");
+    console.log("props 작동!!!");
     //console.log(props);
     if(SubCategory === undefined){
       const listofMember =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) // 목록조회
@@ -394,16 +416,30 @@ function Operator(props) {
       });
     }
     else{
-      if(PageReducer.isSearching[0] === true){
-        console.log("검색로직 작동!");
-        //console.log(PageReducer);
-        handleSearchFunction(PageReducer.isSearching[1])
-        //loadMeberSearchList(discriminationDirection(direction),PageReducer.page,PageReducer.isSearching[1],PageReducer.selected,PageReducer.isSearching[2])
+      if(PageReducer.boardId === "회원 목록 조회" || PageReducer.boardId === "회원 강제 탈퇴"){
+        if(PageReducer.isSearching[0] === true){
+          console.log("검색로직 작동!");
+          //console.log(PageReducer);
+          handleSearchFunction(PageReducer.isSearching[1])
+          //loadMeberSearchList(discriminationDirection(direction),PageReducer.page,PageReducer.isSearching[1],PageReducer.selected,PageReducer.isSearching[2])
+        }
+        else{
+          loadMemberList(discriminationDirection(direction),PageReducer.page,PageReducer.selected)
+        }
       }
-      else{
-        loadMemberList(discriminationDirection(direction),PageReducer.page,PageReducer.selected)
+      else if(PageReducer.boardId === "회원 가입 승인"){
+        console.log("회원 가입 승인!!!");
+        if(PageReducer.isSearching[0] === true){
+          console.log("검색로직 작동!");
+          handleSearchFunction(PageReducer.isSearching[1])
+        }
+        else{
+          loadMemberPermissionList(PageReducer.page)
+        }
       }
+
     }
+    
   },[props])
 
   React.useEffect(()=>{
@@ -414,9 +450,9 @@ function Operator(props) {
       console.log(boardId);
       //setSelected("LASTEST")
       direction = true;
-      
-      props.setAll(boardId,1,[false],"ID",PageReducer.boardCategoryName)
       sortDirection("dafalut")
+      setLoad(false)
+      props.setAll(boardId,1,[false],"ID",PageReducer.boardCategoryName)
     }
   },[target])
 
@@ -685,28 +721,34 @@ function Operator(props) {
           </InforContents>
         </InforBar>
 
-    {/* <PostInforBar>
-      <PostCotent>
-        <Number>3548</Number>
-        <Grade>2</Grade>
-        <StudentId>15487145</StudentId>
-        <PhoneNumber>101-1542-1424</PhoneNumber>
-        <Name>김승태김승태김승태</Name>
-        <PostRole>운영진</PostRole>
-        <PostAttendance>휴학</PostAttendance>
-        <PostGender>남</PostGender>
-        {(target !== "회원 목록 조회")?<CheckBtn></CheckBtn>:null}
-      </PostCotent>
-    </PostInforBar> */}
-
     
+      {(load)?
+      <>
+            {(props.PageReducer.boardId === "회원 목록 조회" && posts !== null) ?
+              <PostMemberBar data={posts} />
+              :
+              null
+            }
 
-    {
-      (posts !== null) ?
-      <PostMemberBar data={posts}/>
+            {(props.PageReducer.boardId === "회원 가입 승인" && posts !== null) ?
+              <PostMemberPermissionBar data={posts} />
+              :
+              null
+            }
+
+            {(props.PageReducer.boardId === "회원 강제 탈퇴" && posts !== null)?
+              <PostMemberExpulsionBar data={posts} />
+              :
+              null
+            }
+      </>
+
       :
-       null
-    }
+      null
+      }
+     
+
+
 
     <Pagination
             total={totalPage}

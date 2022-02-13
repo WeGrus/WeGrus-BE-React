@@ -125,8 +125,6 @@ function App(props) {
         .then((res) => {
           const INFO = res.data.data.info;
           const INFO_ARRAY = Object.values(INFO);
-          console.log(INFO_ARRAY);
-          console.log(res);
           props.putUserInfo(...INFO_ARRAY);
           setUserInfo(true);
 
@@ -182,11 +180,11 @@ function App(props) {
                   element={<UpdatePage />}
                 />
                 <Route path="/profile" element={<Profile />} />
-                {isOperator ? (
+                
                   <>
                   {(isAuthority === true)? <Route path="/operator" element={<Operator />} /> : null}
                   </>
-                ) : null}
+               
               </>
             ) : (
               <Route path="/" element={<About />} />

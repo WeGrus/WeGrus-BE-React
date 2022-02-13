@@ -53,7 +53,7 @@ function Pagination({ total, limit ,page, setPage }) {
                 </Pagebtn>
               )
               }
-              <Pagebtn  onClick={()=>setPage(page+1)} disabled={page===totalNumPages}>{">"}</Pagebtn>
+              <Pagebtn  onClick={()=>setPage(page+1)} disabled={page>=totalNumPages}>{">"}</Pagebtn>
             </PaginationSection>
       :
           <PaginationSection>
