@@ -67,13 +67,13 @@ function PostMemberBar(props) { // 기존의 postBar에서 userReducer가 추가
     <PostInforBar key={data.id}>
         <PostCotent>
             <PostNumber>{data.id}</PostNumber>
-            <Grade post>{printGrade(data.grade)}</Grade>
+            <Grade post>{data.grade}</Grade>
             <StudentId>{data.studentId}</StudentId>
             <PhoneNumber post>{data.phone}</PhoneNumber>
             <Name>{data.name}</Name>
             <PostRole>{printRole(data.roles)}</PostRole>
-            <PostAttendance>{printAcademicStatus(data.academicStatus)}</PostAttendance>
-            <PostGender>없음</PostGender>
+            <PostAttendance>{data.academicStatus}</PostAttendance>
+            <PostGender>{data.gender}</PostGender>
         </PostCotent>
     </PostInforBar>
     )

@@ -42,6 +42,7 @@ function mapDispatchToProps(dispatch) {
       studentId,
       department,
       grade,
+      gender,
       phone,
       createdDate,
       introduce,
@@ -57,6 +58,7 @@ function mapDispatchToProps(dispatch) {
           studentId,
           department,
           grade,
+          gender,
           phone,
           createdDate,
           introduce,
@@ -123,7 +125,8 @@ function App(props) {
         .then((res) => {
           const INFO = res.data.data.info;
           const INFO_ARRAY = Object.values(INFO);
-
+          console.log(INFO_ARRAY);
+          console.log(res);
           props.putUserInfo(...INFO_ARRAY);
           setUserInfo(true);
 
