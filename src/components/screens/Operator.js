@@ -63,6 +63,7 @@ const discriminationDirection = (value) => {
 }
 
 let direction = true;
+//let searchType = "" // 검색 타입 Available values : NAME, STUDENT_ID, DEPARTMENT, PHONE
 
 function mapDispatchToProps(dispatch){
   return{
@@ -82,7 +83,7 @@ function Operator(props) {
   const [target, setTarget] = React.useState(null);
   const [page, setPage] = React.useState(0);
   const [SubCategory,setSubCategory] =React.useState(undefined);
-  const [selected, setSelected] = React.useState("") // 정렬타입 즉 학년 학번 이런 것들.
+  
   const [posts, setPosts] = React.useState(null); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
 
@@ -97,7 +98,7 @@ function Operator(props) {
   
 
 
-  const loadMemberList = (direction,page,type) => {
+  const loadMemberList = (direction,page,type) => { //회원 목록 조회
     axios.get(`/club/executives/members?direction=${direction}&page=${page}&size=19&type=${type}`,{
       headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
@@ -111,8 +112,8 @@ function Operator(props) {
     });
   }
 
-  const loadMeberSearchList = (direction,page,searchType,sortType,word) => {
-    axios.get(`/club/executives/search?direction=${direction}&page=${page}&searchType=${searchType}&size=19&sortType=${sortType}&word=${word}`,{
+  const loadMeberSearchList = (direction,page,searchType,sortType,word) => { //회원 검색 검색어
+    axios.get(`/club/executives/members/search?direction=${direction}&page=${page}&searchType=${searchType}&size=19&sortType=${sortType}&word=${word}`,{
       headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
     .catch(function (error) {
@@ -120,15 +121,126 @@ function Operator(props) {
     })
     .then(function (res) {
      console.log(res);
-     //settotalPage(res.data.data.totalPages)
-     //setPosts(res.data.data.content)
+     settotalPage(res.data.data.totalPages)
+     setPosts(res.data.data.content)
     });
   }
 
-  React.useEffect(()=>{
+  const loadMemberSearchAcademicStatusesList = (direction,academicStatus ,page,sortType) => { // 회원 검색 (학적상태)
+    axios.get(`/club/executives/members/authorities?academicStatus =${academicStatus }&direction=${direction}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+    });
+  }
+
+  const loadMemberSearchAuthoritiesList = (direction,authority,page,sortType) => { // 회원 검색 (권한)
+    axios.get(`/club/executives/members/authorities?authority=${authority}&direction=${direction}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+    });
+  }
+
+  const loadMemberSearchGenderList = (direction,gender,page,sortType) => { // 회원 검색 (성별)
+    axios.get(`/club/executives/members/genders?direction=${direction}&gender=${gender}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+    });
+  }
+
+  const loadMemberSearchGradesList = (direction,grade,page,sortType) => { // 회원 검색 (학년)
+    axios.get(`/club/executives/members/grades?direction=${direction}&grade=${grade}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+    });
+  }
+
+  const loadMemberSearchGruopList = (direction,groupId,page,sortType) => { // 회원 검색 (그룹)
+    axios.get(`/club/executives/members/groups?direction=${direction}&groupId=${groupId}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+    });
+  }
+
+
+
+  const handleSearchFunction = (option) => {
     const PageReducer = props.PageReducer
+    //console.log(data.option.includes("검색어"));
+    if(option.includes("검색어") === true){ // 검색어 요청
+      if(option === "검색어 (이름)"){
+        //loadMeberSearchList = (direction,page,searchType,sortType,word)
+        console.log("검색어 (이름)");
+        console.log(discriminationDirection(direction));
+        console.log(PageReducer.page);
+        console.log(PageReducer.selected);
+        console.log(PageReducer.isSearching[2]);
+        loadMeberSearchList(discriminationDirection(direction),PageReducer.page,'NAME',PageReducer.selected,PageReducer.isSearching[2])
+      }
+      else if(option === "검색어 (학번)"){
+        loadMeberSearchList(discriminationDirection(direction),PageReducer.page,'STUDENT_ID',PageReducer.selected,PageReducer.isSearching[2])
+      }
+      else if(option === "검색어 (번호)"){
+        loadMeberSearchList(discriminationDirection(direction),PageReducer.page,'PHONE',PageReducer.selected,PageReducer.isSearching[2])
+      }
+      else if(option === "검색어 (학과)"){
+        loadMeberSearchList(discriminationDirection(direction),PageReducer.page,'DEPARTMENT',PageReducer.selected,PageReducer.isSearching[2])
+      }
+    }
+    else if(option === "그룹"){
+      // const loadMemberSearchGruopList = (direction,groupId,page,sortType) 
+      // groupId는 호출에 따라서 수행.
+      loadMemberSearchGruopList(discriminationDirection(direction),3,PageReducer.page,PageReducer.selected)
+    }
+    else if(option === "권한"){
+      // loadMemberSearchAuthoritiesList = (direction,authority,page,sortType)
+      // authority를 호출에 따라서 수행
+      loadMemberSearchAuthoritiesList(discriminationDirection(direction),"ALL",PageReducer.page,PageReducer.selected)
+    }
+    else if(option === "학적상태"){
+      //loadMemberSearchAcademicStatusesList = (direction,academicStatus ,page,sortType)
+      loadMemberSearchAcademicStatusesList(discriminationDirection(direction),"ATTENDING",PageReducer.page,PageReducer.selected)
+    }
+    else if(option === "성별"){
+      //loadMemberSearchGenderList = (direction,gender,page,sortType)
+      //gender는 따로
+      loadMemberSearchGenderList(discriminationDirection(direction),"MAN",PageReducer.page,PageReducer.selected)
+    }
+    else if(option === "학년"){
+    //loadMemberSearchGradesList = (direction,grade,page,sortType)
+    //grade는 따로
+      loadMemberSearchGradesList(discriminationDirection(direction),"FRESHMAN",PageReducer.page,PageReducer.selected)
+    }
+  }
+
+  React.useEffect(()=>{
+   const PageReducer = props.PageReducer
     console.log("props 값 변환");
-    console.log(props);
+    //console.log(props);
     if(SubCategory === undefined){
       const listofMember =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) // 목록조회
       const permissionSignUp = props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) // 회원가입 승인
@@ -149,13 +261,16 @@ function Operator(props) {
        setPosts(res.data.data.content)
        setTarget(PageReducer.boardId)
        setPage(PageReducer.page)
-       setSelected(PageReducer.selected)
+       //setSelected(PageReducer.selected)
        setSubCategory(category)
       });
     }
     else{
       if(PageReducer.isSearching[0] === true){
-        loadMeberSearchList(discriminationDirection(direction),PageReducer.page,PageReducer.isSearching[1],PageReducer.selected,PageReducer.isSearching[2])
+        console.log("검색로직 작동!");
+        console.log(PageReducer);
+        handleSearchFunction(PageReducer.isSearching[1])
+        //loadMeberSearchList(discriminationDirection(direction),PageReducer.page,PageReducer.isSearching[1],PageReducer.selected,PageReducer.isSearching[2])
       }
       else{
         loadMemberList(discriminationDirection(direction),PageReducer.page,PageReducer.selected)
@@ -185,6 +300,21 @@ function Operator(props) {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const onSubmit = data => console.log(data);
 
+  const handleSearching = (data,e) => { // 사용자가 검색을 했을때
+    //console.log(data);
+    const PageReducer = props.PageReducer
+    //let searchType = "" // 검색 타입 Available values : NAME, STUDENT_ID, DEPARTMENT, PHONE
+    // let searchType
+    // switch(data.option){
+    //   case():
+    // }
+
+    //console.log(data.option.includes("검색어"));
+
+    props.setAll(PageReducer.boardId,1,[true,data.option,data.keyword],PageReducer.selected,PageReducer.boardCategoryName)
+    // setSelected("최신순")
+  }
+
   const handleNumber = () => {
     const PageReducer = props.PageReducer
     direction = !numberDirection
@@ -193,7 +323,7 @@ function Operator(props) {
     props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,sortType,PageReducer.boardCategoryName)
   }
 
-  const sortDirection = (type) => {
+  const sortDirection = (type) => { // 클릭한 항목을 제외, UI적으로 변경하는 함수
     switch(type){
       case "Number":{
         setGradeDirection(true)
@@ -203,6 +333,7 @@ function Operator(props) {
         setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
+        break;
       }
       case "Grade":{
         setNumberDirection(true)
@@ -212,6 +343,7 @@ function Operator(props) {
         setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
+        break;
       }
       case "StudentId":{
         setNumberDirection(true)
@@ -221,6 +353,7 @@ function Operator(props) {
         setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
+        break;
       }
       case "PhoneNumber":{
         setNumberDirection(true)
@@ -230,6 +363,7 @@ function Operator(props) {
         setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
+        break;
       }
       case "Name":{
         setNumberDirection(true)
@@ -239,6 +373,7 @@ function Operator(props) {
         setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
+        break;
       }
       case "Attendance":{
         setNumberDirection(true)
@@ -248,6 +383,7 @@ function Operator(props) {
         setNameDirection(true)
         setRoleDirection(true)
         setGenderDirection(true)
+        break;
       }
       case "Gender":{
         setNumberDirection(true)
@@ -257,48 +393,66 @@ function Operator(props) {
         setNameDirection(true)
         setRoleDirection(true)
         setAttendanceDirection(true)
+        break;
       }
     }
   }
 
-  const handleSort = (type) => {
+  const handleSort = (type) => { // 클릭시 새롭게 페이지를 로드를 유발하는 함수
     const PageReducer = props.PageReducer
     let sortType
+   
     switch(type){
-      case "Number":{
+      case "Number":{ 
         direction = !numberDirection
+        console.log(direction);
         setNumberDirection((current)=> !current)
         sortType = "ID"
+        console.log("번호 호출");
+        
       }
       case "Grade":{
         direction = !gradeDirection
         setGradeDirection((current)=> !current)
         sortType = "GRADE"
+        console.log("학년 호출");
+        break;
+        
       }
       case "StudentId":{
         direction = !studentIdDirection
         setStudentIdDirection((current)=> !current)
         sortType = "STUDENT_ID"
+        console.log("학번 호출");
+        break;
       }
       case "PhoneNumber":{
         direction = !phoneNumberDirection
         setPhoneNumberDirection((current)=> !current)
         sortType = "PHONE"
+        console.log("번호 호출");
+        break;
       }
       case "Name":{
         direction = !nameDirection
         setNameDirection((current)=> !current)
         sortType = "NAME"
+        console.log("이름 호출");
+        break;
       }
       case "Attendance":{
         direction = !attendanceDirection
         setAttendanceDirection((current)=> !current)
         sortType = "ACADEMIC_STATUS"
+        console.log("학적 호출");
+        break;
       }
       case "Gender":{
         direction = !genderDirection
         setGenderDirection((current)=> !current)
         sortType = "GENDER"
+        console.log("성별 호출");
+        break;
       }
       default:{
 
@@ -308,7 +462,7 @@ function Operator(props) {
     props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,sortType,PageReducer.boardCategoryName)
     
   }
-  
+
   return (
     <>
     <PageTitle title="운영" />
@@ -316,14 +470,20 @@ function Operator(props) {
     <Content>
     <ScreenTitle>{target}</ScreenTitle>
     <SearchBarSection>
-      <SearchBarForm onSubmit={handleSubmit(onSubmit)}>
+      <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
         <SearchBarSelect {...register("option")} >
-              <option >소모임</option>
-              <option >이름</option>
-              <option >학번</option>
+              <option >{`검색어 (이름)`}</option>
+              <option >{`검색어 (학번)`}</option>
+              <option >{`검색어 (번호)`}</option>
+              <option >{`검색어 (학과)`}</option>
+              <option >그룹</option>
+              <option >권한</option>
+              <option >학년</option>
+              <option >학적상태</option>
+              <option >성별</option>
           </SearchBarSelect>
         <SearchBar>
-        <SearchBarInput {...register("exampleRequired", { required: true })} />
+        <SearchBarInput {...register("keyword", { required: true })} />
             <SearchBarSubmit type="submit" value="" />
         </SearchBar>
       </SearchBarForm>
@@ -332,9 +492,9 @@ function Operator(props) {
         <InforBar>
           <InforContents>
             {(numberDirection === true) ?
-              <Number onClick={(e)=>{handleSort("Number")}}>번호<InforSelection src={img} ></InforSelection></Number>
+              <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} ></InforSelection></Number>
               :
-              <Number onClick={(e)=>{handleSort("Number")}}>번호<InforSelection src={img} desc ></InforSelection></Number>
+              <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} desc ></InforSelection></Number>
             }
             {(gradeDirection === true) ?
               <Grade onClick={(e)=>{handleSort("Grade")}}>학년<InforSelection src={img} ></InforSelection></Grade>
