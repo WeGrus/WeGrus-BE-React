@@ -11,11 +11,13 @@ import {
   Date,
   Hits,
   Recommendation,
+  BoardName,
 } from "./../../shared/BoardElement";
 import PostBar from "../../shared/PostBar";
 import Pagination from "../../shared/Pagination";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
+import ProfilePostBar from "./ProfilePostBar";
 
 function mapStateToProps(state) {
   return state;
@@ -56,7 +58,7 @@ function UserPosts(props) {
       page = 1;
     }
     axios
-      .get(`/members/posts?page=${page}&size=7`)
+      .get(`/members/posts?page=${page}&size=19`)
       .then(function (res) {
         console.log(res);
 
@@ -88,7 +90,7 @@ function UserPosts(props) {
         <InforContents>
           <Number>번호</Number>
           <Title>제목</Title>
-          <Writer>작성자</Writer>
+          <BoardName>게시판</BoardName>
           <Date>작성일자</Date>
           <Recommendation>추천</Recommendation>
           <Hits>조회</Hits>
@@ -96,18 +98,24 @@ function UserPosts(props) {
       </InforBar>
 
       {posts !== null ? (
-        <PostBar
-          //target={target}
-          page={page}
-          data={posts}
-          userReducer={props.userReducer}
-        />
+        <>
+          <ProfilePostBar
+            //target={target}
+            page={page}
+            data={posts}
+            userReducer={props.userReducer}
+          />
+          <Pagination
+            total={totalPage}
+            limit={19}
+            page={page}
+            setPage={setPage}
+          />
+        </>
       ) : null}
       {/* PostBar는 PostBar.js에서 주석달겠습니다. target은 sidebar에서 클릭한 하위카테고리입니다. */}
 
-      <Pagination total={totalPage} limit={19} page={page} setPage={setPage} />
       {/* total은 총 게시글의 길이. limit은 한 페이지 안의 게시글의 개수, page는 현재 페이지이고 setPage를 보내줌으로써 페이지네이션 구현했습니다.*/}
-      <Outlet />
     </>
   );
 }

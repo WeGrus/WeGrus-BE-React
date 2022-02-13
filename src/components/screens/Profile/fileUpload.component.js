@@ -32,9 +32,7 @@ function mapDispatchToProps(dispatch) {
 
 const FileUploadComponent = (props) => {
   const [editFile, setEditFile] = useState(null);
-  useState(() => {
-    console.log(props.userReducer);
-  }, [editFile]);
+  useState(() => {}, [editFile]);
   const fileParams = ({ meta }) => {
     console.log(meta);
     return { url: "https://httpbin.org/post" };

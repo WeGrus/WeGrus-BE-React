@@ -17,6 +17,7 @@ import {
 import PostBar from "../../shared/PostBar";
 import Pagination from "../../shared/Pagination";
 import { connect } from "react-redux";
+import ProfilePostBar from "./ProfilePostBar";
 
 const boardCategory = "PROFILE";
 
@@ -281,7 +282,7 @@ function SavedPosts(props) {
       </InforBar>
 
       {posts !== null ? (
-        <PostBar
+        <ProfilePostBar
           target={target}
           page={page}
           data={posts}
@@ -292,7 +293,6 @@ function SavedPosts(props) {
 
       <Pagination total={totalPage} limit={19} page={page} setPage={setPage} />
       {/* total은 총 게시글의 길이. limit은 한 페이지 안의 게시글의 개수, page는 현재 페이지이고 setPage를 보내줌으로써 페이지네이션 구현했습니다.*/}
-      <Outlet />
     </>
   );
 }
