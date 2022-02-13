@@ -10,6 +10,7 @@ const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 const DELETE_TOKEN = "DELETE_TOKEN";
 const PUT_USER_INFO = "PUT_USER_INFO";
 const EDIT_PHOTO = "EDIT_PHOTO";
+const DEL_USER_ACCOUNT = "DEL_USER_ACCOUNT";
 
 const initialState = {
   //userReducer의 기본값입니다.
@@ -30,6 +31,7 @@ const initialState = {
   token: null,
   userId: null,
   gender: null,
+  group: null,
 };
 
 const setKakaoId = (userId) => {
@@ -71,12 +73,14 @@ const putUserInfo = (
   studentId,
   department,
   grade,
+  gender,
   phone,
   createdDate,
   introduce,
   imageUrl,
   academicStatus,
-  roles
+  roles,
+  group
 ) => {
   return {
     type: PUT_USER_INFO,
@@ -86,17 +90,23 @@ const putUserInfo = (
     studentId,
     department,
     grade,
+    gender,
     phone,
     createdDate,
     introduce,
     imageUrl,
     academicStatus,
     roles,
+    group,
   };
 };
 
 const editPhoto = (imageUrl) => {
   return { type: EDIT_PHOTO, imageUrl };
+};
+
+const delUserAccount = () => {
+  return { type: DEL_USER_ACCOUNT, result: false, initialState };
 };
 
 export const logOutUser = () => {
@@ -150,11 +160,14 @@ const userReducer = (state = initialState, action) => {
         imageUrl: action.imageUrl,
         academicStatus: action.academicStatus,
         roles: action.roles,
+        group: action.group,
       };
     case EDIT_PHOTO:
       return { ...state, imageUrl: action.imageUrl };
     case DELETE_TOKEN:
       return { ...state, token: null, authenticated: false };
+    case DEL_USER_ACCOUNT:
+      return { ...state, initialState };
     default:
       return state;
   }
@@ -183,59 +196,59 @@ const tokenReducer = (state = "", action) => {
 // 지금은 page,boardId,검색유무,나열 기준(최신순, 추천순) 등의 기능밖에 없지만 스터디와 소모임의 경우에도 사용할 정도로 수정할 예정입니다.
 
 const pageState = {
-  boardId:null, // 백엔드와 통신 때 이용하는 번호입니다.
-  page:null, // 페이지입니다.
-  isSearching:[false,], // 검색유무를 파악합니다. 총 3개의 원소가 있으며 0번째는 검색유무, 1번째는 검색옵션(글쓴이만, 제목만) 2번째는 키워드입니다.
-  selected:null,  // 정렬 순을 의미합니다.(최신순, 추천순)
-  boardCategoryName:null, // boardCategoryName 은 경로를 의미합니다.
-  viewCategoryName:null // 보여지는 CategoryName 를 의미합니다.
-}
+  boardId: null, // 백엔드와 통신 때 이용하는 번호입니다.
+  page: null, // 페이지입니다.
+  isSearching: [false], // 검색유무를 파악합니다. 총 3개의 원소가 있으며 0번째는 검색유무, 1번째는 검색옵션(글쓴이만, 제목만) 2번째는 키워드입니다.
+  selected: null, // 정렬 순을 의미합니다.(최신순, 추천순)
+  boardCategoryName: null, // boardCategoryName 은 경로를 의미합니다.
+  viewCategoryName: null, // 보여지는 CategoryName 를 의미합니다.
+};
 
-const setAll = (boardId,page,isSearching,selected,boardCategoryName) =>{
-  return{
+const setAll = (boardId, page, isSearching, selected, boardCategoryName) => {
+  return {
     type: "SET_ALL",
     boardId,
     page,
     isSearching,
     selected,
-    boardCategoryName
-  }
-}
+    boardCategoryName,
+  };
+};
 
 const setViewCategoryName = (viewCategoryName) => {
-return{
-  type:"SET_VIEW_CATEGORY_NAME",
-  viewCategoryName
-}
-}
+  return {
+    type: "SET_VIEW_CATEGORY_NAME",
+    viewCategoryName,
+  };
+};
 
 const setBoardId = (boardId) => {
-  return{
-    type:"SET_BOARD_ID",
-    boardId
-  }
-}
+  return {
+    type: "SET_BOARD_ID",
+    boardId,
+  };
+};
 
 const setPage = (page) => {
-  return{
-    type:"SET_PAGE",
-    page
-  }
-}
+  return {
+    type: "SET_PAGE",
+    page,
+  };
+};
 
 const setIsSearching = (isSearching) => {
-  return{
-    type:"SET_ISSEARCHING",
-    isSearching
-  }
-}
+  return {
+    type: "SET_ISSEARCHING",
+    isSearching,
+  };
+};
 
 const setSelected = (selected) => {
-  return{
-    type:"SET_SELECTED",
-    selected
-  }
-}
+  return {
+    type: "SET_SELECTED",
+    selected,
+  };
+};
 
 const PageReducer = (state = pageState, action) => {
   switch (action.type) {
@@ -246,44 +259,44 @@ const PageReducer = (state = pageState, action) => {
         page: action.page,
         isSearching: action.isSearching,
         selected: action.selected,
-        boardCategoryName: action.boardCategoryName
+        boardCategoryName: action.boardCategoryName,
       };
     case "SET_BOARD_ID":
       return {
         ...state,
-        boardId: action.boardId
-      }
+        boardId: action.boardId,
+      };
     case "SET_PAGE":
-        return {
-          ...state,
-          page: action.page
-        }
+      return {
+        ...state,
+        page: action.page,
+      };
     case "SET_ISSEARCHING":
       return {
         ...state,
-        isSearching: action.isSearching
-      }
+        isSearching: action.isSearching,
+      };
     case "SET_SELECTED":
-       return {
-          ...state,
-          selected: action.selected
-      }
-    case "SET_VIEW_CATEGORY_NAME":{
-      return{
+      return {
         ...state,
-      viewCategoryName: action.viewCategoryName
-      }
+        selected: action.selected,
+      };
+    case "SET_VIEW_CATEGORY_NAME": {
+      return {
+        ...state,
+        viewCategoryName: action.viewCategoryName,
+      };
     }
     default:
       return state;
   }
-}
+};
 
 const combinestore = combineReducers({
   // combineReducers로 복수의 Reducer 사용 가능.
   userReducer,
   tokenReducer,
-  PageReducer
+  PageReducer,
 });
 
 const store = createStore(combinestore); // store 생성
@@ -301,8 +314,9 @@ export const actionCreators = {
   setPage,
   setIsSearching,
   setSelected,
-  setViewCategoryName
+  setViewCategoryName,
   editPhoto,
+  delUserAccount,
 };
 
 export default store;
