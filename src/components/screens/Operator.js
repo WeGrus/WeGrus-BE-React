@@ -33,7 +33,12 @@ const subCategory = [
   { boardName: "회원 강제 탈퇴" },
   { boardName: "그룹 가입 승인" },
   { boardName: "운영진 권한 부여"},
+  { boardName: "그룹 가입 승인"},
+  { boardName: "그룹 강제 탈퇴"},
+  { boardName: "그룹 임원 권한 부여"},
+  { boardName: "그룹 회장 위임"},
 ];
+
 
 const authority = (permissionSignUp,quitMember,permissionGroup,giverManagement) =>{
   if(permissionSignUp&&quitMember&&permissionGroup&&giverManagement){ // 회장일때
@@ -47,11 +52,11 @@ const authority = (permissionSignUp,quitMember,permissionGroup,giverManagement) 
   }
   else if(permissionGroup){ // 소그룹장일때
     //console.log("소그룹장일때");
-    return subCategory.filter(item => item.boardName !== (item.boardName !== "회원 가입 승인")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여"))
+    return subCategory.filter(item => (item.boardName !== "회원 가입 승인")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여")&&(item.boardName !== ("회원 목록 조회")))
   }
   else{ //소그룹 임원일때
     //console.log("소그룹 임원일때");
-    return subCategory.filter(item => item.boardName === ("회원 목록 조회"))
+    return subCategory.filter(item => item.boardName === ("그룹 가입 승인"))
   }
 }
 
@@ -102,6 +107,8 @@ function Operator(props) {
   const [roleDirection, setRoleDirection] = React.useState(true); 
   const [attendanceDirection, setAttendanceDirection] = React.useState(true); 
   const [genderDirection, setGenderDirection] = React.useState(true);
+
+  const [subScreenTitle,setSubScrrenTitle] =React.useState(null);
   
   
 // 회원 목록 조회탭에 관련된 함수들.
@@ -380,13 +387,22 @@ function Operator(props) {
     console.log("props 값 변환");
     console.log("props 작동!!!");
     //console.log(props);
-    if(SubCategory === undefined){
-      const listofMember =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) // 목록조회
-      const permissionSignUp = props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) // 회원가입 승인
-      const quitMember = props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) // 회원 탈퇴
-      const permissionGroup = (props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT","ROLE_CLUB_PRESIDENT"].includes(i))||true) // 그룹 승인 허가
-      const giverManagement = (props.userReducer.roles.some(i => ["ROLE_CLUB_PRESIDENT"].includes(i))||true) // 운영진 권한 부여
+    if(SubCategory === undefined){ // 네비바에서 이동해옴.
+      const listofMember =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) 
+      // 목록조회
+      const permissionSignUp = props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) 
+      // 회원가입 승인
+      const quitMember = props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) 
+      // 회원 탈퇴
+      const permissionGroup = (props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT","ROLE_CLUB_PRESIDENT"].includes(i))||true) 
+      // 그룹 승인 허가
+      const giverManagement = (props.userReducer.roles.some(i => ["ROLE_CLUB_PRESIDENT"].includes(i))) 
+      // 운영진 권한 부여
+
+      //그룹 가입 승인,그룹 강제 탈퇴,그룹 임원 권한 부여,그룹 회장 위임 추가
+      
       const category = authority(permissionSignUp,quitMember,permissionGroup,giverManagement)
+      console.log();
 
       axios.get(`/members/groups`,{
         headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
@@ -399,21 +415,46 @@ function Operator(props) {
         setGroupList(res.data.data)
       })
 
-      axios.get(`/club/executives/members?direction=${"ASC"}&page=${0}&size=19&type=${"ID"}`,{
-        headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
-      })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function (res) {
-       //console.log(res);
-       settotalPage(res.data.data.totalPages)
-       setPosts(res.data.data.content)
-       setTarget(PageReducer.boardId)
-       setPage(PageReducer.page)
-       //setSelected(PageReducer.selected)
-       setSubCategory(category)
-      });
+      
+      if(category.find(item => item.boardName === "회원 목록 조회") !== undefined){ // 회원 목록 조회
+        axios.get(`/club/executives/members?direction=${"ASC"}&page=${0}&size=19&type=${"ID"}`,{
+          headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function (res) {
+         console.log(res);
+         settotalPage(res.data.data.totalPages)
+         setPosts(res.data.data.content)
+         setTarget(PageReducer.boardId)
+         setPage(PageReducer.page)
+         //setSelected(PageReducer.selected)
+         setSubCategory(category)
+        });
+      }
+      else if(category.find(item => item.boardName === "그룹 가입 승인")){ // 그룹원 목록 조회
+        const userReducer = props.userReducer;
+        const groupInfor = userReducer.group.find(item => item.role === "회장")
+        const groupId = groupInfor.id
+        axios.get(`/groups/executives/members?direction=${"ASC"}&groupId=${groupId}&page=1&role=APPLICANT&size=19&type=ID`,{
+          headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function (res) {
+         console.log(res);
+         setSubScrrenTitle(groupInfor.name)
+          settotalPage(res.data.data.totalPages)
+          setPosts(res.data.data.content)
+          setTarget("그룹 가입 승인")
+          setPage(PageReducer.page)
+         //setSelected(PageReducer.selected)
+         setSubCategory(category)
+        });
+      }
+
     }
     else{
       if(PageReducer.boardId === "회원 목록 조회" || PageReducer.boardId === "회원 강제 탈퇴"){
@@ -645,7 +686,12 @@ function Operator(props) {
     <PageTitle title="운영" />
     <SideBar posts={SubCategory} getFilter={setTarget} target={target}></SideBar>
     <Content>
+    {(target === "그룹 가입 승인")?
+    <ScreenTitle>{target} | {subScreenTitle}</ScreenTitle>
+    :
     <ScreenTitle>{target}</ScreenTitle>
+    }
+    
     <SearchBarSection>
       <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
         <SearchBarSelect {...register("option")} >

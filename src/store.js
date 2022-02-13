@@ -30,6 +30,7 @@ const initialState = {
   token: null,
   userId: null,
   gender: null,
+  group: null
 };
 
 const setKakaoId = (userId) => {
@@ -77,7 +78,8 @@ const putUserInfo = (
   introduce,
   imageUrl,
   academicStatus,
-  roles
+  roles,
+  group
 ) => {
   return {
     type: PUT_USER_INFO,
@@ -94,6 +96,7 @@ const putUserInfo = (
     imageUrl,
     academicStatus,
     roles,
+    group
   };
 };
 
@@ -152,6 +155,7 @@ const userReducer = (state = initialState, action) => {
         imageUrl: action.imageUrl,
         academicStatus: action.academicStatus,
         roles: action.roles,
+        group: action.group
       };
     case EDIT_PHOTO:
       return { ...state, imageUrl: action.imageUrl };

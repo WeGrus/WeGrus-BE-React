@@ -48,7 +48,8 @@ function mapDispatchToProps(dispatch) {
       introduce,
       imageUrl,
       academicStatus,
-      roles
+      roles,
+      group
     ) =>
       dispatch(
         actionCreators.putUserInfo(
@@ -64,7 +65,8 @@ function mapDispatchToProps(dispatch) {
           introduce,
           imageUrl,
           academicStatus,
-          roles
+          roles,
+          group
         )
       ),
   };
@@ -124,7 +126,9 @@ function App(props) {
         .get(`/members/info/${ID}`)
         .then((res) => {
           const INFO = res.data.data.info;
+          console.log(INFO);
           const INFO_ARRAY = Object.values(INFO);
+          console.log(INFO_ARRAY);
           props.putUserInfo(...INFO_ARRAY);
           setUserInfo(true);
 
