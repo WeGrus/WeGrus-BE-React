@@ -143,7 +143,7 @@ function App(props) {
         .then((res) => {
           const INFO = res.data.data.info;
           const INFO_ARRAY = Object.values(INFO);
-
+          console.log(INFO);
           props.putUserInfo(...INFO_ARRAY);
           setUserInfo(true);
 

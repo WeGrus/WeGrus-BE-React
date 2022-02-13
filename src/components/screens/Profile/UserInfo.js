@@ -36,12 +36,14 @@ function mapDispatchToProps(dispatch) {
       studentId,
       department,
       grade,
+      gender,
       phone,
       createdDate,
       introduce,
       imageUrl,
       academicStatus,
-      roles
+      roles,
+      group
     ) =>
       dispatch(
         actionCreators.putUserInfo(
@@ -51,12 +53,14 @@ function mapDispatchToProps(dispatch) {
           studentId,
           department,
           grade,
+          gender,
           phone,
           createdDate,
           introduce,
           imageUrl,
           academicStatus,
-          roles
+          roles,
+          group
         )
       ),
   };
@@ -88,7 +92,7 @@ function UserInfo(props) {
 
   useState(() => {
     console.log("delete photo");
-  }, [DATA.imageUrl]); //imageUrl에 변화가 생기면 리렌더링하여 기본 프로필 사진을 띄웁니다.
+  }, [DATA, hasError, infoPage]); //DATA에 변화가 생기면 리렌더링하여 기본 프로필 사진을 띄웁니다.
 
   const config = {
     header: { "content-type": "multipart/form-data" },
@@ -100,13 +104,12 @@ function UserInfo(props) {
     axios
       .patch("/members/image", formData, config)
       .then((res) => {
-        console.log(props);
         props.editPhoto(
           "https://igrus-webservice-bucket.s3.ap-northeast-2.amazonaws.com/basic.jpeg"
         );
       })
       .catch((err) => {
-        const ErrMessage = err.response.data.message;
+        const ErrMessage = err?.response?.data?.message;
         console.log(ErrMessage); //이미지 변경 중 에러 발생 시 에러 메시지를 프린트
       });
   };
@@ -118,10 +121,7 @@ function UserInfo(props) {
       setInfoPage(true);
     } //회원 정보 버튼 클릭 시 state를 바꾸어 수정 화면으로 리렌더링
   }
-  useEffect(() => {
-    console.log(infoPage);
-  }, [infoPage, hasError]);
-  useEffect(() => {}, []);
+
   const onSubmit = ({
     department,
     academicStatus,
@@ -148,7 +148,8 @@ function UserInfo(props) {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
-        console.log(res);
+        console.log(res.data.data);
+        console.log(props);
         props.putUserInfo(
           DATA.id,
           DATA.email,
@@ -156,13 +157,17 @@ function UserInfo(props) {
           DATA.studentId,
           DEPARTMENTS[department],
           GRADE[grade],
+          DATA.gender,
           phone,
           DATA.createdDate,
           introduce,
           DATA.imageUrl,
           STATUS[academicStatus],
-          DATA.roles
+          DATA.roles,
+          DATA.group
         );
+        console.log(props.userReducer);
+        setHasError(false);
         handleEditProfile();
       })
       .catch((err) => {
