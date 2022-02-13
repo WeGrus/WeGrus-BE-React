@@ -18,7 +18,7 @@ import PostBar from "../../shared/PostBar";
 import Pagination from "../../shared/Pagination";
 import { connect } from "react-redux";
 
-const boardCategory = "";
+const boardCategory = "PROFILE";
 
 function mapStateToProps(state) {
   return state;

@@ -18,12 +18,6 @@ const Redirecting = styled.div`
   font-size: 24px;
 `;
 
-const cookies = new Cookies();
-
-const setRefreshTokenToCookie = (refresh_token) => {
-  cookies.set("refresh_token", refresh_token, { sameSite: "strict" });
-};
-
 function mapStateToProps(state) {
   return state;
 }
@@ -41,7 +35,7 @@ function OAuth(props) {
 
   useEffect(() => {
     let params = new URL(document.location.toString()).searchParams;
-    let code = params.get("code"); // 인가코드 받는 부분
+    let code = params.get("code"); // url 파라미터에서 인가코드 받는 부분
     //let grant_type = "authorization_code";
     //let client_id = "65cd2fc55aec40658e2efbc951d47164";
 
@@ -52,7 +46,7 @@ function OAuth(props) {
             "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/", // 서버 domain
         },
         withCredentials: true,
-      })
+      }) //로그인 api로 인가코드를 보내 백엔드에서 카카오 로그인 완료
       .then((res) => {
         const KAKAO_ID = res.data.data.userId;
         const RESULT = res.data.data.status;
