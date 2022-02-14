@@ -27,38 +27,35 @@ word-spacing: -3px;
 cursor: ${(props) => (props.post ? "none" : "pointer")};
 `
 
-
 const subCategory = [
   { boardName: "회원 목록 조회" },
   { boardName: "회원 가입 승인" },
   { boardName: "회원 강제 탈퇴" },
   { boardName: "운영진 권한 부여"},
+  { boardName: "그룹 회원 목록 조회"},
   { boardName: "그룹 가입 승인" },
   { boardName: "그룹 강제 탈퇴"},
   { boardName: "그룹 임원 권한 부여"},
   { boardName: "그룹 회장 위임 및 임원 권한 해제"},
 ];
 
-
-
-
 const authority = (listofMember,giverManagement,permissionGroup,authorizeGroupPRESIDENT) =>{
   if(giverManagement){ // 회장일때
     //console.log("hahah");
-    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제"))
+    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 회원 목록 조회"))
   }
   else if(listofMember){ // 동아리 임원일때
     //console.log("동아리 임원일때");
     //console.log(subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "운영진 권한 부여")));
-    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여"))
+    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 회원 목록 조회")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여"))
   }
   else if(authorizeGroupPRESIDENT){ // 소그룹장일때
     //console.log("소그룹장일때");
-    return subCategory.filter(item => (item.boardName === "그룹 가입 승인")||(item.boardName === "그룹 강제 탈퇴")||(item.boardName === "그룹 임원 권한 부여")||(item.boardName === "그룹 회장 위임 및 임원 권한 해제"))
+    return subCategory.filter(item => (item.boardName === "그룹 가입 승인")||(item.boardName === "그룹 강제 탈퇴")||(item.boardName === "그룹 임원 권한 부여")||(item.boardName === "그룹 회장 위임 및 임원 권한 해제")||(item.boardName === "그룹 회원 목록 조회"))
   }
   else{ //소그룹 임원일때
     //console.log("소그룹 임원일때");
-    return subCategory.filter(item => item.boardName === ("그룹 가입 승인"))
+    return subCategory.filter(item => item.boardName === ("그룹 회원 목록 조회"))
   }
 }
 
@@ -97,7 +94,7 @@ function Operator(props) {
   const [SubCategory,setSubCategory] =React.useState(undefined);
   
   
-  const [posts, setPosts] = React.useState(null); // API로 받은 값
+  const [posts, setPosts] = React.useState([]); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
   const [groupList, setGroupList] = React.useState(null);
   const [groupId, setGroupId] = React.useState(-1)
@@ -115,9 +112,6 @@ function Operator(props) {
   
   
 // 회원 목록 조회탭에 관련된 함수들.
-
-
-
 
   const loadMemberList = (direction,page,type) => { //회원 목록 조회
     axios.get(`/club/executives/members?direction=${direction}&page=${page}&size=19&type=${type}`,{
@@ -406,6 +400,171 @@ function Operator(props) {
     });
   }
 
+  const loadGroupSearchList = (direction,groupId,page,searchType,sortType,word ) => { //그룹원 검색(검색어
+    axios.get(`/groups/executives/members/search?direction=${direction}&groupId=${groupId}&page=${page}&size=19&searchType=${searchType}&sortType=${sortType}&word=${word}`,{
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function (res) {
+     //console.log(res);
+     settotalPage(res.data.data.totalPages)
+     setPosts((current) => res.data.data.content)
+     setLoad(true)
+    });
+  }
+
+  const loadGroupSearchGradesList = (direction,groupId,page,sortType,grade) => { //그룹원 검색(학년)
+    axios.get(`/groups/executives/members/grades?direction=${direction}&grade=${grade}&groupId=${groupId}&page=${page}&size=19&sortType=${sortType}`,{
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function (res) {
+     //console.log(res);
+     settotalPage(res.data.data.totalPages)
+     setPosts((current) => res.data.data.content)
+     setLoad(true)
+    });
+  }
+
+  const loadGroupSearchGenderList = (direction,groupId,page,sortType,gender) => { //그룹원 검색(성별)
+    axios.get(`/groups/executives/members/grades?direction=${direction}&groupId=${groupId}&page=${page}&size=19&gender=${gender}&sortType=${sortType}`,{
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function (res) {
+     //console.log(res);
+     settotalPage(res.data.data.totalPages)
+     setPosts((current) => res.data.data.content)
+     setLoad(true)
+    });
+  }
+
+  const loadGroupSearchAcademicStatusesList = (direction,groupId,page,sortType,academicStatus) => { //그룹원 검색(학적)
+    axios.get(`/groups/executives/members/academic-statuses?academicStatus=${academicStatus}&direction=${direction}&groupId=${groupId}&page=${page}&size=19&sortType=${sortType}`,{
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function (res) {
+     //console.log(res);
+     settotalPage(res.data.data.totalPages)
+     setPosts((current) => res.data.data.content)
+     setLoad(true)
+    });
+  }
+
+  const handleGroupSearchFunction = (option) => {
+    const PageReducer = props.PageReducer
+    if(option.includes("검색어") === true){ // 검색어 요청
+      console.log(discriminationDirection(direction));
+      console.log(PageReducer.page);
+      console.log(PageReducer.selected);
+      console.log(PageReducer.isSearching[2]);
+      if(option === "검색어 (이름)"){
+        //loadGroupSearchList = (direction,groupId,page,searchType,sortType,word )
+        console.log("검색어 (이름)");
+        loadGroupSearchList(discriminationDirection(direction),groupId,PageReducer.page,'NAME',PageReducer.selected,PageReducer.isSearching[2])
+      }
+      else if(option === "검색어 (학번)"){
+        loadGroupSearchList(discriminationDirection(direction),groupId,PageReducer.page,'STUDENT_ID',PageReducer.selected,PageReducer.isSearching[2])
+      }
+      else if(option === "검색어 (번호)"){
+        loadGroupSearchList(discriminationDirection(direction),groupId,PageReducer.page,'PHONE',PageReducer.selected,PageReducer.isSearching[2])
+      }
+      else if(option === "검색어 (학과)"){
+        loadGroupSearchList(discriminationDirection(direction),groupId,PageReducer.page,'DEPARTMENT',PageReducer.selected,PageReducer.isSearching[2])
+      }
+    }
+    else if(option === "학적상태"){
+      const keyword = PageReducer.isSearching[2]
+      if(keyword === "재학" || keyword === "휴학" || keyword === "졸업" || keyword === "그외"){
+        switch(keyword){
+          case "재학":{
+            loadGroupSearchAcademicStatusesList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"ATTENDING")
+            break;
+          }
+          case "휴학":{
+            loadGroupSearchAcademicStatusesList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"ABSENCE")
+            break;
+          }
+          case "졸업":{
+            loadGroupSearchAcademicStatusesList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"GRADUATED")
+            break;
+          }
+          case "그외":{
+            loadGroupSearchAcademicStatusesList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"ETC")
+            break;
+          }
+        }
+      }
+      else{
+        alert("잘못된 검색입니다. 검색어로는 재학,휴학,졸업,그외 입니다.")
+      }
+      //loadMemberSearchAcademicStatusesList = (direction,academicStatus ,page,sortType)
+      
+    }
+    else if(option === "성별"){
+      //loadGroupSearchGenderList = (direction,groupId,page,sortType,gender)
+      //gender는 따로
+      const keyword = PageReducer.isSearching[2]
+      if(keyword === "남" || keyword === "여"){
+        switch(keyword){
+          case "남":{
+            loadGroupSearchGenderList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"MAN")
+            break;
+          }
+          case "여":{
+            loadGroupSearchGenderList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"WOMAN")
+            break;
+          }
+        }
+      }
+      else{
+        alert("잘못된 검색입니다. 검색어로는 남(여) 입니다.")
+      }
+  
+    }
+    else if(option === "학년"){
+    //loadGroupSearchGradesList = (direction,groupId,page,searchType,grade) 
+    //grade는 따로
+    const keyword = PageReducer.isSearching[2]
+    if(keyword === "1" || keyword === "2" || keyword === "3" || keyword === "4" || keyword === "그외"){
+      switch(keyword){
+        case "1":{
+          loadGroupSearchGradesList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"FRESHMAN")
+          break;
+        }
+        case "2":{
+          loadGroupSearchGradesList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"SOPHOMORE")
+          break;
+        }
+        case "3":{
+          loadGroupSearchGradesList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"JUNIOR")
+          break;
+        }
+        case "4":{
+          loadGroupSearchGradesList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"SENIOR")
+          break;
+        }
+        case "그 외":{
+          loadGroupSearchGradesList(discriminationDirection(direction),groupId,PageReducer.page,PageReducer.selected,"ETC")
+          break;
+        }
+      }
+    }
+    else{
+      alert("잘못된 검색입니다. 검색어로는 1, 2, 3, 4, 그외 입니다.")
+    }
+    }
+  }
+
+
+
+  
+
   React.useEffect(()=>{
    const PageReducer = props.PageReducer
     console.log("props 값 변환");
@@ -459,9 +618,10 @@ function Operator(props) {
          setPage(PageReducer.page)
          //setSelected(PageReducer.selected)
          setSubCategory(category)
+         
         });
       }
-      else if(category.find(item => item.boardName === "그룹 가입 승인")){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
+      else if(category.find(item => item.boardName === "그룹 회원 목록 조회")){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
         const userReducer = props.userReducer;
         const groupInfor = userReducer.group.find(item => (item.role === "회장"))
         const groupId = groupInfor.id
@@ -477,7 +637,7 @@ function Operator(props) {
          setSubScrrenTitle(groupInfor.name)
           settotalPage(res.data.data.totalPages)
           setPosts(res.data.data.content)
-          setTarget("그룹 가입 승인")
+          setTarget("그룹 회원 목록 조회")
           setPage(PageReducer.page)
           console.log("최초시행 작동!");
          setSubCategory(category)
@@ -507,11 +667,23 @@ function Operator(props) {
           loadMemberPermissionList(PageReducer.page)
         }
       }
+      else if(PageReducer.boardId ==="그룹 회원 목록 조회" || target === "그룹 회원 목록 조회"){
+        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
+        const groupId = groupInfor.id
+        if(PageReducer.isSearching[0] === true){
+          console.log("그룹 회원 목록 조회의 검색로직 작동!");
+          handleGroupSearchFunction(PageReducer.isSearching[1])
+        }
+        else{
+          loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"APPLICANT",PageReducer.selected)
+        }
+      }
       else if(PageReducer.boardId === "그룹 가입 승인"){
         const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
         const groupId = groupInfor.id
         if(PageReducer.isSearching[0] === true){
-          console.log("검색로직 작동!");
+          console.log("그룹 가입 승인의 검색로직 작동!");
+          handleGroupSearchFunction(PageReducer.isSearching[1])
         }
         else{
           loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"APPLICANT",PageReducer.selected)
@@ -520,12 +692,24 @@ function Operator(props) {
       else if(PageReducer.boardId === "그룹 강제 탈퇴" || PageReducer.boardId === "그룹 임원 권한 부여"){
         const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
         const groupId = groupInfor.id
-        loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"MEMBER",PageReducer.selected)
+        if(PageReducer.isSearching[0] === true){
+          console.log("검색로직 작동!");
+          handleGroupSearchFunction(PageReducer.isSearching[1])
+        }
+        else{
+          loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"MEMBER",PageReducer.selected)
+        }
       }
       else if(PageReducer.boardId === "그룹 회장 위임 및 임원 권한 해제"){
         const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
         const groupId = groupInfor.id
-        loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"EXECUTIVE",PageReducer.selected)
+        if(PageReducer.isSearching[0] === true){
+          console.log("검색로직 작동!");
+          handleGroupSearchFunction(PageReducer.isSearching[1])
+        }
+        else{
+          loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"EXECUTIVE",PageReducer.selected)
+        }
       }
     }
     
@@ -557,7 +741,7 @@ function Operator(props) {
   const onSubmit = data => console.log(data);
 
   const handleSearching = (data,e) => { // 사용자가 검색을 했을때
-    //console.log(data);
+    console.log(data);
     const PageReducer = props.PageReducer
     //let searchType = "" // 검색 타입 Available values : NAME, STUDENT_ID, DEPARTMENT, PHONE
     // let searchType
@@ -739,7 +923,8 @@ function Operator(props) {
     <ScreenTitle>{target}</ScreenTitle>
     }
     
-    <SearchBarSection>
+    {((target === "회원 목록 조회")||(target === "회원 강제 탈퇴")||(target === "운영진 권한 부여")||(target === "그룹 회장 위임"))?
+      <SearchBarSection>
       <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
         <SearchBarSelect {...register("option")} >
               <option >{`검색어 (이름)`}</option>
@@ -758,7 +943,50 @@ function Operator(props) {
         </SearchBar>
       </SearchBarForm>
     </SearchBarSection>
-    
+    :
+    null
+    } 
+  {/* <SearchBarSection>
+    <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
+      <SearchBarSelect {...register("option")} >
+            <option >{`검색어 (이름)`}</option>
+            <option >{`검색어 (학번)`}</option>
+            <option >{`검색어 (번호)`}</option>
+            <option >{`검색어 (학과)`}</option>
+            <option >그룹</option>
+            <option >권한</option>
+            <option >학년</option>
+            <option >학적상태</option>
+            <option >성별</option>
+        </SearchBarSelect>
+      <SearchBar>
+      <SearchBarInput {...register("keyword", { required: true })} />
+          <SearchBarSubmit type="submit" value="" />
+      </SearchBar>
+    </SearchBarForm>
+  </SearchBarSection> */}
+   
+  {(target === "그룹 회원 목록 조회")?
+    <SearchBarSection>
+    <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
+      <SearchBarSelect {...register("option")} >
+            <option >{`검색어 (이름)`}</option>
+            <option >{`검색어 (학번)`}</option>
+            <option >{`검색어 (번호)`}</option>
+            <option >{`검색어 (학과)`}</option>
+            <option >학년</option>
+            <option >학적상태</option>
+            <option >성별</option>
+        </SearchBarSelect>
+      <SearchBar>
+      <SearchBarInput {...register("keyword", { required: true })} />
+          <SearchBarSubmit type="submit" value="" />
+      </SearchBar>
+    </SearchBarForm>
+  </SearchBarSection>
+  :
+  null
+  }
         <InforBar>
           <InforContents>
             {(numberDirection === true) ?
@@ -808,43 +1036,49 @@ function Operator(props) {
     
       {(load)?
       <>
-            {(target === "회원 목록 조회" && posts !== null) ?
+            {(target === "회원 목록 조회" && posts !== []) ?
               <PostMemberBar data={posts} />
               :
               null
             }
 
-            {(props.PageReducer.boardId === "회원 가입 승인" && posts !== null) ?
+            {(props.PageReducer.boardId === "회원 가입 승인" && posts !== []) ?
               <PostMemberPermissionBar data={posts} />
               :
               null
             }
 
-            {(props.PageReducer.boardId === "회원 강제 탈퇴" && posts !== null)?
+            {(props.PageReducer.boardId === "회원 강제 탈퇴" && posts !== [])?
               <PostMemberExpulsionBar data={posts} />
               :
               null
             }
 
-            {(target === "그룹 가입 승인" && posts !== null ) ?
+            {(target === "그룹 회원 목록 조회" && posts !== [] ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 회원 목록 조회"}/>
+              :
+              null
+            }
+
+            {(target === "그룹 가입 승인" && posts !== [] ) ?
               <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 가입 승인"}/>
               :
               null
             }
 
-            {(target === "그룹 강제 탈퇴" && posts !== null ) ?
+            {(target === "그룹 강제 탈퇴" && posts !== [] ) ?
               <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 강제 탈퇴"}/>
               :
               null
             }
 
-            {(target === "그룹 임원 권한 부여" && posts !== null ) ?
+            {(target === "그룹 임원 권한 부여" && posts !== [] ) ?
               <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 임원 권한 부여"}/>
               :
               null
             }
 
-            {(target === "그룹 회장 위임 및 임원 권한 해제" && posts !== null ) ?
+            {(target === "그룹 회장 위임 및 임원 권한 해제" && posts !== [] ) ?
               <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 회장 위임 및 임원 권한 해제"}/>
               :
               null

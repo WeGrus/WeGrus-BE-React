@@ -43,8 +43,8 @@ function mapStateToProps(state) {
   }
 
 function PostMemberPermissionBar(props){
-    console.log(props.data);
-    console.log(props);
+   // console.log(props.data);
+    //console.log(props);
     let postdata
 
     const permissionMember = (requestId) => {
@@ -55,7 +55,7 @@ function PostMemberPermissionBar(props){
             console.log(error);
           })
         .then(function (res) {
-            console.log(res);
+            //console.log(res);
             const PageReducer = props.PageReducer
             props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
         });
