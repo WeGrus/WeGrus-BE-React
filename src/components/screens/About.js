@@ -40,9 +40,14 @@ const AboutTitle = styled.h2`
   font-weight: 600;
   margin: 40px 0 40px 0;
 `;
+const BigTitle = styled.h1`
+  font-size: 25px;
+  font-weight: 700;
+  margin: 40px 0 40px 0;
+`;
 
 const Emoji = styled.span`
-  font-size: 45px;
+  font-size: 60px;
 `;
 
 const IGImage = styled.div`
@@ -66,6 +71,11 @@ const DescriptionBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 80px;
+  -webkit-box-shadow: 0px 10px 20px 0px rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: 0px 10px 20px 0px rgba(50, 50, 50, 0.3);
+  box-shadow: 0px 10px 20px 0px rgba(50, 50, 50, 0.3);
 `;
 
 const TitleBox = styled.div`
@@ -124,7 +134,7 @@ const SNSLink = styled.a`
   margin: 0 0 24px 0;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.15s ease-in-out;
   span {
     margin-right: 5px;
     font-size: 15px;
@@ -155,7 +165,11 @@ const SmallDescriptionBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-bottom: 20px;
+  -webkit-box-shadow: 0px 10px 20px 0px rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: 0px 10px 20px 0px rgba(50, 50, 50, 0.3);
+  box-shadow: 0px 10px 20px 0px rgba(50, 50, 50, 0.3);
 `;
 
 const Hashtag = styled.div`
@@ -188,7 +202,9 @@ function About(props) {
       <PageTitle title="About" />
       <AboutContentBox>
         <TitleBox>
-          <AboutTitle>| IGRUS는 어떤 동아리인가요?</AboutTitle>
+          <BigTitle>
+            <Emoji>🙋🏻</Emoji> IGRUS는 어떤 동아리인가요?
+          </BigTitle>
           {props?.userReducer?.roles === null ? (
             <BtnLink onClick={handleEnrollClub}>동아리 가입 신청</BtnLink>
           ) : null}
@@ -218,25 +234,36 @@ function About(props) {
               학과의 학생들이 활동하고 있으며 이를 토대로 높은 실적 및 인적
               커뮤니티를 쌓아가고 있습니다.
             </Paragraph>
-            <Paragraph weight="700">📍위치 : 인하대학교 5동 003호</Paragraph>
+            <Paragraph weight="700">
+              📍위치 : 인하대학교 5동 003호 (프린터기, 스위치, 보드게임, 전공책
+              보유)
+            </Paragraph>
           </TextBox>
           <LinkBox>
-            <SNSLink href="http://pf.kakao.com/_BfRNs">
+            <SNSLink href="http://pf.kakao.com/_BfRNs" target="_blank">
               <span>카카오톡 채널</span>
               <FontAwesomeIcon icon={faComment} />
             </SNSLink>
-            <SNSLink href="https://www.instagram.com/igrus_inha/">
+            <SNSLink
+              href="https://www.instagram.com/igrus_inha/"
+              target="_blank"
+            >
               <span>IGRUS 인스타그램</span>
               <FontAwesomeIcon icon={faInstagramSquare} />
             </SNSLink>
-            <SNSLink href="https://classic-domain-27e.notion.site/2021-2-IGRUS-4e8434cdd25841dfa3b16b7291923964">
+            <SNSLink
+              href="https://classic-domain-27e.notion.site/2021-2-IGRUS-4e8434cdd25841dfa3b16b7291923964"
+              target="_blank"
+            >
               <span>IGRUS Notion</span> <FontAwesomeIcon icon={faBook} />
             </SNSLink>
           </LinkBox>
         </DescriptionBox>
 
         <TitleBox>
-          <AboutTitle>| 어떤 활동들이 있나요?</AboutTitle>
+          <BigTitle>
+            <Emoji>🙋🏻</Emoji> 어떤 활동들이 있나요?
+          </BigTitle>
           <Hashtag>
             <AboutTitle># 소모임</AboutTitle>
             <AboutTitle># 스터디</AboutTitle>
@@ -250,7 +277,7 @@ function About(props) {
           <SmallDescriptionBox>게임 제작 소모임 IGDC</SmallDescriptionBox>
         </BoxGroup>
         <BoxGroup>
-          <SmallDescriptionBox>알고리즘 소모임 Algorus</SmallDescriptionBox>
+          <SmallDescriptionBox>매과제 Algorus</SmallDescriptionBox>
           <SmallDescriptionBox>웹/앱 소모임 Webgrus</SmallDescriptionBox>
         </BoxGroup>
         <AboutTitle># 스터디</AboutTitle>
