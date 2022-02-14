@@ -69,8 +69,9 @@ function Page(props) {
     // console.log(data.text);
 
     axios.post(`/posts`,{
-      "boardName": location.subCategory,
+      "boardId": props.PageReducer.boardId,
       "content": printTextBody(),
+      "postImage":[],
       "secretFlag": secret,
       "title": title,
       "type": isNotice()
@@ -99,6 +100,58 @@ function Page(props) {
 
             console.log("이미지가 업로드 됐습니다.");
 
+            const data = await axios.post(
+              "/posts/image",
+              formData,
+              {
+                header: 
+                { 
+                "content-type": "multipart/formdata", 
+                'Authorization': `Bearer ${props.tokenReducer}`
+              },
+              }
+            );
+            // .then((response) => {
+            //   console.log(response);
+            // });
+
+            console.log(data);
+
+            //const imageUrl = "http://localhost:8080/file/upload/" + filename;
+
+            // Image 를 가져올 수 있는 URL 을 callback 메서드에 넣어주면 자동으로 이미지를 가져온다.
+            //callback(imageUrl, "iamge");
+          })();
+
+          return false;
+        
+          // console.log(blob);
+          //   let formData = new FormData();
+          //   formData.append("file", blob);
+
+          //   console.log(formData);
+          //   //console.log("이미지가 업로드 됐습니다.");
+          //   axios.post(`/posts/image`,formData,{
+          //     headers: {
+          //       'Authorization': `Bearer ${props.tokenReducer}`,
+          //       "Content-type": "multipart/formdata" 
+          //       }
+          //   })
+          //   .then(function(res){
+          //     console.log("이미지 업로드 확인!!!");
+          //     console.log(res);
+          //   }); 
+             //'Content-Type': 'application/x-www-form-urlencoded'
+            //"Content-Type": "multipart/formdata"                       
+          
+                                                 
+           
+
+            // .catch(function (error) {
+            //   console.log(error.toJSON());
+            // })
+
+
             // const { data: filename } = await axios.post(
             //   "/file/upload",
             //   formData,
@@ -109,13 +162,6 @@ function Page(props) {
             // .then((response) => {
             //   console.log(response);
             // });
-
-            const imageUrl = "http://localhost:8080/file/upload/" //+ filename;
-
-            // Image 를 가져올 수 있는 URL 을 callback 메서드에 넣어주면 자동으로 이미지를 가져온다.
-            callback(imageUrl, "iamge");
-          })();
-          return false;
         });
     }
 
