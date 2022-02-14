@@ -108,10 +108,12 @@ export const InforContents = styled.div`
   text-align: center;
 `;
 export const Number = styled.div`
+
   min-width: 65px;
   text-align: center;
   margin-left: 23px;
 `;
+
 
 export const Categorization = styled.div`
   width: 90px;
@@ -161,20 +163,23 @@ export const Comment = styled.div`
 `;
 
 export const Grade = styled.div`
-  width: 40px;
-  text-align: center;
-  margin-left: 45px;
-  position: relative;
-  text-align: left;
-  word-spacing: -3px;
-`;
+
+width: 40px;
+text-align: ${(props) => (props.post ? "center" : "left")};
+margin-left: 45px;
+position: relative;
+word-spacing: -3px;
+cursor: ${(props) => (props.post ? "default" : "pointer")};
+`
 export const StudentId = styled.div`
-  width: 63px;
-  text-align: center;
-  margin-left: 45px;
-  position: relative;
-  word-spacing: -3px;
-`;
+width: 63px;
+text-align: center;
+margin-left: 45px;
+position: relative;
+word-spacing: -3px;
+cursor: ${(props) => (props.post ? "none" : "pointer")};
+`
+
 export const Major = styled.div`
   width: 100px;
   margin-left: 25px;
@@ -185,25 +190,30 @@ export const Apply = styled.div`
   text-align: center;
 `;
 export const Name = styled.div`
-  width: 80px;
-  text-align: center;
-  margin-left: 45px;
-  position: relative;
-`;
+
+width: 80px;
+text-align: center;
+margin-left: 45px;
+position: relative;
+cursor: ${(props) => (props.post ? "none" : "pointer")};
+`
 export const Role = styled.div`
-  width: 64px;
-  text-align: left;
-  margin-left: 45px;
-  word-spacing: -3px;
-  position: relative;
-`;
+width: 68px;
+text-align: left;
+margin-left: 45px;
+word-spacing: -3px;
+position: relative;
+cursor: ${(props) => (props.post ? "none" : "pointer")};
+`
 export const Attendance = styled.div`
-  width: 42px;
-  text-align: left;
-  margin-left: 45px;
-  word-spacing: -3px;
-  position: relative;
-`;
+width: 42px;
+text-align: left;
+margin-left: 45px;
+word-spacing: -3px;
+position: relative;
+cursor: ${(props) => (props.post ? "none" : "pointer")};
+`
+
 export const Age = styled.div`
   width: 28px;
   text-align: center;
@@ -217,19 +227,24 @@ export const Permission = styled.div`
 `;
 
 export const PhoneNumber = styled.div`
-  width: 100px;
-  position: relative;
-  margin-left: 45px;
-  word-spacing: -10px;
-`;
+
+width: 100px;
+position: relative;
+text-align: ${(props) => (props.post ? "center" : "")};
+margin-left: 45px;
+word-spacing: -10px;
+cursor: ${(props) => (props.post ? "pointer" : "auto")};
+`
 
 export const Gender = styled.div`
-  width: 42px;
-  margin-left: 45px;
-  position: relative;
-  word-spacing: -3px;
-  text-align: left;
-`;
+width: 42px;
+margin-left: 45px;
+position: relative;
+word-spacing: -3px;
+text-align: left;
+cursor: ${(props) => (props.post ? "none" : "pointer")};
+`
+
 
 export const Check = styled.div`
   margin-left: 30px;
@@ -237,14 +252,16 @@ export const Check = styled.div`
 `;
 
 export const CheckBtn = styled.div`
-  margin-left: 30px;
-  width: 30px;
-  height: 16px;
-  background-color: #6cd2d7;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-`;
+
+margin-left: 35px;
+width: 30px;
+height: 16px;
+background-color: ${(props) => (props.red ? "red" : "#6CD2D7")};
+border: none;
+border-radius: 15px;
+cursor: pointer;
+`
+
 
 export const Withdraw = styled.div`
   width: 28px;
@@ -262,18 +279,21 @@ export const PostInforBar = styled.div`
   display: flex;
   align-items: center;
 
-  &:hover {
-    font-weight: 700;
-    cursor: pointer;
-    transform: translateY(-2px);
-  }
-`;
+
+&:hover{
+  
+  cursor: pointer;
+}
+`
 export const PostCotent = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  font-weight: ${(props) => (props.bold ? "700" : "400")};
-`;
+align-items:center;
+display: flex;
+flex-direction: row;
+font-weight: ${props => (props.bold?"700":"400")};
+
+
+`
+
 
 export const PostRole = styled.div`
   width: 64px;
@@ -300,12 +320,23 @@ export const PostGender = styled.div`
 `;
 
 export const InforSelection = styled.img`
-  width: 8px;
-  position: absolute;
-  right: 0px;
-  top: 3px;
-`;
+
+width: 8px;
+position: absolute;
+right: 0px;
+top: 3px;
+transform: ${(props) => (props.desc ? "rotate( 180deg )" : "none")};
+`
 
 export const Bold = styled.div`
-  font-weight: bold;
-`;
+font-weight:bold;
+`
+
+export const PostNumber = styled.div`
+width: 40px;
+text-align: center;
+margin-left: 44px;
+position: relative;
+word-spacing: -3px;
+`
+

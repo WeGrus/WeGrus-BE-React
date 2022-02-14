@@ -185,6 +185,7 @@ function Board(props) {
   React.useEffect(() => {
     const PageReducer = props.PageReducer;
     console.log("props호출!");
+
     if (subCategory === undefined) {
       axios
         .get(`/boards/categories`, {
@@ -224,6 +225,7 @@ function Board(props) {
           PageReducer.page,
           PageReducer.selected
         );
+
       }
     } else {
       if (PageReducer.isSearching[0] === true) {

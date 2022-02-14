@@ -31,7 +31,8 @@ const initialState = {
   token: null,
   userId: null,
   gender: null,
-  group: null,
+  group: null
+
 };
 
 const setKakaoId = (userId) => {

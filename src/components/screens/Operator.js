@@ -10,6 +10,13 @@ import { useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
 import styled from "styled-components";
 import img from './../../images/Polygon.jpg'
+import { connect } from "react-redux";
+import axios from "axios";
+import PostMemberBar from './../shared/PostMemberBar'
+import PostMemberPermissionBar from './../shared/PostMemberPermissionBar'
+import PostMemberExpulsionBar from './../shared/PostMemberExpulsionBar'
+import PostGroupPermissionBar from './../shared/PostGroupPermissionBar'
+import { actionCreators } from "./../../store";
 
 const Number = styled.div`
 width: 40px;
@@ -17,84 +24,855 @@ text-align: left;
 margin-left: 44px;
 position: relative;
 word-spacing: -3px;
+cursor: ${(props) => (props.post ? "none" : "pointer")};
 `
 
 
 const subCategory = [
-  { filter: "회원 목록 조회" },
-  { filter: "회원 가입 승인" },
-  { filter: "회원 강제 탈퇴" },
-  { filter: "그룹 가입 승인" },
-  { filter: "운영진 권한 부여" },
+  { boardName: "회원 목록 조회" },
+  { boardName: "회원 가입 승인" },
+  { boardName: "회원 강제 탈퇴" },
+  { boardName: "운영진 권한 부여"},
+  { boardName: "그룹 가입 승인" },
+  { boardName: "그룹 강제 탈퇴"},
+  { boardName: "그룹 임원 권한 부여"},
+  { boardName: "그룹 회장 위임 및 임원 권한 해제"},
 ];
 
-function Operator() {
 
-  const [target, setTarget] = React.useState("회원 목록 조회");
-  const [page, setPage] = React.useState(1);
+
+
+const authority = (listofMember,giverManagement,permissionGroup,authorizeGroupPRESIDENT) =>{
+  if(giverManagement){ // 회장일때
+    //console.log("hahah");
+    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제"))
+  }
+  else if(listofMember){ // 동아리 임원일때
+    //console.log("동아리 임원일때");
+    //console.log(subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "운영진 권한 부여")));
+    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여"))
+  }
+  else if(authorizeGroupPRESIDENT){ // 소그룹장일때
+    //console.log("소그룹장일때");
+    return subCategory.filter(item => (item.boardName === "그룹 가입 승인")||(item.boardName === "그룹 강제 탈퇴")||(item.boardName === "그룹 임원 권한 부여")||(item.boardName === "그룹 회장 위임 및 임원 권한 해제"))
+  }
+  else{ //소그룹 임원일때
+    //console.log("소그룹 임원일때");
+    return subCategory.filter(item => item.boardName === ("그룹 가입 승인"))
+  }
+}
+
+const discriminationDirection = (value) => {
+  if(value === true){
+    return "ASC"
+  }
+  else{
+    return "DESC"
+  }
+}
+
+let direction = true;
+
+
+//let searchType = "" // 검색 타입 Available values : NAME, STUDENT_ID, DEPARTMENT, PHONE
+
+function mapDispatchToProps(dispatch){
+  return{
+    setAll: (boardId,page,isSearching,selected,boardCategoryName) => dispatch(actionCreators.setAll(boardId,page,isSearching,selected,boardCategoryName)),
+  }
+}
+
+function mapStateToProps(state) {
+  return state;
+}
+
+function Operator(props) {
+
+
+  //'ROLE_GUEST', 'ROLE_CLUB_EXECUTIVE', 'ROLE_MEMBER'
+  const [load, setLoad] = React.useState(true);
+
+  const [target, setTarget] = React.useState(null);
+  const [page, setPage] = React.useState(0);
+  const [SubCategory,setSubCategory] =React.useState(undefined);
+  
+  
+  const [posts, setPosts] = React.useState(null); // API로 받은 값
+  const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
+  const [groupList, setGroupList] = React.useState(null);
+  const [groupId, setGroupId] = React.useState(-1)
+
+  const [numberDirection, setNumberDirection] = React.useState(true); // 방향지정 및 이벤트. true이면 오름차순이다. false이면 내림차순
+  const [gradeDirection, setGradeDirection] = React.useState(true); 
+  const [studentIdDirection, setStudentIdDirection] = React.useState(true); 
+  const [phoneNumberDirection, setPhoneNumberDirection] = React.useState(true); 
+  const [nameDirection, setNameDirection] = React.useState(true);
+  const [roleDirection, setRoleDirection] = React.useState(true); 
+  const [attendanceDirection, setAttendanceDirection] = React.useState(true); 
+  const [genderDirection, setGenderDirection] = React.useState(true);
+
+  const [subScreenTitle,setSubScrrenTitle] =React.useState(null);
+  
+  
+// 회원 목록 조회탭에 관련된 함수들.
+
+
+
+
+  const loadMemberList = (direction,page,type) => { //회원 목록 조회
+    axios.get(`/club/executives/members?direction=${direction}&page=${page}&size=19&type=${type}`,{
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function (res) {
+     //console.log(res);
+     settotalPage(res.data.data.totalPages)
+     setPosts((current) => res.data.data.content)
+     setLoad(true)
+    });
+  }
+
+  const loadMeberSearchList = (direction,page,searchType,sortType,word) => { //회원 검색 검색어
+    axios.get(`/club/executives/members/search?direction=${direction}&page=${page}&searchType=${searchType}&size=19&sortType=${sortType}&word=${word}`,{
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function (res) {
+     console.log(res);
+     settotalPage(res.data.data.totalPages)
+     setPosts(res.data.data.content)
+     setLoad(true)
+    });
+  }
+
+  const loadMemberSearchAcademicStatusesList = (direction,academicStatus,page,sortType) => { // 회원 검색 (학적상태)
+    axios.get(`/club/executives/members/academic-statuses?academicStatus=${academicStatus}&direction=${direction}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+      settotalPage(res.data.data.totalPages)
+      setPosts(res.data.data.content)
+      setLoad(true)
+    });
+  }
+
+  const loadMemberSearchAuthoritiesList = (direction,authority,page,sortType) => { // 회원 검색 (권한)
+    axios.get(`/club/executives/members/authorities?authority=${authority}&direction=${direction}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+      settotalPage(res.data.data.totalPages)
+      setPosts(res.data.data.content)
+    });
+  }
+
+  const loadMemberSearchGenderList = (direction,gender,page,sortType) => { // 회원 검색 (성별)
+    axios.get(`/club/executives/members/genders?direction=${direction}&gender=${gender}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+      settotalPage(res.data.data.totalPages)
+      setPosts(res.data.data.content)
+    });
+  }
+
+  const loadMemberSearchGradesList = (direction,grade,page,sortType) => { // 회원 검색 (학년)
+    axios.get(`/club/executives/members/grades?direction=${direction}&grade=${grade}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+      settotalPage(res.data.data.totalPages)
+      setPosts(res.data.data.content)
+    });
+  }
+
+  const loadMemberSearchGruopList = (direction,groupId,page,sortType) => { // 회원 검색 (그룹)
+    axios.get(`/club/executives/members/groups?direction=${direction}&groupId=${groupId}&page=${page}&size=19&sortType=${sortType}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+      settotalPage(res.data.data.totalPages)
+      setPosts(res.data.data.content)
+    });
+  }
+
+  const handleSearchFunction = (option) => {
+    const PageReducer = props.PageReducer
+    //console.log(data.option.includes("검색어"));
+    if(option.includes("검색어") === true){ // 검색어 요청
+      if(option === "검색어 (이름)"){
+        //loadMeberSearchList = (direction,page,searchType,sortType,word)
+        console.log("검색어 (이름)");
+        console.log(discriminationDirection(direction));
+        console.log(PageReducer.page);
+        console.log(PageReducer.selected);
+        console.log(PageReducer.isSearching[2]);
+        loadMeberSearchList(discriminationDirection(direction),PageReducer.page,'NAME',PageReducer.selected,PageReducer.isSearching[2])
+      }
+      else if(option === "검색어 (학번)"){
+        loadMeberSearchList(discriminationDirection(direction),PageReducer.page,'STUDENT_ID',PageReducer.selected,PageReducer.isSearching[2])
+      }
+      else if(option === "검색어 (번호)"){
+        loadMeberSearchList(discriminationDirection(direction),PageReducer.page,'PHONE',PageReducer.selected,PageReducer.isSearching[2])
+      }
+      else if(option === "검색어 (학과)"){
+        loadMeberSearchList(discriminationDirection(direction),PageReducer.page,'DEPARTMENT',PageReducer.selected,PageReducer.isSearching[2])
+      }
+    }
+    else if(option === "그룹"){
+      // const loadMemberSearchGruopList = (direction,groupId,page,sortType) 
+      // groupId는 호출에 따라서 수행.
+      console.log(groupList);
+      console.log(PageReducer);
+      const keyword = PageReducer.isSearching[2]
+      const gruopId = (groupList.find(item => item.name === keyword))? groupList.find(item => item.name === keyword).id : null
+      if(gruopId){
+        loadMemberSearchGruopList(discriminationDirection(direction),gruopId,PageReducer.page,PageReducer.selected)
+      }
+      else{
+        alert("잘못된 동아리를 입력하셨습니다. 다시 입력해주세요")
+      }
+    }
+    else if(option === "권한"){
+      console.log(PageReducer.isSearching[2]);
+      const keyword = PageReducer.isSearching[2]
+      console.log(keyword);
+      if(keyword === "전체" || keyword === "회원" || keyword === "운영진" || keyword === "회장"){
+        switch(keyword){
+          case "전체":{
+            loadMemberSearchAuthoritiesList(discriminationDirection(direction),"ALL",PageReducer.page,PageReducer.selected)
+            break;
+          }
+          case "회원":{
+            loadMemberSearchAuthoritiesList(discriminationDirection(direction),"MEMBER",PageReducer.page,PageReducer.selected)
+            break;
+          }
+          case "운영진":{
+            loadMemberSearchAuthoritiesList(discriminationDirection(direction),"EXECUTIVE",PageReducer.page,PageReducer.selected)
+            break;
+          }
+          case "회장":{
+            loadMemberSearchAuthoritiesList(discriminationDirection(direction),"PRESIDENT",PageReducer.page,PageReducer.selected)
+            break;
+          }
+        }
+      
+      }
+      else{
+        alert("잘못된 검색입니다. 검색어로는 전체,회원,운영진,회장 입니다.")
+      }
+      // loadMemberSearchAuthoritiesList = (direction,authority,page,sortType)
+      // authority를 호출에 따라서 수행
+      
+    }
+    else if(option === "학적상태"){
+      const keyword = PageReducer.isSearching[2]
+      if(keyword === "재학" || keyword === "휴학" || keyword === "졸업" || keyword === "그외"){
+        switch(keyword){
+          case "재학":{
+            loadMemberSearchAcademicStatusesList(discriminationDirection(direction),"ATTENDING",PageReducer.page,PageReducer.selected)
+            break;
+          }
+          case "휴학":{
+            loadMemberSearchAcademicStatusesList(discriminationDirection(direction),"ABSENCE",PageReducer.page,PageReducer.selected)
+            break;
+          }
+          case "졸업":{
+            loadMemberSearchAcademicStatusesList(discriminationDirection(direction),"GRADUATED",PageReducer.page,PageReducer.selected)
+            break;
+          }
+          case "그외":{
+            loadMemberSearchAcademicStatusesList(discriminationDirection(direction),"ETC",PageReducer.page,PageReducer.selected)
+            break;
+          }
+        }
+      }
+      else{
+        alert("잘못된 검색입니다. 검색어로는 재학,휴학,졸업,그외 입니다.")
+      }
+      //loadMemberSearchAcademicStatusesList = (direction,academicStatus ,page,sortType)
+      
+    }
+    else if(option === "성별"){
+      //loadMemberSearchGenderList = (direction,gender,page,sortType)
+      //gender는 따로
+      const keyword = PageReducer.isSearching[2]
+      if(keyword === "남" || keyword === "여"){
+        switch(keyword){
+          case "남":{
+            loadMemberSearchGenderList(discriminationDirection(direction),"MAN",PageReducer.page,PageReducer.selected)
+            break;
+          }
+          case "여":{
+            loadMemberSearchGenderList(discriminationDirection(direction),"WOMAN",PageReducer.page,PageReducer.selected)
+            break;
+          }
+        }
+      }
+      else{
+        alert("잘못된 검색입니다. 검색어로는 남(여) 입니다.")
+      }
+  
+    }
+    else if(option === "학년"){
+    //loadMemberSearchGradesList = (direction,grade,page,sortType)
+    //grade는 따로
+    const keyword = PageReducer.isSearching[2]
+    if(keyword === "1" || keyword === "2" || keyword === "3" || keyword === "4" || keyword === "그외"){
+      switch(keyword){
+        case "1":{
+          loadMemberSearchGradesList(discriminationDirection(direction),"FRESHMAN",PageReducer.page,PageReducer.selected)
+          break;
+        }
+        case "2":{
+          loadMemberSearchGradesList(discriminationDirection(direction),"SOPHOMORE",PageReducer.page,PageReducer.selected)
+          break;
+        }
+        case "3":{
+          loadMemberSearchGradesList(discriminationDirection(direction),"JUNIOR",PageReducer.page,PageReducer.selected)
+          break;
+        }
+        case "4":{
+          loadMemberSearchGradesList(discriminationDirection(direction),"SENIOR",PageReducer.page,PageReducer.selected)
+          break;
+        }
+        case "그 외":{
+          loadMemberSearchGradesList(discriminationDirection(direction),"ETC",PageReducer.page,PageReducer.selected)
+          break;
+        }
+      }
+    }
+    else{
+      alert("잘못된 검색입니다. 검색어로는 1, 2, 3, 4, 그외 입니다.")
+    }
+    }
+  }
+
+  // 회원 가입 승인 탭에 관련된 함수
+  const loadMemberPermissionList = (page) => { // 회원 권한 요청 목록 조회
+    axios.get(`/club/executives/requests?page=${page}&role=ROLE_MEMBER&size=${19}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+      settotalPage(res.data.data.totalPages)
+      setPosts((current) => res.data.data.content)
+      setLoad(true)
+    });
+  }
+
+  //그룹 관리 API
+
+  const loadGroupMemberList = (direction, groupId, page, role, type) => { // 그룹원 목록 조회
+    axios.get(`/groups/executives/members?direction=${direction}&groupId=${groupId}&page=${page}&role=${role}&size=19&type=${type}`,{
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function (res) {
+     console.log(res);
+      //setSubScrrenTitle(groupInfor.name)
+      settotalPage(res.data.data.totalPages)
+      setPosts(res.data.data.content)
+      setLoad(true)
+    });
+  }
+
   React.useEffect(()=>{
-    setPage(1)
+   const PageReducer = props.PageReducer
+    console.log("props 값 변환");
+    console.log("props 작동!!!");
+    //console.log(props);
+    if(SubCategory === undefined){ // 네비바에서 이동해옴.
+      const listofMember =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) 
+      // 목록조회
+      const permissionSignUp = props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) 
+      // 회원가입 승인
+      const quitMember = props.userReducer.roles.some(i => ["ROLE_CLUB_PRESIDENT"].includes(i)) 
+      // 회원 탈퇴
+      const giverManagement = (props.userReducer.roles.some(i => ["ROLE_CLUB_PRESIDENT"].includes(i))) 
+      // 운영진 권한 부여
+      const permissionGroup = (props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT", "ROLE_GROUP_EXECUTIVE"].includes(i))||true) 
+      // 그룹 가입 승인
+      const quitGroupMember = props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT"].includes(i))
+      // 그룹원 강제 탈퇴
+      const giverGroupManagement = props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT"].includes(i))
+      // 그룹임원 권한 부여
+      const authorizeGroupPRESIDENT = props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT"].includes(i))
+      console.log(listofMember,giverManagement,permissionGroup,authorizeGroupPRESIDENT);
+      const category = authority(listofMember,giverManagement,permissionGroup,authorizeGroupPRESIDENT)
+
+      axios.get(`/members/groups`,{
+        headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+      })
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function (res) {
+        //console.log(res.data.data);
+        setGroupList(res.data.data)
+      })
+
+      console.log(category);
+
+      
+      if(category.find(item => item.boardName === "회원 목록 조회") !== undefined){ // 회원 목록 조회 즉 동아리 회장이거나 임원일때
+        axios.get(`/club/executives/members?direction=${"ASC"}&page=${0}&size=19&type=${"ID"}`,{
+          headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function (res) {
+         console.log(res);
+         settotalPage(res.data.data.totalPages)
+         setPosts(res.data.data.content)
+         setTarget("회원 목록 조회")
+         setPage(PageReducer.page)
+         //setSelected(PageReducer.selected)
+         setSubCategory(category)
+        });
+      }
+      else if(category.find(item => item.boardName === "그룹 가입 승인")){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
+        const userReducer = props.userReducer;
+        const groupInfor = userReducer.group.find(item => (item.role === "회장"))
+        const groupId = groupInfor.id
+        setGroupId(groupInfor.id)
+        axios.get(`/groups/executives/members?direction=${"ASC"}&groupId=${groupId}&page=1&role=APPLICANT&size=19&type=ID`,{
+          headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function (res) {
+         console.log(res);
+         setSubScrrenTitle(groupInfor.name)
+          settotalPage(res.data.data.totalPages)
+          setPosts(res.data.data.content)
+          setTarget("그룹 가입 승인")
+          setPage(PageReducer.page)
+          console.log("최초시행 작동!");
+         setSubCategory(category)
+        });
+      }
+
+    }
+    else{
+      if(PageReducer.boardId === "회원 목록 조회" || PageReducer.boardId === "회원 강제 탈퇴"){
+        if(PageReducer.isSearching[0] === true){
+          console.log("검색로직 작동!");
+          //console.log(PageReducer);
+          handleSearchFunction(PageReducer.isSearching[1])
+          //loadMeberSearchList(discriminationDirection(direction),PageReducer.page,PageReducer.isSearching[1],PageReducer.selected,PageReducer.isSearching[2])
+        }
+        else{
+          loadMemberList(discriminationDirection(direction),PageReducer.page,PageReducer.selected)
+        }
+      }
+      else if(PageReducer.boardId === "회원 가입 승인"){
+        console.log("회원 가입 승인!!!");
+        if(PageReducer.isSearching[0] === true){
+          console.log("검색로직 작동!");
+          handleSearchFunction(PageReducer.isSearching[1])
+        }
+        else{
+          loadMemberPermissionList(PageReducer.page)
+        }
+      }
+      else if(PageReducer.boardId === "그룹 가입 승인"){
+        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
+        const groupId = groupInfor.id
+        if(PageReducer.isSearching[0] === true){
+          console.log("검색로직 작동!");
+        }
+        else{
+          loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"APPLICANT",PageReducer.selected)
+        }
+      }
+      else if(PageReducer.boardId === "그룹 강제 탈퇴" || PageReducer.boardId === "그룹 임원 권한 부여"){
+        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
+        const groupId = groupInfor.id
+        loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"MEMBER",PageReducer.selected)
+      }
+      else if(PageReducer.boardId === "그룹 회장 위임 및 임원 권한 해제"){
+        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
+        const groupId = groupInfor.id
+        loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"EXECUTIVE",PageReducer.selected)
+      }
+    }
+    
+  },[props])
+
+  React.useEffect(()=>{
+    if(SubCategory !== undefined){
+      console.log("target작동");
+      const PageReducer = props.PageReducer
+      const boardId = target
+      console.log(boardId);
+      //setSelected("LASTEST")
+      direction = true;
+      sortDirection("dafalut")
+      setLoad(false)
+      props.setAll(boardId,1,[false],"ID",PageReducer.boardCategoryName)
+    }
   },[target])
+
+  React.useEffect(()=>{
+    if(SubCategory !== undefined){
+      console.log("page작동");
+      const PageReducer = props.PageReducer
+      props.setAll(PageReducer.boardId,page,PageReducer.isSearching,PageReducer.selected,PageReducer.boardCategoryName)
+    }
+  },[page])
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const onSubmit = data => console.log(data);
 
+  const handleSearching = (data,e) => { // 사용자가 검색을 했을때
+    //console.log(data);
+    const PageReducer = props.PageReducer
+    //let searchType = "" // 검색 타입 Available values : NAME, STUDENT_ID, DEPARTMENT, PHONE
+    // let searchType
+    // switch(data.option){
+    //   case():
+    // }
+
+    //console.log(data.option.includes("검색어"));
+
+    props.setAll(PageReducer.boardId,1,[true,data.option,data.keyword],PageReducer.selected,PageReducer.boardCategoryName)
+  }
+
+  const handleNumber = () => {
+    const PageReducer = props.PageReducer
+    direction = !numberDirection
+    setNumberDirection((current)=> !current)
+    const sortType = "ID"
+    props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,sortType,PageReducer.boardCategoryName)
+  }
+
+  const sortDirection = (type) => { // 클릭한 항목을 제외, UI적으로 변경하는 함수
+    switch(type){
+      case "Number":{
+        setGradeDirection(true)
+        setStudentIdDirection(true)
+        setPhoneNumberDirection(true)
+        setNameDirection(true)
+        setRoleDirection(true)
+        setAttendanceDirection(true)
+        setGenderDirection(true)
+        break;
+      }
+      case "Grade":{
+        setNumberDirection(true)
+        setStudentIdDirection(true)
+        setPhoneNumberDirection(true)
+        setNameDirection(true)
+        setRoleDirection(true)
+        setAttendanceDirection(true)
+        setGenderDirection(true)
+        break;
+      }
+      case "StudentId":{
+        setNumberDirection(true)
+        setGradeDirection(true)
+        setPhoneNumberDirection(true)
+        setNameDirection(true)
+        setRoleDirection(true)
+        setAttendanceDirection(true)
+        setGenderDirection(true)
+        break;
+      }
+      case "PhoneNumber":{
+        setNumberDirection(true)
+        setGradeDirection(true)
+        setStudentIdDirection(true)
+        setNameDirection(true)
+        setRoleDirection(true)
+        setAttendanceDirection(true)
+        setGenderDirection(true)
+        break;
+      }
+      case "Name":{
+        setNumberDirection(true)
+        setGradeDirection(true)
+        setStudentIdDirection(true)
+        setPhoneNumberDirection(true)
+        setRoleDirection(true)
+        setAttendanceDirection(true)
+        setGenderDirection(true)
+        break;
+      }
+      case "Attendance":{
+        setNumberDirection(true)
+        setGradeDirection(true)
+        setStudentIdDirection(true)
+        setPhoneNumberDirection(true)
+        setNameDirection(true)
+        setRoleDirection(true)
+        setGenderDirection(true)
+        break;
+      }
+      case "Gender":{
+        setNumberDirection(true)
+        setGradeDirection(true)
+        setStudentIdDirection(true)
+        setPhoneNumberDirection(true)
+        setNameDirection(true)
+        setRoleDirection(true)
+        setAttendanceDirection(true)
+        break;
+      }
+      default:{
+        setNumberDirection(true)
+        setGradeDirection(true)
+        setStudentIdDirection(true)
+        setPhoneNumberDirection(true)
+        setNameDirection(true)
+        setRoleDirection(true)
+        setAttendanceDirection(true)
+        setGenderDirection(true)
+      }
+    }
+  }
+
+  const handleSort = (type) => { // 클릭시 새롭게 페이지를 로드를 유발하는 함수
+    const PageReducer = props.PageReducer
+    let sortType
+   
+    switch(type){
+      case "Number":{ 
+        direction = !numberDirection
+        console.log(direction);
+        setNumberDirection((current)=> !current)
+        sortType = "ID"
+        console.log("번호 호출");
+        
+      }
+      case "Grade":{
+        direction = !gradeDirection
+        setGradeDirection((current)=> !current)
+        sortType = "GRADE"
+        console.log("학년 호출");
+        break;
+        
+      }
+      case "StudentId":{
+        direction = !studentIdDirection
+        setStudentIdDirection((current)=> !current)
+        sortType = "STUDENT_ID"
+        console.log("학번 호출");
+        break;
+      }
+      case "PhoneNumber":{
+        direction = !phoneNumberDirection
+        setPhoneNumberDirection((current)=> !current)
+        sortType = "PHONE"
+        console.log("번호 호출");
+        break;
+      }
+      case "Name":{
+        direction = !nameDirection
+        setNameDirection((current)=> !current)
+        sortType = "NAME"
+        console.log("이름 호출");
+        break;
+      }
+      case "Attendance":{
+        direction = !attendanceDirection
+        setAttendanceDirection((current)=> !current)
+        sortType = "ACADEMIC_STATUS"
+        console.log("학적 호출");
+        break;
+      }
+      case "Gender":{
+        direction = !genderDirection
+        setGenderDirection((current)=> !current)
+        sortType = "GENDER"
+        console.log("성별 호출");
+        break;
+      }
+      default:{
+
+      }
+    }
+    sortDirection(type)
+    props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,sortType,PageReducer.boardCategoryName)
+    
+  }
+  
   return (
     <>
     <PageTitle title="운영" />
-    <SideBar posts={subCategory} getFilter={setTarget} target={target}></SideBar>
+    <SideBar posts={SubCategory} getFilter={setTarget} target={target}></SideBar>
     <Content>
+    {((target === "그룹 가입 승인")||(target === "그룹 강제 탈퇴")||(target === "그룹 임원 권한 부여")||(target === "그룹 회장 위임"))?
+    <ScreenTitle>{target} | {subScreenTitle}</ScreenTitle>
+    :
     <ScreenTitle>{target}</ScreenTitle>
+    }
+    
     <SearchBarSection>
-      <SearchBarForm onSubmit={handleSubmit(onSubmit)}>
+      <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
         <SearchBarSelect {...register("option")} >
-              <option >소모임</option>
-              <option >이름</option>
-              <option >학번</option>
+              <option >{`검색어 (이름)`}</option>
+              <option >{`검색어 (학번)`}</option>
+              <option >{`검색어 (번호)`}</option>
+              <option >{`검색어 (학과)`}</option>
+              <option >그룹</option>
+              <option >권한</option>
+              <option >학년</option>
+              <option >학적상태</option>
+              <option >성별</option>
           </SearchBarSelect>
         <SearchBar>
-        <SearchBarInput {...register("exampleRequired", { required: true })} />
+        <SearchBarInput {...register("keyword", { required: true })} />
             <SearchBarSubmit type="submit" value="" />
         </SearchBar>
       </SearchBarForm>
     </SearchBarSection>
+    
+        <InforBar>
+          <InforContents>
+            {(numberDirection === true) ?
+              <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} ></InforSelection></Number>
+              :
+              <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} desc ></InforSelection></Number>
+            }
+            {(gradeDirection === true) ?
+              <Grade onClick={(e)=>{handleSort("Grade")}}>학년<InforSelection src={img} ></InforSelection></Grade>
+              :
+              <Grade onClick={(e)=>{handleSort("Grade")}}>학년<InforSelection src={img} desc></InforSelection></Grade>
+            }
+            {(studentIdDirection === true) ?
+              <StudentId onClick={(e)=>{handleSort("StudentId")}}>학번<InforSelection src={img}></InforSelection></StudentId>
+              :
+              <StudentId onClick={(e)=>{handleSort("StudentId")}}>학번<InforSelection src={img} desc></InforSelection></StudentId>
+            }
+            {(phoneNumberDirection === true) ?
+              <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}}>연락처<InforSelection src={img}></InforSelection></PhoneNumber>
+              :
+              <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}}>연락처<InforSelection src={img} desc></InforSelection></PhoneNumber>
+            }
+            {(nameDirection === true) ?
+              <Name onClick={(e)=>{handleSort("Name")}}>이름<InforSelection src={img}></InforSelection></Name>
+              :
+              <Name onClick={(e)=>{handleSort("Name")}}>이름<InforSelection src={img} desc></InforSelection></Name>
+            }
+            {(roleDirection === true) ?
+              <Role onClick={(e)=>{handleSort("")}}>회원직책<InforSelection src={img}></InforSelection></Role>
+              :
+              <Role onClick={(e)=>{handleSort("")}}>회원직책<InforSelection src={img} desc></InforSelection></Role>
+            }
+            {(attendanceDirection === true) ?
+              <Attendance onClick={(e)=>{handleSort("Attendance")}}>학적<InforSelection src={img}></InforSelection></Attendance>
+              :
+              <Attendance onClick={(e)=>{handleSort("Attendance")}}>학적<InforSelection src={img} desc></InforSelection></Attendance>
+            }
+            {(genderDirection === true) ?
+              <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img}></InforSelection></Gender>
+              :
+              <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img} desc></InforSelection></Gender>
+            }
+            {(target !== "회원 목록 조회") ? <Check>버튼</Check> : null}
+          </InforContents>
+        </InforBar>
 
-    <InforBar>
-      <InforContents>
-        <Number>번호<InforSelection src={img}></InforSelection></Number>
-        <Grade>학년<InforSelection src={img}></InforSelection></Grade>
-        <StudentId>학번<InforSelection src={img}></InforSelection></StudentId>
-        <PhoneNumber>연락처<InforSelection src={img}></InforSelection></PhoneNumber>
-        <Name>이름<InforSelection src={img}></InforSelection></Name>
-        <Role>회원직책<InforSelection src={img}></InforSelection></Role>
-        <Attendance>학적<InforSelection src={img}></InforSelection></Attendance>
-        <Gender>성별<InforSelection src={img}></InforSelection></Gender>
-        {(target !== "회원 목록 조회")?<Check>버튼</Check>:null}
-      </InforContents>
-    </InforBar>
+    
+      {(load)?
+      <>
+            {(target === "회원 목록 조회" && posts !== null) ?
+              <PostMemberBar data={posts} />
+              :
+              null
+            }
 
-    <PostInforBar>
-      <PostCotent>
-        <Number>3548</Number>
-        <Grade>2</Grade>
-        <StudentId>15487145</StudentId>
-        <PhoneNumber>101-1542-1424</PhoneNumber>
-        <Name>김승태김승태김승태</Name>
-        <PostRole>운영진</PostRole>
-        <PostAttendance>휴학</PostAttendance>
-        <PostGender>남</PostGender>
-        {(target !== "회원 목록 조회")?<CheckBtn></CheckBtn>:null}
-      </PostCotent>
-    </PostInforBar>
+            {(props.PageReducer.boardId === "회원 가입 승인" && posts !== null) ?
+              <PostMemberPermissionBar data={posts} />
+              :
+              null
+            }
+
+            {(props.PageReducer.boardId === "회원 강제 탈퇴" && posts !== null)?
+              <PostMemberExpulsionBar data={posts} />
+              :
+              null
+            }
+
+            {(target === "그룹 가입 승인" && posts !== null ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 가입 승인"}/>
+              :
+              null
+            }
+
+            {(target === "그룹 강제 탈퇴" && posts !== null ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 강제 탈퇴"}/>
+              :
+              null
+            }
+
+            {(target === "그룹 임원 권한 부여" && posts !== null ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 임원 권한 부여"}/>
+              :
+              null
+            }
+
+            {(target === "그룹 회장 위임 및 임원 권한 해제" && posts !== null ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 회장 위임 및 임원 권한 해제"}/>
+              :
+              null
+            }
+
+
+
+
+
+
+
+      </>
+
+      :
+      null
+      }
+     
+
+
 
     <Pagination
-          total = {4}
-          limit={19}
-          page={page}
-          setPage={setPage}
+            total={totalPage}
+            limit={19}
+            page={page}
+            setPage={setPage}
         />
     </Content>
     </>
   );
 }
-export default Operator;
+export default connect(mapStateToProps,mapDispatchToProps)(Operator);

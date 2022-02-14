@@ -140,7 +140,7 @@ function Study(props) {
     const PageReducer = props.PageReducer
     console.log("props호출!");
     if(subCategory === undefined){
-      axios.get(`/club/executives/boards`,{
+      axios.get(`boards/categories`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
