@@ -1,83 +1,81 @@
 import styled from "styled-components";
-import img from './../../images/Polygon.jpg'
-import {Link} from "react-router-dom"
+import img from "./../../images/Polygon.jpg";
+import { Link } from "react-router-dom";
 
 export const SearchBarSection = styled.div`
   width: 910.07px;
   margin: 0 auto;
   min-height: 64px;
 
-  border-bottom: 2px solid #0B665C;
+  border-bottom: 2px solid #0b665c;
   font-size: 14px;
   display: flex;
   flex-direction: row;
- 
-`
+`;
 export const SearchBarForm = styled.form`
-display: flex;
-flex-direction: row;
-margin-left: 20px;
-margin-top: 16px;
-`
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+  margin-top: 16px;
+`;
 export const SearchBarSelect = styled.select`
-width: 117px;
-height: 32px;
-padding-left: 8px;
-border-radius: 50px;
-line-height: 16.41px;
-color: #C4C4C4;
-border: 1px solid #C4C4C4;
+  width: 117px;
+  height: 32px;
+  padding-left: 8px;
+  border-radius: 50px;
+  line-height: 16.41px;
+  color: #c4c4c4;
+  border: 1px solid #c4c4c4;
 
-
--moz-appearance: none;
--webkit-appearance: none;
-appearance: none;
-background:url(${img});
-background-repeat: no-repeat;
-background-size: 17px 17px;
-background-position: bottom 8px right 11px;
-`
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: url(${img});
+  background-repeat: no-repeat;
+  background-size: 17px 17px;
+  background-position: bottom 8px right 11px;
+`;
 export const SearchBar = styled.div`
-margin-left: 9px;
-position: relative;
-`
+  margin-left: 9px;
+  position: relative;
+`;
 export const SearchBarInput = styled.input`
-min-width: 331.48px;
-height: 31.59px;
-border: 1px solid #C4C4C4;
-border-radius: 50px;
-padding-left: 19.87px;
-`
+  min-width: 331.48px;
+  height: 31.59px;
+  border: 1px solid #c4c4c4;
+  border-radius: 50px;
+  padding-left: 19.87px;
+`;
 export const SearchBarSubmit = styled.input`
-position: absolute;
-right: 3.71px;
-top: 4.25px;
-width: 28.9px;
-height: 25.27px;
-border:none;
-border-radius: 50px;
-border-color: #C4C4C4; 
-background-color:#C4C4C4; 
-cursor: pointer;
-`
+  position: absolute;
+  right: 3.71px;
+  top: 4.25px;
+  width: 28.9px;
+  height: 25.27px;
+  border: none;
+  border-radius: 50px;
+  border-color: #c4c4c4;
+  background-color: #c4c4c4;
+  cursor: pointer;
+`;
 
 export const SearchBarFilter = styled.select`
-width: 60.52px;
-height: 16.59px;
-line-height: 16.41px;
-margin-top: 24px;
-margin-left: 100.52px;
-border: none;
+  width: 60.52px;
+  height: 16.59px;
+  line-height: 16.41px;
+  margin-top: 24px;
+  margin-left: 100.52px;
+  border: none;
 
--moz-appearance: none;
--webkit-appearance: none;
-appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
 
-background:url(${img});
-background-repeat: no-repeat;
-background-size: 12.35px 10.43px;
-background-position: right 2px bottom 2px;
-`
+  background: url(${img});
+  background-repeat: no-repeat;
+  background-size: 12.35px 10.43px;
+  background-position: right 2px bottom 2px;
+`;
 
 export const CreateBtnLink = styled(Link)`
   display: flex;
@@ -92,72 +90,80 @@ export const CreateBtnLink = styled(Link)`
   transition: all 0.2s ease-in-out;
   margin-left: 100.32px;
   margin-top: 15.85px;
-`
+`;
 
 export const InforBar = styled.div`
-font-size: 14px;
-font-weight: 700;
-line-height: 16.41px;
-width: 909.07px;
-margin: 0 auto;
-min-height: 34px;
-border-bottom: 2px solid #0B665C; 
-`
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16.41px;
+  width: 909.07px;
+  margin: 0 auto;
+  min-height: 34px;
+  border-bottom: 2px solid #0b665c;
+`;
 export const InforContents = styled.div`
-padding-top: 10px;
-display: flex;
-flex-direction: row;
-text-align: center;
-`
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+`;
 export const Number = styled.div`
-min-width: 65px;
-text-align: center;
-margin-left: 23px;
 
-`
+  min-width: 65px;
+  text-align: center;
+  margin-left: 23px;
+`;
+
 
 export const Categorization = styled.div`
-width: 90px;
-text-align: center;
-margin-left: 4px;
-`
+  width: 90px;
+  text-align: center;
+  margin-left: 4px;
+`;
 export const Title = styled.div`
-width: 373px;
-margin-left: 62px;
-`
+  width: 373px;
+  margin-left: 62px;
+`;
 
 export const Writer = styled.div`
-width: 77px;
-text-align: center;
-margin-left: 62px;
-word-spacing: -3px;
-`
+  width: 77px;
+  text-align: center;
+  margin-left: 62px;
+  word-spacing: -3px;
+`;
+export const BoardName = styled.div`
+  width: 95px;
+  text-align: center;
+  margin-left: 56px;
+  word-spacing: -3px;
+`;
 
 export const Date = styled.div`
-width: 63px;
-text-align: center;
-margin-left: 16px;
-`
+  width: 63px;
+  text-align: center;
+  margin-left: 16px;
+`;
 
 export const Hits = styled.div`
-width: 40px;
-text-align: center;
-margin-left: 10px;
-`
+  width: 40px;
+  text-align: center;
+  margin-left: 10px;
+`;
 
 export const Recommendation = styled.div`
-width: 40px;
-text-align: center;
-margin-left: 9px;
-`
+  width: 40px;
+  text-align: center;
+  margin-left: 9px;
+`;
 
 export const Comment = styled.div`
-width: 40px;
-text-align: center;
-margin-left: 7px;
-`
+  width: 40px;
+  text-align: center;
+  margin-left: 7px;
+`;
 
 export const Grade = styled.div`
+
 width: 40px;
 text-align: ${(props) => (props.post ? "center" : "left")};
 margin-left: 45px;
@@ -173,16 +179,18 @@ position: relative;
 word-spacing: -3px;
 cursor: ${(props) => (props.post ? "none" : "pointer")};
 `
+
 export const Major = styled.div`
-width: 100px;
-margin-left: 25px;
-`
+  width: 100px;
+  margin-left: 25px;
+`;
 export const Apply = styled.div`
-width: 83px;
-margin-left: 25px;
-text-align: center;
-`
+  width: 83px;
+  margin-left: 25px;
+  text-align: center;
+`;
 export const Name = styled.div`
+
 width: 80px;
 text-align: center;
 margin-left: 45px;
@@ -205,19 +213,21 @@ word-spacing: -3px;
 position: relative;
 cursor: ${(props) => (props.post ? "none" : "pointer")};
 `
+
 export const Age = styled.div`
-width: 28px;
-text-align: center;
-margin-left: 25px;
-`
+  width: 28px;
+  text-align: center;
+  margin-left: 25px;
+`;
 export const Permission = styled.div`
-width: 28px;
-text-align: center;
-margin-left: 25px;
-height: 16px;
-`
+  width: 28px;
+  text-align: center;
+  margin-left: 25px;
+  height: 16px;
+`;
 
 export const PhoneNumber = styled.div`
+
 width: 100px;
 position: relative;
 text-align: ${(props) => (props.post ? "center" : "")};
@@ -235,12 +245,14 @@ text-align: left;
 cursor: ${(props) => (props.post ? "none" : "pointer")};
 `
 
+
 export const Check = styled.div`
-margin-left: 30px;
-width: 30px;
-`
+  margin-left: 30px;
+  width: 30px;
+`;
 
 export const CheckBtn = styled.div`
+
 margin-left: 35px;
 width: 30px;
 height: 16px;
@@ -250,21 +262,23 @@ border-radius: 15px;
 cursor: pointer;
 `
 
+
 export const Withdraw = styled.div`
-width: 28px;
-text-align: center;
-margin-left: 25px;
-height: 16px;
-`
+  width: 28px;
+  text-align: center;
+  margin-left: 25px;
+  height: 16px;
+`;
 export const PostInforBar = styled.div`
-width: 909.07px;
-height: 31px;
-margin: 0 auto;
-font-size: 14px;
-line-height: 16.41px;
-border-bottom: 1px solid black;
-display: flex;
-align-items:center;
+  width: 909.07px;
+  height: 31px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 16.41px;
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+
 
 &:hover{
   
@@ -280,31 +294,33 @@ font-weight: ${props => (props.bold?"700":"400")};
 
 `
 
+
 export const PostRole = styled.div`
-width: 64px;
-text-align: center;
-margin-left: 45px;
-word-spacing: -3px;
-position: relative;
-`
+  width: 64px;
+  text-align: center;
+  margin-left: 45px;
+  word-spacing: -3px;
+  position: relative;
+`;
 
 export const PostAttendance = styled.div`
-width: 42px;
-text-align: center;
-margin-left: 45px;
-word-spacing: -3px;
-position: relative;
-`
+  width: 42px;
+  text-align: center;
+  margin-left: 45px;
+  word-spacing: -3px;
+  position: relative;
+`;
 
 export const PostGender = styled.div`
-width: 42px;
-margin-left: 45px;
-position: relative;
-word-spacing: -3px;
-text-align: center;
-`
+  width: 42px;
+  margin-left: 45px;
+  position: relative;
+  word-spacing: -3px;
+  text-align: center;
+`;
 
 export const InforSelection = styled.img`
+
 width: 8px;
 position: absolute;
 right: 0px;
@@ -323,3 +339,4 @@ margin-left: 44px;
 position: relative;
 word-spacing: -3px;
 `
+

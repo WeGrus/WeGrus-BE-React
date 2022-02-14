@@ -13,7 +13,7 @@ import Operator from "./components/screens/Operator";
 import { isOperator } from "./variables";
 import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
-import { HelmetProvider } from "react-helmet-async";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import EmailAuth from "./components/screens/EmailAuth";
 import React, { useEffect, useState } from "react";
 import OAuth from "./components/auth/OAuth";
@@ -104,11 +104,27 @@ function App(props) {
   const token = props?.userReducer?.token;
   const [userInfo, setUserInfo] = useState(false);
   // onSilentRefresh(refresh_token);
-  let isAuthority = false
-  let isJoinGroup = false
-  if(props.userReducer.roles !== null){ // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
-    isAuthority =   props?.userReducer?.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
-    isJoinGroup =  props?.userReducer?.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT","ROLE_MEMBER"].includes(i))
+  let isAuthority = false;
+  let isJoinGroup = false;
+  if (props?.userReducer?.roles !== null) {
+    // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
+    isAuthority = props?.userReducer?.roles.some((i) =>
+      [
+        "ROLE_GROUP_EXECUTIVE",
+        "ROLE_GROUP_PRESIDENT",
+        "ROLE_CLUB_EXECUTIVE",
+        "ROLE_CLUB_PRESIDENT",
+      ].includes(i)
+    );
+    isJoinGroup = props?.userReducer?.roles.some((i) =>
+      [
+        "ROLE_GROUP_EXECUTIVE",
+        "ROLE_GROUP_PRESIDENT",
+        "ROLE_CLUB_EXECUTIVE",
+        "ROLE_CLUB_PRESIDENT",
+        "ROLE_MEMBER",
+      ].includes(i)
+    );
   }
   useEffect(() => {
     //getCookie(); 도메인 코드 활성화 이후 이 코드를 활성화시켜야 합니다. reissue api를 요청합니다.
@@ -128,7 +144,7 @@ function App(props) {
           const INFO = res.data.data.info;
           console.log(INFO);
           const INFO_ARRAY = Object.values(INFO);
-          console.log(INFO_ARRAY);
+          console.log(INFO);
           props.putUserInfo(...INFO_ARRAY);
           setUserInfo(true);
 
@@ -149,24 +165,28 @@ function App(props) {
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
                 <Route path="/announce/:pagenum" element={<Page />} />
-                <Route path="/announce/write/:userid" element={<CreatePage />} />
+                <Route
+                  path="/announce/write/:userid"
+                  element={<CreatePage />}
+                />
                 <Route
                   path="/announce/update/:pagenum/:userid"
                   element={<UpdatePage />}
                 />
-                {(isJoinGroup === true)?
-                <>
-                <Route path="/group" element={<Group />} />
-                <Route path="/group/:pagenum" element={<Page />} />
-                <Route path="/group/write/:userid" element={<CreatePage />} />
-                <Route
-                  path="/group/update/:pagenum/:userid"
-                  element={<UpdatePage />}
-                />
-                </>
-                :
-                null
-                }
+                {isJoinGroup === true ? (
+                  <>
+                    <Route path="/group" element={<Group />} />
+                    <Route path="/group/:pagenum" element={<Page />} />
+                    <Route
+                      path="/group/write/:userid"
+                      element={<CreatePage />}
+                    />
+                    <Route
+                      path="/group/update/:pagenum/:userid"
+                      element={<UpdatePage />}
+                    />
+                  </>
+                ) : null}
 
                 <Route path="/study" element={<Study />} />
                 <Route path="/study/:pagenum" element={<Page />} />
@@ -186,7 +206,9 @@ function App(props) {
                 <Route path="/profile" element={<Profile />} />
                 
                   <>
-                  {(isAuthority === true)? <Route path="/operator" element={<Operator />} /> : null}
+                    {isAuthority === true ? (
+                      <Route path="/operator" element={<Operator />} />
+                    ) : null}
                   </>
                
               </>

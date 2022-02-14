@@ -1,5 +1,6 @@
 import axios from "axios";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
+
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import styled from "styled-components";
@@ -10,10 +11,14 @@ import DetailBox, {
   ButtonBox,
   ContentBox,
   EditButton,
-  EditPhoto,
+  EditForm,
+  EditInput,
+  EditProfileInput,
+  FormError,
   InfoBox,
   InfoText,
   ProfilePhoto,
+  SubmitButton,
 } from "./ProfileElements";
 
 function mapStateToProps(state) {
@@ -31,12 +36,14 @@ function mapDispatchToProps(dispatch) {
       studentId,
       department,
       grade,
+      gender,
       phone,
       createdDate,
       introduce,
       imageUrl,
       academicStatus,
-      roles
+      roles,
+      group
     ) =>
       dispatch(
         actionCreators.putUserInfo(
@@ -46,39 +53,25 @@ function mapDispatchToProps(dispatch) {
           studentId,
           department,
           grade,
+          gender,
           phone,
           createdDate,
           introduce,
           imageUrl,
           academicStatus,
-          roles
+          roles,
+          group
         )
       ),
   };
 }
-
-const EditForm = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-const EditInput = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 13px;
-
-  span {
-    font-weight: 400;
-  }
-`;
-
 const SSelect = styled.select`
   width: 80%;
 `;
 
 const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
   <>
-    <SSelect name={name} ref={ref} onChange={onChange}>
+    <SSelect name={name} ref={ref} onChange={onChange} required>
       <option value="hide">*--{placeholder}--</option>
       {options.map((value, dataName) => (
         <option key={value} value={dataName}>
@@ -89,38 +82,17 @@ const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
   </>
 ));
 
-const EditProfileInput = styled.input`
-  border: 1px solid gray;
-  border-radius: 3px;
-  width: 75%;
-`;
-
-const SubmitButton = styled.input`
-  width: 63px;
-  height: 33px;
-  background-color: #0b665c;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-`;
-
 function UserInfo(props) {
   console.log(props);
   const { handleSubmit, register, formState } = useForm();
   const [infoPage, setInfoPage] = useState(true);
-  const [emtyFile, setEmtyFile] = useState();
+  const [hasError, setHasError] = useState(false);
 
   const DATA = props.data;
-  const emtyData = new FormData();
 
   useState(() => {
     console.log("delete photo");
-  }, [DATA]);
+  }, [DATA, hasError, infoPage]); //DATA에 변화가 생기면 리렌더링하여 기본 프로필 사진을 띄웁니다.
 
   const config = {
     header: { "content-type": "multipart/form-data" },
@@ -132,14 +104,13 @@ function UserInfo(props) {
     axios
       .patch("/members/image", formData, config)
       .then((res) => {
-        console.log(props);
-        setEmtyFile(res.data.data.status);
         props.editPhoto(
           "https://igrus-webservice-bucket.s3.ap-northeast-2.amazonaws.com/basic.jpeg"
         );
       })
       .catch((err) => {
-        console.log("회원 이미지가 이미 기본 이미지입니다.");
+        const ErrMessage = err?.response?.data?.message;
+        console.log(ErrMessage); //이미지 변경 중 에러 발생 시 에러 메시지를 프린트
       });
   };
 
@@ -148,11 +119,8 @@ function UserInfo(props) {
       setInfoPage(false);
     } else {
       setInfoPage(true);
-    }
+    } //회원 정보 버튼 클릭 시 state를 바꾸어 수정 화면으로 리렌더링
   }
-  useEffect(() => {
-    console.log(infoPage);
-  }, [infoPage]);
 
   const onSubmit = ({
     department,
@@ -161,7 +129,7 @@ function UserInfo(props) {
     phone,
     introduce,
   }) => {
-    phone = phone
+    phone = phone //전화번호 사이에 "-" 넣어주는 로직
       .replace(/[^0-9]/, "")
       .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
     const body = {
@@ -180,7 +148,8 @@ function UserInfo(props) {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
-        console.log(res);
+        console.log(res.data.data);
+        console.log(props);
         props.putUserInfo(
           DATA.id,
           DATA.email,
@@ -188,16 +157,24 @@ function UserInfo(props) {
           DATA.studentId,
           DEPARTMENTS[department],
           GRADE[grade],
+          DATA.gender,
           phone,
           DATA.createdDate,
           introduce,
           DATA.imageUrl,
           STATUS[academicStatus],
-          DATA.roles
+          DATA.roles,
+          DATA.group
         );
+        console.log(props.userReducer);
+        setHasError(false);
         handleEditProfile();
       })
-      .catch((res) => console.log(res));
+      .catch((err) => {
+        const errMessage = err.response.data.message;
+        console.log(errMessage);
+        setHasError(true);
+      });
   };
 
   return (
@@ -256,7 +233,7 @@ function UserInfo(props) {
                   <div>학과 | </div>
                   <Select
                     {...register("department", {
-                      required: "department is required.",
+                      required: "학과는 필수 입력 요소입니다.",
                     })}
                     placeholder="학과"
                     options={DEPARTMENTS}
@@ -265,7 +242,9 @@ function UserInfo(props) {
                 <EditInput>
                   <div>학년 | </div>
                   <Select
-                    {...register("grade", { required: "grade is required." })}
+                    {...register("grade", {
+                      required: "학년은 필수 입력 요소입니다.",
+                    })}
                     placeholder="학년"
                     options={["1학년", "2학년", "3학년", "4학년", "그 외"]}
                   />
@@ -274,7 +253,7 @@ function UserInfo(props) {
                   <div>상태 | </div>
                   <Select
                     {...register("academicStatus", {
-                      required: "academicStatus is required.",
+                      required: "학적 상태는 필수 입력 요소입니다.",
                     })}
                     placeholder="재학 여부"
                     options={["재학", "휴학", "졸업"]}
@@ -284,7 +263,7 @@ function UserInfo(props) {
                   <div>연락처 | </div>
                   <EditProfileInput
                     {...register("phone", {
-                      required: "phone is required.",
+                      required: "연락처는 필수 입력 여부입니다.",
                     })}
                     defaultValue={DATA.phone.replace(/-/g, "")}
                     type="tel"
@@ -295,16 +274,16 @@ function UserInfo(props) {
                 <EditInput>
                   <div>소개 | </div>
                   <EditProfileInput
-                    {...register("introduce", {
-                      required: "introduce is required.",
-                    })}
+                    {...register("introduce")}
                     defaultValue={DATA.introduce}
                     type="text"
                     placeholder="소개"
                     hasError={Boolean(formState.errors?.password?.message)}
                   />
                 </EditInput>
-
+                {hasError ? (
+                  <FormError>필수 항목을 모두 입력해주세요.</FormError>
+                ) : null}
                 <ButtonBox>
                   <SubmitButton type="submit" />
                 </ButtonBox>

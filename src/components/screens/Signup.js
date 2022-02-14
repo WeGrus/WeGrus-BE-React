@@ -10,7 +10,6 @@ import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
 import { actionCreators, userSignUp } from "../../store";
-import SingleImageUploadComponent from "./Profile/SingleImageUploadComponent";
 
 /*function Signupo() {
   const location = useLocation();

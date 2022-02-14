@@ -92,7 +92,7 @@ export const EditPhoto = styled.div`
 
 export const ButtonBox = styled.div`
   display: flex;
-  margin: 30px;
+  margin: 10px;
   width: 134px;
   justify-content: space-between;
 `;
@@ -105,5 +105,60 @@ function DetailBox({ title, children }) {
     </SDetailBox>
   );
 }
+
+export const EditForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+export const EditInput = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 13px;
+
+  span {
+    font-weight: 400;
+  }
+`;
+
+export const EditProfileInput = styled.input`
+  border: 1px solid gray;
+  border-radius: 3px;
+  width: 75%;
+`;
+
+export const SubmitButton = styled.input`
+  width: 90px;
+  height: 33px;
+  background-color: #0b665c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+`;
+
+export const ProfileButton = styled(EditButton)`
+  width: 80px;
+`;
+
+export const DelText = styled.h3`
+  color: tomato;
+  font-weight: 600;
+  margin: 15px;
+`;
+
+export const DelUserInput = styled(EditInput)`
+  justify-content: center;
+`;
+
+export const FormError = styled.span`
+  color: tomato;
+  font-weight: 600;
+  font-size: 12px;
+`;
 
 export default DetailBox;
