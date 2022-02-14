@@ -6,12 +6,18 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faBook, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import * as React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Title } from "../shared/PageElements";
 
 import PageTitle from "../shared/PageTitle";
+
+const mapStateToProps = (state) => {
+  return state;
+};
 
 const AboutContentBox = styled.div`
   width: 1240px;
@@ -77,13 +83,14 @@ const Paragraph = styled.p`
   opacity: 80%;
 `;
 
-const BtnLink = styled(Link)`
+const BtnLink = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #6cd2d7;
   width: 160px;
   height: 40px;
+  border: none;
   border-radius: 20px;
   color: #fff;
   font-weight: 600;
@@ -157,16 +164,34 @@ const Hashtag = styled.div`
   justify-content: space-between;
 `;
 
-function About() {
+function handleEnrollClub() {
+  axios
+    .post("/club/apply")
+    .then((res) => {
+      console.log(res);
+      window.open(
+        "https://docs.google.com/forms/d/e/1FAIpQLSeZRvnQlGu4h7hEwiM7migxQ069AurA_jZK7EXHKFo94AGvBQ/closedform"
+      );
+    })
+    .catch((err) => {
+      const STATUS = err.response.data.status;
+      if (STATUS === 400) {
+        window.alert("회원가입 후 이용해주세요.");
+      }
+    });
+}
+
+function About(props) {
+  console.log(props);
   return (
     <>
       <PageTitle title="About" />
       <AboutContentBox>
         <TitleBox>
           <AboutTitle>| IGRUS는 어떤 동아리인가요?</AboutTitle>
-          <BtnLink to="https://docs.google.com/forms/d/e/1FAIpQLSeZRvnQlGu4h7hEwiM7migxQ069AurA_jZK7EXHKFo94AGvBQ/closedform">
-            동아리 가입 신청
-          </BtnLink>
+          {props?.userReducer?.roles === null ? (
+            <BtnLink onClick={handleEnrollClub}>동아리 가입 신청</BtnLink>
+          ) : null}
         </TitleBox>
         <DescriptionBox>
           <IGImage>
@@ -240,4 +265,4 @@ function About() {
     </>
   );
 }
-export default About;
+export default connect(mapStateToProps)(About);
