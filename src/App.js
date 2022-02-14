@@ -101,6 +101,7 @@ export const onSilentRefresh = (refresh_token) => {
 
 function App(props) {
   const authenticated = props?.userReducer?.authenticated;
+  const role = props?.userReducer?.roles;
   const token = props?.userReducer?.token;
   const [userInfo, setUserInfo] = useState(false);
   // onSilentRefresh(refresh_token);
@@ -159,7 +160,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {authenticated ? (
+            {role !== null ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />

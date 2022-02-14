@@ -130,9 +130,9 @@ export const Writer = styled.div`
   word-spacing: -3px;
 `;
 export const BoardName = styled.div`
-  width: 95px;
+  width: 130px;
   text-align: center;
-  margin-left: 56px;
+  margin-left: 45px;
   word-spacing: -3px;
 `;
 
