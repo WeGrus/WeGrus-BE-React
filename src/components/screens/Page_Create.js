@@ -8,6 +8,7 @@ import react from 'react';
 import axios from "axios";
 import { connect } from 'react-redux';
 import {Background,Content,Category,Header,Title,OtherDetail,BtnSection,GoToList,Right,SetOption,Text,Write} from "./../shared/PageElements"
+import { current } from '@reduxjs/toolkit';
 
 
 function mapStateToProps(state) {
@@ -21,6 +22,8 @@ function Page(props) {
   const [title,setTitle] = React.useState("");
   const [test, setTest] = React.useState(false) // file이 올라오는 지 아닌지 확인
   const [url, setURL] = React.useState("") // download할 url link
+  const [postImageIds, setPostImageIds] = React.useState([]);
+
   const editorRef = React.useRef();
   const downRef = React.createRef();
   const Navigate = useNavigate();
@@ -67,11 +70,11 @@ function Page(props) {
   //   }
     // console.log(data);
     // console.log(data.text);
-
+ 
     axios.post(`/posts`,{
       "boardId": props.PageReducer.boardId,
       "content": printTextBody(),
-      "postImage":[],
+      "postImage":postImageIds,
       "secretFlag": secret,
       "title": title,
       "type": isNotice()
@@ -96,72 +99,23 @@ function Page(props) {
         .addHook("addImageBlobHook", (blob, callback) => {
           (async () => {
             let formData = new FormData();
-            formData.append("file", blob);
-
-            console.log("이미지가 업로드 됐습니다.");
-
-            const data = await axios.post(
-              "/posts/image",
-              formData,
-              {
-                header: 
-                { 
-                "content-type": "multipart/formdata", 
-                'Authorization': `Bearer ${props.tokenReducer}`
-              },
+            formData.append("image", blob);
+            let imageUrl;
+            axios.post(`/posts/image`,formData,{
+              headers:{
+                'Authorization': `Bearer ${props.userReducer.token}`,
+                "content-type": "multipart/form-data"
               }
-            );
-            // .then((response) => {
-            //   console.log(response);
-            // });
-
-            console.log(data);
-
-            //const imageUrl = "http://localhost:8080/file/upload/" + filename;
-
-            // Image 를 가져올 수 있는 URL 을 callback 메서드에 넣어주면 자동으로 이미지를 가져온다.
-            //callback(imageUrl, "iamge");
+            })
+            .then(function (res) {
+              console.log(res);
+              imageUrl = res.data.data.imageUrl
+              const postImageId = res.data.data.postImageId
+              setPostImageIds((current) => [...current,postImageId])
+              callback(imageUrl, "iamge");
+            });
           })();
-
           return false;
-        
-          // console.log(blob);
-          //   let formData = new FormData();
-          //   formData.append("file", blob);
-
-          //   console.log(formData);
-          //   //console.log("이미지가 업로드 됐습니다.");
-          //   axios.post(`/posts/image`,formData,{
-          //     headers: {
-          //       'Authorization': `Bearer ${props.tokenReducer}`,
-          //       "Content-type": "multipart/formdata" 
-          //       }
-          //   })
-          //   .then(function(res){
-          //     console.log("이미지 업로드 확인!!!");
-          //     console.log(res);
-          //   }); 
-             //'Content-Type': 'application/x-www-form-urlencoded'
-            //"Content-Type": "multipart/formdata"                       
-          
-                                                 
-           
-
-            // .catch(function (error) {
-            //   console.log(error.toJSON());
-            // })
-
-
-            // const { data: filename } = await axios.post(
-            //   "/file/upload",
-            //   formData,
-            //   {
-            //     header: { "content-type": "multipart/formdata" },
-            //   }
-            // );
-            // .then((response) => {
-            //   console.log(response);
-            // });
         });
     }
 
