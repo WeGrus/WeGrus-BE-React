@@ -241,7 +241,7 @@ width: 30px;
 `
 
 export const CheckBtn = styled.div`
-margin-left: 30px;
+margin-left: 35px;
 width: 30px;
 height: 16px;
 background-color: ${(props) => (props.red ? "red" : "#6CD2D7")};

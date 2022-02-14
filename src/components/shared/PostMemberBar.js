@@ -62,7 +62,7 @@ const printRole = (value) => {
 
 function PostMemberBar(props) { // 기존의 postBar에서 userReducer가 추가되었습니다. 변경하고 나서 문제가 생기실 수도 있으니 한번 확인해주시길 바랍니다.
     //console.log(props);
-    //console.log("렌더링문제?");
+    console.log("렌더링문제?");
     const postdata = props.data.map((data)=>
     <PostInforBar key={data.id}>
         <PostCotent>

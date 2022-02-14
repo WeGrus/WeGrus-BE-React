@@ -15,6 +15,7 @@ import axios from "axios";
 import PostMemberBar from './../shared/PostMemberBar'
 import PostMemberPermissionBar from './../shared/PostMemberPermissionBar'
 import PostMemberExpulsionBar from './../shared/PostMemberExpulsionBar'
+import PostGroupPermissionBar from './../shared/PostGroupPermissionBar'
 import { actionCreators } from "./../../store";
 
 const Number = styled.div`
@@ -31,28 +32,29 @@ const subCategory = [
   { boardName: "회원 목록 조회" },
   { boardName: "회원 가입 승인" },
   { boardName: "회원 강제 탈퇴" },
-  { boardName: "그룹 가입 승인" },
   { boardName: "운영진 권한 부여"},
-  { boardName: "그룹 가입 승인"},
+  { boardName: "그룹 가입 승인" },
   { boardName: "그룹 강제 탈퇴"},
   { boardName: "그룹 임원 권한 부여"},
-  { boardName: "그룹 회장 위임"},
+  { boardName: "그룹 회장 위임 및 임원 권한 해제"},
 ];
 
 
-const authority = (permissionSignUp,quitMember,permissionGroup,giverManagement) =>{
-  if(permissionSignUp&&quitMember&&permissionGroup&&giverManagement){ // 회장일때
+
+
+const authority = (listofMember,giverManagement,permissionGroup,authorizeGroupPRESIDENT) =>{
+  if(giverManagement){ // 회장일때
     //console.log("hahah");
-    return subCategory
+    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제"))
   }
-  else if(permissionSignUp&&quitMember){ // 동아리 임원일때
+  else if(listofMember){ // 동아리 임원일때
     //console.log("동아리 임원일때");
-    console.log(subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "운영진 권한 부여")));
-    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "운영진 권한 부여"))
+    //console.log(subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "운영진 권한 부여")));
+    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여"))
   }
-  else if(permissionGroup){ // 소그룹장일때
+  else if(authorizeGroupPRESIDENT){ // 소그룹장일때
     //console.log("소그룹장일때");
-    return subCategory.filter(item => (item.boardName !== "회원 가입 승인")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여")&&(item.boardName !== ("회원 목록 조회")))
+    return subCategory.filter(item => (item.boardName === "그룹 가입 승인")||(item.boardName === "그룹 강제 탈퇴")||(item.boardName === "그룹 임원 권한 부여")||(item.boardName === "그룹 회장 위임 및 임원 권한 해제"))
   }
   else{ //소그룹 임원일때
     //console.log("소그룹 임원일때");
@@ -98,6 +100,7 @@ function Operator(props) {
   const [posts, setPosts] = React.useState(null); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
   const [groupList, setGroupList] = React.useState(null);
+  const [groupId, setGroupId] = React.useState(-1)
 
   const [numberDirection, setNumberDirection] = React.useState(true); // 방향지정 및 이벤트. true이면 오름차순이다. false이면 내림차순
   const [gradeDirection, setGradeDirection] = React.useState(true); 
@@ -112,6 +115,9 @@ function Operator(props) {
   
   
 // 회원 목록 조회탭에 관련된 함수들.
+
+
+
 
   const loadMemberList = (direction,page,type) => { //회원 목록 조회
     axios.get(`/club/executives/members?direction=${direction}&page=${page}&size=19&type=${type}`,{
@@ -382,27 +388,47 @@ function Operator(props) {
     });
   }
 
+  //그룹 관리 API
+
+  const loadGroupMemberList = (direction, groupId, page, role, type) => { // 그룹원 목록 조회
+    axios.get(`/groups/executives/members?direction=${direction}&groupId=${groupId}&page=${page}&role=${role}&size=19&type=${type}`,{
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function (res) {
+     console.log(res);
+      //setSubScrrenTitle(groupInfor.name)
+      settotalPage(res.data.data.totalPages)
+      setPosts(res.data.data.content)
+      setLoad(true)
+    });
+  }
+
   React.useEffect(()=>{
    const PageReducer = props.PageReducer
     console.log("props 값 변환");
     console.log("props 작동!!!");
     //console.log(props);
     if(SubCategory === undefined){ // 네비바에서 이동해옴.
-      const listofMember =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) 
+      const listofMember =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) 
       // 목록조회
       const permissionSignUp = props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) 
       // 회원가입 승인
-      const quitMember = props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i)) 
+      const quitMember = props.userReducer.roles.some(i => ["ROLE_CLUB_PRESIDENT"].includes(i)) 
       // 회원 탈퇴
-      const permissionGroup = (props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT","ROLE_CLUB_PRESIDENT"].includes(i))||true) 
-      // 그룹 승인 허가
       const giverManagement = (props.userReducer.roles.some(i => ["ROLE_CLUB_PRESIDENT"].includes(i))) 
       // 운영진 권한 부여
-
-      //그룹 가입 승인,그룹 강제 탈퇴,그룹 임원 권한 부여,그룹 회장 위임 추가
-      
-      const category = authority(permissionSignUp,quitMember,permissionGroup,giverManagement)
-      console.log();
+      const permissionGroup = (props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT", "ROLE_GROUP_EXECUTIVE"].includes(i))||true) 
+      // 그룹 가입 승인
+      const quitGroupMember = props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT"].includes(i))
+      // 그룹원 강제 탈퇴
+      const giverGroupManagement = props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT"].includes(i))
+      // 그룹임원 권한 부여
+      const authorizeGroupPRESIDENT = props.userReducer.roles.some(i => ["ROLE_GROUP_PRESIDENT"].includes(i))
+      console.log(listofMember,giverManagement,permissionGroup,authorizeGroupPRESIDENT);
+      const category = authority(listofMember,giverManagement,permissionGroup,authorizeGroupPRESIDENT)
 
       axios.get(`/members/groups`,{
         headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
@@ -415,8 +441,10 @@ function Operator(props) {
         setGroupList(res.data.data)
       })
 
+      console.log(category);
+
       
-      if(category.find(item => item.boardName === "회원 목록 조회") !== undefined){ // 회원 목록 조회
+      if(category.find(item => item.boardName === "회원 목록 조회") !== undefined){ // 회원 목록 조회 즉 동아리 회장이거나 임원일때
         axios.get(`/club/executives/members?direction=${"ASC"}&page=${0}&size=19&type=${"ID"}`,{
           headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
@@ -427,16 +455,17 @@ function Operator(props) {
          console.log(res);
          settotalPage(res.data.data.totalPages)
          setPosts(res.data.data.content)
-         setTarget(PageReducer.boardId)
+         setTarget("회원 목록 조회")
          setPage(PageReducer.page)
          //setSelected(PageReducer.selected)
          setSubCategory(category)
         });
       }
-      else if(category.find(item => item.boardName === "그룹 가입 승인")){ // 그룹원 목록 조회
+      else if(category.find(item => item.boardName === "그룹 가입 승인")){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
         const userReducer = props.userReducer;
-        const groupInfor = userReducer.group.find(item => item.role === "회장")
+        const groupInfor = userReducer.group.find(item => (item.role === "회장"))
         const groupId = groupInfor.id
+        setGroupId(groupInfor.id)
         axios.get(`/groups/executives/members?direction=${"ASC"}&groupId=${groupId}&page=1&role=APPLICANT&size=19&type=ID`,{
           headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
@@ -450,7 +479,7 @@ function Operator(props) {
           setPosts(res.data.data.content)
           setTarget("그룹 가입 승인")
           setPage(PageReducer.page)
-         //setSelected(PageReducer.selected)
+          console.log("최초시행 작동!");
          setSubCategory(category)
         });
       }
@@ -478,7 +507,26 @@ function Operator(props) {
           loadMemberPermissionList(PageReducer.page)
         }
       }
-
+      else if(PageReducer.boardId === "그룹 가입 승인"){
+        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
+        const groupId = groupInfor.id
+        if(PageReducer.isSearching[0] === true){
+          console.log("검색로직 작동!");
+        }
+        else{
+          loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"APPLICANT",PageReducer.selected)
+        }
+      }
+      else if(PageReducer.boardId === "그룹 강제 탈퇴" || PageReducer.boardId === "그룹 임원 권한 부여"){
+        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
+        const groupId = groupInfor.id
+        loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"MEMBER",PageReducer.selected)
+      }
+      else if(PageReducer.boardId === "그룹 회장 위임 및 임원 권한 해제"){
+        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
+        const groupId = groupInfor.id
+        loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"EXECUTIVE",PageReducer.selected)
+      }
     }
     
   },[props])
@@ -520,7 +568,6 @@ function Operator(props) {
     //console.log(data.option.includes("검색어"));
 
     props.setAll(PageReducer.boardId,1,[true,data.option,data.keyword],PageReducer.selected,PageReducer.boardCategoryName)
-    // setSelected("최신순")
   }
 
   const handleNumber = () => {
@@ -680,13 +727,13 @@ function Operator(props) {
     props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,sortType,PageReducer.boardCategoryName)
     
   }
-
+  
   return (
     <>
     <PageTitle title="운영" />
     <SideBar posts={SubCategory} getFilter={setTarget} target={target}></SideBar>
     <Content>
-    {(target === "그룹 가입 승인")?
+    {((target === "그룹 가입 승인")||(target === "그룹 강제 탈퇴")||(target === "그룹 임원 권한 부여")||(target === "그룹 회장 위임"))?
     <ScreenTitle>{target} | {subScreenTitle}</ScreenTitle>
     :
     <ScreenTitle>{target}</ScreenTitle>
@@ -754,15 +801,6 @@ function Operator(props) {
               :
               <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img} desc></InforSelection></Gender>
             }
-
-
-
-
-
-
-
-
-
             {(target !== "회원 목록 조회") ? <Check>버튼</Check> : null}
           </InforContents>
         </InforBar>
@@ -770,7 +808,7 @@ function Operator(props) {
     
       {(load)?
       <>
-            {(props.PageReducer.boardId === "회원 목록 조회" && posts !== null) ?
+            {(target === "회원 목록 조회" && posts !== null) ?
               <PostMemberBar data={posts} />
               :
               null
@@ -787,6 +825,37 @@ function Operator(props) {
               :
               null
             }
+
+            {(target === "그룹 가입 승인" && posts !== null ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 가입 승인"}/>
+              :
+              null
+            }
+
+            {(target === "그룹 강제 탈퇴" && posts !== null ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 강제 탈퇴"}/>
+              :
+              null
+            }
+
+            {(target === "그룹 임원 권한 부여" && posts !== null ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 임원 권한 부여"}/>
+              :
+              null
+            }
+
+            {(target === "그룹 회장 위임 및 임원 권한 해제" && posts !== null ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 회장 위임 및 임원 권한 해제"}/>
+              :
+              null
+            }
+
+
+
+
+
+
+
       </>
 
       :
