@@ -31,8 +31,7 @@ const initialState = {
   token: null,
   userId: null,
   gender: null,
-  group: null
-
+  group: null,
 };
 
 const setKakaoId = (userId) => {
@@ -106,16 +105,8 @@ const editPhoto = (imageUrl) => {
   return { type: EDIT_PHOTO, imageUrl };
 };
 
-const delUserAccount = () => {
+const logUserOut = () => {
   return { type: DEL_USER_ACCOUNT, result: false, initialState };
-};
-
-export const logOutUser = () => {
-  return {
-    type: DELETE_TOKEN,
-    token: null,
-    result: false,
-  };
 };
 
 const userReducer = (state = initialState, action) => {
@@ -308,7 +299,7 @@ export const actionCreators = {
   userSignUp,
   loginSuccess,
   putUserInfo,
-  logOutUser,
+
   setToken,
   setAll,
   setBoardId,
@@ -317,7 +308,7 @@ export const actionCreators = {
   setSelected,
   setViewCategoryName,
   editPhoto,
-  delUserAccount,
+  logUserOut,
 };
 
 export default store;

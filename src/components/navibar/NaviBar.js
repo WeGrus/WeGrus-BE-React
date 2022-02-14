@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { actionCreators } from "../../store";
 import {
@@ -13,6 +13,7 @@ import {
   NavContents,
 } from "./NavBarElements";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function mapStateToProps(state) {
   return state;
@@ -32,13 +33,22 @@ function mapDispatchToProps(dispatch) {
       ),
     setViewCategoryName: (viewCategoryName) =>
       dispatch(actionCreators.setViewCategoryName(viewCategoryName)),
+    logUserOut: () => dispatch(actionCreators.logUserOut()),
   };
 }
 
 const NaviBar = (props) => {
+  const [logOut, setLogOut] = useState(false);
+
   const authenticated = props.userReducer.authenticated;
   const DATA = props.userReducer;
   const Navigate = useNavigate();
+
+  useEffect(() => {}, [logOut]);
+  const handleLogOut = () => {
+    props.logUserOut();
+    setLogOut(true);
+  };
 
   const handleLink = (e, boardCategoryName) => {
     e.preventDefault(); //뒤로가기 시 활용. 첫 페이지 지정.
@@ -59,24 +69,24 @@ const NaviBar = (props) => {
       props.setAll(1, 1, [false], "LASTEST", "/announce");
       props.setViewCategoryName("공지사항");
       Navigate(`/announce`);
+    } else if (boardCategoryName === "ADMIN") {
+      props.setAll("", 1, [false], "ID", true);
+      props.setViewCategoryName(null);
+      Navigate(`/operator`);
     }
-
-    else if(boardCategoryName === "ADMIN"){
-      props.setAll("",1,[false],"ID", true)
-      props.setViewCategoryName(null)
-      Navigate(`/operator`)
-    }
-
-  }
-
-
+  };
 
   return (
     <>
       <Nav>
         <NavContents>
           <NavMenu>
-            <LogoLink to="/operator" onClick={(e) => {handleLink(e,"ADMIN")}}>
+            <LogoLink
+              to="/operator"
+              onClick={(e) => {
+                handleLink(e, "ADMIN");
+              }}
+            >
               <img src={require("../../images/logo2.png")} alt="logo" />
             </LogoLink>
             <NavLink to="/" style={({ isActive }) => ({})}>
@@ -124,7 +134,9 @@ const NaviBar = (props) => {
                 <ProfileLink to="/profile">
                   <img src={`${DATA.imageUrl}`} alt="profile" />
                 </ProfileLink>
-                <NavBtnLink to="/login">log out</NavBtnLink>
+                <NavBtnLink onClick={handleLogOut} to="/login">
+                  log out
+                </NavBtnLink>
               </>
             ) : (
               <NavBtnLink to="/login">log in</NavBtnLink>

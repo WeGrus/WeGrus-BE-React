@@ -27,6 +27,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     editPhoto: (imageUrl) => dispatch(actionCreators.editPhoto(imageUrl)),
+    logUserOut: (imageUrl) => dispatch(actionCreators.logUserOut(imageUrl)),
   };
 }
 
@@ -61,7 +62,8 @@ function UserAccount(props) {
       .then((res) => {
         //인증코드를 input에 적어 제출하면 회원 탈퇴 완료
         console.log(res);
-        navigate("/");
+        props.logUserOut();
+        props.navigate("/");
       })
       .catch((err) => {
         const ErrMessage = err.response.data.message;
