@@ -78,7 +78,9 @@ function ProfilePostBar({ target, page, data, userReducer }) {
             <Test>[{data.postReplies}]</Test>
           </HashLink>
         </Title>
-        <BoardName>{data.boardCategory}</BoardName>
+        <BoardName>
+          {data.boardCategory}-{data.board}
+        </BoardName>
         <Date>{splitDate(data.createdDate)}</Date>
         <Recommendation>{data.postLike}</Recommendation>
         <Hits>{data.postView}</Hits>
