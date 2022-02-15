@@ -53,7 +53,7 @@ const authority = (listofMember,giverManagement,permissionGroup,authorizeGroupPR
   else if(listofMember){ // 동아리 임원일때
     //console.log("동아리 임원일때");
     //console.log(subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "운영진 권한 부여")));
-    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 회원 목록 조회")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여"))
+    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 회원 목록 조회")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여 및 회원 권한 해제"))
   }
   else if(authorizeGroupPRESIDENT){ // 소그룹장일때
     //console.log("소그룹장일때");
