@@ -79,16 +79,16 @@ else if(ClubExecutiveGroupLeader){
   return subCategory.filter(item => (item.boardName !== "전체 동아리원 권한 초기화")&&(item.boardName !== "회장 위임")&&(item.boardName !== "회원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제"))
 }
 else if(GroupLeader){
-  return subCategory.filter(item => (item.boardName !== "회원 목록 조회 ")&&(item.boardName !== "회원 가입 승인 및 거절")&&(item.boardName !== "회원 권한 부여")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제")&&(item.boardName !== "운영진 권한 해제")&&(item.boardName !== "그룹 회장 권한 부여")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "회장 위임")&&(item.boardName !== "전체 동아리원 권한 초기화"))
+  return subCategory.filter(item => (item.boardName !== "회원 목록 조회")&&(item.boardName !== "회원 가입 승인 및 거절")&&(item.boardName !== "회원 권한 부여")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제")&&(item.boardName !== "운영진 권한 해제")&&(item.boardName !== "그룹 회장 권한 부여")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "회장 위임")&&(item.boardName !== "전체 동아리원 초기화"))
 }
 else if(ClubExecutiveGroupExecutive){
-  return subCategory.filter(item => (item.boardName !== "회원 권한 부여")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "회장 위임")&&(item.boardName !== "전체 동아리원 권한 초기화")&&(item.boardName !== "운영진 권한 해제")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 강제 탈퇴"))
+  return subCategory.filter(item => (item.boardName !== "회원 권한 부여")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "회장 위임")&&(item.boardName !== "전체 동아리원 초기화")&&(item.boardName !== "운영진 권한 해제")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 강제 탈퇴"))
 }
 else if(ClubExecutive){
   return subCategory.filter(item => (item.boardName === "회원 목록 조회")||(item.boardName === "회원 가입 승인 및 거절")||(item.boardName === "그룹 회장 권한 부여"))
 }
 else if(GroupExecutive){
-  return subCategory.filter(item => (item.boardName === "그룹 회원 목록 조회")||(item.boardName === "그룹 가입 승인절"))
+  return subCategory.filter(item => (item.boardName === "그룹 회원 목록 조회")||(item.boardName === "그룹 가입 승인"))
 }
 }
 
@@ -664,7 +664,8 @@ function Operator(props) {
       let groupInfor = userReducer.group.find(item => (item.role === "회장"))
       let groupId = ""
       if(groupInfor){
-        console.log("hahahahaha");
+        console.log("회장일때!");
+        console.log(groupInfor);
         setGroupId(groupInfor.id)
         setSubScrrenTitle(groupInfor.name)
         groupId = groupInfor.id
@@ -763,8 +764,7 @@ function Operator(props) {
         loadMemberSearchAuthoritiesList(discriminationDirection(direction),"EXECUTIVE",PageReducer.page,PageReducer.selected)
       }
       else if(PageReducer.boardId ==="그룹 회원 목록 조회" || target === "그룹 회원 목록 조회"){
-        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
-        const groupId = groupInfor.id
+
         if(PageReducer.isSearching[0] === true){
           console.log("그룹 회원 목록 조회의 검색로직 작동!");
           handleGroupSearchFunction(PageReducer.isSearching[1])
@@ -774,8 +774,6 @@ function Operator(props) {
         }
       }
       else if(PageReducer.boardId === "그룹 가입 승인"){
-        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
-        const groupId = groupInfor.id
         if(PageReducer.isSearching[0] === true){
           console.log("그룹 가입 승인의 검색로직 작동!");
           handleGroupSearchFunction(PageReducer.isSearching[1])
@@ -785,8 +783,7 @@ function Operator(props) {
         }
       }
       else if(PageReducer.boardId === "그룹 강제 탈퇴" || PageReducer.boardId === "그룹 임원 권한 부여"){
-        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
-        const groupId = groupInfor.id
+
         if(PageReducer.isSearching[0] === true){
           console.log("검색로직 작동!");
           handleGroupSearchFunction(PageReducer.isSearching[1])
@@ -796,8 +793,7 @@ function Operator(props) {
         }
       }
       else if(PageReducer.boardId === "그룹 회장 위임 및 임원 권한 해제"){
-        const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
-        const groupId = groupInfor.id
+
         if(PageReducer.isSearching[0] === true){
           console.log("검색로직 작동!");
           handleGroupSearchFunction(PageReducer.isSearching[1])
