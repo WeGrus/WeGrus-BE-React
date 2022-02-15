@@ -706,7 +706,7 @@ function Operator(props) {
       }
       else if(category.find(item => item.boardName === "그룹 회원 목록 조회")){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
 
-        axios.get(`/groups/executives/members?direction=${"ASC"}&groupId=${groupId}&page=1&role=APPLICANT&size=19&type=ID`,{
+        axios.get(`/groups/executives/members?direction=${"ASC"}&groupId=${groupId}&page=1&role=MEMBER&size=19&type=ID`,{
           headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
@@ -770,7 +770,7 @@ function Operator(props) {
           handleGroupSearchFunction(PageReducer.isSearching[1])
         }
         else{
-          loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"APPLICANT",PageReducer.selected)
+          loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"MEMBER",PageReducer.selected)
         }
       }
       else if(PageReducer.boardId === "그룹 가입 승인"){
