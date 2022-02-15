@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { actionCreators } from "../../../store";
 
 import {
@@ -35,15 +35,15 @@ function mapDispatchToProps(dispatch) {
           boardCategoryName
         )
       ),
-    setPage: (page) => dispatch(actionCreators.setPage(page)),
   };
 }
 
-function UserPosts(props) {
+function GetPosts(props) {
   const location = useLocation();
 
   //const [target, setTarget] = React.useState(null); // subCategory중 지금 선택한 부분.
 
+  const [page, setPage] = useState(0);
   //const [selected, setSelected] = React.useState(""); // 필터값
   //const [currentBoardType, setCurrentBoardType] = React.useState("") // 현재 타겟의 boardType(숫자)
   // const [currentType, setCurrentType] = React.useState("") // 현재 타겟의 selected(숫자)
@@ -53,17 +53,18 @@ function UserPosts(props) {
   const [posts, setPosts] = useState(null); // API로 받은 값
   const [totalPage, setTotalPage] = useState(0); // 총 페이지.
 
-  const PageReducer = props.PageReducer;
-  const page = PageReducer.page;
-
   const loadPageList = (page) => {
+    if (page === null) {
+      page = 1;
+    }
     axios
-      .get(`/members/posts?page=${page}&size=10`)
+      .get(`/members/posts?page=${page}&size=19`)
       .then(function (res) {
         console.log(res);
 
         setTotalPage(res.data.data.totalPages);
         setPosts(res.data.data.content);
+        console.log(totalPage);
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -71,8 +72,10 @@ function UserPosts(props) {
   };
 
   useEffect(() => {
-    props.setPage(page);
-    loadPageList(page);
+    const PageReducer = props.PageReducer;
+
+    props.setAll(null, 1, [false], "LASTEST", PageReducer.boardCategoryName);
+    loadPageList(PageReducer.page);
   }, [page]);
 
   const OnError = (error, e) => {
@@ -85,9 +88,10 @@ function UserPosts(props) {
       <InforBar>
         {/* 프로필의 내가 쓴 게시글, 내가 쓴 댓글 부분에 사용하시면 좋을 듯 합니다.*/}
         <InforContents>
-          <BoardName>게시판</BoardName>
+          <Number>번호</Number>
           <Title>제목</Title>
           <Writer>작성자</Writer>
+          <BoardName>게시판</BoardName>
           <Date>작성일자</Date>
           <Recommendation>추천</Recommendation>
           <Hits>조회</Hits>
@@ -104,9 +108,9 @@ function UserPosts(props) {
           />
           <Pagination
             total={totalPage}
-            limit={10}
+            limit={19}
             page={page}
-            setPage={props.setPage}
+            setPage={setPage}
           />
         </>
       ) : null}
@@ -116,4 +120,4 @@ function UserPosts(props) {
     </>
   );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(UserPosts);
+export default connect(mapStateToProps, mapDispatchToProps)(GetPosts);

@@ -196,7 +196,6 @@ function handleEnrollClub() {
 }
 
 function About(props) {
-  console.log(props);
   return (
     <>
       <PageTitle title="About" />
