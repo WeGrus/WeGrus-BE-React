@@ -17,7 +17,7 @@ import PostMemberPermissionBar from './../shared/PostMemberPermissionBar'
 import PostMemberExpulsionBar from './../shared/PostMemberExpulsionBar'
 import PostGroupPermissionBar from './../shared/PostGroupPermissionBar'
 import { actionCreators } from "./../../store";
-
+import ResetAllMember from "./../shared/ResetAllMember"
 const Number = styled.div`
 width: 40px;
 text-align: left;
@@ -29,15 +29,21 @@ cursor: ${(props) => (props.post ? "none" : "pointer")};
 
 const subCategory = [
   { boardName: "회원 목록 조회" },
-  { boardName: "회원 가입 승인" },
-  { boardName: "회원 강제 탈퇴" },
-  { boardName: "운영진 권한 부여"},
+  { boardName: "회원 가입 승인 및 거절" },
+  { boardName: "회원 권한 부여" },
+  { boardName: "운영진 권한 부여 및 회원 권한 해제"},
+  { boardName: "운영진 권한 해제"},
+  { boardName: "그룹 회장 권한 부여"},
+  { boardName: "회원 강제 탈퇴"},
+  { boardName: "회장 위임"},
+  { boardName: "전체 동아리원 초기화"},
   { boardName: "그룹 회원 목록 조회"},
   { boardName: "그룹 가입 승인" },
   { boardName: "그룹 강제 탈퇴"},
   { boardName: "그룹 임원 권한 부여"},
   { boardName: "그룹 회장 위임 및 임원 권한 해제"},
 ];
+
 
 const authority = (listofMember,giverManagement,permissionGroup,authorizeGroupPRESIDENT) =>{
   if(giverManagement){ // 회장일때
@@ -121,7 +127,7 @@ function Operator(props) {
       console.log(error.toJSON());
     })
     .then(function (res) {
-     //console.log(res);
+     console.log(res);
      settotalPage(res.data.data.totalPages)
      setPosts((current) => res.data.data.content)
      setLoad(true)
@@ -167,8 +173,10 @@ function Operator(props) {
     })
     .then(function(res){
       console.log(res);
+      console.log("회원 검색 권한 로드 완료!!!!!!");
       settotalPage(res.data.data.totalPages)
-      setPosts(res.data.data.content)
+      setPosts((current) => res.data.data.content)
+      setLoad(true)
     });
   }
 
@@ -380,6 +388,25 @@ function Operator(props) {
       setPosts((current) => res.data.data.content)
       setLoad(true)
     });
+  }
+
+  const loadMemberPermissionSearch = (page,type,word) => {// 회원 권한 요청 목록 검색
+    axios.get(`/club/executives/requests/search?page=${page}&type=${type}&word=${word}`,{
+      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function(res){
+      console.log(res);
+      settotalPage(res.data.data.totalPages)
+      setPosts((current) => res.data.data.content)
+      setLoad(true)
+    });
+  }
+
+  const handleMemberPermissionSearchFuntion = (option) => {
+    console.log(option);
   }
 
   //그룹 관리 API
@@ -646,7 +673,7 @@ function Operator(props) {
 
     }
     else{
-      if(PageReducer.boardId === "회원 목록 조회" || PageReducer.boardId === "회원 강제 탈퇴"){
+      if(PageReducer.boardId === "회원 목록 조회" || PageReducer.boardId === "회원 강제 탈퇴" || (PageReducer.boardId===""&&target === "회원 목록 조회") || PageReducer.boardId === "회장 위임" || PageReducer.boardId === "그룹 회장 권한 부여"){
         if(PageReducer.isSearching[0] === true){
           console.log("검색로직 작동!");
           //console.log(PageReducer);
@@ -654,18 +681,30 @@ function Operator(props) {
           //loadMeberSearchList(discriminationDirection(direction),PageReducer.page,PageReducer.isSearching[1],PageReducer.selected,PageReducer.isSearching[2])
         }
         else{
+          console.log("hahah");
           loadMemberList(discriminationDirection(direction),PageReducer.page,PageReducer.selected)
         }
       }
-      else if(PageReducer.boardId === "회원 가입 승인"){
+      else if(PageReducer.boardId === "회원 가입 승인 및 거절"){
         console.log("회원 가입 승인!!!");
         if(PageReducer.isSearching[0] === true){
           console.log("검색로직 작동!");
-          handleSearchFunction(PageReducer.isSearching[1])
+          handleMemberPermissionSearchFuntion(PageReducer.isSearching[1])
         }
         else{
           loadMemberPermissionList(PageReducer.page)
         }
+      }
+      else if(PageReducer.boardId === "회원 권한 부여"){ // 추후 load 필요
+        loadMemberList(discriminationDirection(direction),PageReducer.page,PageReducer.selected)
+      }
+      else if(PageReducer.boardId === "운영진 권한 부여 및 회원 권한 해제"){ // 추후 load 변경
+        console.log("운영진 권한 부여 및 회원 권한 해제 로직 작동!");
+        loadMemberSearchAuthoritiesList(discriminationDirection(direction),"MEMBER",PageReducer.page,PageReducer.selected)
+      }//loadMemberSearchAuthoritiesList
+      else if(PageReducer.boardId === "운영진 권한 해제"){ // 추후 load 변경
+        console.log("운영진 권한 해제 로직 작동!");
+        loadMemberSearchAuthoritiesList(discriminationDirection(direction),"EXECUTIVE",PageReducer.page,PageReducer.selected)
       }
       else if(PageReducer.boardId ==="그룹 회원 목록 조회" || target === "그룹 회원 목록 조회"){
         const groupInfor = props.userReducer.group.find(item => (item.role === "회장"))
@@ -923,7 +962,7 @@ function Operator(props) {
     <ScreenTitle>{target}</ScreenTitle>
     }
     
-    {((target === "회원 목록 조회")||(target === "회원 강제 탈퇴")||(target === "운영진 권한 부여")||(target === "그룹 회장 위임"))?
+    {((target === "회원 목록 조회")||(target === "회원 강제 탈퇴")||(target === "운영진 권한 부여")||(target === "그룹 회장 위임")||(target === "회장 위임")||(target === "그룹 회장 권한 부여"))?
       <SearchBarSection>
       <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
         <SearchBarSelect {...register("option")} >
@@ -966,7 +1005,7 @@ function Operator(props) {
     </SearchBarForm>
   </SearchBarSection> */}
    
-  {(target === "그룹 회원 목록 조회")?
+  {((target === "그룹 회원 목록 조회"))?
     <SearchBarSection>
     <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
       <SearchBarSelect {...register("option")} >
@@ -987,69 +1026,105 @@ function Operator(props) {
   :
   null
   }
-        <InforBar>
-          <InforContents>
-            {(numberDirection === true) ?
-              <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} ></InforSelection></Number>
-              :
-              <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} desc ></InforSelection></Number>
-            }
-            {(gradeDirection === true) ?
-              <Grade onClick={(e)=>{handleSort("Grade")}}>학년<InforSelection src={img} ></InforSelection></Grade>
-              :
-              <Grade onClick={(e)=>{handleSort("Grade")}}>학년<InforSelection src={img} desc></InforSelection></Grade>
-            }
-            {(studentIdDirection === true) ?
-              <StudentId onClick={(e)=>{handleSort("StudentId")}}>학번<InforSelection src={img}></InforSelection></StudentId>
-              :
-              <StudentId onClick={(e)=>{handleSort("StudentId")}}>학번<InforSelection src={img} desc></InforSelection></StudentId>
-            }
-            {(phoneNumberDirection === true) ?
-              <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}}>연락처<InforSelection src={img}></InforSelection></PhoneNumber>
-              :
-              <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}}>연락처<InforSelection src={img} desc></InforSelection></PhoneNumber>
-            }
-            {(nameDirection === true) ?
-              <Name onClick={(e)=>{handleSort("Name")}}>이름<InforSelection src={img}></InforSelection></Name>
-              :
-              <Name onClick={(e)=>{handleSort("Name")}}>이름<InforSelection src={img} desc></InforSelection></Name>
-            }
-            {(roleDirection === true) ?
-              <Role onClick={(e)=>{handleSort("")}}>회원직책<InforSelection src={img}></InforSelection></Role>
-              :
-              <Role onClick={(e)=>{handleSort("")}}>회원직책<InforSelection src={img} desc></InforSelection></Role>
-            }
-            {(attendanceDirection === true) ?
-              <Attendance onClick={(e)=>{handleSort("Attendance")}}>학적<InforSelection src={img}></InforSelection></Attendance>
-              :
-              <Attendance onClick={(e)=>{handleSort("Attendance")}}>학적<InforSelection src={img} desc></InforSelection></Attendance>
-            }
-            {(genderDirection === true) ?
-              <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img}></InforSelection></Gender>
-              :
-              <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img} desc></InforSelection></Gender>
-            }
-            {(target !== "회원 목록 조회") ? <Check>버튼</Check> : null}
-          </InforContents>
-        </InforBar>
+  {(target === "전체 동아리원 초기화")
+  ?
+  null
+  :
+  <InforBar>
+  <InforContents>
+    {(numberDirection === true) ?
+      <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} ></InforSelection></Number>
+      :
+      <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} desc ></InforSelection></Number>
+    }
+    {(gradeDirection === true) ?
+      <Grade onClick={(e)=>{handleSort("Grade")}}>학년<InforSelection src={img} ></InforSelection></Grade>
+      :
+      <Grade onClick={(e)=>{handleSort("Grade")}}>학년<InforSelection src={img} desc></InforSelection></Grade>
+    }
+    {(studentIdDirection === true) ?
+      <StudentId onClick={(e)=>{handleSort("StudentId")}}>학번<InforSelection src={img}></InforSelection></StudentId>
+      :
+      <StudentId onClick={(e)=>{handleSort("StudentId")}}>학번<InforSelection src={img} desc></InforSelection></StudentId>
+    }
+    {(phoneNumberDirection === true) ?
+      <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}}>연락처<InforSelection src={img}></InforSelection></PhoneNumber>
+      :
+      <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}}>연락처<InforSelection src={img} desc></InforSelection></PhoneNumber>
+    }
+    {(nameDirection === true) ?
+      <Name onClick={(e)=>{handleSort("Name")}}>이름<InforSelection src={img}></InforSelection></Name>
+      :
+      <Name onClick={(e)=>{handleSort("Name")}}>이름<InforSelection src={img} desc></InforSelection></Name>
+    }
+    {(roleDirection === true) ?
+      <Role onClick={(e)=>{handleSort("")}}>회원직책<InforSelection src={img}></InforSelection></Role>
+      :
+      <Role onClick={(e)=>{handleSort("")}}>회원직책<InforSelection src={img} desc></InforSelection></Role>
+    }
+    {(attendanceDirection === true) ?
+      <Attendance onClick={(e)=>{handleSort("Attendance")}}>학적<InforSelection src={img}></InforSelection></Attendance>
+      :
+      <Attendance onClick={(e)=>{handleSort("Attendance")}}>학적<InforSelection src={img} desc></InforSelection></Attendance>
+    }
+    {(genderDirection === true) ?
+      <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img}></InforSelection></Gender>
+      :
+      <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img} desc></InforSelection></Gender>
+    }
+    {(target !== "회원 목록 조회") ? <Check>버튼</Check> : null}
+  </InforContents>
+</InforBar>
+  }
+
 
     
       {(load)?
       <>
             {(target === "회원 목록 조회" && posts !== []) ?
-              <PostMemberBar data={posts} />
+              <PostMemberBar data={posts} type={""}/>
               :
               null
             }
 
-            {(props.PageReducer.boardId === "회원 가입 승인" && posts !== []) ?
-              <PostMemberPermissionBar data={posts} />
+            {(props.PageReducer.boardId === "회원 가입 승인 및 거절" && posts !== []) ?
+              <PostMemberPermissionBar data={posts} type={"회원 가입 승인 및 거절"}/>
+              :
+              null   
+            }
+
+            {(props.PageReducer.boardId === "회원 권한 부여" && posts !== []) ?
+              <PostMemberBar data={posts} type={"회원 권한 부여"} />
+              :
+              null
+            }
+
+            {(props.PageReducer.boardId === "운영진 권한 부여 및 회원 권한 해제" && posts !== []) ?
+              <PostMemberBar data={posts} type={"운영진 권한 부여 및 회원 권한 해제"} />
+              :
+              null  //운영진 권한 해제
+            }
+
+            {(props.PageReducer.boardId === "운영진 권한 해제" && posts !== []) ?
+              <PostMemberBar data={posts} type={"운영진 권한 해제"} />
+              :
+              null
+            }
+
+            {(props.PageReducer.boardId === "그룹 회장 권한 부여" && posts !== []) ?
+              <PostMemberBar data={posts} type={"그룹 회장 권한 부여"} groupList={groupList}/>
               :
               null
             }
 
             {(props.PageReducer.boardId === "회원 강제 탈퇴" && posts !== [])?
               <PostMemberExpulsionBar data={posts} />
+              :
+              null
+            }
+
+            {(props.PageReducer.boardId === "회장 위임" && posts !== []) ?
+              <PostMemberBar data={posts} type={"회장 위임"} />
               :
               null
             }
@@ -1096,7 +1171,11 @@ function Operator(props) {
       null
       }
      
-
+     {(target === "전체 동아리원 초기화") ?
+              <ResetAllMember />
+              :
+              null
+      }
 
 
     <Pagination

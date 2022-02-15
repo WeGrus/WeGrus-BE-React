@@ -340,3 +340,12 @@ position: relative;
 word-spacing: -3px;
 `
 
+export const SmallCheckBtn = styled.div`
+margin-left: ${(props) => (props.red ? "10px" : "28px")};
+width: 15px;
+height: 15px;
+background-color: ${(props) => (props.red ? "red" : "#6CD2D7")};
+border: none;
+border-radius: 15px;
+cursor: pointer;
+`
