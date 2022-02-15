@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import img from "./../../images/Polygon.jpg";
 import { Link } from "react-router-dom";
 
 export const SearchBarSection = styled.div`
@@ -18,23 +17,7 @@ export const SearchBarForm = styled.form`
   margin-left: 20px;
   margin-top: 16px;
 `;
-export const SearchBarSelect = styled.select`
-  width: 117px;
-  height: 32px;
-  padding-left: 8px;
-  border-radius: 50px;
-  line-height: 16.41px;
-  color: #c4c4c4;
-  border: 1px solid #c4c4c4;
 
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background: url(${img});
-  background-repeat: no-repeat;
-  background-size: 17px 17px;
-  background-position: bottom 8px right 11px;
-`;
 export const SearchBar = styled.div`
   margin-left: 9px;
   position: relative;
@@ -71,7 +54,6 @@ export const SearchBarFilter = styled.select`
   -webkit-appearance: none;
   appearance: none;
 
-  background: url(${img});
   background-repeat: no-repeat;
   background-size: 12.35px 10.43px;
   background-position: right 2px bottom 2px;
@@ -108,9 +90,9 @@ export const InforContents = styled.div`
   text-align: center;
 `;
 export const Number = styled.div`
-  min-width: 65px;
+  min-width: 40px;
   text-align: center;
-  margin-left: 23px;
+  margin-left: 15px;
 `;
 
 export const Categorization = styled.div`
@@ -120,7 +102,7 @@ export const Categorization = styled.div`
 `;
 export const Title = styled.div`
   width: 373px;
-  margin-left: 62px;
+  margin-left: 35px;
 `;
 
 export const Writer = styled.div`
@@ -132,7 +114,7 @@ export const Writer = styled.div`
 export const BoardName = styled.div`
   width: 130px;
   text-align: center;
-  margin-left: 45px;
+  margin-left: 28px;
   word-spacing: -3px;
 `;
 
@@ -143,7 +125,7 @@ export const Date = styled.div`
 `;
 
 export const Hits = styled.div`
-  width: 40px;
+  width: 50px;
   text-align: center;
   margin-left: 10px;
 `;
@@ -276,6 +258,7 @@ export const PostInforBar = styled.div`
   }
 `;
 export const PostCotent = styled.div`
+  width: 909.07px;
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -306,14 +289,6 @@ export const PostGender = styled.div`
   position: relative;
   word-spacing: -3px;
   text-align: center;
-`;
-
-export const InforSelection = styled.img`
-  width: 8px;
-  position: absolute;
-  right: 0px;
-  top: 3px;
-  transform: ${(props) => (props.desc ? "rotate( 180deg )" : "none")};
 `;
 
 export const Bold = styled.div`

@@ -113,10 +113,7 @@ function Board(props) {
         .get(
           `/search/all/${currentBoardType}?keyword=${keyword}&page=${
             page - 1
-          }&pageSize=19&type=${currentType}`,
-          {
-            headers: { Authorization: `Bearer ${props.userReducer.token}` },
-          }
+          }&pageSize=19&type=${currentType}`
         )
         .catch(function (error) {
           console.log(error.toJSON());
@@ -225,7 +222,6 @@ function Board(props) {
           PageReducer.page,
           PageReducer.selected
         );
-
       }
     } else {
       if (PageReducer.isSearching[0] === true) {
@@ -354,7 +350,6 @@ function Board(props) {
         </SearchBarSection>
 
         <InforBar>
-          {" "}
           {/* 프로필의 내가 쓴 게시글, 내가 쓴 댓글 부분에 사용하시면 좋을 듯 합니다.*/}
           <InforContents>
             <Number>번호</Number>

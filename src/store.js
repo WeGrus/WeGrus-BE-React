@@ -189,7 +189,7 @@ const tokenReducer = (state = "", action) => {
 
 const pageState = {
   boardId: null, // 백엔드와 통신 때 이용하는 번호입니다.
-  page: null, // 페이지입니다.
+  page: 1, // 페이지입니다.
   isSearching: [false], // 검색유무를 파악합니다. 총 3개의 원소가 있으며 0번째는 검색유무, 1번째는 검색옵션(글쓴이만, 제목만) 2번째는 키워드입니다.
   selected: null, // 정렬 순을 의미합니다.(최신순, 추천순)
   boardCategoryName: null, // boardCategoryName 은 경로를 의미합니다.

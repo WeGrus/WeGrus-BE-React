@@ -63,7 +63,8 @@ function UserAccount(props) {
         //인증코드를 input에 적어 제출하면 회원 탈퇴 완료
         console.log(res);
         props.logUserOut();
-        props.navigate("/");
+        window.alert("탈퇴 완료되었습니다.");
+        navigate("/");
       })
       .catch((err) => {
         const ErrMessage = err.response.data.message;
