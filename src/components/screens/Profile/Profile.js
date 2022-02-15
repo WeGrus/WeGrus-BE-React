@@ -14,6 +14,7 @@ import { Content } from "./ProfileElements";
 import SavedPosts from "./SavedPosts";
 import UserAccount from "./UserAccount";
 import UserComments from "./UserComments";
+import UserGroup from "./UserGroup";
 import UserInfo from "./UserInfo";
 import UserPosts from "./UserPosts";
 
@@ -23,6 +24,7 @@ const mapStateToProps = (state) => {
 
 const subCategory = [
   { content: "내 정보", boardName: "내 정보" },
+  { content: "내 그룹", boardName: "내 그룹" },
   { content: "내가 쓴 게시글", boardName: "내가 쓴 게시글" },
   { content: "내가 쓴 댓글", boardName: "내가 쓴 댓글" },
   { content: "저장한 게시글", boardName: "저장한 게시글" },
@@ -83,6 +85,8 @@ function Profile(props) {
 
   if (target === "내 정보") {
     renderComponent = <UserInfo data={DATA} />;
+  } else if (target === "내 그룹") {
+    renderComponent = <UserGroup />;
   } else if (target === "내가 쓴 게시글") {
     renderComponent = <UserPosts />;
   } else if (target === "내가 쓴 댓글") {

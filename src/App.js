@@ -143,15 +143,14 @@ function App(props) {
         .get(`/members/info/${ID}`)
         .then((res) => {
           const INFO = res.data.data.info;
-          console.log(INFO);
           const INFO_ARRAY = Object.values(INFO);
-          console.log(INFO);
+
           props.putUserInfo(...INFO_ARRAY);
           setUserInfo(true);
 
           //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
         })
-        .catch(console.log("no user info"));
+        .catch((err) => console.log(err));
     }
   }, [authenticated, userInfo]);
 
@@ -205,13 +204,12 @@ function App(props) {
                   element={<UpdatePage />}
                 />
                 <Route path="/profile" element={<Profile />} />
-                
-                  <>
-                    {isAuthority === true ? (
-                      <Route path="/operator" element={<Operator />} />
-                    ) : null}
-                  </>
-               
+
+                <>
+                  {isAuthority === true ? (
+                    <Route path="/operator" element={<Operator />} />
+                  ) : null}
+                </>
               </>
             ) : (
               <Route path="/" element={<About />} />
