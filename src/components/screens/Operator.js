@@ -391,7 +391,7 @@ function Operator(props) {
   }
 
   const loadMemberPermissionSearch = (page,type,word) => {// 회원 권한 요청 목록 검색
-    axios.get(`/club/executives/requests/search?page=${page}&type=${type}&word=${word}`,{
+    axios.get(`/club/executives/requests/search?page=${page}&size=19&type=${type}&word=${word}`,{
       headers: {'Authorization': `Bearer ${props.userReducer.token}`}
     })
     .catch(function (error) {
@@ -407,6 +407,15 @@ function Operator(props) {
 
   const handleMemberPermissionSearchFuntion = (option) => {
     console.log(option);
+    const PageReducer = props.PageReducer
+    console.log(PageReducer.isSearching[2]);
+    const keyword = PageReducer.isSearching[2]
+    if(option === "이름"){
+      loadMemberPermissionSearch(PageReducer.page,"NAME",keyword)
+    }
+    else if(option === "학번"){
+      loadMemberPermissionSearch(PageReducer.page,"STUDENT_ID",PageReducer.isSearching[2])
+    }
   }
 
   //그룹 관리 API
@@ -696,7 +705,12 @@ function Operator(props) {
         }
       }
       else if(PageReducer.boardId === "회원 권한 부여"){ // 추후 load 필요
-        loadMemberList(discriminationDirection(direction),PageReducer.page,PageReducer.selected)
+        if(PageReducer.isSearching[0] === true){
+          console.log("회원 권한 부여 검색로직 작동!");
+          //console.log(PageReducer);
+          handleSearchFunction(PageReducer.isSearching[1])
+          //loadMeberSearchList(discriminationDirection(direction),PageReducer.page,PageReducer.isSearching[1],PageReducer.selected,PageReducer.isSearching[2])
+        }
       }
       else if(PageReducer.boardId === "운영진 권한 부여 및 회원 권한 해제"){ // 추후 load 변경
         console.log("운영진 권한 부여 및 회원 권한 해제 로직 작동!");
@@ -962,7 +976,7 @@ function Operator(props) {
     <ScreenTitle>{target}</ScreenTitle>
     }
     
-    {((target === "회원 목록 조회")||(target === "회원 강제 탈퇴")||(target === "운영진 권한 부여")||(target === "그룹 회장 위임")||(target === "회장 위임")||(target === "그룹 회장 권한 부여"))?
+    {((target === "회원 목록 조회")||(target === "회원 강제 탈퇴")||(target === "운영진 권한 부여")||(target === "그룹 회장 위임")||(target === "회장 위임")||(target === "그룹 회장 권한 부여")||(target === "회원 권한 부여"))?
       <SearchBarSection>
       <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
         <SearchBarSelect {...register("option")} >
@@ -985,6 +999,25 @@ function Operator(props) {
     :
     null
     } 
+
+    
+    {(props.PageReducer.boardId === "회원 가입 승인 및 거절")?
+        <SearchBarSection>
+        <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
+          <SearchBarSelect {...register("option")} >
+                <option >이름</option>
+                <option >학번</option>
+            </SearchBarSelect>
+          <SearchBar>
+          <SearchBarInput {...register("keyword", { required: true })} />
+              <SearchBarSubmit type="submit" value="" />
+          </SearchBar>
+        </SearchBarForm>
+      </SearchBarSection>
+    :
+    null
+    }
+
   {/* <SearchBarSection>
     <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
       <SearchBarSelect {...register("option")} >

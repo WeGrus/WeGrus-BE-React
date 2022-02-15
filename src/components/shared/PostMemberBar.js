@@ -46,7 +46,7 @@ function mapStateToProps(state) {
 function PostMemberBar(props) { // 
 
     //console.log(props);
-
+    let postdata = "";
    if (props.groupList) {
        console.log(props.groupList);
    }
@@ -177,59 +177,62 @@ function PostMemberBar(props) { //
         }
     }
 
-    const postdata = props.data.map((data)=>
-    <PostInforBar key={data.id}>
-        <PostCotent>
-            <PostNumber>{data.id}</PostNumber>
-            <Grade post>{data.grade}</Grade>
-            <StudentId>{data.studentId}</StudentId>
-            <PhoneNumber post>{data.phone}</PhoneNumber>
-            <Name>{data.name}</Name>
-            <PostRole>{printRole(data.roles)}</PostRole>
-            <PostAttendance>{data.academicStatus}</PostAttendance>
-            <PostGender>{data.gender}</PostGender>
-                {(props.type === "회장 위임") ?
-                    <>
-                        <CheckBtn data-id={data.id} onClick={handleDelegate}></CheckBtn>
-                    </>
-                    :
-                    null
-                }
-                {(props.type === "회원 권한 부여") ?
-                    <>
-                        <CheckBtn data-id={data.id} onClick={(e)=>{handleEmpower(e,"회원")}}></CheckBtn>
-                    </>
-                    :
-                    null
-                }
-                {(props.type === "운영진 권한 부여 및 회원 권한 해제") ?
-                    <>
-                        <SmallCheckBtn data-id={data.id} onClick={(e)=>{handleEmpower(e,"운영진")}}></SmallCheckBtn>
-                        <SmallCheckBtn data-id={data.id} onClick={(e)=>{handleRevoke(e,"회원")}} red></SmallCheckBtn>
-                    </>
-                    :
-                    null
-                }
-                {(props.type === "운영진 권한 해제") ?
-                    <>
-                        <CheckBtn data-id={data.id} onClick={(e) => { handleRevoke(e, "운영진") }} red></CheckBtn>
-                    </>
-                    :
-                    null
-                }
+    if(props.data[0] !== undefined && props.data[0].member === undefined){
+        postdata = props.data.map((data)=>
+        <PostInforBar key={data.id}>
+            <PostCotent>
+                <PostNumber>{data.id}</PostNumber>
+                <Grade post>{data.grade}</Grade>
+                <StudentId>{data.studentId}</StudentId>
+                <PhoneNumber post>{data.phone}</PhoneNumber>
+                <Name>{data.name}</Name>
+                <PostRole>{printRole(data.roles)}</PostRole>
+                <PostAttendance>{data.academicStatus}</PostAttendance>
+                <PostGender>{data.gender}</PostGender>
+                    {(props.type === "회장 위임") ?
+                        <>
+                            <CheckBtn data-id={data.id} onClick={handleDelegate}></CheckBtn>
+                        </>
+                        :
+                        null
+                    }
+                    {(props.type === "회원 권한 부여") ?
+                        <>
+                            <CheckBtn data-id={data.id} onClick={(e)=>{handleEmpower(e,"회원")}}></CheckBtn>
+                        </>
+                        :
+                        null
+                    }
+                    {(props.type === "운영진 권한 부여 및 회원 권한 해제") ?
+                        <>
+                            <SmallCheckBtn data-id={data.id} onClick={(e)=>{handleEmpower(e,"운영진")}}></SmallCheckBtn>
+                            <SmallCheckBtn data-id={data.id} onClick={(e)=>{handleRevoke(e,"회원")}} red></SmallCheckBtn>
+                        </>
+                        :
+                        null
+                    }
+                    {(props.type === "운영진 권한 해제") ?
+                        <>
+                            <CheckBtn data-id={data.id} onClick={(e) => { handleRevoke(e, "운영진") }} red></CheckBtn>
+                        </>
+                        :
+                        null
+                    }
+    
+                    {(props.type === "그룹 회장 권한 부여") ?
+                        <>
+                            <CheckBtn data-id={data.id} onClick={(e) => { handleEmpowerGroupLeader(e) }}></CheckBtn>
+                        </>
+                        :
+                        null
+                    }
+    
+                    
+            </PostCotent>
+        </PostInforBar>
+        )
+    }
 
-                {(props.type === "그룹 회장 권한 부여") ?
-                    <>
-                        <CheckBtn data-id={data.id} onClick={(e) => { handleEmpowerGroupLeader(e) }}></CheckBtn>
-                    </>
-                    :
-                    null
-                }
-
-                
-        </PostCotent>
-    </PostInforBar>
-    )
 
     return (
         <>
