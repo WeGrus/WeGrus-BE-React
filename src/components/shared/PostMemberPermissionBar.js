@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import * as React from "react"
-import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,CheckBtn} from "./BoardElement"
+import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,SmallCheckBtn} from "./BoardElement"
 import axios from "axios";
 import { connect } from "react-redux";
 import { actionCreators } from "../../store";
@@ -43,11 +43,11 @@ function mapStateToProps(state) {
   }
 
 function PostMemberPermissionBar(props){
-    console.log(props.data);
-    console.log(props);
+   // console.log(props.data);
+    //console.log(props);
     let postdata
 
-    const permissionMember = (requestId) => {
+    const permissionMember = (requestId) => { //회원 권한 요청 승인
         axios.post(`/club/executives/authority?requestId=${requestId}`,{},{
             headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
@@ -55,11 +55,27 @@ function PostMemberPermissionBar(props){
             console.log(error);
           })
         .then(function (res) {
-            console.log(res);
+            //console.log(res);
             const PageReducer = props.PageReducer
             props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
         });
     }
+
+    const rejectMember = (requestId) => { // 회원 권한 요청 거절
+        axios.delete(`/club/executives/authority?requestId=${requestId}`,{},{
+            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+        })
+        .catch(function (error) {
+            console.log(error);
+          })
+        .then(function (res) {
+            //console.log(res);
+            const PageReducer = props.PageReducer
+            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
+        });
+    }
+
+
 
     const handlePermission = (e) => {
         console.log(e);
@@ -75,6 +91,19 @@ function PostMemberPermissionBar(props){
 
     }
 
+    const handleReject = (e) => {
+        //console.log(e);
+        //console.log(e.target.dataset.id);
+        const check = window.confirm("이 인원의 회원 승인을 거절하시겠습니까?")
+        console.log(check);
+        if(check){
+            const id = e.target.dataset.id
+            rejectMember(id)
+        }
+    }
+
+
+
     if(props.data[0] !== undefined && props.data[0].member){
         postdata  = props.data.map((data)=>
         <PostInforBar key={data.member.id}>
@@ -87,7 +116,16 @@ function PostMemberPermissionBar(props){
                 <PostRole>{printRole(data.member.roles)}</PostRole>
                 <PostAttendance>{data.member.academicStatus}</PostAttendance>
                 <PostGender>{data.member.gender}</PostGender>
-                <CheckBtn data-id={data.id} onClick={handlePermission}></CheckBtn>
+                    {(props.type === "회원 가입 승인 및 거절") ?
+                        <>
+                            <SmallCheckBtn data-id={data.id} onClick={handlePermission}></SmallCheckBtn>
+                            <SmallCheckBtn data-id={data.id} onClick={handleReject} red></SmallCheckBtn>
+                        </>
+                        :
+                        null
+                    }
+
+
             </PostCotent>
         </PostInforBar>
         )
