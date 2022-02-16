@@ -30,7 +30,6 @@ function CommentSection(props){
   //console.log(commentData);
   //console.log(reCommentData);
 
-  console.log(commentData);
     const [comment,setComment] = React.useState("") // 댓글 입력칸
     const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
     const [commentIndex,setCommentIndex] = React.useState(-1); // 대댓글 작성을 위해 이용한다.
@@ -159,6 +158,48 @@ function CommentSection(props){
         }
       });
   }
+
+  const handleEmojiRecommand = (e) => {
+
+    const commentId = Number(e.target.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id)
+
+    console.log(e.target.parentNode.parentNode);
+    axios.post(`/comments/like?replyId=${commentId}`, {}, {
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+      .catch(function (error) {
+        console.log(error);
+        //handleCommentRecommandCancel(e, commentId)
+      })
+      .then(function (res, error) {
+        if (res === undefined) {
+        }
+        else {
+          const changeNum = Number(e.target.parentNode.innerText)+1
+          e.target.parentNode.childNodes[1].textContent = changeNum
+        }
+      });
+
+
+  }
+
+  const handleEmojiCancel = (e) => {
+    console.log(e.target.parentNode.parentNode.innerText);
+    const commentId = Number(e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id)
+    console.log(commentId);
+    axios.delete(`/comments/like?replyId=${commentId}`, {
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function (res) {
+        console.log(res);
+        console.log("추천 취소");
+        const changeNum = Number(e.target.parentNode.parentNode.innerText)-1
+        e.target.parentNode.parentNode.childNodes[1].textContent = changeNum
+    });
+  }
     
   const handleReCommentWirte = (e) => { // 댓글에서 답글 버튼을 눌렀을 때 동작하는 함수
     let index = e.target.parentNode.parentNode.dataset.id;
@@ -219,7 +260,7 @@ function CommentSection(props){
         }
   }
 
-  const handleReCommentRecommandCancel = (e, replyId) => { // 댓글 추천 취소함수
+  const handleReCommentRecommandCancel = (e, replyId) => { // 대댓글 추천 취소함수
 
     axios.delete(`/comments/like?replyId=${replyId}`, {
       headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
@@ -232,7 +273,7 @@ function CommentSection(props){
     });
   }
 
-  const handleReCommentRecommand = (e) => { // 댓글 추천 함수
+  const handleReCommentRecommand = (e) => { // 대댓글 추천 함수
   const replyId  = e.target.parentNode.parentNode.dataset.id;
   axios.post(`/comments/like?replyId=${replyId}`, {}, {
     headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
@@ -264,15 +305,15 @@ function CommentSection(props){
         <CommentBox key={comment.replyId}>
           <Comment data-id={`${comment.replyId}`} >
             <CommentLeft>
-              <CommentImage src={`${props.userReducer.imageUrl}`}></CommentImage>
+              <CommentImage src={`${comment.image.url}`}></CommentImage>
               <CommentLeftContent>
               <CommentNameBox>
                 <CommentName>{comment.memberName}</CommentName>
               </CommentNameBox>
               <CommentInfor data-index={comment.replyId}>
                 <Date>{splitDate(comment.updatedDate)} </Date>
-                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} color="#0B665C" />{comment.replyLike}</CommentRecommand>
-                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} color="#0B665C" />{comment.replyLike}</CommentRecommand>
+                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} onClick={handleEmojiRecommand} color="#0B665C" />{comment.replyLike}</CommentRecommand>
+                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} onClick={handleEmojiCancel} color="#0B665C" />{comment.replyLike}</CommentRecommand>
               </CommentInfor>
             </CommentLeftContent>
 
@@ -291,14 +332,15 @@ function CommentSection(props){
             <>
               <ReComment key={reComment.replyId} data-id={`${reComment.replyId}`}>
               <CommentLeft>
-              <ReCommentImage src={`${props.userReducer.imageUrl}`}></ReCommentImage>
+              <ReCommentImage src={`${reComment.image.url}`}></ReCommentImage>
               <CommentLeftContent>
               <CommentNameBox>
                 <CommentName>{reComment.memberName}</CommentName>
               </CommentNameBox>
               <CommentInfor data-index={reComment.replyId}>
                 <Date>{splitDate(comment.updatedDate)} </Date>
-                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} color="#0B665C" />{reComment.replyLike}</CommentRecommand>
+                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} onClick={handleEmojiRecommand} color="#0B665C" />{reComment.replyLike}</CommentRecommand>
+                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} onClick={handleEmojiCancel} color="#0B665C" />{reComment.replyLike}</CommentRecommand>
               </CommentInfor>
               </CommentLeftContent>
               </CommentLeft>

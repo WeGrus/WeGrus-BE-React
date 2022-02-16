@@ -52,6 +52,7 @@ function OAuth(props) {
 
         console.log(res);
         props.setKakaoId(KAKAO_ID);
+        console.log(KAKAO_ID)
         //console.log(KAKAO_ID, RESULT);
         if (RESULT === "fail") {
           navigate("/login/email-auth");

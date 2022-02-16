@@ -27,6 +27,8 @@ function mapStateToProps(state) {
   return state;
 }
 
+let aaaa;
+
 function Page(props) {
   const location = useLocation().state;
   const [secret, setSecret] = React.useState(false);
@@ -35,18 +37,15 @@ function Page(props) {
   const [test, setTest] = React.useState(false); // file이 올라오는 지 아닌지 확인
   const [url, setURL] = React.useState(""); // download할 url link
   const [postImageIds, setPostImageIds] = React.useState([]);
+  
 
   const editorRef = React.useRef();
   const downRef = React.createRef();
-  const Navigate = useNavigate();
-  const isAuthority = props.userReducer.roles.some((i) =>
-    [
-      "ROLE_GROUP_EXECUTIVE",
-      "ROLE_GROUP_PRESIDENT",
-      "ROLE_CLUB_EXECUTIVE",
-      "ROLE_CLUB_PRESIDENT",
-    ].includes(i)
-  );
+
+  const Navigate = useNavigate(); 
+  const isClubExecutives =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+  const isGroupExecutives =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT"].includes(i))
+
   let aBlob;
 
   const handleSecretOptionChange = (event) => {
@@ -76,43 +75,41 @@ function Page(props) {
     return getContent_html;
   }
 
-  function submit() {
-    //  const data = {
-    //    title: title,
-    //    text: printTextBody(),
-    //    isSecret: checked,
-    //    isNotice: notice,
-    //    boardType:filter.category,
-    //    subCategory:filter.subCategory
-    //   }
-    // console.log(data);
-    // console.log(data.text);
 
-    axios
-      .post(
-        `/posts`,
-        {
-          boardId: props.PageReducer.boardId,
-          content: printTextBody(),
-          postImage: postImageIds,
-          secretFlag: secret,
-          title: title,
-          type: isNotice(),
-        },
-        {
-          headers: {
-            "content-type": "application/json",
-          },
-        }
-      )
+  function submit(){
+    const data = {
+      "boardId": props.PageReducer.boardId,
+      "content": printTextBody(),
+      "postImage":postImageIds,
+      "secretFlag": secret,
+      "title": title,
+      "type": isNotice()
+    }
+
+    //console.log(aaaa);
+
+     let postCreateRequest  = new FormData();
+     postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
+
+     
+    axios.post(`/posts`,postCreateRequest,{
+      headers: {
+        'Authorization': `Bearer ${props.userReducer.token}`,
+        "content-type": "multipart/form-data"
+      }
+    })
+
       .catch(function (error) {
         console.log(error.toJSON());
       })
       .then(function (res) {
         console.log(res);
-        console.log(props.PageReducer.boardCategoryName);
+        //console.log(props.PageReducer.boardCategoryName);
         Navigate(props.PageReducer.boardCategoryName);
       });
+
+
+
   }
 
   React.useEffect(() => {
@@ -151,6 +148,7 @@ function Page(props) {
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
     console.log(formData);
+    aaaa = formData
     //console.log(e.target.files);
 
     // const formData = new FormData();
@@ -200,21 +198,24 @@ function Page(props) {
             </a>
           ) : null}
           <BtnSection>
-            <Link to="/board" state={{ category: location.subCategory }}>
-              <GoToList>목록으로</GoToList>
-            </Link>
+
+            <Link to={`${props.PageReducer.boardCategoryName}`}><GoToList >목록으로</GoToList></Link>
             <Right>
-              {isAuthority === true ? (
+              {(isClubExecutives === true && props.PageReducer.viewCategoryName !== "소모임")?
+                          <SetOption>
+                          <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
+                          <Checkbox checked={notice} onChange={handleNoticeOptionChange}/>
+                        </SetOption>
+              :
+              null}
+              {(isGroupExecutives === true && props.PageReducer.viewCategoryName === "소모임") ?
                 <SetOption>
-                  <Text>
-                    <span style={{ marginRight: 8 }}>공지글 설정하기</span>
-                  </Text>
-                  <Checkbox
-                    checked={notice}
-                    onChange={handleNoticeOptionChange}
-                  />
+                  <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
+                  <Checkbox checked={notice} onChange={handleNoticeOptionChange} />
                 </SetOption>
-              ) : null}
+                :
+                null}
+
 
               <SetOption>
                 <Text>

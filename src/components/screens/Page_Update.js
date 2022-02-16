@@ -34,23 +34,20 @@ const checkNotice = (type) => {
 };
 
 function Page(props) {
-  const t = useParams();
-  const location = useLocation().state;
-  const pageData = location.pageData;
-  const data = useLocation().state;
-  const editorRef = React.createRef();
-  const [notice, setNotice] = React.useState(checkNotice(pageData.type));
-  const [secret, setSecret] = React.useState(pageData.secretFlag);
-  const [title, setTitle] = React.useState(pageData.title);
-  const Navigate = useNavigate();
-  const isAuthority = props.userReducer.roles.some((i) =>
-    [
-      "ROLE_GROUP_EXECUTIVE",
-      "ROLE_GROUP_PRESIDENT",
-      "ROLE_CLUB_EXECUTIVE",
-      "ROLE_CLUB_PRESIDENT",
-    ].includes(i)
-  );
+
+    const t = useParams();
+    const location = useLocation().state;
+    const pageData = location.pageData
+    const data = useLocation().state;
+    const editorRef = React.createRef();
+    const [notice, setNotice] = React.useState(checkNotice(pageData.type))
+    const [secret,setSecret] = React.useState(pageData.secretFlag)
+    const [title,setTitle] = React.useState(pageData.title);
+    const Navigate = useNavigate()
+    const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+    const isClubExecutives =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+    const isGroupExecutives =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT"].includes(i))
+
 
   React.useEffect(() => {
     const inputText = editorRef.current.getInstance(); // 수정할 내용을 불러옴.
@@ -58,26 +55,52 @@ function Page(props) {
     console.log(pageData);
   }, []);
 
-  const handleNoticeOptionChange = (event) => {
-    // 공지사항인지 유무
-    console.log(!notice);
-    if (!notice === true) {
-      //공지글로 설정했을 때
-      axios.patch(`/club/executives/boards/pin`, {
-        postId: pageData.postId,
-        type: "NOTICE",
-      });
-    } else {
-      axios.patch(
-        `/club/executives/boards/pin`,
-        {
-          postId: pageData.postId,
-          type: "NORMAL",
-        },
-        {
-          headers: { Authorization: `Bearer ${props.userReducer.token}` },
-        }
-      );
+
+    const handleNoticeOptionChange = event => { // 공지사항인지 유무
+      console.log(!notice);
+      if(!notice === true){ //공지글로 설정했을 때
+        axios.patch(`/club/executives/boards/pin`,{
+            "postId": pageData.postId,
+            "type": "NOTICE"
+        },{
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        })
+      }
+      else{
+        axios.patch(`/club/executives/boards/pin`,{
+          "postId": pageData.postId,
+          "type": "NORMAL"
+      },{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      }
+      setNotice(!notice)
+    }
+
+    const handleNoticeGroupOptionChange = (e) => {
+      console.log(!notice);
+      if(!notice === true){ //공지글로 설정했을 때
+        axios.patch(`/groups/executives/boards/pin`,{
+            "postId": pageData.postId,
+            "type": "NOTICE"
+        },{
+          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        })
+      }
+      else{
+        axios.patch(`/groups/executives/boards/pin`,{
+          "postId": pageData.postId,
+          "type": "NORMAL"
+      },{
+        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+      })
+      }
+      setNotice(!notice)
+    }
+
+    const handleSecretOptionChange = event => { // 비밀 글인지 유무
+      setSecret(!secret)
+
     }
     setNotice(!notice);
   };
@@ -145,21 +168,31 @@ function Page(props) {
             ref={editorRef}
           />
           <BtnSection>
-            <Link to="/board" state={{ category: location.subCategory }}>
-              <GoToList>목록으로</GoToList>
-            </Link>
+
+            <Link to={`${props.PageReducer.boardCategoryName}`}><GoToList >목록으로</GoToList></Link>
             <Right>
-              {isAuthority === true ? (
-                <SetOption>
-                  <Text>
-                    <span style={{ marginRight: 8 }}>공지글 설정하기</span>
-                  </Text>
-                  <Checkbox
-                    checked={notice}
-                    onChange={handleNoticeOptionChange}
-                  />
-                </SetOption>
-              ) : null}
+
+            {(isClubExecutives === true && props.PageReducer.viewCategoryName !== "소모임")?
+                          <SetOption>
+                          <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
+                          <Checkbox
+                            checked={notice}
+                            onChange={handleNoticeOptionChange}
+                          />
+                        </SetOption>
+              :
+              null}
+                {(isGroupExecutives === true && props.PageReducer.viewCategoryName === "소모임") ?
+                  <SetOption>
+                    <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
+                    <Checkbox
+                      checked={notice}
+                      onChange={handleNoticeGroupOptionChange}
+                    />
+                  </SetOption>
+                  :
+                  null}
+
               <SetOption>
                 <Text>
                   <span style={{ marginRight: 8 }}>비밀글 설정하기</span>
