@@ -14,7 +14,7 @@ function Pagination({ total, limit, page, setPage }) {
   const [current, setCurrent] = React.useState(page);
   const displayRightEl = React.useRef(null);
   const displayLeftEl = React.useRef(null);
-  const test = null;
+
   const showBtnBox = (e) => {
     if (e.target.dataset.direction == "right") {
       if (displayRightEl.current.style.display === "block") {
@@ -34,8 +34,7 @@ function Pagination({ total, limit, page, setPage }) {
   };
 
   const movePage = () => {
-    if (current > 0) {
-      // 최대 페이지를 초과한다면?
+    if (current > 0 && current< totalNumPages) {
       displayLeftEl.current.style.display = "none";
       displayRightEl.current.style.display = "none";
       setPage(current);
