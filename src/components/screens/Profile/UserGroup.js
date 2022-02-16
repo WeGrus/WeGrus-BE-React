@@ -1,48 +1,13 @@
 import axios from "axios";
-import { forwardRef, useEffect, useState } from "react";
-
-import { useForm } from "react-hook-form";
+import { forwardRef, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { actionCreators } from "../../../store";
-import { DEPARTMENTS, GRADE, STATUS } from "../Signup";
-import FileUploadComponent from "./fileUpload.component";
-import DetailBox, {
-  ButtonBox,
-  ContentBox,
-  EditButton,
-  EditForm,
-  EditInput,
-  EditProfileInput,
-  FormError,
-  InfoBox,
-  InfoText,
-  ProfileButton,
-  ProfilePhoto,
-  SubmitButton,
-} from "./ProfileElements";
+import DetailBox, { ContentBox, InfoBox, InfoText } from "./ProfileElements";
 
 function mapStateToProps(state) {
   console.log(state);
   return state;
 }
-
-const SSelect = styled.select`
-  width: 80%;
-`;
-
-const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
-  <>
-    <SSelect name={name} ref={ref} onChange={onChange} required>
-      <option value="hide">*--{placeholder}--</option>
-      {options.map((value, dataName) => (
-        <option key={value} value={dataName}>
-          {value}
-        </option>
-      ))}
-    </SSelect>
-  </>
-));
 
 const EnrollBtnBox = styled.div`
   width: 100%;
