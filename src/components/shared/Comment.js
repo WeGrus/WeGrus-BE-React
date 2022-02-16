@@ -30,7 +30,6 @@ function CommentSection(props){
   //console.log(commentData);
   //console.log(reCommentData);
 
-  console.log(commentData);
     const [comment,setComment] = React.useState("") // 댓글 입력칸
     const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
     const [commentIndex,setCommentIndex] = React.useState(-1); // 대댓글 작성을 위해 이용한다.
@@ -264,7 +263,7 @@ function CommentSection(props){
         <CommentBox key={comment.replyId}>
           <Comment data-id={`${comment.replyId}`} >
             <CommentLeft>
-              <CommentImage src={`${props.userReducer.imageUrl}`}></CommentImage>
+              <CommentImage src={`${comment.image.url}`}></CommentImage>
               <CommentLeftContent>
               <CommentNameBox>
                 <CommentName>{comment.memberName}</CommentName>
@@ -291,7 +290,7 @@ function CommentSection(props){
             <>
               <ReComment key={reComment.replyId} data-id={`${reComment.replyId}`}>
               <CommentLeft>
-              <ReCommentImage src={`${props.userReducer.imageUrl}`}></ReCommentImage>
+              <ReCommentImage src={`${reComment.image.url}`}></ReCommentImage>
               <CommentLeftContent>
               <CommentNameBox>
                 <CommentName>{reComment.memberName}</CommentName>

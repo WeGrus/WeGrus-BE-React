@@ -107,6 +107,8 @@ function App(props) {
   // onSilentRefresh(refresh_token);
   let isAuthority = false;
   let isJoinGroup = false;
+  const test = props?.userReducer?.group
+
   if (props?.userReducer?.roles !== null) {
     // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
     isAuthority = props?.userReducer?.roles.some((i) =>
@@ -117,14 +119,13 @@ function App(props) {
         "ROLE_CLUB_PRESIDENT",
       ].includes(i)
     );
-    isJoinGroup = props?.userReducer?.roles.some((i) =>
+    isJoinGroup = (props?.userReducer?.roles.some((i) =>
       [
         "ROLE_GROUP_EXECUTIVE",
         "ROLE_GROUP_PRESIDENT",
         "ROLE_CLUB_EXECUTIVE",
         "ROLE_CLUB_PRESIDENT",
-        "ROLE_MEMBER",
-      ].includes(i)
+      ].includes(i))
     );
   }
   useEffect(() => {
@@ -173,7 +174,7 @@ function App(props) {
                   path="/announce/update/:pagenum/:userid"
                   element={<UpdatePage />}
                 />
-                {isJoinGroup === true ? (
+                {(test !== null && test.length !== 0) ? (
                   <>
                     <Route path="/group" element={<Group />} />
                     <Route path="/group/:pagenum" element={<Page />} />

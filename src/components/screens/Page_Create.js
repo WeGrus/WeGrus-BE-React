@@ -26,8 +26,9 @@ function Page(props) {
 
   const editorRef = React.useRef();
   const downRef = React.createRef();
-  const Navigate = useNavigate();
-  const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+  const Navigate = useNavigate(); 
+  const isClubExecutives =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+  const isGroupExecutives =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT"].includes(i))
   let aBlob;
 
   const handleSecretOptionChange = event => {
@@ -59,17 +60,6 @@ function Page(props) {
   }
 
   function submit(){
-    
-  //  const data = {
-  //    title: title,
-  //    text: printTextBody(),
-  //    isSecret: checked,
-  //    isNotice: notice,
-  //    boardType:filter.category,
-  //    subCategory:filter.subCategory
-  //   }
-    // console.log(data);
-    // console.log(data.text);
  
     axios.post(`/posts`,{
       "boardId": props.PageReducer.boardId,
@@ -79,7 +69,7 @@ function Page(props) {
       "title": title,
       "type": isNotice()
     },{
-      headers: {'Authorization': `Bearer ${props.tokenReducer}`}
+      headers: { Authorization: `Bearer ${props.userReducer.token}` },
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -171,22 +161,22 @@ function Page(props) {
             <a href={url} download ref={downRef}>download</a>
           :null}
           <BtnSection>
-            <Link to="/board"
-                  state={
-                    {category:location.subCategory}
-                  }
-            ><GoToList >목록으로</GoToList></Link>
+            <Link to={`${props.PageReducer.boardCategoryName}`}><GoToList >목록으로</GoToList></Link>
             <Right>
-              {(isAuthority === true)?
+              {(isClubExecutives === true && props.PageReducer.viewCategoryName !== "소모임")?
                           <SetOption>
                           <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
-                          <Checkbox
-                            checked={notice}
-                            onChange={handleNoticeOptionChange}
-                          />
+                          <Checkbox checked={notice} onChange={handleNoticeOptionChange}/>
                         </SetOption>
               :
               null}
+              {(isGroupExecutives === true && props.PageReducer.viewCategoryName === "소모임") ?
+                <SetOption>
+                  <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
+                  <Checkbox checked={notice} onChange={handleNoticeOptionChange} />
+                </SetOption>
+                :
+                null}
 
               <SetOption>
                 <Text><span style={{ marginRight: 8 }}>비밀글 설정하기</span></Text>

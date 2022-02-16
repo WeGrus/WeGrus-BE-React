@@ -214,10 +214,10 @@ function Page(props) {
       {(load !== false)?
             <Background>
             <Content>
-              <Category>{props.PageReducer.viewCategoryName}|{location.subCategory}</Category>
+              <Category>{props.PageReducer.viewCategoryName}|{pageDate.board}</Category>
     
               <Header>
-                <PageImage src={`${props.userReducer.imageUrl}`}></PageImage>
+                <PageImage src={`${pageDate.image.url}`}></PageImage>
               <HeaderContent>
                 <Title>{pageDate.title}</Title>
                 <OtherDetail>{pageDate.memberName} | {splitDate(pageDate.updatedDate)}<Right>조회 {pageDate.postView} | 추천 {countOfRecommend} | 댓글 {countOfComment}</Right></OtherDetail>
