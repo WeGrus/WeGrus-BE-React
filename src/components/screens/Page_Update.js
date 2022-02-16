@@ -1,108 +1,143 @@
-import * as React from 'react';
-import { useLocation, Link, useNavigate } from 'react-router-dom'
+import * as React from "react";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import {Background,Content,Category,Header,Title,OtherDetail,BtnSection,GoToList,Right,SetOption,Text,Write} from "./../shared/PageElements"
-import { Editor } from '@toast-ui/react-editor';
-import Checkbox from './../shared/Checkbox'
+import {
+  Background,
+  Content,
+  Category,
+  Header,
+  Title,
+  OtherDetail,
+  BtnSection,
+  GoToList,
+  Right,
+  SetOption,
+  Text,
+  Write,
+} from "./../shared/PageElements";
+import { Editor } from "@toast-ui/react-editor";
+import Checkbox from "./../shared/Checkbox";
 import axios from "axios";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 function mapStateToProps(state) {
   return state;
 }
 
-const checkNotice = (type) => { // 공지글인지 아닌지 확인
-  if(type === "NORMAL"){
+const checkNotice = (type) => {
+  // 공지글인지 아닌지 확인
+  if (type === "NORMAL") {
     return false;
+  } else {
+    return true;
   }
-  else{
-    return true
-  }
-}
+};
 
 function Page(props) {
-    const t = useParams();
-    const location = useLocation().state;
-    const pageData = location.pageData
-    const data = useLocation().state;
-    const editorRef = React.createRef();
-    const [notice, setNotice] = React.useState(checkNotice(pageData.type))
-    const [secret,setSecret] = React.useState(pageData.secretFlag)
-    const [title,setTitle] = React.useState(pageData.title);
-    const Navigate = useNavigate()
-    const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+  const t = useParams();
+  const location = useLocation().state;
+  const pageData = location.pageData;
+  const data = useLocation().state;
+  const editorRef = React.createRef();
+  const [notice, setNotice] = React.useState(checkNotice(pageData.type));
+  const [secret, setSecret] = React.useState(pageData.secretFlag);
+  const [title, setTitle] = React.useState(pageData.title);
+  const Navigate = useNavigate();
+  const isAuthority = props.userReducer.roles.some((i) =>
+    [
+      "ROLE_GROUP_EXECUTIVE",
+      "ROLE_GROUP_PRESIDENT",
+      "ROLE_CLUB_EXECUTIVE",
+      "ROLE_CLUB_PRESIDENT",
+    ].includes(i)
+  );
 
-    React.useEffect(()=>{
-      const inputText = editorRef.current.getInstance(); // 수정할 내용을 불러옴.
-      inputText.setHTML(pageData.content)
-      console.log(pageData);
-    },[])
+  React.useEffect(() => {
+    const inputText = editorRef.current.getInstance(); // 수정할 내용을 불러옴.
+    inputText.setHTML(pageData.content);
+    console.log(pageData);
+  }, []);
 
-    const handleNoticeOptionChange = event => { // 공지사항인지 유무
-      console.log(!notice);
-      if(!notice === true){ //공지글로 설정했을 때
-        axios.patch(`/club/executives/boards/pin`,{
-            "postId": pageData.postId,
-            "type": "NOTICE"
-        },{
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-        })
-      }
-      else{
-        axios.patch(`/club/executives/boards/pin`,{
-          "postId": pageData.postId,
-          "type": "NORMAL"
-      },{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      })
-      }
-      setNotice(!notice)
+  const handleNoticeOptionChange = (event) => {
+    // 공지사항인지 유무
+    console.log(!notice);
+    if (!notice === true) {
+      //공지글로 설정했을 때
+      axios.patch(`/club/executives/boards/pin`, {
+        postId: pageData.postId,
+        type: "NOTICE",
+      });
+    } else {
+      axios.patch(
+        `/club/executives/boards/pin`,
+        {
+          postId: pageData.postId,
+          type: "NORMAL",
+        },
+        {
+          headers: { Authorization: `Bearer ${props.userReducer.token}` },
+        }
+      );
     }
-    const handleSecretOptionChange = event => { // 비밀 글인지 유무
-      setSecret(!secret)
-    }
+    setNotice(!notice);
+  };
+  const handleSecretOptionChange = (event) => {
+    // 비밀 글인지 유무
+    setSecret(!secret);
+  };
 
+  function printTextBody() {
+    const editorInstance = editorRef.current.getInstance();
+    const getContent_html = editorInstance.getHTML();
+    return getContent_html;
+  }
 
-    function printTextBody(){
-      const editorInstance = editorRef.current.getInstance();
-      const getContent_html = editorInstance.getHTML();
-      return getContent_html;
-    }
-
-    function submit(){ // 작성 버튼을 눌렀을 시 작동
-       axios.put(`/posts`,{
-        "content": printTextBody(),
-          "postId": pageData.postId,
-          "secretFlag": secret,
-          "title": title
-       },
-       {
-         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-       })
-       .catch(function (error) {
+  function submit() {
+    // 작성 버튼을 눌렀을 시 작동
+    axios
+      .put(
+        `/posts`,
+        {
+          content: printTextBody(),
+          postId: pageData.postId,
+          secretFlag: secret,
+          title: title,
+        },
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
+      .catch(function (error) {
         console.log(error.toJSON());
       })
-      .then(function(res){
+      .then(function (res) {
         console.log(res);
         //Navigate("/board", {state:{category:location.subCategory, page:1}});
         Navigate(props.PageReducer.boardCategoryName);
       });
-     }
+  }
 
-//initialValue={data.title}
+  //initialValue={data.title}
 
-
-    return (
-      <div>
+  return (
+    <div>
       <Background>
         <Content>
-          <Category>{props.PageReducer.viewCategoryName}|{location.subCategory}</Category>
+          <Category>
+            {props.PageReducer.viewCategoryName}|{location.subCategory}
+          </Category>
           <Header>
-          <Title type="text" placeholder="제목" value={title} onChange={(e)=>setTitle(e.target.value)}></Title>
+            <Title
+              type="text"
+              placeholder="제목"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            ></Title>
             <OtherDetail>{props.userReducer.name}</OtherDetail>
           </Header>
           <Editor
-            
             previewStyle="vertical"
             height="600px"
             initialEditType="wysiwyg"
@@ -110,25 +145,25 @@ function Page(props) {
             ref={editorRef}
           />
           <BtnSection>
-            <Link to="/board"
-                     state={
-                      {category:location.subCategory}
-                    }
-            ><GoToList >목록으로</GoToList></Link>
+            <Link to="/board" state={{ category: location.subCategory }}>
+              <GoToList>목록으로</GoToList>
+            </Link>
             <Right>
-
-            {(isAuthority === true)?
-                          <SetOption>
-                          <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
-                          <Checkbox
-                            checked={notice}
-                            onChange={handleNoticeOptionChange}
-                          />
-                        </SetOption>
-              :
-              null}
+              {isAuthority === true ? (
+                <SetOption>
+                  <Text>
+                    <span style={{ marginRight: 8 }}>공지글 설정하기</span>
+                  </Text>
+                  <Checkbox
+                    checked={notice}
+                    onChange={handleNoticeOptionChange}
+                  />
+                </SetOption>
+              ) : null}
               <SetOption>
-                <Text><span style={{ marginRight: 8 }}>비밀글 설정하기</span></Text>
+                <Text>
+                  <span style={{ marginRight: 8 }}>비밀글 설정하기</span>
+                </Text>
                 <Checkbox
                   checked={secret}
                   onChange={handleSecretOptionChange}
@@ -140,6 +175,6 @@ function Page(props) {
         </Content>
       </Background>
     </div>
-    );
-  }
-  export default connect(mapStateToProps)(Page);
+  );
+}
+export default connect(mapStateToProps)(Page);
