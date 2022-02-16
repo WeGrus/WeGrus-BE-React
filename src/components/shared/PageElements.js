@@ -382,3 +382,17 @@ object-fit: cover;
 export const CommentLeftContent = styled.div`
 margin-left: 11px;
 `
+export const DownloadBtn = styled.a`
+display: inline-block;
+width: 70px;
+height: 27px;
+line-height: 27px;
+margin-left: 6.72px;
+background-color: #6CD2D7;
+color: white;
+border-radius: 20px;
+text-align: center;
+
+
+
+`

@@ -8,7 +8,7 @@ import axios from "axios";
 import { connect } from 'react-redux';
 import CommentSection from './../shared/Comment';
 import {Background,Content,Category,OtherDetail,Description,Recommand,GoToList,Correction,Delete,
-  PostInfor, PostBtnSection, PostRecommand, PostScrape,HeaderContent,PageImage} from "./../shared/PageElements"
+  PostInfor, PostBtnSection, PostRecommand, PostScrape,HeaderContent,PageImage,DownloadBtn} from "./../shared/PageElements"
   import { actionCreators } from "../../store";
 
 const Title = styled.div`
@@ -78,6 +78,8 @@ function Page(props) {
   const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
   let data, time;
 
+  const downRef = React.useRef();
+
   React.useEffect(()=>{
     axios.get(`/posts/${location.postId}`,{
       headers: {'Authorization': `Bearer ${props.userReducer.token}`}
@@ -106,6 +108,7 @@ function Page(props) {
       setIsRecommend(pageDate.userPostLiked)
       console.log(pageDate);
       console.log(props);
+      console.log();
     }
   },[pageDate])
 
@@ -209,6 +212,36 @@ function Page(props) {
     return result
   }
 
+  const handleDownload = (e) => {
+    //e.preventDefault();
+    console.log(pageDate.postFileUrls[0]);
+    const turl = new URL(pageDate.postFileUrls[0])
+    console.log(turl);
+    const blob = new Blob([pageDate.postFileUrls[0]])
+    console.log(blob);
+     //const url = window.URL.createObjectURL(blob);
+     downRef.current.href = turl//pageDate.postFileUrls[0];
+     //downRef.current.download = pageDate.postFileUrls[0]
+     downRef.current.click();
+    setTimeout(_ => {
+      //window.URL.revokeObjectURL(url);
+    }, 60000);
+    //downRef.current.remove()
+
+
+    // const a = document.createElement('a');
+    // a.href = url;
+    // a.download = `{원하는 파일명}.pdf`;
+    // document.body.appendChild(a);
+    // a.click();
+    // setTimeout(_ => {
+    //   window.URL.revokeObjectURL(url);
+    // }, 60000);
+    // a.remove();
+    // setOpen(false);
+    // <button href={pageDate.postFileUrls[0]} download>download</button>
+	};
+
   return (
     <div>
       {(load !== false)?
@@ -239,7 +272,11 @@ function Page(props) {
                   <PostScrape onClick={handlePostScrape}>스크랩</PostScrape>
                 } 
                   
+              {(pageDate.postFileUrls[0] !== undefined)?<DownloadBtn ref={downRef} href={pageDate.postFileUrls[0]} download>첨부파일</DownloadBtn>:null}  
                 </PostBtnSection>
+                
+               
+
               </Description>
               
               <CommentSection pageData={pageDate} commentData={commentData} trigger={setTrigger} test={trigger}/>

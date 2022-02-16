@@ -15,7 +15,8 @@ function mapStateToProps(state) {
   return state;
 }
 
-let aaaa;
+let file;
+let filecheck = false
 
 function Page(props) {
   const location = useLocation().state;
@@ -71,29 +72,30 @@ function Page(props) {
       "title": title,
       "type": isNotice()
     }
+    let postCreateRequest  = new FormData();
+    postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
 
-    //console.log(aaaa);
+    if(filecheck){
+      //console.log(file);
+      //let fileData  = new FormData();
+      //fileData.append("file", new Blob([file]))
+      postCreateRequest.append('file',file);
+    }
 
-     let postCreateRequest  = new FormData();
-     postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
-
-     
-    axios.post(`/posts`,postCreateRequest,{
+    axios.post(`/posts`, (postCreateRequest), {
       headers: {
         'Authorization': `Bearer ${props.userReducer.token}`,
         "content-type": "multipart/form-data"
       }
     })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function (res) {
-        console.log(res);
-        //console.log(props.PageReducer.boardCategoryName);
-        Navigate(props.PageReducer.boardCategoryName);
-      });
-
-
+    .then(function (res) {
+      console.log(res);
+      //console.log(props.PageReducer.boardCategoryName);
+      Navigate(props.PageReducer.boardCategoryName);
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    });
   }
 
   React.useEffect(() => {
@@ -129,19 +131,23 @@ function Page(props) {
 
   const handleTest = (e) => {
     console.log(e.target.files[0]);
-    const formData = new FormData()
-    formData.append('file',e.target.files[0])
-    console.log(formData);
-    aaaa = formData
-    //console.log(e.target.files);
+    file = e.target.files[0]
+    console.log(e.target.files);
 
-    // const formData = new FormData();
-    // formData.append('file',e.target.files[0]);
+    // const formData = new FormData()
+    // formData.append('file',e.target.files[0])
+    // console.log(formData);
+    // file = formData
+    filecheck = true;
+    // //console.log(e.target.files);
 
-    aBlob = new Blob(e.target.files,{type : e.target.files[0].type})
-    setURL(URL.createObjectURL(aBlob));
-    console.log(url);
-    setTest(true)
+    // // const formData = new FormData();
+    // // formData.append('file',e.target.files[0]);
+
+    // aBlob = new Blob(e.target.files,{type : e.target.files[0].type})
+    // setURL(URL.createObjectURL(aBlob));
+    // console.log(url);
+    // setTest(true)
   }
 
 
