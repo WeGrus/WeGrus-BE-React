@@ -75,18 +75,26 @@ const NaviBar = (props) => {
       Navigate(`/operator`);
     }
   };
+  let isAuthority = false;
+  let isJoinGroup = false;
 
+  if (props?.userReducer?.roles !== null) {
+    // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
+    isAuthority = props?.userReducer?.roles.some((i) =>
+      [
+        "ROLE_GROUP_EXECUTIVE",
+        "ROLE_GROUP_PRESIDENT",
+        "ROLE_CLUB_EXECUTIVE",
+        "ROLE_CLUB_PRESIDENT",
+      ].includes(i)
+    );
+  }
   return (
     <>
       <Nav>
         <NavContents>
           <NavMenu>
-            <LogoLink
-              to="/operator"
-              onClick={(e) => {
-                handleLink(e, "ADMIN");
-              }}
-            >
+            <LogoLink to="/">
               <img src={require("../../images/logo2.png")} alt="logo" />
             </LogoLink>
             <NavLink to="/" style={({ isActive }) => ({})}>
@@ -127,6 +135,17 @@ const NaviBar = (props) => {
             >
               커뮤니티
             </NavLink>
+            {isAuthority ? (
+              <NavLink
+                to="/operator"
+                onClick={(e) => {
+                  handleLink(e, "ADMIN");
+                }}
+                style={({ isActive }) => ({})}
+              >
+                ADMIN
+              </NavLink>
+            ) : null}
           </NavMenu>
           <NavBtn>
             {authenticated ? (

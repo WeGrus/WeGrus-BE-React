@@ -10,7 +10,6 @@ import Announce from "./components/screens/Announce";
 import Profile from "./components/screens/Profile/Profile";
 import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
-import { isOperator } from "./variables";
 import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -99,6 +98,8 @@ export const onSilentRefresh = (refresh_token) => {
   }
 };
 
+export const jsonType = { "content-type": "application/json" };
+
 function App(props) {
   const authenticated = props?.userReducer?.authenticated;
   const role = props?.userReducer?.roles;
@@ -150,7 +151,15 @@ function App(props) {
 
           //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          const ERR = err.response.data.status;
+          console.log(ERR);
+          if (ERR === 403) {
+            window.alert(
+              "GUEST 권한입니다. 동아리 가입 신청 후 MEMBER 권한을 획득하면 이용 가능합니다."
+            );
+          }
+        });
     }
   }, [authenticated, userInfo]);
 
