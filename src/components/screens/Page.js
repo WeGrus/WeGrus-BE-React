@@ -1,9 +1,8 @@
 import * as React from 'react';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
-import { useParams, useLocation, Link, useNavigate  } from "react-router-dom";
+import { useLocation, Link, useNavigate  } from "react-router-dom";
 import styled from "styled-components";
-import * as ReactDOM from 'react-dom';
 import axios from "axios";
 import { connect } from 'react-redux';
 import CommentSection from './../shared/Comment';
@@ -76,7 +75,6 @@ function Page(props) {
   const [load, setLoad]=React.useState(false)
   const Navigate = useNavigate();
   const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
-  let data, time;
 
   const downRef = React.useRef();
 
@@ -88,15 +86,11 @@ function Page(props) {
       console.log(error.toJSON());
     })
     .then(function(res){
-      //console.log(res.data.data.board);
-      //console.log("work!");
       setPageData(res.data.data.board)
       setCommentData((current) => res.data.data.replies)
       setCountOfRecommend(res.data.data.board.postLike)
       setCountOfScrape(0) // 스크랩 이후 수정
       setCountOfComment(res.data.data.board.postReplies)
-      //props.setAll(7,2,false,'LASTEST')
-      //setPreviousTrigger(!trigger)
     });
 
   },[location,trigger])
@@ -194,7 +188,9 @@ function Page(props) {
 
   window.onpopstate = function(event){ // 뒤로가기
     event.preventDefault();
-    Navigate(props.PageReducer.boardCategoryName,{state:{category:location.subCategory}})
+    console.log("페이지에서 뒤로가기");
+    console.log(props.PageReducer);
+    Navigate(props.PageReducer.boardCategoryName)
   }
 
   const splitDate = (data) => {
@@ -212,35 +208,7 @@ function Page(props) {
     return result
   }
 
-  const handleDownload = (e) => {
-    //e.preventDefault();
-    console.log(pageDate.postFileUrls[0]);
-    const turl = new URL(pageDate.postFileUrls[0])
-    console.log(turl);
-    const blob = new Blob([pageDate.postFileUrls[0]])
-    console.log(blob);
-     //const url = window.URL.createObjectURL(blob);
-     downRef.current.href = turl//pageDate.postFileUrls[0];
-     //downRef.current.download = pageDate.postFileUrls[0]
-     downRef.current.click();
-    setTimeout(_ => {
-      //window.URL.revokeObjectURL(url);
-    }, 60000);
-    //downRef.current.remove()
 
-
-    // const a = document.createElement('a');
-    // a.href = url;
-    // a.download = `{원하는 파일명}.pdf`;
-    // document.body.appendChild(a);
-    // a.click();
-    // setTimeout(_ => {
-    //   window.URL.revokeObjectURL(url);
-    // }, 60000);
-    // a.remove();
-    // setOpen(false);
-    // <button href={pageDate.postFileUrls[0]} download>download</button>
-	};
 
   return (
     <div>

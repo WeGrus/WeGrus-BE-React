@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-//import styled from "styled-components";
 import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
@@ -30,39 +29,17 @@ import {
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
 
-// const PostInforBar = styled.div`
-//   width: 909.07px;
-//   height: 31px;
-//   margin: 0 auto;
-//   font-size: 14px;
-//   line-height: 16.41px;
-//   border-bottom: 1px solid black;
-// `;
-// const PostCotent = styled.div`
-// padding-top: 8px;
-// display: flex;
-// flex-direction: row;
-// `
 const boardCategory = "BOARD";
 
-// const subCategory = [ //서브 카테고리는 게시판 조회로 지정할 예정.
-//   { filter: "자유게시판", boardType: "FREE"},
-//   { filter: "익명게시판", boardType: "PERSONAL"},
-//   { filter: "정보 공유", boardType: "INFO"},
-//   { filter: "프로젝트 모집", boardType: "PROJECT"},
-//   { filter: "취미 톡방",boardType: "HOBBY"},
-//   { filter: "건의사항",boardType: "SUGGEST "},
-//   { filter: "질문/답변",boardType: "black"},
-// ];
+
 
 const selectDate = [
   // 게시물 나열할 때, 어떤 순으로 나열할지.
   { viewValue: "최신순", value: "LASTEST" },
   { viewValue: "추천순", value: "LIKEEST" },
   { viewValue: "댓글순", value: "REPLYEST" },
-  { viewValue: "조회순", value: "none" },
 ];
-//LASTEST, LIKEEST, REPLYEST
+
 
 function mapStateToProps(state) {
   return state;
@@ -84,16 +61,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 function Board(props) {
-  const location = useLocation();
-
   const [target, setTarget] = React.useState(null); // subCategory중 지금 선택한 부분.
   const [subCategory, setSubCategory] = React.useState(undefined);
   const [page, setPage] = React.useState(0);
   const [selected, setSelected] = React.useState(""); // 필터값
-  //const [currentBoardType, setCurrentBoardType] = React.useState("") // 현재 타겟의 boardType(숫자)
-  // const [currentType, setCurrentType] = React.useState("") // 현재 타겟의 selected(숫자)
-  let currentBoardType = "";
-  let currentType = "";
   const [load, setLoad] = React.useState(false); // load유무로 location의 값이 바뀐 뒤에 렌더
   const [posts, setPosts] = React.useState(null); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
@@ -196,16 +167,17 @@ function Board(props) {
             ...res.data.data.boards.filter(
               (element) => element.boardCategoryName === boardCategory
             ),
-          ]; // 사이드바에 넣을 콘텐츠의 종류
+          ]; 
           const boardTarget = category.find(
             (element) => element.boardId === PageReducer.boardId
-          ).boardName; // 그 중에서 현재 타겟의 board이름
+          ).boardName; 
           console.log(res);
           setTarget((current) => boardTarget);
           setPage(PageReducer.page);
           setSubCategory((previous) => category);
           console.log(PageReducer.selected);
           setSelected(PageReducer.selected);
+          setLoad(true)
         });
 
       if (PageReducer.isSearching[0] === true) {
@@ -248,7 +220,7 @@ function Board(props) {
       console.log(subCategory);
       const boardId = subCategory.find(
         (element) => element.boardName === target
-      ).boardId; // 그 중에서 현재 타겟의 board이름
+      ).boardId; 
       console.log(boardId);
       setSelected("LASTEST");
       props.setAll(
@@ -310,6 +282,8 @@ function Board(props) {
 
   return (
     <>
+        {(load === true)?
+      <>
       <PageTitle title="커뮤니티" />
       <SideBar
         posts={subCategory}
@@ -317,7 +291,6 @@ function Board(props) {
         target={target}
         item={"boardName"}
       ></SideBar>
-      {/* posts는 하위카테고리의 수를 나타내는 것입니다.[ex) 자유게시판, 비밀게시판 등등] target과 setTaget을 보냄으로써 bold및 target이 바뀌게 구현했습니다. */}
       <Content>
         <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
         <SearchBarSection>
@@ -350,7 +323,6 @@ function Board(props) {
         </SearchBarSection>
 
         <InforBar>
-          {/* 프로필의 내가 쓴 게시글, 내가 쓴 댓글 부분에 사용하시면 좋을 듯 합니다.*/}
           <InforContents>
             <Number>번호</Number>
             <Title>제목</Title>
@@ -369,7 +341,6 @@ function Board(props) {
             userReducer={props.userReducer}
           />
         ) : null}
-        {/* PostBar는 PostBar.js에서 주석달겠습니다. target은 sidebar에서 클릭한 하위카테고리입니다. */}
 
         <Pagination
           total={totalPage}
@@ -377,10 +348,15 @@ function Board(props) {
           page={page}
           setPage={setPage}
         />
-        {/* total은 총 게시글의 길이. limit은 한 페이지 안의 게시글의 개수, page는 현재 페이지이고 setPage를 보내줌으로써 페이지네이션 구현했습니다.*/}
         <Outlet />
       </Content>
     </>
+      :
+      null
+    }
+    </>
+
+
   );
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Board);

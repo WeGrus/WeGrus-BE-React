@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom'
-import styled from "styled-components";
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import Checkbox from './../shared/Checkbox'
-import react from 'react';
 import axios from "axios";
 import { connect } from 'react-redux';
 import {Background,Content,Category,Header,Title,OtherDetail,BtnSection,GoToList,Right,SetOption,Text,Write} from "./../shared/PageElements"
-import { current } from '@reduxjs/toolkit';
 
 
 function mapStateToProps(state) {
@@ -23,17 +20,14 @@ function Page(props) {
   const [secret,setSecret] = React.useState( false)
   const [notice, setNotice] = React.useState(false)
   const [title,setTitle] = React.useState("");
-  const [test, setTest] = React.useState(false) // file이 올라오는 지 아닌지 확인
-  const [url, setURL] = React.useState("") // download할 url link
   const [postImageIds, setPostImageIds] = React.useState([]);
   
 
   const editorRef = React.useRef();
-  const downRef = React.createRef();
   const Navigate = useNavigate(); 
   const isClubExecutives =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
   const isGroupExecutives =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT"].includes(i))
-  let aBlob;
+
 
   const handleSecretOptionChange = event => {
     setSecret(!secret)
@@ -134,31 +128,15 @@ function Page(props) {
     file = e.target.files[0]
     console.log(e.target.files);
 
-    // const formData = new FormData()
-    // formData.append('file',e.target.files[0])
-    // console.log(formData);
-    // file = formData
     filecheck = true;
-    // //console.log(e.target.files);
-
-    // // const formData = new FormData();
-    // // formData.append('file',e.target.files[0]);
-
-    // aBlob = new Blob(e.target.files,{type : e.target.files[0].type})
-    // setURL(URL.createObjectURL(aBlob));
-    // console.log(url);
-    // setTest(true)
-  }
-
-
-  setTimeout(function() {
-    URL.revokeObjectURL(url);
-   }, 1000);
-
-  const handleDownload = (e) => {
 
   }
-  console.log();
+
+  window.onpopstate = function(event){ // 뒤로가기
+    event.preventDefault();
+    console.log(props.PageReducer);
+    Navigate(props.PageReducer.boardCategoryName)
+  }
   
 
   return (
@@ -179,9 +157,7 @@ function Page(props) {
             ref={editorRef}
           />
           <input type="file" id="docpicker" onChange={handleTest}></input>
-          {(test)?
-            <a href={url} download ref={downRef}>download</a>
-          :null}
+
           <BtnSection>
             <Link to={`${props.PageReducer.boardCategoryName}`}><GoToList >목록으로</GoToList></Link>
             <Right>

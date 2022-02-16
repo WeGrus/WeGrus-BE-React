@@ -113,6 +113,13 @@ function Page(props) {
       });
      }
 
+     window.onpopstate = function(event){ // 뒤로가기
+      event.preventDefault();
+      console.log("업데이트에서 뒤로가기");
+      console.log(props.PageReducer);
+      Navigate(props.PageReducer.boardCategoryName)
+    }
+
 //initialValue={data.title}
 
 

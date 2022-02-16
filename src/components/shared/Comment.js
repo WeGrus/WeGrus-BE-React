@@ -1,6 +1,5 @@
 import axios from "axios";
 import * as React from 'react';
-import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp  } from "@fortawesome/free-regular-svg-icons";
@@ -9,12 +8,6 @@ import {Comments,Comment
     ,CommentContent,CommentWriteSection,CommentWrite,CommentSubmit,
     CommentName,CommentLeft,CommentNameBox,
     CommentBox,Date,CommentRecommand,BtnBar, CommentInfor,ReComment,CommentSpan,CommentLeftContent,CommentImage,ReCommentImage} from "./PageElements"
-
-      
-
-
-
-
 
 function mapStateToProps(state) {
         return state;
@@ -25,10 +18,6 @@ function CommentSection(props){
   const postId = pageData.postId
   const commentData = props.commentData.filter(item => item.replyParentId === -1)
   const reCommentData = props.commentData.filter(item => item.replyParentId !== -1)
-
-  //console.log(props);
-  //console.log(commentData);
-  //console.log(reCommentData);
 
     const [comment,setComment] = React.useState("") // 댓글 입력칸
     const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
@@ -352,16 +341,6 @@ function CommentSection(props){
               :
               <BtnBar data-index={reComment.replyId}><CommentSpan  onClick={handleReCommentRecommand}>추천</CommentSpan></BtnBar>
             }
-
-            {/* {(typeof userInfor != 'undefined') ?
-              <CommentBtnSection>
-                <CommentRecommand data-index={reComment.commentNumber} onClick={toggleReCommentRecommand}>추천 <span>{reComment.recommand}</span></CommentRecommand>
-              </CommentBtnSection>
-              :
-              <CommentBtnSection>
-                <CommentRecommand >추천 <span>{reComment.recommand}</span></CommentRecommand>
-              </CommentBtnSection>
-            } */}
           </ReComment>
             </>
             )}
