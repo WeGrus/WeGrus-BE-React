@@ -15,6 +15,8 @@ function mapStateToProps(state) {
   return state;
 }
 
+let aaaa;
+
 function Page(props) {
   const location = useLocation().state;
   const [secret,setSecret] = React.useState( false)
@@ -23,6 +25,7 @@ function Page(props) {
   const [test, setTest] = React.useState(false) // file이 올라오는 지 아닌지 확인
   const [url, setURL] = React.useState("") // download할 url link
   const [postImageIds, setPostImageIds] = React.useState([]);
+  
 
   const editorRef = React.useRef();
   const downRef = React.createRef();
@@ -60,25 +63,37 @@ function Page(props) {
   }
 
   function submit(){
- 
-    axios.post(`/posts`,{
+    const data = {
       "boardId": props.PageReducer.boardId,
       "content": printTextBody(),
       "postImage":postImageIds,
       "secretFlag": secret,
       "title": title,
       "type": isNotice()
-    },{
-      headers: { Authorization: `Bearer ${props.userReducer.token}` },
+    }
+
+    //console.log(aaaa);
+
+     let postCreateRequest  = new FormData();
+     postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
+
+     
+    axios.post(`/posts`,postCreateRequest,{
+      headers: {
+        'Authorization': `Bearer ${props.userReducer.token}`,
+        "content-type": "multipart/form-data"
+      }
     })
-    .catch(function (error) {
-      console.log(error.toJSON());
-    })
-    .then(function(res){
-      console.log(res);
-      console.log(props.PageReducer.boardCategoryName);
-      Navigate(props.PageReducer.boardCategoryName);
-    });
+      .catch(function (error) {
+        console.log(error.toJSON());
+      })
+      .then(function (res) {
+        console.log(res);
+        //console.log(props.PageReducer.boardCategoryName);
+        Navigate(props.PageReducer.boardCategoryName);
+      });
+
+
   }
 
   React.useEffect(() => {
@@ -117,6 +132,7 @@ function Page(props) {
     const formData = new FormData()
     formData.append('file',e.target.files[0])
     console.log(formData);
+    aaaa = formData
     //console.log(e.target.files);
 
     // const formData = new FormData();
