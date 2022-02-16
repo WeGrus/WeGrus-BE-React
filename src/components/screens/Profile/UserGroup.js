@@ -28,7 +28,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    editPhoto: (imageUrl) => dispatch(actionCreators.editPhoto(imageUrl)),
     putUserInfo: (
       id,
       email,
@@ -84,57 +83,49 @@ const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
 
 function UserGroup(props) {
   console.log(props);
-  const { handleSubmit, register, formState } = useForm();
-  const [infoPage, setInfoPage] = useState(true);
-  const [hasError, setHasError] = useState(false);
 
-  const DATA = props.data;
+  const [hasError, setHasError] = useState(false);
+  const [groupData, setGroupData] = useState([]);
+
+  const DATA = props.userReducer;
+  const userGroup = DATA.group;
+  console.log(userGroup);
+
+  const getGroups = () => {
+    axios.get("members/groups").then((res) => {
+      const GROUPS = res.data.data;
+      setGroupData(GROUPS);
+      console.log(GROUPS);
+    });
+  };
 
   useState(() => {
+    getGroups();
     console.log("delete photo");
-  }, [DATA, hasError, infoPage]); //DATA에 변화가 생기면 리렌더링하여 기본 프로필 사진을 띄웁니다.
-
-  const config = {
-    header: { "content-type": "multipart/form-data" },
-  };
-  const formData = new FormData();
-  formData.append("emtyData", null);
-
-  const handleDeletePhoto = () => {
-    axios
-      .patch("/members/image", formData, config)
-      .then((res) => {
-        props.editPhoto(
-          "https://igrus-webservice-bucket.s3.ap-northeast-2.amazonaws.com/basic.jpeg"
-        );
-      })
-      .catch((err) => {
-        const ErrMessage = err?.response?.data?.message;
-        console.log(ErrMessage); //이미지 변경 중 에러 발생 시 에러 메시지를 프린트
-      });
-  };
+  }, [DATA, hasError]); //DATA에 변화가 생기면 리렌더링하여 기본 프로필 사진을 띄웁니다.
 
   return (
     <>
       <InfoBox>
-        <DetailBox title="소모임 목록">
-          <ContentBox>
-            <ButtonBox>
-              <FileUploadComponent />
-              <EditButton>삭제</EditButton>
-            </ButtonBox>
-          </ContentBox>
-        </DetailBox>
-        <DetailBox title="회원 정보">
+        <DetailBox title="내 그룹">
           <InfoText>
-            <ButtonBox>
-              <EditButton>수정</EditButton>
-            </ButtonBox>
+            {userGroup !== [] ? (
+              <span>소모임에 가입하지 않았습니다.</span>
+            ) : (
+              userGroup.map((data) => <span>{data}</span>)
+            )}
           </InfoText>
-
-          <ButtonBox>
-            <SubmitButton type="submit" />
-          </ButtonBox>
+        </DetailBox>
+        <DetailBox title="소모임 신청">
+          <ContentBox>
+            <InfoBox>
+              <InfoText>
+                {groupData.map((data) => (
+                  <span key={data.id}>{data.name}</span>
+                ))}
+              </InfoText>
+            </InfoBox>
+          </ContentBox>
         </DetailBox>
       </InfoBox>
     </>
