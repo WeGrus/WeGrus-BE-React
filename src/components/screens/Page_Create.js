@@ -1,52 +1,41 @@
-import * as React from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import "@toast-ui/editor/dist/toastui-editor.css";
-import { Editor } from "@toast-ui/react-editor";
-import Checkbox from "./../shared/Checkbox";
-import react from "react";
+
+import * as React from 'react';
+import { useLocation, Link, useNavigate } from 'react-router-dom'
+import '@toast-ui/editor/dist/toastui-editor.css';
+import { Editor } from '@toast-ui/react-editor';
+import Checkbox from './../shared/Checkbox'
 import axios from "axios";
-import { connect } from "react-redux";
-import {
-  Background,
-  Content,
-  Category,
-  Header,
-  Title,
-  OtherDetail,
-  BtnSection,
-  GoToList,
-  Right,
-  SetOption,
-  Text,
-  Write,
-} from "./../shared/PageElements";
-import { current } from "@reduxjs/toolkit";
+import { connect } from 'react-redux';
+import {Background,Content,Category,Header,Title,OtherDetail,BtnSection,GoToList,Right,SetOption,Text,Write} from "./../shared/PageElements"
+
+
 
 function mapStateToProps(state) {
   return state;
 }
 
-let aaaa;
+let file;
+let filecheck = false
 
 function Page(props) {
   const location = useLocation().state;
-  const [secret, setSecret] = React.useState(false);
-  const [notice, setNotice] = React.useState(false);
-  const [title, setTitle] = React.useState("");
-  const [test, setTest] = React.useState(false); // file이 올라오는 지 아닌지 확인
-  const [url, setURL] = React.useState(""); // download할 url link
+
+  const [secret,setSecret] = React.useState( false)
+  const [notice, setNotice] = React.useState(false)
+  const [title,setTitle] = React.useState("");
+
   const [postImageIds, setPostImageIds] = React.useState([]);
   
 
   const editorRef = React.useRef();
-  const downRef = React.createRef();
+
 
   const Navigate = useNavigate(); 
   const isClubExecutives =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
   const isGroupExecutives =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT"].includes(i))
 
-  let aBlob;
+
+
 
   const handleSecretOptionChange = (event) => {
     setSecret(!secret);
@@ -85,30 +74,31 @@ function Page(props) {
       "title": title,
       "type": isNotice()
     }
+    let postCreateRequest  = new FormData();
+    postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
 
-    //console.log(aaaa);
+    if(filecheck){
+      //console.log(file);
+      //let fileData  = new FormData();
+      //fileData.append("file", new Blob([file]))
+      postCreateRequest.append('file',file);
+    }
 
-     let postCreateRequest  = new FormData();
-     postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
-
-     
-    axios.post(`/posts`,postCreateRequest,{
+    axios.post(`/posts`, (postCreateRequest), {
       headers: {
         'Authorization': `Bearer ${props.userReducer.token}`,
         "content-type": "multipart/form-data"
       }
     })
 
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function (res) {
-        console.log(res);
-        //console.log(props.PageReducer.boardCategoryName);
-        Navigate(props.PageReducer.boardCategoryName);
-      });
-
-
+    .then(function (res) {
+      console.log(res);
+      //console.log(props.PageReducer.boardCategoryName);
+      Navigate(props.PageReducer.boardCategoryName);
+    })
+    .catch(function (error) {
+      console.log(error.toJSON());
+    });
 
   }
 
@@ -145,27 +135,20 @@ function Page(props) {
 
   const handleTest = (e) => {
     console.log(e.target.files[0]);
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    console.log(formData);
-    aaaa = formData
-    //console.log(e.target.files);
+    file = e.target.files[0]
+    console.log(e.target.files);
 
-    // const formData = new FormData();
-    // formData.append('file',e.target.files[0]);
+    filecheck = true;
 
-    aBlob = new Blob(e.target.files, { type: e.target.files[0].type });
-    setURL(URL.createObjectURL(aBlob));
-    console.log(url);
-    setTest(true);
-  };
+  }
 
-  setTimeout(function () {
-    URL.revokeObjectURL(url);
-  }, 1000);
+  window.onpopstate = function(event){ // 뒤로가기
+    event.preventDefault();
+    console.log(props.PageReducer);
+    Navigate(props.PageReducer.boardCategoryName)
+  }
+  
 
-  const handleDownload = (e) => {};
-  console.log();
 
   return (
     <div>
@@ -192,11 +175,9 @@ function Page(props) {
             ref={editorRef}
           />
           <input type="file" id="docpicker" onChange={handleTest}></input>
-          {test ? (
-            <a href={url} download ref={downRef}>
-              download
-            </a>
-          ) : null}
+
+
+
           <BtnSection>
 
             <Link to={`${props.PageReducer.boardCategoryName}`}><GoToList >목록으로</GoToList></Link>

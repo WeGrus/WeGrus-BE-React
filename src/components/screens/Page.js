@@ -1,14 +1,13 @@
 import * as React from 'react';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
-import { useParams, useLocation, Link, useNavigate  } from "react-router-dom";
+import { useLocation, Link, useNavigate  } from "react-router-dom";
 import styled from "styled-components";
-import * as ReactDOM from 'react-dom';
 import axios from "axios";
 import { connect } from 'react-redux';
 import CommentSection from './../shared/Comment';
 import {Background,Content,Category,OtherDetail,Description,Recommand,GoToList,Correction,Delete,
-  PostInfor, PostBtnSection, PostRecommand, PostScrape,HeaderContent,PageImage} from "./../shared/PageElements"
+  PostInfor, PostBtnSection, PostRecommand, PostScrape,HeaderContent,PageImage,DownloadBtn} from "./../shared/PageElements"
   import { actionCreators } from "../../store";
 
 const Title = styled.div`
@@ -76,7 +75,8 @@ function Page(props) {
   const [load, setLoad]=React.useState(false)
   const Navigate = useNavigate();
   const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
-  let data, time;
+
+  const downRef = React.useRef();
 
   React.useEffect(()=>{
     axios.get(`/posts/${location.postId}`,{
@@ -86,15 +86,11 @@ function Page(props) {
       console.log(error.toJSON());
     })
     .then(function(res){
-      //console.log(res.data.data.board);
-      //console.log("work!");
       setPageData(res.data.data.board)
       setCommentData((current) => res.data.data.replies)
       setCountOfRecommend(res.data.data.board.postLike)
       setCountOfScrape(0) // 스크랩 이후 수정
       setCountOfComment(res.data.data.board.postReplies)
-      //props.setAll(7,2,false,'LASTEST')
-      //setPreviousTrigger(!trigger)
     });
 
   },[location,trigger])
@@ -106,6 +102,7 @@ function Page(props) {
       setIsRecommend(pageDate.userPostLiked)
       console.log(pageDate);
       console.log(props);
+      console.log();
     }
   },[pageDate])
 
@@ -191,7 +188,9 @@ function Page(props) {
 
   window.onpopstate = function(event){ // 뒤로가기
     event.preventDefault();
-    Navigate(props.PageReducer.boardCategoryName,{state:{category:location.subCategory}})
+    console.log("페이지에서 뒤로가기");
+    console.log(props.PageReducer);
+    Navigate(props.PageReducer.boardCategoryName)
   }
 
   const splitDate = (data) => {
@@ -208,6 +207,8 @@ function Page(props) {
 
     return result
   }
+
+
 
   return (
     <div>
@@ -239,7 +240,11 @@ function Page(props) {
                   <PostScrape onClick={handlePostScrape}>스크랩</PostScrape>
                 } 
                   
+              {(pageDate.postFileUrls[0] !== undefined)?<DownloadBtn ref={downRef} href={pageDate.postFileUrls[0]} download>첨부파일</DownloadBtn>:null}  
                 </PostBtnSection>
+                
+               
+
               </Description>
               
               <CommentSection pageData={pageDate} commentData={commentData} trigger={setTrigger} test={trigger}/>

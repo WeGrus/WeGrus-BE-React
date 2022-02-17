@@ -10,7 +10,7 @@ const printRole = (value) => {
         return "회장"
     }
     else if(value.includes("ROLE_GROUP_PRESIDENT")){
-        return "소모임장"
+        return "운영진"
     }
     else if(value.includes("ROLE_CLUB_EXECUTIVE")){
         return "운영진"

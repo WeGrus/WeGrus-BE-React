@@ -140,7 +140,18 @@ function Page(props) {
         //Navigate("/board", {state:{category:location.subCategory, page:1}});
         Navigate(props.PageReducer.boardCategoryName);
       });
-  }
+
+     }
+
+     window.onpopstate = function(event){ // 뒤로가기
+      event.preventDefault();
+      console.log("업데이트에서 뒤로가기");
+      console.log(props.PageReducer);
+      Navigate(props.PageReducer.boardCategoryName)
+    }
+
+//initialValue={data.title}
+
 
   //initialValue={data.title}
 

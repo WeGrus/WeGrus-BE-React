@@ -155,7 +155,7 @@ function Study(props) {
         setSubCategory((previous) => (category))
         console.log(PageReducer.selected);
         setSelected(PageReducer.selected)
-        setLoad(current => !current)
+        setLoad(true)
       });
 
       if(PageReducer.isSearching[0] === true){
@@ -285,9 +285,8 @@ function Study(props) {
       </Content>
       </>
       :
-      <>
         null
-      </>}
+      }
    
     </>
   );
