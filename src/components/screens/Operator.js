@@ -37,6 +37,7 @@ const subCategory = [
   { boardName: "회원 강제 탈퇴"},
   { boardName: "회장 위임"},
   { boardName: "전체 동아리원 초기화"},
+  { boardName: "게시판 추가 및 삭제"},
   { boardName: "그룹 회원 목록 조회"},
   { boardName: "그룹 가입 승인" },
   { boardName: "그룹 강제 탈퇴"},
@@ -79,13 +80,13 @@ else if(ClubExecutiveGroupLeader){
   return subCategory.filter(item => (item.boardName !== "전체 동아리원 권한 초기화")&&(item.boardName !== "회장 위임")&&(item.boardName !== "회원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제"))
 }
 else if(GroupLeader){
-  return subCategory.filter(item => (item.boardName !== "회원 목록 조회")&&(item.boardName !== "회원 가입 승인 및 거절")&&(item.boardName !== "회원 권한 부여")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제")&&(item.boardName !== "운영진 권한 해제")&&(item.boardName !== "그룹 회장 권한 부여")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "회장 위임")&&(item.boardName !== "전체 동아리원 초기화"))
+  return subCategory.filter(item => (item.boardName !== "회원 목록 조회")&&(item.boardName !== "회원 가입 승인 및 거절")&&(item.boardName !== "회원 권한 부여")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제")&&(item.boardName !== "운영진 권한 해제")&&(item.boardName !== "그룹 회장 권한 부여")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "회장 위임")&&(item.boardName !== "전체 동아리원 초기화")&&(item.boardName !== "게시판 추가 및 삭제"))
 }
 else if(ClubExecutiveGroupExecutive){
   return subCategory.filter(item => (item.boardName !== "회원 권한 부여")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "회장 위임")&&(item.boardName !== "전체 동아리원 초기화")&&(item.boardName !== "운영진 권한 해제")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 강제 탈퇴"))
 }
 else if(ClubExecutive){
-  return subCategory.filter(item => (item.boardName === "회원 목록 조회")||(item.boardName === "회원 가입 승인 및 거절")||(item.boardName === "그룹 회장 권한 부여"))
+  return subCategory.filter(item => (item.boardName === "회원 목록 조회")||(item.boardName === "회원 가입 승인 및 거절")||(item.boardName === "그룹 회장 권한 부여")||(item.boardName !== "게시판 추가 및 삭제"))
 }
 else if(GroupExecutive){
   return subCategory.filter(item => (item.boardName === "그룹 회원 목록 조회")||(item.boardName === "그룹 가입 승인"))

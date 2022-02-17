@@ -1,6 +1,5 @@
 import axios from "axios";
 import * as React from 'react';
-import { useParams, useLocation, Link, useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp  } from "@fortawesome/free-regular-svg-icons";
@@ -9,12 +8,6 @@ import {Comments,Comment
     ,CommentContent,CommentWriteSection,CommentWrite,CommentSubmit,
     CommentName,CommentLeft,CommentNameBox,
     CommentBox,Date,CommentRecommand,BtnBar, CommentInfor,ReComment,CommentSpan,CommentLeftContent,CommentImage,ReCommentImage} from "./PageElements"
-
-      
-
-
-
-
 
 function mapStateToProps(state) {
         return state;
@@ -26,11 +19,6 @@ function CommentSection(props){
   const commentData = props.commentData.filter(item => item.replyParentId === -1)
   const reCommentData = props.commentData.filter(item => item.replyParentId !== -1)
 
-  //console.log(props);
-  //console.log(commentData);
-  //console.log(reCommentData);
-
-  console.log(commentData);
     const [comment,setComment] = React.useState("") // 댓글 입력칸
     const [placeholder, setPlaceholder] = React.useState("  댓글 작성 시 네티켓을 지켜주세요.")
     const [commentIndex,setCommentIndex] = React.useState(-1); // 대댓글 작성을 위해 이용한다.
@@ -121,7 +109,9 @@ function CommentSection(props){
       }
     }
     
-    const handleCommentRecommandCancel = (e, commentId) => { // 댓글 추천 취소함수
+    const handleCommentRecommandCancel = (e) => { // 댓글 추천 취소함수
+      const info = e.target.parentNode.parentNode.dataset.id;
+      const commentId = Number(info);
 
       axios.delete(`/comments/like?replyId=${commentId}`, {
         headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
@@ -131,33 +121,74 @@ function CommentSection(props){
           console.log("추천 취소");
           const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) -1
           console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum);
+          triggerSwitch()
       });
     }
 
   const handleCommentRecommand = (e) => { // 댓글 추천 함수
     const info = e.target.parentNode.parentNode.dataset.id;
     const commentId = Number(info);
-    //console.log(e.target.parentNode.parentNode);
+    console.log(commentId);
+    // const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) + 1
+    // e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum
     axios.post(`/comments/like?replyId=${commentId}`, {}, {
       headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
       .catch(function (error) {
         console.log(error);
-        handleCommentRecommandCancel(e, commentId)
       })
       .then(function (res, error) {
         if (res === undefined) {
         }
         else {
-          const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) + 1
           console.log("추천 완료");
-          e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum
-          // console.log(e);
-          // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1]);
-          // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1]);
+          triggerSwitch()
+        }
+       });
+  }
 
+  const handleEmojiRecommand = (e) => {
+
+    const commentId = Number(e.target.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id)
+
+    console.log(e.target.parentNode.parentNode);
+    axios.post(`/comments/like?replyId=${commentId}`, {}, {
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+      .catch(function (error) {
+        console.log(error);
+        //handleCommentRecommandCancel(e, commentId)
+      })
+      .then(function (res, error) {
+        if (res === undefined) {
+        }
+        else {
+          const changeNum = Number(e.target.parentNode.innerText)+1
+          e.target.parentNode.childNodes[1].textContent = changeNum
+          triggerSwitch()
         }
       });
+
+
+  }
+
+  const handleEmojiCancel = (e) => {
+    console.log(e.target.parentNode.parentNode.innerText);
+    const commentId = Number(e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id)
+    console.log(commentId);
+    axios.delete(`/comments/like?replyId=${commentId}`, {
+      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function (res) {
+        console.log(res);
+        console.log("추천 취소");
+        const changeNum = Number(e.target.parentNode.parentNode.innerText)-1
+        e.target.parentNode.parentNode.childNodes[1].textContent = changeNum
+        triggerSwitch()
+    });
   }
     
   const handleReCommentWirte = (e) => { // 댓글에서 답글 버튼을 눌렀을 때 동작하는 함수
@@ -219,44 +250,6 @@ function CommentSection(props){
         }
   }
 
-  const handleReCommentRecommandCancel = (e, replyId) => { // 댓글 추천 취소함수
-
-    axios.delete(`/comments/like?replyId=${replyId}`, {
-      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
-    })
-    .then(function (res) {
-        console.log(res);
-        console.log("추천 취소");
-        const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) -1
-        e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum;
-    });
-  }
-
-  const handleReCommentRecommand = (e) => { // 댓글 추천 함수
-  const replyId  = e.target.parentNode.parentNode.dataset.id;
-  axios.post(`/comments/like?replyId=${replyId}`, {}, {
-    headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
-  })
-    .catch(function (error) {
-      console.log(error);
-      handleReCommentRecommandCancel(e, replyId)
-    })
-    .then(function (res, error) {
-      if (res === undefined) {
-      }
-      else {
-
-        const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) + 1
-        console.log("추천 완료");
-        e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum
-        
-        // console.log(e);
-        // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1]);
-        // console.log(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1]);
-
-      }
-    });
-  }
     
 
     
@@ -264,15 +257,18 @@ function CommentSection(props){
         <CommentBox key={comment.replyId}>
           <Comment data-id={`${comment.replyId}`} >
             <CommentLeft>
-              <CommentImage src={`${props.userReducer.imageUrl}`}></CommentImage>
+              <CommentImage src={`${comment.image.url}`}></CommentImage>
               <CommentLeftContent>
               <CommentNameBox>
                 <CommentName>{comment.memberName}</CommentName>
               </CommentNameBox>
               <CommentInfor data-index={comment.replyId}>
                 <Date>{splitDate(comment.updatedDate)} </Date>
-                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} color="#0B665C" />{comment.replyLike}</CommentRecommand>
-                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} color="#0B665C" />{comment.replyLike}</CommentRecommand>
+                {(comment.userReplyLiked === false)?
+                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} onClick={handleEmojiRecommand} color="#0B665C" />{comment.replyLike}</CommentRecommand>
+                :
+                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} onClick={handleEmojiCancel} color="#0B665C" />{comment.replyLike}</CommentRecommand>
+                }        
               </CommentInfor>
             </CommentLeftContent>
 
@@ -281,9 +277,9 @@ function CommentSection(props){
             <CommentContent>{comment.content}</CommentContent>
 
             {(comment.memberId === props.userReducer.id) ? // 이후 JWT 디코딩 이후 수정할 부분이다.
-              <BtnBar data-index={comment.replyId}><CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> | <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan></BtnBar>
+              <BtnBar data-index={comment.replyId}> {(comment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천</CommentSpan>} | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> | <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan></BtnBar>
               :
-              <BtnBar data-index={comment.replyId}><CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan></BtnBar>
+              <BtnBar data-index={comment.replyId}>{(comment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천</CommentSpan>}  | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan></BtnBar>
             }
           </Comment>
           
@@ -291,14 +287,18 @@ function CommentSection(props){
             <>
               <ReComment key={reComment.replyId} data-id={`${reComment.replyId}`}>
               <CommentLeft>
-              <ReCommentImage src={`${props.userReducer.imageUrl}`}></ReCommentImage>
+              <ReCommentImage src={`${reComment.image.url}`}></ReCommentImage>
               <CommentLeftContent>
               <CommentNameBox>
                 <CommentName>{reComment.memberName}</CommentName>
               </CommentNameBox>
               <CommentInfor data-index={reComment.replyId}>
                 <Date>{splitDate(comment.updatedDate)} </Date>
-                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} color="#0B665C" />{reComment.replyLike}</CommentRecommand>
+                {(reComment.userReplyLiked === false)?
+                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} onClick={handleEmojiRecommand} color="#0B665C" />{reComment.replyLike}</CommentRecommand>
+                :
+                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} onClick={handleEmojiCancel} color="#0B665C" />{reComment.replyLike}</CommentRecommand>
+                }
               </CommentInfor>
               </CommentLeftContent>
               </CommentLeft>
@@ -306,20 +306,10 @@ function CommentSection(props){
             <CommentContent>{reComment.content}</CommentContent>
 
             {(reComment.memberId === props.userReducer.id) ?
-              <BtnBar data-index={reComment.replyId}><CommentSpan onClick={handleReCommentRecommand}>추천</CommentSpan> | <CommentSpan onClick={handleReCommentDelete}>삭제</CommentSpan></BtnBar>
+              <BtnBar data-index={reComment.replyId}>{(reComment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천</CommentSpan>} | <CommentSpan onClick={handleReCommentDelete}>삭제</CommentSpan></BtnBar>
               :
-              <BtnBar data-index={reComment.replyId}><CommentSpan  onClick={handleReCommentRecommand}>추천</CommentSpan></BtnBar>
+              <BtnBar data-index={reComment.replyId}>{(reComment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천</CommentSpan>}</BtnBar>
             }
-
-            {/* {(typeof userInfor != 'undefined') ?
-              <CommentBtnSection>
-                <CommentRecommand data-index={reComment.commentNumber} onClick={toggleReCommentRecommand}>추천 <span>{reComment.recommand}</span></CommentRecommand>
-              </CommentBtnSection>
-              :
-              <CommentBtnSection>
-                <CommentRecommand >추천 <span>{reComment.recommand}</span></CommentRecommand>
-              </CommentBtnSection>
-            } */}
           </ReComment>
             </>
             )}
