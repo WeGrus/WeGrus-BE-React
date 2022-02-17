@@ -18,6 +18,7 @@ import PostMemberExpulsionBar from './../shared/PostMemberExpulsionBar'
 import PostGroupPermissionBar from './../shared/PostGroupPermissionBar'
 import { actionCreators } from "./../../store";
 import ResetAllMember from "./../shared/ResetAllMember"
+import BoardEdit from "../shared/BoardEdit";
 const Number = styled.div`
 width: 40px;
 text-align: left;
@@ -46,25 +47,6 @@ const subCategory = [
 ];
 
 
-const authority = (listofMember,giverManagement,permissionGroup,authorizeGroupPRESIDENT) =>{
-  if(giverManagement){ // 회장일때
-    //console.log("hahah");
-    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 회원 목록 조회"))
-  }
-  else if(listofMember){ // 동아리 임원일때
-    //console.log("동아리 임원일때");
-    //console.log(subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "운영진 권한 부여")));
-    return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 회원 목록 조회")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !=="운영진 권한 부여 및 회원 권한 해제"))
-  }
-  else if(authorizeGroupPRESIDENT){ // 소그룹장일때
-    //console.log("소그룹장일때");
-    return subCategory.filter(item => (item.boardName === "그룹 가입 승인")||(item.boardName === "그룹 강제 탈퇴")||(item.boardName === "그룹 임원 권한 부여")||(item.boardName === "그룹 회장 위임 및 임원 권한 해제")||(item.boardName === "그룹 회원 목록 조회"))
-  }
-  else{ //소그룹 임원일때
-    //console.log("소그룹 임원일때");
-    return subCategory.filter(item => item.boardName === ("그룹 회원 목록 조회"))
-  }
-}
 
 const getAuthority = (AllLeader,ClubLeaderGroupExecutive,ClubLeader,ClubExecutiveGroupLeader,GroupLeader,ClubExecutiveGroupExecutive,ClubExecutive,GroupExecutive) => {
 if(AllLeader){
@@ -1078,7 +1060,7 @@ function Operator(props) {
   :
   null
   }
-  {(target === "전체 동아리원 초기화")
+  {((target === "전체 동아리원 초기화")||(target ==="게시판 추가 및 삭제"))
   ?
   null
   :
@@ -1206,32 +1188,37 @@ function Operator(props) {
               :
               null
             }
-
-
-
-
-
-
-
       </>
 
       :
       null
       }
+
+        {(target === "게시판 추가 및 삭제") ?
+          <>
+            <BoardEdit  groupList={groupList} />
+          </>
+          :
+          null
+        }
      
-     {(target === "전체 동아리원 초기화") ?
-              <ResetAllMember />
+     {(target === "전체 동아리원 초기화" ) ?
+              <ResetAllMember/>
               :
               null
       }
 
+{((target === "전체 동아리원 초기화")||(target ==="게시판 추가 및 삭제"))?
+  null
+:
+<Pagination
+total={totalPage}
+limit={19}
+page={page}
+setPage={setPage}
+/>
+}
 
-    <Pagination
-            total={totalPage}
-            limit={19}
-            page={page}
-            setPage={setPage}
-        />
     </Content>
     </>
   );
