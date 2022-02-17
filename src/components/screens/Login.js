@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 
 const CLIENT_ID = "1ef47faee41a515f0b16c6242ceab0c2" //"65cd2fc55aec40658e2efbc951d47164";
-const REDIRECT_URI = "http://igrus.net/oauth/kakao/callback"; //"http://ec2-13-209-12-224.ap-northeast-2.compute.amazonaws.com/oauth/kakao/callback";//"http://localhost:3000/oauth/kakao/callback";        
+const REDIRECT_URI = "http://www.igrus.net/oauth/kakao/callback"; //"http://ec2-13-209-12-224.ap-northeast-2.compute.amazonaws.com/oauth/kakao/callback";//"http://localhost:3000/oauth/kakao/callback";        
 const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
 function Login() {
