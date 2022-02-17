@@ -42,7 +42,7 @@ function OAuth(props) {
       .post(`/signin?authorizationCode=${code}`, {
         headers: {
           "Access-Control-Allow-Origin":
-            "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/", // 서버 domain
+            "http://api.igrus.net:8080/", // 서버 domain
         },
         withCredentials: true,
       }) //로그인 api로 인가코드를 보내 백엔드에서 카카오 로그인 완료
