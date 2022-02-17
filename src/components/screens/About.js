@@ -170,6 +170,13 @@ const SmallDescriptionBox = styled.div`
   -webkit-box-shadow: 0px 10px 20px 0px rgba(50, 50, 50, 0.3);
   -moz-box-shadow: 0px 10px 20px 0px rgba(50, 50, 50, 0.3);
   box-shadow: 0px 10px 20px 0px rgba(50, 50, 50, 0.3);
+  transition: all 0.2s ease-in-out;
+  margin-left: 24px;
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    width: 900px;
+    color: #6cd2d7;
+  }
 `;
 
 const Hashtag = styled.div`

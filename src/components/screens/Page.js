@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
@@ -10,70 +11,70 @@ import {Background,Content,Category,OtherDetail,Description,Recommand,GoToList,C
   PostInfor, PostBtnSection, PostRecommand, PostScrape,HeaderContent,PageImage,DownloadBtn} from "./../shared/PageElements"
   import { actionCreators } from "../../store";
 
+
 const Title = styled.div`
-width: 924px;
-height: 21px;
-font-size: 18px;
-font-weight: 700;
-border: none;
-margin-bottom: 4px;
-`
+  width: 924px;
+  height: 21px;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  margin-bottom: 4px;
+`;
 
 const Right = styled.span`
-float: right;
-`
+  float: right;
+`;
 
 const BtnSection = styled.div`
-margin-top: 12.5px;
-padding-bottom: 12.5px;
-`
+  margin-top: 12.5px;
+  padding-bottom: 12.5px;
+`;
 
 export const Header = styled.div`
-padding-bottom: 16px;
-border-bottom: 2px solid #0B665C;
-margin-bottom: 42px;
-width: 924px;
-padding-top: 16px;
-margin: auto;
-display: flex;
-flex-direction: row;
-`
+  padding-bottom: 16px;
+  border-bottom: 2px solid #0b665c;
+  margin-bottom: 42px;
+  width: 924px;
+  padding-top: 16px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+`;
 
 const checkRecommend = (isRecommend) => {
   if (isRecommend) {
-    return "추천취소"
+    return "추천취소";
+  } else {
+    return "추천";
   }
-  else {
-    return "추천"
-  }
-
-}
+};
 
 function mapStateToProps(state) {
   return state;
 }
 
-function mapDispatchToProps(dispatch){
-  return{
-    setAll: (boardId,page,isSearching,seleted) => dispatch(actionCreators.setAll(boardId,page,isSearching,seleted))
-  }
+function mapDispatchToProps(dispatch) {
+  return {
+    setAll: (boardId, page, isSearching, seleted) =>
+      dispatch(actionCreators.setAll(boardId, page, isSearching, seleted)),
+  };
 }
 
 function Page(props) {
-  
   //const params = useParams();
   const location = useLocation().state;
 
   const [pageDate, setPageData] = React.useState(null);
-  const [commentData, setCommentData]= React.useState(null);
+  const [commentData, setCommentData] = React.useState(null);
   const [countOfRecommend, setCountOfRecommend] = React.useState(0); // 게시글 추천수
   const [countOfScrape, setCountOfScrape] = React.useState(0); // 게시글 스크랩수
   const [countOfComment, setCountOfComment] = React.useState(0); // 게시글 댓글수
   const [isRecommend, setIsRecommend] = React.useState(checkRecommend(false)); // 게시글 추천 유무 확인에 따라 값 변경.
-  const [isScraped, setIsScraped] = React.useState(false)
-  const [trigger, setTrigger] = React.useState(true)
-  const [load, setLoad]=React.useState(false)
+  const [isScraped, setIsScraped] = React.useState(false);
+  const [trigger, setTrigger] = React.useState(true);
+  const [load, setLoad] = React.useState(false);
   const Navigate = useNavigate();
+
   const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
 
   const downRef = React.useRef();
@@ -95,123 +96,140 @@ function Page(props) {
 
   },[location,trigger])
 
-  React.useEffect(()=>{
-    if(pageDate !== null){
-      setLoad(true)
-      setIsScraped(pageDate.userPostBookmarked)
-      setIsRecommend(pageDate.userPostLiked)
+
+  React.useEffect(() => {
+    if (pageDate !== null) {
+      setLoad(true);
+      setIsScraped(pageDate.userPostBookmarked);
+      setIsRecommend(pageDate.userPostLiked);
       console.log(pageDate);
       console.log(props);
       console.log();
     }
-  },[pageDate])
+  }, [pageDate]);
 
-
-  const postRecommand = () => { // 게시글 추천하는 함수
+  const postRecommand = () => {
+    // 게시글 추천하는 함수
     if (isRecommend === "추천취소") {
-      axios.delete(`/posts/like?postId=${pageDate.postId}`,{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function(res){
-        console.log(res);
-      });
+      axios
+        .delete(`/posts/like?postId=${pageDate.postId}`, {
+          headers: { Authorization: `Bearer ${props.userReducer.token}` },
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function (res) {
+          console.log(res);
+        });
       setCountOfRecommend((count) => count - 1);
-      setIsRecommend("추천")
-    }
-    else {
-      axios.post(`/posts/like?postId=${pageDate.postId}`,{},{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function(res){
-        console.log(res);
-      });
+      setIsRecommend("추천");
+    } else {
+      axios
+        .post(
+          `/posts/like?postId=${pageDate.postId}`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${props.userReducer.token}` },
+          }
+        )
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function (res) {
+          console.log(res);
+        });
       setCountOfRecommend((count) => count + 1);
-      setIsRecommend("추천취소")
+      setIsRecommend("추천취소");
     }
-  }
+  };
 
   const handlePostScrape = () => {
-    if(isScraped === true){ // 이미 추가했다면 북마크 해제
+    if (isScraped === true) {
+      // 이미 추가했다면 북마크 해제
       console.log("북마크 해제");
-      
-      axios.delete(`/members/bookmarks?postId=${pageDate.postId}`,{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function(res){
-        console.log(res);
-      });
+
+      axios
+        .delete(`/members/bookmarks?postId=${pageDate.postId}`, {
+          headers: { Authorization: `Bearer ${props.userReducer.token}` },
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function (res) {
+          console.log(res);
+        });
       setIsScraped(false);
-      setCountOfScrape((count)=>count-1)
-    }
-    else{
+      setCountOfScrape((count) => count - 1);
+    } else {
       console.log("북마크 성공");
       setIsScraped(true);
-      axios.post(`/members/bookmarks?postId=${pageDate.postId}`,{},{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function(res){
-        console.log(res);
-      });
-      setCountOfScrape((count)=>count+1)
+      axios
+        .post(
+          `/members/bookmarks?postId=${pageDate.postId}`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${props.userReducer.token}` },
+          }
+        )
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function (res) {
+          console.log(res);
+        });
+      setCountOfScrape((count) => count + 1);
     }
-  }
+  };
 
-  const handleDeleteClick = () => { // 게시글 삭제하는 함수
+  const handleDeleteClick = () => {
+    // 게시글 삭제하는 함수
     //axios로 delete하고 다시 보드 보여주기.
-    let value = window.confirm("해당 게시물을 삭제하겠습니까?")
+    let value = window.confirm("해당 게시물을 삭제하겠습니까?");
     if (value === true) {
-      axios.delete(`/posts?postId=${pageDate.postId}`,{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
-      })
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function(res){
-        console.log(res);
-        Navigate(props.PageReducer.boardCategoryName)
-      });
-     
+      axios
+        .delete(`/posts?postId=${pageDate.postId}`, {
+          headers: { Authorization: `Bearer ${props.userReducer.token}` },
+        })
+        .catch(function (error) {
+          console.log(error.toJSON());
+        })
+        .then(function (res) {
+          console.log(res);
+          Navigate(props.PageReducer.boardCategoryName);
+        });
     }
-  }
+  };
 
-  window.onpopstate = function(event){ // 뒤로가기
+  window.onpopstate = function (event) {
+    // 뒤로가기
     event.preventDefault();
+
     console.log("페이지에서 뒤로가기");
     console.log(props.PageReducer);
     Navigate(props.PageReducer.boardCategoryName)
   }
 
+
   const splitDate = (data) => {
-    const date = data.split('|')
-    const ymd = date[0]
-    const time = date[1].substr(0,5)
+    const date = data.split("|");
+    const ymd = date[0];
+    const time = date[1].substr(0, 5);
     // console.log(date);
     // console.log(ymd);
     // console.log(time);
-    
-    const result = `${ymd} | ${time}`
+
+    const result = `${ymd} | ${time}`;
     //console.log(result);
     //createTime()
 
-    return result
-  }
+    return result;
+  };
 
 
 
   return (
     <div>
+
       {(load !== false)?
             <Background>
             <Content>
@@ -219,25 +237,43 @@ function Page(props) {
     
               <Header>
                 <PageImage src={`${pageDate.image.url}`}></PageImage>
+
               <HeaderContent>
                 <Title>{pageDate.title}</Title>
-                <OtherDetail>{pageDate.memberName} | {splitDate(pageDate.updatedDate)}<Right>조회 {pageDate.postView} | 추천 {countOfRecommend} | 댓글 {countOfComment}</Right></OtherDetail>
-                </HeaderContent>
-              </Header>
-    
-              <Description>
-                <Viewer initialValue={pageDate.content} />
-                <PostInfor><span>댓글 {countOfComment}</span> | <span>추천 {countOfRecommend}</span> | <span>스크랩 {countOfScrape}</span></PostInfor>
-                <PostBtnSection>
-                {(isRecommend === true)?
-                <PostRecommand value="추천" onClick={postRecommand} checked>{"추천"}</PostRecommand>
-                :
-                <PostRecommand value="추천" onClick={postRecommand}>{"추천"}</PostRecommand>}
-    
-                {(isScraped === true)?
-                  <PostScrape onClick={handlePostScrape} checked>스크랩</PostScrape>
-                  :
+                <OtherDetail>
+                  {pageDate.memberName} | {splitDate(pageDate.updatedDate)}
+                  <Right>
+                    {`조회 ${pageDate.postView} | 추천 ${countOfRecommend} | 댓글 ${countOfComment}`}
+                  </Right>
+                </OtherDetail>
+              </HeaderContent>
+            </Header>
+
+            <Description>
+              <Viewer initialValue={pageDate.content} />
+              <PostInfor>
+                <span>댓글 {countOfComment}</span> |{" "}
+                <span>추천 {countOfRecommend}</span> |{" "}
+                <span>스크랩 {countOfScrape}</span>
+              </PostInfor>
+              <PostBtnSection>
+                {isRecommend === true ? (
+                  <PostRecommand value="추천" onClick={postRecommand} checked>
+                    {"추천"}
+                  </PostRecommand>
+                ) : (
+                  <PostRecommand value="추천" onClick={postRecommand}>
+                    {"추천"}
+                  </PostRecommand>
+                )}
+
+                {isScraped === true ? (
+                  <PostScrape onClick={handlePostScrape} checked>
+                    스크랩
+                  </PostScrape>
+                ) : (
                   <PostScrape onClick={handlePostScrape}>스크랩</PostScrape>
+
                 } 
                   
               {(pageDate.postFileUrls[0] !== undefined)?<DownloadBtn ref={downRef} href={pageDate.postFileUrls[0]} download>첨부파일</DownloadBtn>:null}  
@@ -278,7 +314,33 @@ function Page(props) {
       null
       }
 
+
+            <BtnSection>
+              <Link to={`${props.PageReducer.boardCategoryName}`}>
+                <GoToList>목록으로</GoToList>
+              </Link>
+              {props.userReducer.id === pageDate.memberId ||
+              isAuthority === true ? ( // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
+                <div style={{ float: "right" }}>
+                  <Link
+                    to={`${props.PageReducer.boardCategoryName}/update/${props.userReducer.id}/${props.userReducer.name}`}
+                    state={{
+                      boardType: location.category,
+                      subCategory: location.subCategory,
+                      postId: pageDate.postId,
+                      pageData: pageDate,
+                    }}
+                  >
+                    <Correction>수정</Correction>
+                  </Link>
+                  <Delete onClick={handleDeleteClick}>삭제</Delete>
+                </div>
+              ) : null}
+            </BtnSection>
+          </Content>
+        </Background>
+      ) : null}
     </div>
   );
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Page);
+export default connect(mapStateToProps, mapDispatchToProps)(Page);
