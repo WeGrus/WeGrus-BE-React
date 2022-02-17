@@ -6,7 +6,6 @@ export const SearchBarSection = styled.div`
   width: 910.07px;
   margin: 0 auto;
   min-height: 64px;
-
   border-bottom: 2px solid #0b665c;
   font-size: 14px;
   display: flex;

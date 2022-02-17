@@ -91,23 +91,22 @@ function Page(props) {
      let postCreateRequest  = new FormData();
      postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
 
-     
+     console.log("ddasdasdasadad");
     axios.post(`/posts`,postCreateRequest,{
       headers: {
         'Authorization': `Bearer ${props.userReducer.token}`,
         "content-type": "multipart/form-data"
       }
     })
-
-      .catch(function (error) {
-        console.log(error.toJSON());
-      })
-      .then(function (res) {
-        console.log(res);
-        //console.log(props.PageReducer.boardCategoryName);
-        Navigate(props.PageReducer.boardCategoryName);
-      });
-
+    .catch(function (error) {
+      console.log(error.toJSON());
+      //console.log("코드가 반복인가? 2");
+    })
+    .then(function (res) {
+      console.log(res);
+      console.log("코드가 반복인가? 1");
+      //Navigate(props.PageReducer.boardCategoryName);
+    })
 
 
   }
