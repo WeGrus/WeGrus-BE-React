@@ -102,12 +102,7 @@ function Page(props) {
       setSecret(!secret)
 
     }
-    setNotice(!notice);
-  };
-  const handleSecretOptionChange = (event) => {
-    // 비밀 글인지 유무
-    setSecret(!secret);
-  };
+
 
   function printTextBody() {
     const editorInstance = editorRef.current.getInstance();
