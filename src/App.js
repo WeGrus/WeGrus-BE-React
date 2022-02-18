@@ -111,8 +111,8 @@ function App(props) {
   let isAuthority = false;
   let isJoinGroup = false;
   const joinPermission = props?.userReducer?.group; //
-  console.log("");
-  console.log(Cookies.getAll());
+  //console.log("");
+  //console.log(cookies.getAll());
   if (props?.userReducer?.roles !== null) {
     // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
     isAuthority = props?.userReducer?.roles?.some((i) =>
