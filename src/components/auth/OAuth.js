@@ -41,8 +41,7 @@ function OAuth(props) {
     axios
       .post(`/signin?authorizationCode=${code}`, {
         headers: {
-          "Access-Control-Allow-Origin":
-            "http://api.igrus.net:8080/", // 서버 domain
+          "Access-Control-Allow-Origin": "http://api.igrus.net:8080/", // 서버 domain
         },
         withCredentials: true,
       }) //로그인 api로 인가코드를 보내 백엔드에서 카카오 로그인 완료
@@ -52,7 +51,7 @@ function OAuth(props) {
 
         console.log(res);
         props.setKakaoId(KAKAO_ID);
-        console.log(KAKAO_ID)
+        console.log(KAKAO_ID);
         //console.log(KAKAO_ID, RESULT);
         if (RESULT === "fail") {
           navigate("/login/email-auth");
@@ -61,27 +60,10 @@ function OAuth(props) {
           props.loginSuccess(ACCESS_TOKEN);
 
           props.setToken(res.data.data.accessToken);
-
-          var result = null;
-          var cookie = document.cookie;
-          const split_token = cookie.split("=");
-          result = split_token[1]; //서버에서 쿠키로 전송한 refresh_token을 확인하는 코드입니다
+          console.log(ACCESS_TOKEN);
+          //서버에서 쿠키로 전송한 refresh_token을 확인하는 코드입니다
           //sameSite - lax의 경우 다른 도메인간 쿠키 전송이 불가능 하기 때문에 sameSite none으로 설정하고 https를 통해 secure 설정을 하여 전송하거나 도메인을 통합해야 합니다.
 
-          //setRefreshTokenToCookie(result);
-          //console.log(res.data.data.accessToken);
-          /*axios
-            .get("/members/refreshToken", {
-              headers: {
-                "Access-Control-Allow-Origin":
-                  "http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/", // 서버 domain
-              },
-              withCredentials: true,
-            })
-            .then((res) => {
-              console.log(res);
-            });*/
-          //get요청으로 sameSite lax를 회피하려 하였으나 통하지 않았습니다. 죽은 자의 온기만 남아 있는 코드입니다.
           navigate("/");
         } else {
           window.alert("로그인 실패하였습니다. 다시 시도해주세요.");

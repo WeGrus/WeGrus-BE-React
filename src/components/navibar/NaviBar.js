@@ -15,6 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { cookies } from "../../App";
+import { useCookies } from "react-cookie";
 
 function mapStateToProps(state) {
   return state;
@@ -41,14 +42,15 @@ function mapDispatchToProps(dispatch) {
 const NaviBar = (props) => {
   const [logOut, setLogOut] = useState(false);
 
+  const [cookies, setCookie, removeCookie] = useCookies(["refreshToken"]);
+
   const authenticated = props.userReducer.authenticated;
   const DATA = props.userReducer;
   const Navigate = useNavigate();
 
   //useEffect(() => {}, [logOut]);
   const handleLogOut = () => {
-    props.logUserOut();
-    cookies.remove("refreshToken");
+    console.log("log out!");
   };
 
   const handleLink = (e, boardCategoryName) => {
@@ -101,56 +103,51 @@ const NaviBar = (props) => {
             <NavLink to="/" style={({ isActive }) => ({})}>
               About
             </NavLink>
-
-            {props?.userReducer?.authenticated ? (
-              <>
-                <NavLink
-                  to="/announce"
-                  onClick={(e) => {
-                    handleLink(e, "NOTICE");
-                  }}
-                >
-                  공지사항
-                </NavLink>
-                <NavLink
-                  to="/group"
-                  onClick={(e) => {
-                    handleLink(e, "GROUP");
-                  }}
-                  style={({ isActive }) => ({})}
-                >
-                  소모임
-                </NavLink>
-                <NavLink
-                  to="/study"
-                  onClick={(e) => {
-                    handleLink(e, "STUDY");
-                  }}
-                  style={({ isActive }) => ({})}
-                >
-                  스터디
-                </NavLink>
-                <NavLink
-                  to="/board"
-                  onClick={(e) => {
-                    handleLink(e, "BOARD");
-                  }}
-                  style={({ isActive }) => ({})}
-                >
-                  커뮤니티
-                </NavLink>
-                {isAuthority ? (
-                  <NavLink
-                    to="/operator"
-                    onClick={(e) => {
-                      handleLink(e, "ADMIN");
-                    }}
-                    style={({ isActive }) => ({})}
-                  >
-                    ADMIN
-                  </NavLink>
-                ) : null}
-              </>
+            <NavLink
+              to="/announce"
+              onClick={(e) => {
+                handleLink(e, "NOTICE");
+              }}
+            >
+              공지사항
+            </NavLink>
+            <NavLink
+              to="/group"
+              onClick={(e) => {
+                handleLink(e, "GROUP");
+              }}
+              style={({ isActive }) => ({})}
+            >
+              소모임
+            </NavLink>
+            <NavLink
+              to="/study"
+              onClick={(e) => {
+                handleLink(e, "STUDY");
+              }}
+              style={({ isActive }) => ({})}
+            >
+              스터디
+            </NavLink>
+            <NavLink
+              to="/board"
+              onClick={(e) => {
+                handleLink(e, "BOARD");
+              }}
+              style={({ isActive }) => ({})}
+            >
+              커뮤니티
+            </NavLink>
+            {isAuthority ? (
+              <NavLink
+                to="/operator"
+                onClick={(e) => {
+                  handleLink(e, "ADMIN");
+                }}
+                style={({ isActive }) => ({})}
+              >
+                ADMIN
+              </NavLink>
             ) : null}
           </NavMenu>
           <NavBtn>
@@ -159,7 +156,7 @@ const NaviBar = (props) => {
                 <ProfileLink to="/profile">
                   <img src={`${DATA.imageUrl}`} alt="profile" />
                 </ProfileLink>
-                <NavBtnLink onClick={handleLogOut} to="/login">
+                <NavBtnLink onClick={() => handleLogOut()} to="/login">
                   log out
                 </NavBtnLink>
               </>
