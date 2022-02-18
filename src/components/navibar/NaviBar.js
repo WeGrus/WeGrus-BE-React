@@ -15,6 +15,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+import { cookies } from "../../App";
+import { useCookies } from "react-cookie";
+
+
 function mapStateToProps(state) {
   return state;
 }
@@ -40,14 +44,17 @@ function mapDispatchToProps(dispatch) {
 const NaviBar = (props) => {
   const [logOut, setLogOut] = useState(false);
 
+  const [cookies, setCookie, removeCookie] = useCookies(["refreshToken"]);
+
   const authenticated = props.userReducer.authenticated;
   const DATA = props.userReducer;
   const Navigate = useNavigate();
 
   //useEffect(() => {}, [logOut]);
   const handleLogOut = () => {
-    props.logUserOut();
-    //setLogOut(true);
+
+    console.log("log out!");
+
   };
 
   const handleLink = (e, boardCategoryName) => {
@@ -153,7 +160,7 @@ const NaviBar = (props) => {
                 <ProfileLink to="/profile">
                   <img src={`${DATA.imageUrl}`} alt="profile" />
                 </ProfileLink>
-                <NavBtnLink onClick={handleLogOut} to="/login">
+                <NavBtnLink onClick={() => handleLogOut()} to="/login">
                   log out
                 </NavBtnLink>
               </>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import { CookiesProvider } from "react-cookie";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./App";
@@ -9,7 +10,9 @@ import store from "./store";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <CookiesProvider>
+        <App />
+      </CookiesProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
