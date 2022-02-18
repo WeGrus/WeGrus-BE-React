@@ -135,11 +135,10 @@ function App(props) {
   }
 
   useEffect(() => {
-
     console.log(props);
-    //const refreshToken = cookies.get("refreshToken");
-    //console.log(refreshToken);
-    if (authenticated) {
+    const refreshToken = cookies.get("refreshToken");
+    console.log(refreshToken);
+    if (refreshToken !== undefined) {
       axios
         .post("/reissue", {
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -154,8 +153,6 @@ function App(props) {
           console.log(props);
           //토큰을 디코딩합니다
           const ID = decoded.sub; //회원번호
-
-
 
           axios.defaults.headers.common[
             "Authorization"
