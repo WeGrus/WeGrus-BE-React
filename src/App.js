@@ -76,7 +76,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-//const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
+const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 
 export const jsonType = { "content-type": "application/json" };
 
@@ -90,7 +90,7 @@ function App(props) {
         withCredentials: true,
       })
       .then((res) => {
-        const accessToken = res?.data?.data?.accessToken;
+        const accessToken = res.data.data.accessToken;
         console.log(accessToken);
         props.loginSuccess(accessToken);
         //reissue 성공
@@ -111,8 +111,7 @@ function App(props) {
   let isAuthority = false;
   let isJoinGroup = false;
   const joinPermission = props?.userReducer?.group; //
-  //console.log("");
-  //console.log(cookies.getAll());
+
   if (props?.userReducer?.roles !== null) {
     // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
     isAuthority = props?.userReducer?.roles?.some((i) =>
@@ -133,16 +132,9 @@ function App(props) {
   }
 
   useEffect(() => {
-    const refreshToken = cookies.get("refreshToken");
-    if (refreshToken) {
-      console.log(refreshToken);
-      onSilentRefresh();
-    } else {
-      props.logUserOut();
-    }
-    //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
     if (authenticated) {
+      onSilentRefresh();
       //store에 토큰이 있을 경우(=로그인 했을 경우)
       var decoded = jwt_decode(token);
       //토큰을 디코딩합니다
@@ -181,7 +173,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {authenticated ? (
+            {role !== null ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
@@ -194,7 +186,7 @@ function App(props) {
                   path="/announce/update/:pagenum/:userid"
                   element={<UpdatePage />}
                 />
-                {(joinPermission !== null && joinPermission?.length !== 0) ||
+                {(joinPermission !== null && joinPermission.length !== 0) ||
                 isJoinGroup ? (
                   <>
                     <Route path="/group" element={<Group />} />
