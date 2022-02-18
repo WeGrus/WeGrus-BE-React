@@ -132,9 +132,9 @@ function App(props) {
   }
 
   useEffect(() => {
+    onSilentRefresh();
     //reissue api를 요청합니다.
     if (authenticated) {
-      onSilentRefresh();
       //store에 토큰이 있을 경우(=로그인 했을 경우)
       var decoded = jwt_decode(token);
       //토큰을 디코딩합니다
