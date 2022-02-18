@@ -23,6 +23,7 @@ import Signup from "./components/screens/Signup";
 import { actionCreators } from "./store";
 import jwt_decode from "jwt-decode";
 import About from "./components/screens/About/About";
+import { Cookies } from "react-cookie";
 
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -36,6 +37,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    loginSuccess: (token) => dispatch(actionCreators.loginSuccess(token)),
+    logUserOut: () => dispatch(actionCreators.logUserOut()),
     putUserInfo: (
       id,
       email,
@@ -72,24 +75,34 @@ function mapDispatchToProps(dispatch) {
       ),
   };
 }
-export const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 
-export const onSilentRefresh = () => {
-  axios
-    .post("/reissue", {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      withCredentials: true,
-    })
-    .then((res) => console.log(res))
-    .catch((err) => {
-      console.log(err);
-      // ... 로그인 실패 처리
-    });
-};
+const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 
 export const jsonType = { "content-type": "application/json" };
 
+export const cookies = new Cookies();
+
 function App(props) {
+  const onSilentRefresh = () => {
+    axios
+      .post("/reissue", {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        withCredentials: true,
+      })
+      .then((res) => {
+        const accessToken = res.data.data.accessToken;
+        console.log(accessToken);
+        props.loginSuccess(accessToken);
+        //reissue 성공
+      })
+      .catch((err) => {
+        console.log(err);
+        cookies.remove("refreshToken");
+        props.logUserOut();
+        // ... 로그인 실패 처리
+      });
+  };
+
   const authenticated = props?.userReducer?.authenticated;
   const role = props?.userReducer?.roles;
   const token = props?.userReducer?.token;
@@ -101,7 +114,7 @@ function App(props) {
 
   if (props?.userReducer?.roles !== null) {
     // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
-    isAuthority = props?.userReducer?.roles.some((i) =>
+    isAuthority = props?.userReducer?.roles?.some((i) =>
       [
         "ROLE_GROUP_EXECUTIVE",
         "ROLE_GROUP_PRESIDENT",
@@ -109,7 +122,7 @@ function App(props) {
         "ROLE_CLUB_PRESIDENT",
       ].includes(i)
     );
-    isJoinGroup = props?.userReducer?.roles.some((i) =>
+    isJoinGroup = props?.userReducer?.roles?.some((i) =>
       [
         "ROLE_GROUP_EXECUTIVE",
         "ROLE_GROUP_PRESIDENT",
@@ -117,8 +130,9 @@ function App(props) {
       ].includes(i)
     );
   }
+
   useEffect(() => {
-    //getCookie(); 도메인 코드 활성화 이후 이 코드를 활성화시켜야 합니다. reissue api를 요청합니다.
+    //reissue api를 요청합니다.
     if (authenticated) {
       onSilentRefresh();
       //store에 토큰이 있을 경우(=로그인 했을 경우)
