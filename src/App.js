@@ -135,7 +135,6 @@ function App(props) {
   }
 
   useEffect(() => {
-    console.log(props);
     axios
       .post("/reissue", {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -147,7 +146,7 @@ function App(props) {
         props.loginSuccess(accessToken);
         //store에 토큰이 있을 경우(=로그인 했을 경우)
         var decoded = jwt_decode(token);
-        console.log(props);
+
         //토큰을 디코딩합니다
         const ID = decoded.sub; //회원번호
 
@@ -186,10 +185,6 @@ function App(props) {
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
   }, [authenticated]);
-
-  useEffect(() => {
-    console.log("lsHf vjwefv");
-  }, []);
 
   return (
     <HelmetProvider>
