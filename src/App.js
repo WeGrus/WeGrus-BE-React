@@ -76,7 +76,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
+//const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 
 export const jsonType = { "content-type": "application/json" };
 
@@ -90,15 +90,15 @@ function App(props) {
         withCredentials: true,
       })
       .then((res) => {
-        const accessToken = res.data.data.accessToken;
+        const accessToken = res?.data?.data?.accessToken;
         console.log(accessToken);
         props.loginSuccess(accessToken);
         //reissue 성공
       })
       .catch((err) => {
         console.log(err);
-        cookies.remove("refreshToken");
-        props.logUserOut();
+        // cookies.remove("refreshToken");
+        //props.logUserOut();
         // ... 로그인 실패 처리
       });
   };
@@ -132,7 +132,12 @@ function App(props) {
   }
 
   useEffect(() => {
-    onSilentRefresh();
+    const refreshToken = cookies.get("refreshToken");
+    if (refreshToken) {
+      console.log(refreshToken);
+      onSilentRefresh();
+    }
+    //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
     if (authenticated) {
       //store에 토큰이 있을 경우(=로그인 했을 경우)
@@ -186,7 +191,7 @@ function App(props) {
                   path="/announce/update/:pagenum/:userid"
                   element={<UpdatePage />}
                 />
-                {(joinPermission !== null && joinPermission.length !== 0) ||
+                {(joinPermission !== null && joinPermission?.length !== 0) ||
                 isJoinGroup ? (
                   <>
                     <Route path="/group" element={<Group />} />
