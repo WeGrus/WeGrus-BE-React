@@ -40,6 +40,7 @@ function Group(props) {
   const [load, setLoad] = React.useState(false) // load유무로 location의 값이 바뀐 뒤에 렌더
   const [posts, setPosts] = React.useState(null); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
+  const [permissionCreateBtn,SetPermissionCreateBtn] = React.useState(false);
 
   const { register, handleSubmit} = useForm();
 
@@ -114,7 +115,13 @@ function Group(props) {
       .then(function(res){
         const category = [...res.data.data.boards.filter(element => element.boardCategoryName === boardCategory)] // 사이드바에 넣을 콘텐츠의 종류
         const boardTarget = category.find(element => element.boardId === PageReducer.boardId).boardName // 그 중에서 현재 타겟의 board이름
-
+        let checkCreateBtn = false;
+        props.userReducer.group.forEach(item => {
+          if(item.name === boardTarget){
+            checkCreateBtn = true
+          }
+        })
+        SetPermissionCreateBtn(checkCreateBtn)
         setTarget((current) => boardTarget)
         setPage(PageReducer.page)
         setSubCategory((previous) => (category))
@@ -147,6 +154,13 @@ function Group(props) {
       const boardId = subCategory.find(element => element.boardName === target).boardId // 그 중에서 현재 타겟의 board이름
       console.log(boardId);
       setSelected("LASTEST")
+      let checkCreateBtn = false;
+      props.userReducer.group.forEach(item => {
+        if(item.name === target){
+          checkCreateBtn = true
+        }
+      })
+      SetPermissionCreateBtn(checkCreateBtn)
       props.setAll(boardId,1,[false],"LASTEST",PageReducer.boardCategoryName)
     }
   },[target])
@@ -208,11 +222,17 @@ function Group(props) {
                 ))}
               </SearchBarFilter>
 
-          <CreateBtnLink
-                to={`/group/write/${props.userReducer.id}`} state={{ category: "소그룹", subCategory:  target}}
-              >
-                create
-              </CreateBtnLink>
+          {(permissionCreateBtn) === true ?
+            <CreateBtnLink
+              to={`/group/write/${props.userReducer.id}`} state={{ category: "소그룹", subCategory: target }}
+            >
+              create
+            </CreateBtnLink>
+            :
+            null
+          } 
+
+
             </SearchBarSection> 
 
           <InforBar> 
