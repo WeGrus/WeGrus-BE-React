@@ -97,8 +97,8 @@ function App(props) {
       })
       .catch((err) => {
         console.log(err);
-        // cookies.remove("refreshToken");
-        //props.logUserOut();
+        cookies.remove("refreshToken");
+        props.logUserOut();
         // ... 로그인 실패 처리
       });
   };
@@ -136,6 +136,8 @@ function App(props) {
     if (refreshToken) {
       console.log(refreshToken);
       onSilentRefresh();
+    } else {
+      props.logUserOut();
     }
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
