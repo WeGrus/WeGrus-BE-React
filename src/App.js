@@ -192,7 +192,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {authenticated ? (
+            {role !== null ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
