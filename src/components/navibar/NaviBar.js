@@ -44,10 +44,10 @@ const NaviBar = (props) => {
   const DATA = props.userReducer;
   const Navigate = useNavigate();
 
-  useEffect(() => {}, [logOut]);
+  //useEffect(() => {}, [logOut]);
   const handleLogOut = () => {
     props.logUserOut();
-    setLogOut(true);
+    //setLogOut(true);
   };
 
   const handleLink = (e, boardCategoryName) => {

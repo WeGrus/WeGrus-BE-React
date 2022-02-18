@@ -10,7 +10,7 @@ const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 const DELETE_TOKEN = "DELETE_TOKEN";
 const PUT_USER_INFO = "PUT_USER_INFO";
 const EDIT_PHOTO = "EDIT_PHOTO";
-const DEL_USER_ACCOUNT = "DEL_USER_ACCOUNT";
+const LOGOUT = "LOGOUT";
 
 const initialState = {
   //userReducer의 기본값입니다.
@@ -106,7 +106,7 @@ const editPhoto = (imageUrl) => {
 };
 
 const logUserOut = () => {
-  return { type: DEL_USER_ACCOUNT, result: false, initialState };
+  return { type: LOGOUT };
 };
 
 const userReducer = (state = initialState, action) => {
@@ -156,10 +156,8 @@ const userReducer = (state = initialState, action) => {
       };
     case EDIT_PHOTO:
       return { ...state, imageUrl: action.imageUrl };
-    case DELETE_TOKEN:
-      return { ...state, token: null, authenticated: false };
-    case DEL_USER_ACCOUNT:
-      return { ...state, initialState };
+    case LOGOUT:
+      return { initialState };
     default:
       return state;
   }
