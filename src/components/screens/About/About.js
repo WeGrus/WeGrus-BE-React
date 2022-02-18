@@ -11,9 +11,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Title } from "../shared/PageElements";
+import { Title } from "../../shared/PageElements";
 
-import PageTitle from "../shared/PageTitle";
+import PageTitle from "../../shared/PageTitle";
 
 const mapStateToProps = (state) => {
   return state;
@@ -211,14 +211,15 @@ function About(props) {
           <BigTitle>
             <Emoji>🙋🏻</Emoji> IGRUS는 어떤 동아리인가요?
           </BigTitle>
-          {props?.userReducer?.roles === null ? (
+          {props?.userReducer?.roles === null &&
+          props?.userReducer?.authenticated ? (
             <BtnLink onClick={handleEnrollClub}>동아리 가입 신청</BtnLink>
           ) : null}
         </TitleBox>
         <DescriptionBox>
           <IGImage>
             <img
-              src={require("../../images/아이그루스.png")}
+              src={require("../../../images/아이그루스.png")}
               alt="아이그루스 이미지"
             />
           </IGImage>

@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
 import Study from "./components/screens/Study";
 import Page from "./components/screens/Page";
-import About from "./components/screens/About";
+
 import Group from "./components/screens/Group";
 import CreatePage from "./components/screens/Page_Create.js";
 import UpdatePage from "./components/screens/Page_Update.js";
@@ -22,9 +22,10 @@ import axios from "axios";
 import Signup from "./components/screens/Signup";
 import { actionCreators } from "./store";
 import jwt_decode from "jwt-decode";
+import About from "./components/screens/About/About";
 
-axios.defaults.baseURL = "http://api.igrus.net:8080/"
-  //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
+axios.defaults.baseURL = "http://api.igrus.net:8080/";
+//"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
 
 //axios에서 baseURL을 지정해서 반복하는 코드를 없애는 것입니다. 이것때문에 기능이 안되신다면 말씀해주세요.
 
@@ -73,30 +74,17 @@ function mapDispatchToProps(dispatch) {
 }
 export const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 
-function getCookie() {
-  var result = null;
-  var cookie = document.cookie;
-
-  const split_token = cookie.split("=");
-  result = split_token[1];
-  onSilentRefresh(result);
-}
-
-export const onSilentRefresh = (refresh_token) => {
-  if (refresh_token) {
-    console.log(refresh_token);
-
-    axios
-      .post("/reissue", {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        withCredentials: true,
-      })
-      .then((res) => console.log(res))
-      .catch((err) => {
-        console.log(err);
-        // ... 로그인 실패 처리
-      });
-  }
+export const onSilentRefresh = () => {
+  axios
+    .post("/reissue", {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      withCredentials: true,
+    })
+    .then((res) => console.log(res))
+    .catch((err) => {
+      console.log(err);
+      // ... 로그인 실패 처리
+    });
 };
 
 export const jsonType = { "content-type": "application/json" };
@@ -106,10 +94,10 @@ function App(props) {
   const role = props?.userReducer?.roles;
   const token = props?.userReducer?.token;
   const [userInfo, setUserInfo] = useState(false);
-  // onSilentRefresh(refresh_token);
+
   let isAuthority = false;
   let isJoinGroup = false;
-  const joinPermission = props?.userReducer?.group //
+  const joinPermission = props?.userReducer?.group; //
 
   if (props?.userReducer?.roles !== null) {
     // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
@@ -121,17 +109,18 @@ function App(props) {
         "ROLE_CLUB_PRESIDENT",
       ].includes(i)
     );
-    isJoinGroup = (props?.userReducer?.roles.some((i) =>
+    isJoinGroup = props?.userReducer?.roles.some((i) =>
       [
         "ROLE_GROUP_EXECUTIVE",
         "ROLE_GROUP_PRESIDENT",
         "ROLE_CLUB_PRESIDENT",
-      ].includes(i))
+      ].includes(i)
     );
   }
   useEffect(() => {
     //getCookie(); 도메인 코드 활성화 이후 이 코드를 활성화시켜야 합니다. reissue api를 요청합니다.
     if (authenticated) {
+      onSilentRefresh();
       //store에 토큰이 있을 경우(=로그인 했을 경우)
       var decoded = jwt_decode(token);
       //토큰을 디코딩합니다
@@ -183,7 +172,8 @@ function App(props) {
                   path="/announce/update/:pagenum/:userid"
                   element={<UpdatePage />}
                 />
-                {((joinPermission !== null && joinPermission.length !== 0)||isJoinGroup) ? (
+                {(joinPermission !== null && joinPermission.length !== 0) ||
+                isJoinGroup ? (
                   <>
                     <Route path="/group" element={<Group />} />
                     <Route path="/group/:pagenum" element={<Page />} />
