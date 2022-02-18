@@ -210,7 +210,7 @@ function App(props) {
                   path="/announce/update/:pagenum/:userid"
                   element={<UpdatePage />}
                 />
-                {(joinPermission !== null && joinPermission.length !== 0) ||
+                {(joinPermission !== null && joinPermission?.length !== 0) ||
                 isJoinGroup ? (
                   <>
                     <Route path="/group" element={<Group />} />
