@@ -179,8 +179,8 @@ function App(props) {
       .catch((err) => {
         console.log(err);
         //cookies.remove("refreshToken", []);
-        props.logUserOut();
-        // ... 로그인 실패 처리
+        //props.logUserOut();
+        // ... 로그인 실패 처리(리프레시 토큰을 삭제해주어야함)
       });
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
@@ -192,7 +192,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {role !== null ? (
+            {authenticated ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
