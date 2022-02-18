@@ -106,7 +106,7 @@ const editPhoto = (imageUrl) => {
 };
 
 const logUserOut = () => {
-  return { type: LOGOUT };
+  return { type: LOGOUT, result: false, token: null };
 };
 
 const userReducer = (state = initialState, action) => {
@@ -157,7 +157,7 @@ const userReducer = (state = initialState, action) => {
     case EDIT_PHOTO:
       return { ...state, imageUrl: action.imageUrl };
     case LOGOUT:
-      return { initialState };
+      return { ...state, authenticated: action.result, token: action.token };
     default:
       return state;
   }
