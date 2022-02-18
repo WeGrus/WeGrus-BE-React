@@ -76,7 +76,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-//const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
+const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 
 export const jsonType = { "content-type": "application/json" };
 
@@ -92,7 +92,7 @@ function App(props) {
         withCredentials: true,
       })
       .then((res) => {
-        const accessToken = res?.data?.data?.accessToken;
+        const accessToken = res.data.data.accessToken;
         console.log(accessToken);
         props.loginSuccess(accessToken);
         //reissue 성공
@@ -135,6 +135,7 @@ function App(props) {
   }
 
   useEffect(() => {
+
     console.log(props);
     //const refreshToken = cookies.get("refreshToken");
     //console.log(refreshToken);
@@ -153,6 +154,8 @@ function App(props) {
           console.log(props);
           //토큰을 디코딩합니다
           const ID = decoded.sub; //회원번호
+
+
 
           axios.defaults.headers.common[
             "Authorization"
@@ -201,7 +204,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {authenticated ? (
+            {role !== null ? (
               <>
                 <Route path="/" element={<About />} />
                 <Route path="/announce" element={<Announce />} />
@@ -214,7 +217,7 @@ function App(props) {
                   path="/announce/update/:pagenum/:userid"
                   element={<UpdatePage />}
                 />
-                {(joinPermission !== null && joinPermission?.length !== 0) ||
+                {(joinPermission !== null && joinPermission.length !== 0) ||
                 isJoinGroup ? (
                   <>
                     <Route path="/group" element={<Group />} />
