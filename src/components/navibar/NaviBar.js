@@ -14,6 +14,7 @@ import {
 } from "./NavBarElements";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { cookies } from "../../App";
 
 function mapStateToProps(state) {
   return state;
@@ -47,7 +48,7 @@ const NaviBar = (props) => {
   //useEffect(() => {}, [logOut]);
   const handleLogOut = () => {
     props.logUserOut();
-    //setLogOut(true);
+    cookies.remove("refreshToken");
   };
 
   const handleLink = (e, boardCategoryName) => {
@@ -80,7 +81,7 @@ const NaviBar = (props) => {
 
   if (props?.userReducer?.roles !== null) {
     // 권한을 부여해서 일반회원은 /operator에 접근할 수 없게 만들었습니다. 이를 이용하기 위한 값입니다.
-    isAuthority = props?.userReducer?.roles.some((i) =>
+    isAuthority = props?.userReducer?.roles?.some((i) =>
       [
         "ROLE_GROUP_EXECUTIVE",
         "ROLE_GROUP_PRESIDENT",
@@ -100,51 +101,56 @@ const NaviBar = (props) => {
             <NavLink to="/" style={({ isActive }) => ({})}>
               About
             </NavLink>
-            <NavLink
-              to="/announce"
-              onClick={(e) => {
-                handleLink(e, "NOTICE");
-              }}
-            >
-              공지사항
-            </NavLink>
-            <NavLink
-              to="/group"
-              onClick={(e) => {
-                handleLink(e, "GROUP");
-              }}
-              style={({ isActive }) => ({})}
-            >
-              소모임
-            </NavLink>
-            <NavLink
-              to="/study"
-              onClick={(e) => {
-                handleLink(e, "STUDY");
-              }}
-              style={({ isActive }) => ({})}
-            >
-              스터디
-            </NavLink>
-            <NavLink
-              to="/board"
-              onClick={(e) => {
-                handleLink(e, "BOARD");
-              }}
-              style={({ isActive }) => ({})}
-            >
-              커뮤니티
-            </NavLink>
-            {isAuthority ? (
-              <NavLink
-                to="/operator"
-                onClick={(e) => {
-                  handleLink(e, "ADMIN");
-                }}
-                style={({ isActive }) => ({})}
-              >
-                ADMIN
-              </NavLink>
+
+            {props?.userReducer?.authenticated ? (
+              <>
+                <NavLink
+                  to="/announce"
+                  onClick={(e) => {
+                    handleLink(e, "NOTICE");
+                  }}
+                >
+                  공지사항
+                </NavLink>
+                <NavLink
+                  to="/group"
+                  onClick={(e) => {
+                    handleLink(e, "GROUP");
+                  }}
+                  style={({ isActive }) => ({})}
+                >
+                  소모임
+                </NavLink>
+                <NavLink
+                  to="/study"
+                  onClick={(e) => {
+                    handleLink(e, "STUDY");
+                  }}
+                  style={({ isActive }) => ({})}
+                >
+                  스터디
+                </NavLink>
+                <NavLink
+                  to="/board"
+                  onClick={(e) => {
+                    handleLink(e, "BOARD");
+                  }}
+                  style={({ isActive }) => ({})}
+                >
+                  커뮤니티
+                </NavLink>
+                {isAuthority ? (
+                  <NavLink
+                    to="/operator"
+                    onClick={(e) => {
+                      handleLink(e, "ADMIN");
+                    }}
+                    style={({ isActive }) => ({})}
+                  >
+                    ADMIN
+                  </NavLink>
+                ) : null}
+              </>
             ) : null}
           </NavMenu>
           <NavBtn>
