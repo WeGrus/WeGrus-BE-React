@@ -58,23 +58,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-// const callSideBar = (token) => {
-//     axios.get(`/boards/categories`, {
-//       headers: { Authorization: `Bearer ${token}` },
-//     })
-//     .catch(function (error) {
-//       console.log(error.toJSON());
-//     })
-//     .then(function (res) {
-//         return res
-//     });
-// }
-
-// const testFunction = async (token) => {
-//     const res = await callSideBar(token)
-//     console.log(res);
-//     return res
-// }
 
 function Board(props) {
 
@@ -93,7 +76,12 @@ function Board(props) {
 
 
     console.log(pathname);
+    console.log("파람값");
     console.log(param);
+    console.log(param.boardId);
+    console.log(param.isSearch);
+    console.log(param.page);
+    console.log(param.sorted);
     //console.log(location);
     //console.log(location.search);
     if(searchParams.get("isSearch") !== null){
@@ -102,69 +90,122 @@ function Board(props) {
         console.log(searchParams.get("keyword"));
     }
 
+    const handleSearchFunction = (option,keyword,currentBoardType,page,currentType) => {
+        // 검색일 경우 실행
+        if (option === "제목 + 내용") {
+          axios.get(`/search/all/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`)
+            .catch(function (error) {
+              console.log(error.toJSON());
+            })
+            .then(function (res) {
+              //console.log(res);
+              settotalPage(res.data.data.posts.totalPages);
+              setPosts(res.data.data.posts.content);
+              console.log("제목+내용검색");
+            });
+        } 
+        else if (option === "제목") {
+            axios.get(`/search/title/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`,
+              {
+                headers: { Authorization: `Bearer ${props.userReducer.token}` },
+              }
+            )
+            .catch(function (error) {
+              console.log(error.toJSON());
+            })
+            .then(function (res) {
+              //console.log(res);
+              settotalPage(res.data.data.posts.totalPages);
+              setPosts(res.data.data.posts.content);
+              console.log("제목검색");
+            });
+        } 
+        else {
+          axios.get(`/search/writer/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`,
+              {
+                headers: { Authorization: `Bearer ${props.userReducer.token}` },
+              }
+            )
+            .catch(function (error) {
+              console.log(error.toJSON());
+            })
+            .then(function (res) {
+              console.log(res);
+              settotalPage(res.data.data.posts.totalPages);
+              setPosts(res.data.data.posts.content);
+              console.log("글쓴이검색");
+            });
+        }
+      };
+    
+      const loadPageList = (boardId, page, type) => {
+        axios.get(`/boards/${boardId}?page=${page - 1}&pageSize=19&type=${type}`, {
+            headers: { Authorization: `Bearer ${props.userReducer.token}` },
+          })
+          .catch(function (error) {
+            console.log(error.toJSON());
+          })
+          .then(function (res) {
+            console.log("loadPageList 동작!");
+            settotalPage(res.data.data.posts.totalPages);
+            setPosts(res.data.data.posts.content);
+            setLoad(true)
+          });
+      };
+
     React.useEffect(()=>{
         console.log("useEffect호출!");
+        if(subCategory === undefined){
+            const callSideBar = async() => {
+                const res = await axios.get(`/boards/categories`, {headers: { Authorization: `Bearer ${props.userReducer.token}` }})
+                return res.data.data.boards.filter((element) => element.boardCategoryName === boardCategory);
+            }
+            const SideBar = callSideBar()
+            console.log(SideBar);
+            setSubCategory((current) =>SideBar)
+            const Target =  SideBar.find((item)=>item.boardId === param.boardId).boardName 
+            console.log(Target);
+            setTarget(Target)
+            console.log("param.page "+param.page);
+            setPage(param.page)
+            console.log("param.sorted "+param.sorted);
+            setSelected(param.sorted)
 
-        const callSideBar = async() => {
-            const res = await axios.get(`/boards/categories`, {headers: { Authorization: `Bearer ${props.userReducer.token}` }})
-            console.log(res);
+            if(param.isSearch === "false"){
+                console.log("param.isSearch가 false");
+                loadPageList(param.boardId,param.page,param.sorted); // boardId,page,selected
+
+            }
+            else if(param.isSearch === "true"){
+                console.log("param.isSearch가 true");
+                const option = searchParams.get("option")
+                const keyword = searchParams.get("keyword")
+                handleSearchFunction(option,keyword,param.boardId,param.page,param.sorted);
+                // option, keyword, boardId, page, seleted
+            }
         }
-        callSideBar()
-        console.log("response");
-
-        // let category
-        // const response = callSideBar(props.userReducer.token)
-        
-        // console.log(response);
-
-
-        // axios.get(`/boards/categories`, {
-        //   headers: { Authorization: `Bearer ${props.userReducer.token}` }, 
-        // })
-        // .catch(function (error) {
-        //   console.log(error.toJSON());
-        // })
-        // .then(function (res) {
-        //   category = [...res.data.data.boards.filter((element) => element.boardCategoryName === boardCategory),];
-        //   const categoryTarget = category.find((element) => element.boardId === PageReducer.boardId)
-        //   let boardTarget;
-        //   if (categoryTarget === undefined) {
-        //     boardTarget = category[0].boardName
-        //   }
-        //   else {
-        //     boardTarget = categoryTarget.boardName;
-        //   }
-
-        //   console.log(res);
-        //   setTarget((current) => boardTarget);
-        //   setPage(PageReducer.page);
-        //   setSubCategory((previous) => category);
-        //   console.log(PageReducer.selected);
-        //   setSelected(PageReducer.selected);
-        //   setLoad(true)
-        // });
-    },[])
+        else{
+            console.log("subCategory가 undifined가 아님!!!");
+        }
+    },[pathname])
 
     //setSearchParams({isSearch:false,option:"제목"})
     return (
         <>
+        <h1>새로운 게시판 로직을 적용할 공간이다!!!!!!</h1>
             {(load) ?
                 <>
-                    <Link to="/board/8/2/selected/false">
-                        About
-                    </Link>
-                    <Link to="/board/8/1/selected/false">
-                        About
-                    </Link>
-                    <Link to="/board/8/3/selected/false">
-                        About
-                    </Link>
+                    {posts !== null ? (
+                        <PostBar target={target} page={page} data={posts} userReducer={props.userReducer}/>
+                    ) 
+                    : 
+                    null
+                    }
                 </>
-
                 :
                 null
             }
-            <h1>새로운 게시판 로직을 적용할 공간이다!!!!!!</h1>
+            
         </>
     );
 }

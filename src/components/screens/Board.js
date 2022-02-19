@@ -184,13 +184,7 @@ function Board(props) {
         });
 
       if (PageReducer.isSearching[0] === true) {
-        handleSearchFunction(
-          PageReducer.isSearching[1],
-          PageReducer.isSearching[2],
-          PageReducer.boardId,
-          PageReducer.page,
-          PageReducer.selected
-        );
+        handleSearchFunction(PageReducer.isSearching[1],PageReducer.isSearching[2],PageReducer.boardId,PageReducer.page,PageReducer.selected);
       }
       else {
         loadPageList(
