@@ -58,23 +58,23 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const callSideBar = (token) => {
-    axios.get(`/boards/categories`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .catch(function (error) {
-      console.log(error.toJSON());
-    })
-    .then(function (res) {
-        return res
-    });
-}
+// const callSideBar = (token) => {
+//     axios.get(`/boards/categories`, {
+//       headers: { Authorization: `Bearer ${token}` },
+//     })
+//     .catch(function (error) {
+//       console.log(error.toJSON());
+//     })
+//     .then(function (res) {
+//         return res
+//     });
+// }
 
-const testFunction = async (token) => {
-    const res = await callSideBar(token)
-    console.log(res);
-    return res
-}
+// const testFunction = async (token) => {
+//     const res = await callSideBar(token)
+//     console.log(res);
+//     return res
+// }
 
 function Board(props) {
 
@@ -104,10 +104,20 @@ function Board(props) {
 
     React.useEffect(()=>{
         console.log("useEffect호출!");
-        let category
-        const response = testFunction(props.userReducer.token)
+
+        const callSideBar = async() => {
+            const res = await axios.get(`/boards/categories`, {headers: { Authorization: `Bearer ${props.userReducer.token}` }})
+            console.log(res);
+        }
+        callSideBar()
         console.log("response");
-        console.log(response);
+
+        // let category
+        // const response = callSideBar(props.userReducer.token)
+        
+        // console.log(response);
+
+
         // axios.get(`/boards/categories`, {
         //   headers: { Authorization: `Bearer ${props.userReducer.token}` }, 
         // })
