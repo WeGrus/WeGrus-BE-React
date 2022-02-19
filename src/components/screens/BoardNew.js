@@ -5,7 +5,7 @@ import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBarNew";
 import { useForm } from "react-hook-form";
-import Pagination from "../shared/Pagination";
+import Pagination from "../shared/PaginationNew";
 import PostBar from "../shared/PostBarNew";
 import { connect } from "react-redux";
 import axios from "axios";
@@ -64,7 +64,7 @@ function Board(props) {
     const { pathname } = location
     const param = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
-
+    
     const [target, setTarget] = React.useState(null); // subCategory중 지금 선택한 부분.
     const [subCategory, setSubCategory] = React.useState(undefined);
     const [page, setPage] = React.useState(0);
@@ -196,7 +196,6 @@ function Board(props) {
             const categoryTarget = subCategory.find((item)=>item.boardId === parseInt(param.boardId)).boardName 
             setTarget((current) => categoryTarget);
             console.log( "page변경!!!");
-            console.log(parseInt(param.page));
             setPage((current) =>parseInt(param.page))
             if (param.isSearch === "false") {
                 console.log("검색한 것 없음!");
@@ -218,20 +217,6 @@ function Board(props) {
             setSelected("최신순");
           }
     },[target])
-
-    React.useEffect(()=>{
-        if (subCategory !== undefined) {
-            console.log("page가 바뀔때마다 동작!");
-            if(param.isSearch === "false"){
-                navigate(`/board/${param.boardId}/${page}/${param.sorted}/false`);
-            }
-            else if(param.isSearch === "true"){
-                let url = `/board/${param.boardId}/${page}/${param.sorted}/true?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`
-                url= url.replace(/\+/g,"%2B");
-                navigate(url);
-            }
-          }
-    },[page])
 
     const handleSearching = (data, e) => {
         // 사용자가 검색을 했을때
@@ -324,6 +309,9 @@ function Board(props) {
                             limit={19}
                             page={page}
                             setPage={setPage}
+                            linkHeader={"board"}
+                            param={param}
+                            searchParams={searchParams}
                         />
                         <Outlet />
                     </Content>
