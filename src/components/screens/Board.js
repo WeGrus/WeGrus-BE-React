@@ -289,7 +289,7 @@ function Board(props) {
     event.preventDefault();
     console.log("커뮤니티에서 뒤로가기");
     console.log(props.PageReducer);
-    props.setAll(0,1,[false],"LASTEST",PageReducer.boardCategoryName);
+    props.setAll(0,1,[false],"LASTEST",props.PageReducer.boardCategoryName);
   }
 
   return (
