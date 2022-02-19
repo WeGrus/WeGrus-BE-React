@@ -6,7 +6,7 @@ import ScreenTitle from "../shared/ScreenTitle";
 import SideBar from "../shared/SideBarNew";
 import { useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
-import PostBar from "../shared/PostBar";
+import PostBar from "../shared/PostBarNew";
 import { connect } from "react-redux";
 import axios from "axios";
 import {
@@ -191,6 +191,15 @@ function Board(props) {
         }
         else{
             console.log("subCategory가 undifined가 아님!!!");
+            if (param.isSearch === "false") {
+                console.log("검색한 것 없음!");
+                handleSearchFunction(param.boardId,parseInt(param.page),param.sorted);
+              } 
+              else if(param.isSearch === "true") {
+                const option = searchParams.get("option")
+                const keyword = searchParams.get("keyword")
+                loadPageList(option,keyword,param.boardId,parseInt(param.page),param.sorted);
+              }
         }
     },[pathname])
 
@@ -215,7 +224,7 @@ function Board(props) {
                         </InforBar>
 
                         {posts !== null ? (
-                            <PostBar target={target} page={page} data={posts} userReducer={props.userReducer} />
+                            <PostBar page={page} data={posts} userReducer={props.userReducer} linkHeader={"board"} />
                         )
                             :
                             null
