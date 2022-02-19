@@ -280,7 +280,7 @@ function Board(props) {
 
                             <CreateBtnLink
                                 to={`/board/write/${props.userReducer.id}`}
-                                state={{ category: "커뮤니티", subCategory: target }}
+                                state={{ category: "커뮤니티", subCategory: target, boardId: param.boardId}}
                             >
                                 create
                             </CreateBtnLink>

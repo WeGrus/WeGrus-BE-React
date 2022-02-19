@@ -39,13 +39,11 @@ function Page(props) {
   
 
   const editorRef = React.useRef();
-  const downRef = React.createRef();
 
   const Navigate = useNavigate(); 
   const isClubExecutives =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
   const isGroupExecutives =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT"].includes(i))
 
-  let aBlob;
 
   const handleSecretOptionChange = (event) => {
     setSecret(!secret);
@@ -65,11 +63,6 @@ function Page(props) {
 
   function printTextBody() {
     const deitorInstance = editorRef.current.getInstance();
-
-    //console.log(deitorInstance);
-    // const getContent_md = deitorInstance.getMarkdown();
-    // console.log("마크다운");
-    // console.log(getContent_md);
     const getContent_html = deitorInstance.getHTML();
     return getContent_html;
   }
@@ -77,7 +70,7 @@ function Page(props) {
 
   function submit(){
     const data = {
-      "boardId": props.PageReducer.boardId,
+      "boardId": location.boardId,
       "content": printTextBody(),
       "postImage":postImageIds,
       "secretFlag": secret,
@@ -85,17 +78,12 @@ function Page(props) {
       "type": isNotice()
     }
 
-    //console.log(aaaa);
-
      let postCreateRequest  = new FormData();
      postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
 
      console.log("ddasdasdasadad");
 
      if(filecheck){
-      //console.log(file);
-      //let fileData  = new FormData();
-      //fileData.append("file", new Blob([file]))
       postCreateRequest.append('file',file);
     }
 
@@ -114,7 +102,7 @@ function Page(props) {
       //"content-type": "multipart/form-data"
       console.log(res);
       console.log("깃허브도 새롭게 업데이트 되었다!1");
-      Navigate(props.PageReducer.boardCategoryName);
+      Navigate(-1);
     })
 
 
@@ -156,20 +144,6 @@ function Page(props) {
     file = e.target.files[0]
     console.log(e.target.files);
     filecheck = true;
-    // const formData = new FormData()
-    // formData.append('file',e.target.files[0])
-    // console.log(formData);
-    // file = formData
-    
-    // //console.log(e.target.files);
-
-    // // const formData = new FormData();
-    // // formData.append('file',e.target.files[0]);
-
-    // aBlob = new Blob(e.target.files,{type : e.target.files[0].type})
-    // setURL(URL.createObjectURL(aBlob));
-    // console.log(url);
-    // setTest(true)
   };
 
 
