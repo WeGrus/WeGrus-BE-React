@@ -193,6 +193,8 @@ function Board(props) {
         }
         else{
             console.log("subCategory가 undifined가 아님!!!");
+            const categoryTarget = subCategory.find((item)=>item.boardId === parseInt(param.boardId)).boardName 
+            setTarget((current) => categoryTarget);
             if (param.isSearch === "false") {
                 console.log("검색한 것 없음!");
                 loadPageList(param.boardId,parseInt(param.page),param.sorted);
