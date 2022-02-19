@@ -32,7 +32,7 @@ const splitDate = (data) => {
 };
 
 function PostBar(props) {
-  const { page, data, userReducer, linkHeader } = props
+  const { page, data, userReducer, linkHeader, category } = props
   const number = (page - 1) * 16;
   console.log("새로운 포스트바!");
   console.log(props);
@@ -55,13 +55,13 @@ function PostBar(props) {
               <Title>
                 <Link
                   to={`/${linkHeader}/${i + 1 + number}`}
-                  state={{ postId: data.postId }}
+                  state={{ postId: data.postId, category: category }}
                 >
                   {"비밀글 " + data.title}
                 </Link>
                 <HashLink
                   to={`/${linkHeader}/${i + 1 + number}`}
-                  state={{ postId: data.postId }}
+                  state={{ postId: data.postId, category:category, linkHeader:linkHeader}}
                 >
                   <Test>[{data.postReplies}]</Test>
                 </HashLink>
@@ -95,8 +95,9 @@ function PostBar(props) {
                 <Link
                   to={`/${linkHeader}/${i + 1 + number}`}
                   state={{
-                    category: "커뮤니티",
                     postId: data.postId,
+                    category:category
+                    , linkHeader:linkHeader
                   }}
                 >
                   {data.title}
@@ -104,8 +105,7 @@ function PostBar(props) {
                 <HashLink
                   to={`/${linkHeader}/${i + 1 + number}`}
                   state={{
-                    category: "커뮤니티",
-                    postId: data.postId,
+                    postId: data.postId, category:category, linkHeader:linkHeader
                   }}
                 >
                   <Test>[{data.postReplies}]</Test>
@@ -125,8 +125,7 @@ function PostBar(props) {
                 <Link
                   to={`/${linkHeader}/${i + 1 + number}`}
                   state={{
-                    category: "커뮤니티",
-                    postId: data.postId,
+                    postId: data.postId, category:category, linkHeader:linkHeader
                   }}
                 >
                   {data.title}
@@ -134,8 +133,7 @@ function PostBar(props) {
                 <HashLink
                   to={`/${linkHeader}/${i + 1 + number}`}
                   state={{
-                    category: "커뮤니티",
-                    postId: data.postId,
+                    postId: data.postId, category:category, linkHeader:linkHeader
                   }}
                 >
                   <Test>[{data.postReplies}]</Test>

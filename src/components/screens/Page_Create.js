@@ -178,16 +178,16 @@ function Page(props) {
 
           <BtnSection>
 
-            <Link to={`${props.PageReducer.boardCategoryName}`}><GoToList >목록으로</GoToList></Link>
+            <GoToList onClick={()=>{Navigate(-1);}}>목록으로</GoToList>
             <Right>
-              {(isClubExecutives === true && props.PageReducer.viewCategoryName !== "소모임")?
+              {(isClubExecutives === true && location.category !== "소모임")?
                           <SetOption>
                           <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
                           <Checkbox checked={notice} onChange={handleNoticeOptionChange}/>
                         </SetOption>
               :
               null}
-              {(isGroupExecutives === true && props.PageReducer.viewCategoryName === "소모임") ?
+              {(isGroupExecutives === true && location.category === "소모임") ?
                 <SetOption>
                   <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
                   <Checkbox checked={notice} onChange={handleNoticeOptionChange} />
