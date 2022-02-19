@@ -27,7 +27,8 @@ function mapStateToProps(state) {
   return state;
 }
 
-let aaaa;
+let file;
+let filecheck = false
 
 function Page(props) {
   const location = useLocation().state;
@@ -92,6 +93,14 @@ function Page(props) {
      postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
 
      console.log("ddasdasdasadad");
+
+     if(filecheck){
+      //console.log(file);
+      //let fileData  = new FormData();
+      //fileData.append("file", new Blob([file]))
+      postCreateRequest.append('file',file);
+    }
+
     axios.post(`/posts`,postCreateRequest,{
       headers: {
         'Authorization': `Bearer ${props.userReducer.token}`,
@@ -146,19 +155,23 @@ function Page(props) {
 
   const handleTest = (e) => {
     console.log(e.target.files[0]);
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    console.log(formData);
-    aaaa = formData
-    //console.log(e.target.files);
+    file = e.target.files[0]
+    console.log(e.target.files);
+    filecheck = true;
+    // const formData = new FormData()
+    // formData.append('file',e.target.files[0])
+    // console.log(formData);
+    // file = formData
+    
+    // //console.log(e.target.files);
 
-    // const formData = new FormData();
-    // formData.append('file',e.target.files[0]);
+    // // const formData = new FormData();
+    // // formData.append('file',e.target.files[0]);
 
-    aBlob = new Blob(e.target.files, { type: e.target.files[0].type });
-    setURL(URL.createObjectURL(aBlob));
-    console.log(url);
-    setTest(true);
+    // aBlob = new Blob(e.target.files,{type : e.target.files[0].type})
+    // setURL(URL.createObjectURL(aBlob));
+    // console.log(url);
+    // setTest(true)
   };
 
   setTimeout(function () {
