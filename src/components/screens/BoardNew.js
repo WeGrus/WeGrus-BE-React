@@ -3,7 +3,7 @@ import { Outlet, useLocation, useParams,useSearchParams,Link } from "react-route
 import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
-import SideBar from "../shared/SideBar";
+import SideBar from "../shared/SideBarNew";
 import { useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
 import PostBar from "../shared/PostBar";
@@ -200,6 +200,7 @@ function Board(props) {
             {(load) ?
                 <>
                     <PageTitle title="커뮤니티" />
+                    <SideBar posts={subCategory} getFilter={setTarget} target={target} linkHeader={"board"} ></SideBar>
                     <Content>
                         <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
                         <InforBar>
@@ -221,7 +222,7 @@ function Board(props) {
                         }
 
                         <CreateBtnLink
-                            to={`"/board/8/1/LASTEST/false"`}>
+                            to={`/board/8/1/LASTEST/false`}>
                             예시링크
                         </CreateBtnLink>  
                     </Content>
