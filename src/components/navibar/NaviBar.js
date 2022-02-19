@@ -131,13 +131,20 @@ const NaviBar = (props) => {
               스터디
             </NavLink>
             <NavLink
-              to="/board"
+            to="/board"
               onClick={(e) => {
                 handleLink(e, "BOARD");
               }}
               style={({ isActive }) => ({})}
             >
               커뮤니티
+            </NavLink>
+            <NavLink
+              to="/board/7/1/select/false"
+
+              style={({ isActive }) => ({})}
+            >
+              뉴커뮤니티
             </NavLink>
             {isAuthority ? (
               <NavLink
