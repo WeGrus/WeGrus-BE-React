@@ -95,7 +95,8 @@ function Page(props) {
     axios.post(`/posts`,postCreateRequest,{
       headers: {
         'Authorization': `Bearer ${props.userReducer.token}`,
-        "content-type": "multipart/form-data"
+        "content-type": "multipart/mixed"
+        
       }
     })
     .catch(function (error) {
@@ -103,9 +104,10 @@ function Page(props) {
       //console.log("코드가 반복인가? 2");
     })
     .then(function (res) {
+      //"content-type": "multipart/form-data"
       console.log(res);
       console.log("코드가 반복인가? 1");
-      //Navigate(props.PageReducer.boardCategoryName);
+      Navigate(props.PageReducer.boardCategoryName);
     })
 
 
