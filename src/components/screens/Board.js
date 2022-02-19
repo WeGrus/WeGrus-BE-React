@@ -155,6 +155,7 @@ function Board(props) {
     console.log("props호출!");
 
     if (subCategory === undefined) {
+
       axios
         .get(`/boards/categories`, {
           headers: { Authorization: `Bearer ${props.userReducer.token}` },
@@ -163,14 +164,14 @@ function Board(props) {
           console.log(error.toJSON());
         })
         .then(function (res) {
-          const category = [...res.data.data.boards.filter((element) => element.boardCategoryName === boardCategory),]; 
+          const category = [...res.data.data.boards.filter((element) => element.boardCategoryName === boardCategory),];
           const categoryTarget = category.find((element) => element.boardId === PageReducer.boardId)
           let boardTarget;
-          if(categoryTarget === undefined){
+          if (categoryTarget === undefined) {
             boardTarget = category[0].boardName
           }
-          else{
-            boardTarget = categoryTarget.boardName; 
+          else {
+            boardTarget = categoryTarget.boardName;
           }
 
           console.log(res);
@@ -190,14 +191,16 @@ function Board(props) {
           PageReducer.page,
           PageReducer.selected
         );
-      } else {
+      }
+      else {
         loadPageList(
           PageReducer.boardId,
           PageReducer.page,
           PageReducer.selected
         );
       }
-    } else {
+    } 
+    else {
       if (PageReducer.isSearching[0] === true) {
         handleSearchFunction(
           PageReducer.isSearching[1],
@@ -281,6 +284,13 @@ function Board(props) {
       );
     }
   }, [page]);
+
+  window.onpopstate = function(event){ // 뒤로가기
+    event.preventDefault();
+    console.log("커뮤니티에서 뒤로가기");
+    console.log(props.PageReducer);
+    props.setAll(0,1,[false],"LASTEST",PageReducer.boardCategoryName);
+  }
 
   return (
     <>
