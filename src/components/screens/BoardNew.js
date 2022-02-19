@@ -60,8 +60,8 @@ function mapDispatchToProps(dispatch) {
 
 
 function Board(props) {
-
-    const { pathname } = useLocation();
+    const location = useLocation();
+    const { pathname } = location
     const param = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -76,7 +76,7 @@ function Board(props) {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
 
-    // console.log(pathname);
+     console.log(pathname);
     // console.log("파람값");
     // console.log(param);
     // console.log(param.boardId);
@@ -206,7 +206,7 @@ function Board(props) {
                 handleSearchFunction(option,keyword,param.boardId,parseInt(param.page),param.sorted);
               }
         }
-    },[pathname])
+    },[location])
 
     React.useEffect(()=>{
         if (subCategory !== undefined) {
