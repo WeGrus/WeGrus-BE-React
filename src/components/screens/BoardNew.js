@@ -229,7 +229,7 @@ function Board(props) {
         // 사용자가 검색을 했을때
         console.log(data);
         let url = `/board/${param.boardId}/1/LASTEST/true?option=${data.option}&keyword=${data.keyword}`
-        url= url.replace(/&/g,"%26").replace(/\+/g,"%2B");
+        url= url.replace(/\+/g,"%2B"); //.replace(/&/g,"%26")
         console.log(url);
         navigate(url);
         setSelected("최신순");
