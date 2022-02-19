@@ -29,7 +29,7 @@ import {
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
 
-const boardCategory = "BOARD";
+const boardCategory = "NOTICE";
 
 const selectDate = [
   // 게시물 나열할 때, 어떤 순으로 나열할지.
