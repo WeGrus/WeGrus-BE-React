@@ -14,40 +14,13 @@ import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,
   InforBar,InforContents,Number,Title,Writer,Date,Hits,Recommendation} from "./../shared/BoardElement"
   import { actionCreators } from "../../store";
 
-// const PostInforBar = styled.div`
-//   width: 909.07px;
-//   height: 31px;
-//   margin: 0 auto;
-//   font-size: 14px;
-//   line-height: 16.41px;
-//   border-bottom: 1px solid black;
-// `;
-// const PostCotent = styled.div`
-// padding-top: 8px;
-// display: flex;
-// flex-direction: row;
-// `
 const boardCategory = "STUDY";
-
-
-// const subCategory = [ //서브 카테고리는 게시판 조회로 지정할 예정.
-//   { filter: "자유게시판", boardType: "FREE"},
-//   { filter: "익명게시판", boardType: "PERSONAL"},
-//   { filter: "정보 공유", boardType: "INFO"},
-//   { filter: "프로젝트 모집", boardType: "PROJECT"},
-//   { filter: "취미 톡방",boardType: "HOBBY"},
-//   { filter: "건의사항",boardType: "SUGGEST "},
-//   { filter: "질문/답변",boardType: "black"},
-// ];
-
 
 const selectDate = [ // 게시물 나열할 때, 어떤 순으로 나열할지.
   {viewValue: "최신순", value: "LASTEST"},
   {viewValue: "추천순", value: "LIKEEST"},
   {viewValue: "댓글순", value: "REPLYEST"},
-  {viewValue: "조회순", value: "none"},
 ]
-//LASTEST, LIKEEST, REPLYEST
 
 function mapStateToProps(state) {
   return state;
@@ -66,10 +39,6 @@ function Study(props) {
   const [subCategory,setSubCategory] =React.useState(undefined);
   const [page, setPage] = React.useState(0);
   const [selected, setSelected] = React.useState("") // 필터값
-  //const [currentBoardType, setCurrentBoardType] = React.useState("") // 현재 타겟의 boardType(숫자)
-  // const [currentType, setCurrentType] = React.useState("") // 현재 타겟의 selected(숫자)
-  let currentBoardType = ""
-  let currentType = ""
   const [load, setLoad] = React.useState(false) // load유무로 location의 값이 바뀐 뒤에 렌더
   const [posts, setPosts] = React.useState(null); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
@@ -120,8 +89,6 @@ function Study(props) {
     }
   }
 
-
-
   const loadPageList = (boardId,page,type) => {
     axios.get(`/boards/${boardId}?page=${page - 1}&pageSize=19&type=${type}`, {
       headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
@@ -140,6 +107,8 @@ function Study(props) {
     const PageReducer = props.PageReducer
     console.log("props호출!");
     if(subCategory === undefined){
+      console.log("subCategory가 undefined일때!");
+      console.log(props);
       axios.get(`boards/categories`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
@@ -147,6 +116,9 @@ function Study(props) {
         console.log(error.toJSON());
       })
       .then(function(res){
+        console.log("subCategory 호출이 끝난 뒤");
+        console.log(category);
+        console.log(boardTarget);
         const category = [...res.data.data.boards.filter(element => element.boardCategoryName === boardCategory)] // 사이드바에 넣을 콘텐츠의 종류
         const boardTarget = category.find(element => element.boardId === PageReducer.boardId).boardName // 그 중에서 현재 타겟의 board이름
 
