@@ -140,7 +140,7 @@ const NaviBar = (props) => {
               커뮤니티
             </NavLink>
             <NavLink
-              to="/board/7/1/select/false"
+              to="/board/7/1/LASTEST/false"
 
               style={({ isActive }) => ({})}
             >

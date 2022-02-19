@@ -149,38 +149,44 @@ function Board(props) {
             console.log("loadPageList 동작!");
             settotalPage(res.data.data.posts.totalPages);
             setPosts(res.data.data.posts.content);
-            setLoad(true)
           });
       };
 
     React.useEffect(()=>{
         console.log("useEffect호출!");
         if(subCategory === undefined){
-            const callSideBar = async() => {
-                const res = await axios.get(`/boards/categories`, {headers: { Authorization: `Bearer ${props.userReducer.token}` }})
-                return res.data.data.boards.filter((element) => element.boardCategoryName === boardCategory);
-            }
-            const SideBar = callSideBar()
-            console.log(SideBar);
-            setSubCategory((current) =>SideBar)
-            const Target =  SideBar.find((item)=>item.boardId === param.boardId).boardName 
-            console.log(Target);
-            setTarget(Target)
-            console.log("param.page "+param.page);
-            setPage(param.page)
-            console.log("param.sorted "+param.sorted);
-            setSelected(param.sorted)
+            axios.get(`/boards/categories`, {
+              headers: { Authorization: `Bearer ${props.userReducer.token}` },
+            })
+            .catch(function (error) {
+              console.log(error.toJSON());
+            })
+            .then(function (res) {
+                console.log(res);
+              const category = [...res.data.data.boards.filter((element) => element.boardCategoryName === boardCategory)];
+              const categoryTarget = category.find((item)=>item.boardId === param.boardId).boardName 
+              console.log(category);
+              setSubCategory((previous) => category);
+              console.log(categoryTarget);
+              setTarget((current) => categoryTarget);
+              setPage(PageReducer.page);
+              console.log("param.page "+parseInt(param.page));
+              setPage(parseInt(param.page))
+              console.log("param.sorted "+param.sorted);
+              setSelected(param.sorted)
+              setLoad(true)
+            });
 
             if(param.isSearch === "false"){
                 console.log("param.isSearch가 false");
-                loadPageList(param.boardId,param.page,param.sorted); // boardId,page,selected
+                loadPageList(param.boardId,parseInt(param.page),param.sorted); // boardId,page,selected
 
             }
             else if(param.isSearch === "true"){
                 console.log("param.isSearch가 true");
                 const option = searchParams.get("option")
                 const keyword = searchParams.get("keyword")
-                handleSearchFunction(option,keyword,param.boardId,param.page,param.sorted);
+                handleSearchFunction(option,keyword,param.boardId,parseInt(param.page),param.sorted);
                 // option, keyword, boardId, page, seleted
             }
         }
