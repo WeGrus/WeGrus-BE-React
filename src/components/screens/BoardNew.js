@@ -76,7 +76,7 @@ function Board(props) {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
 
-     console.log(pathname);
+     //console.log(pathname);
     // console.log("파람값");
     // console.log(param);
     // console.log(param.boardId);
@@ -220,7 +220,9 @@ function Board(props) {
                 navigate(`/board/${param.boardId}/${page}/${param.sorted}/false`);
             }
             else if(param.isSearch === "true"){
-                navigate(`/board/${param.boardId}/${page}/${param.sorted}/true?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`);
+                let url = `/board/${param.boardId}/${page}/${param.sorted}/true?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`
+                url= url.replace(/\+/g,"%2B");
+                navigate(url);
             }
           }
     },[page])
@@ -229,7 +231,7 @@ function Board(props) {
         // 사용자가 검색을 했을때
         console.log(data);
         let url = `/board/${param.boardId}/1/LASTEST/true?option=${data.option}&keyword=${data.keyword}`
-        url= url.replace(/\+/g,"%2B"); //.replace(/&/g,"%26")
+        url= url.replace(/\+/g,"%2B");
         console.log(url);
         navigate(url);
         setSelected("최신순");
@@ -249,7 +251,9 @@ function Board(props) {
             navigate(`/board/${param.boardId}/${page}/${type}/false`);
         }
         else if(param.isSearch === "true"){
-            navigate(`/board/${param.boardId}/${page}/${type}/true?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`);
+            let url = `/board/${param.boardId}/${page}/${type}/true?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`
+            url= url.replace(/\+/g,"%2B");
+            navigate(url);
         }
     };
     
