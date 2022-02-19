@@ -147,7 +147,7 @@ function Board(props) {
       })
       .then(function(res){
         const category = [...res.data.data.boards.filter(element => element.boardCategoryName === boardCategory)] // 사이드바에 넣을 콘텐츠의 종류
-        const boardTarget = category.find(element => element.boardId === PageReducer.boardId).boardName // 그 중에서 현재 타겟의 board이름
+        const boardTarget = category[0].boardName // 그 중에서 현재 타겟의 board이름
         console.log(res);
         setTarget((current) => boardTarget)
         setPage(PageReducer.page)

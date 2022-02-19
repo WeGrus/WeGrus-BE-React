@@ -119,7 +119,7 @@ function Study(props) {
         console.log("subCategory 호출이 끝난 뒤");
         const category = [...res.data.data.boards.filter(element => element.boardCategoryName === boardCategory)] // 사이드바에 넣을 콘텐츠의 종류
         console.log(category);
-        const boardTarget = category[0].boardName//category.find(element => element.boardId === PageReducer.boardId).boardName // 그 중에서 현재 타겟의 board이름
+        const boardTarget = category[0].boardName// 그 중에서 현재 타겟의 board이름
         console.log(boardTarget);
         setTarget((current) => boardTarget)
         setPage(PageReducer.page)

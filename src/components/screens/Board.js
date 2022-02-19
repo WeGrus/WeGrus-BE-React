@@ -163,14 +163,16 @@ function Board(props) {
           console.log(error.toJSON());
         })
         .then(function (res) {
-          const category = [
-            ...res.data.data.boards.filter(
-              (element) => element.boardCategoryName === boardCategory
-            ),
-          ]; 
-          const boardTarget = category.find(
-            (element) => element.boardId === PageReducer.boardId
-          ).boardName; 
+          const category = [...res.data.data.boards.filter((element) => element.boardCategoryName === boardCategory),]; 
+          const categoryTarget = category.find((element) => element.boardId === PageReducer.boardId)
+          let boardTarget;
+          if(categoryTarget === undefined){
+            boardTarget = category[0].boardName
+          }
+          else{
+            boardTarget = categoryTarget.boardName; 
+          }
+
           console.log(res);
           setTarget((current) => boardTarget);
           setPage(PageReducer.page);
