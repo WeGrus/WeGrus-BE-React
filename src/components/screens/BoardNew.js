@@ -169,7 +169,6 @@ function Board(props) {
               setSubCategory((previous) => category);
               console.log(categoryTarget);
               setTarget((current) => categoryTarget);
-              setPage(PageReducer.page);
               console.log("param.page "+parseInt(param.page));
               setPage(parseInt(param.page))
               console.log("param.sorted "+param.sorted);
