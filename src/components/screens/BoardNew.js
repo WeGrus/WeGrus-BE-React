@@ -75,13 +75,13 @@ function Board(props) {
 
 
 
-    console.log(pathname);
-    console.log("파람값");
-    console.log(param);
-    console.log(param.boardId);
-    console.log(param.isSearch);
-    console.log(param.page);
-    console.log(param.sorted);
+    // console.log(pathname);
+    // console.log("파람값");
+    // console.log(param);
+    // console.log(param.boardId);
+    // console.log(param.isSearch);
+    // console.log(param.page);
+    // console.log(param.sorted);
     //console.log(location);
     //console.log(location.search);
     if(searchParams.get("isSearch") !== null){
@@ -197,20 +197,39 @@ function Board(props) {
     //setSearchParams({isSearch:false,option:"제목"})
     return (
         <>
-        <h1>새로운 게시판 로직을 적용할 공간이다!!!!!!</h1>
             {(load) ?
                 <>
-                    {posts !== null ? (
-                        <PostBar target={target} page={page} data={posts} userReducer={props.userReducer}/>
-                    ) 
-                    : 
-                    null
-                    }
+                    <PageTitle title="커뮤니티" />
+                    <Content>
+                        <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
+                        <InforBar>
+                            <InforContents>
+                                <Number>번호</Number>
+                                <Title>제목</Title>
+                                <Writer>작성자</Writer>
+                                <Date>작성일자</Date>
+                                <Recommendation>추천</Recommendation>
+                                <Hits>조회</Hits>
+                            </InforContents>
+                        </InforBar>
+
+                        {posts !== null ? (
+                            <PostBar target={target} page={page} data={posts} userReducer={props.userReducer} />
+                        )
+                            :
+                            null
+                        }
+
+                        <CreateBtnLink
+                            to={`"/board/8/1/LASTEST/false"`}>
+                            예시링크
+                        </CreateBtnLink>  
+                    </Content>
                 </>
                 :
                 null
             }
-            
+
         </>
     );
 }
