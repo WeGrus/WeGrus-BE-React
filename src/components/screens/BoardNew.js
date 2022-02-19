@@ -67,7 +67,7 @@ function Board(props) {
 
     const [target, setTarget] = React.useState(null); // subCategory중 지금 선택한 부분.
     const [subCategory, setSubCategory] = React.useState(undefined);
-    const [page, setPage] = React.useState(parseInt(param.page));
+    const [page, setPage] = React.useState(0);
     const [selected, setSelected] = React.useState(""); // 필터값
     const [load, setLoad] = React.useState(false); // load유무로 location의 값이 바뀐 뒤에 렌더
     const [posts, setPosts] = React.useState(null); // API로 받은 값
@@ -195,6 +195,7 @@ function Board(props) {
             console.log("subCategory가 undifined가 아님!!!");
             const categoryTarget = subCategory.find((item)=>item.boardId === parseInt(param.boardId)).boardName 
             setTarget((current) => categoryTarget);
+            setPage(parseInt(param.page))
             if (param.isSearch === "false") {
                 console.log("검색한 것 없음!");
                 loadPageList(param.boardId,parseInt(param.page),param.sorted);
