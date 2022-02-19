@@ -238,7 +238,7 @@ function App(props) {
                   path="/board/update/:pagenum/:userid"
                   element={<UpdatePage />}
                 />
-                
+                 <Route path="/board/:boardId/:page/:sorted/:isSearch" element={<BoardNew />}></Route>
 
                 <Route path="/profile" element={<Profile />} />
 
@@ -251,7 +251,7 @@ function App(props) {
             ) : (<>
 
             <Route path="/" element={<About />} />
-            <Route path="/board/:boardId/:page/:sorted/:isSearch" element={<BoardNew />}></Route>
+           
             </>
             )}
           </Route>
