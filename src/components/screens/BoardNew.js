@@ -67,7 +67,7 @@ function Board(props) {
 
     const [target, setTarget] = React.useState(null); // subCategory중 지금 선택한 부분.
     const [subCategory, setSubCategory] = React.useState(undefined);
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(parseInt(param.page));
     const [selected, setSelected] = React.useState(""); // 필터값
     const [load, setLoad] = React.useState(false); // load유무로 location의 값이 바뀐 뒤에 렌더
     const [posts, setPosts] = React.useState(null); // API로 받은 값
@@ -218,6 +218,7 @@ function Board(props) {
 
     React.useEffect(()=>{
         if (subCategory !== undefined) {
+            console.log("page가 바뀔때마다 동작!");
             if(param.isSearch === "false"){
                 navigate(`/board/${param.boardId}/${page}/${param.sorted}/false`);
             }
