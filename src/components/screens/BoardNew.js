@@ -93,7 +93,8 @@ function Board(props) {
 
     const handleSearchFunction = (option,keyword,currentBoardType,page,currentType) => {
         // 검색일 경우 실행
-        if (option === "제목 + 내용") {
+        console.log(option);
+        if (option === "제목+내용") {
           axios.get(`/search/all/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`)
             .catch(function (error) {
               console.log(error.toJSON());
@@ -209,6 +210,12 @@ function Board(props) {
 
     React.useEffect(()=>{
         if (subCategory !== undefined) {
+            setSelected("최신순");
+          }
+    },[target])
+
+    React.useEffect(()=>{
+        if (subCategory !== undefined) {
             if(param.isSearch === "false"){
                 navigate(`/board/${param.boardId}/${page}/${param.sorted}/false`);
             }
@@ -255,7 +262,7 @@ function Board(props) {
                         <SearchBarSection>
                             <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
                                 <SearchBarSelect {...register("option")}>
-                                    <option>제목 + 내용</option>
+                                    <option>제목+내용</option>
                                     <option>제목</option>
                                     <option>작성자</option>
                                 </SearchBarSelect>
