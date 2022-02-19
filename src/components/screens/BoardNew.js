@@ -193,12 +193,12 @@ function Board(props) {
             console.log("subCategory가 undifined가 아님!!!");
             if (param.isSearch === "false") {
                 console.log("검색한 것 없음!");
-                handleSearchFunction(param.boardId,parseInt(param.page),param.sorted);
+                loadPageList(param.boardId,parseInt(param.page),param.sorted);
               } 
               else if(param.isSearch === "true") {
                 const option = searchParams.get("option")
                 const keyword = searchParams.get("keyword")
-                loadPageList(option,keyword,param.boardId,parseInt(param.page),param.sorted);
+                handleSearchFunction(option,keyword,param.boardId,parseInt(param.page),param.sorted);
               }
         }
     },[pathname])
