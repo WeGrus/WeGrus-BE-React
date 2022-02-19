@@ -35,8 +35,6 @@ function Page(props) {
   const [secret, setSecret] = React.useState(false);
   const [notice, setNotice] = React.useState(false);
   const [title, setTitle] = React.useState("");
-  const [test, setTest] = React.useState(false); // file이 올라오는 지 아닌지 확인
-  const [url, setURL] = React.useState(""); // download할 url link
   const [postImageIds, setPostImageIds] = React.useState([]);
   
 
@@ -115,7 +113,7 @@ function Page(props) {
     .then(function (res) {
       //"content-type": "multipart/form-data"
       console.log(res);
-      console.log("코드가 반복인가? 1");
+      console.log("깃허브도 새롭게 업데이트 되었다!1");
       Navigate(props.PageReducer.boardCategoryName);
     })
 
@@ -174,9 +172,6 @@ function Page(props) {
     // setTest(true)
   };
 
-  setTimeout(function () {
-    URL.revokeObjectURL(url);
-  }, 1000);
 
   const handleDownload = (e) => {};
   console.log();
@@ -206,11 +201,7 @@ function Page(props) {
             ref={editorRef}
           />
           <input type="file" id="docpicker" onChange={handleTest}></input>
-          {test ? (
-            <a href={url} download ref={downRef}>
-              download
-            </a>
-          ) : null}
+
           <BtnSection>
 
             <Link to={`${props.PageReducer.boardCategoryName}`}><GoToList >목록으로</GoToList></Link>
