@@ -228,7 +228,10 @@ function Board(props) {
     const handleSearching = (data, e) => {
         // 사용자가 검색을 했을때
         console.log(data);
-        navigate(`/board/${param.boardId}/1/LASTEST/true?option=${data.option}&keyword=${data.keyword}`);
+        let url = `/board/${param.boardId}/1/LASTEST/true?option=${data.option}&keyword=${data.keyword}`
+        url= url.replace(/&/g,"%26").replace(/\+/g,"%2B");
+        console.log(url);
+        navigate(url);
         setSelected("최신순");
     };
 
