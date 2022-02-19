@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Outlet, useLocation, useParams,useSearchParams,Link } from "react-router-dom";
+import { Outlet, useLocation, useParams,useSearchParams,useNavigate } from "react-router-dom";
 import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
@@ -73,6 +73,7 @@ function Board(props) {
     const [posts, setPosts] = React.useState(null); // API로 받은 값
     const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
 
+    const navigate = useNavigate();
 
 
     // console.log(pathname);
@@ -203,7 +204,17 @@ function Board(props) {
         }
     },[pathname])
 
-    //setSearchParams({isSearch:false,option:"제목"})
+    React.useEffect(()=>{
+        if (subCategory !== undefined) {
+            if(param.isSearch === "false"){
+                navigate(`/board/${param.boardId}/${page}/${param.sorted}/${param.isSearch}`);
+            }
+            else if(param.isSearch === "true"){
+                navigate(`/board/${param.boardId}/${page}/${param.sorted}/${param.isSearch}?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`);
+            }
+          }
+    },[page])
+    
     return (
         <>
             {(load) ?
@@ -234,6 +245,14 @@ function Board(props) {
                             to={`/board/8/1/LASTEST/false`}>
                             예시링크
                         </CreateBtnLink>  
+
+                        <Pagination
+                            total={totalPage}
+                            limit={19}
+                            page={page}
+                            setPage={setPage}
+                        />
+                        <Outlet />
                     </Content>
                 </>
                 :

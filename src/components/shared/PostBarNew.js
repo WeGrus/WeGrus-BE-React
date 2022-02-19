@@ -155,4 +155,4 @@ function PostBar(props) {
   return <>{postdata}</>;
 }
 
-export default PostBar;
+export default React.memo(PostBar);
