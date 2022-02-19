@@ -142,4 +142,4 @@ function Pagination({ total, limit, page, setPage }) {
   );
 }
 
-export default Pagination;
+export default React.memo(Pagination);

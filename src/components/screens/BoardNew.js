@@ -74,7 +74,7 @@ function Board(props) {
     const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
 
     const navigate = useNavigate();
-
+    const { register, handleSubmit } = useForm();
 
     // console.log(pathname);
     // console.log("파람값");
@@ -197,8 +197,11 @@ function Board(props) {
                 loadPageList(param.boardId,parseInt(param.page),param.sorted);
               } 
               else if(param.isSearch === "true") {
+                console.log("검색한거 많음!");
                 const option = searchParams.get("option")
                 const keyword = searchParams.get("keyword")
+                console.log(option);
+                console.log(keyword);
                 handleSearchFunction(option,keyword,param.boardId,parseInt(param.page),param.sorted);
               }
         }
@@ -207,13 +210,38 @@ function Board(props) {
     React.useEffect(()=>{
         if (subCategory !== undefined) {
             if(param.isSearch === "false"){
-                navigate(`/board/${param.boardId}/${page}/${param.sorted}/${param.isSearch}`);
+                navigate(`/board/${param.boardId}/${page}/${param.sorted}/false`);
             }
             else if(param.isSearch === "true"){
-                navigate(`/board/${param.boardId}/${page}/${param.sorted}/${param.isSearch}?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`);
+                navigate(`/board/${param.boardId}/${page}/${param.sorted}/true?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`);
             }
           }
     },[page])
+
+    const handleSearching = (data, e) => {
+        // 사용자가 검색을 했을때
+        console.log(data);
+        navigate(`/board/${param.boardId}/1/LASTEST/true?option=${data.option}&keyword=${data.keyword}`);
+        setSelected("최신순");
+    };
+
+    const OnError = (error, e) => {
+        console.log(error);
+        console.log("error");
+    };
+
+    const handleSearchBarFilter = (e) => {
+        //사용자가 검색바 필터를 바꾸었을 때.
+        console.log(e.target.value);
+        const type = e.target.value;
+        setSelected(e.target.value);
+        if(param.isSearch === "false"){
+            navigate(`/board/${param.boardId}/${page}/${type}/false`);
+        }
+        else if(param.isSearch === "true"){
+            navigate(`/board/${param.boardId}/${page}/${type}/true?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`);
+        }
+    };
     
     return (
         <>
@@ -223,6 +251,36 @@ function Board(props) {
                     <SideBar posts={subCategory} getFilter={setTarget} target={target} linkHeader={"board"} ></SideBar>
                     <Content>
                         <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
+
+                        <SearchBarSection>
+                            <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
+                                <SearchBarSelect {...register("option")}>
+                                    <option>제목 + 내용</option>
+                                    <option>제목</option>
+                                    <option>작성자</option>
+                                </SearchBarSelect>
+                                <SearchBar>
+                                    <SearchBarInput {...register("keyword", { required: true })} />
+                                    <SearchBarSubmit type="submit" value="" />
+                                </SearchBar>
+                            </SearchBarForm>
+
+                            <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
+                                {selectDate.map((value) => (
+                                    <option value={value.value} key={value.viewValue}>
+                                        {value.viewValue}
+                                    </option>
+                                ))}
+                            </SearchBarFilter>
+
+                            <CreateBtnLink
+                                to={`/board/write/${props.userReducer.id}`}
+                                state={{ category: "커뮤니티", subCategory: target }}
+                            >
+                                create
+                            </CreateBtnLink>
+                        </SearchBarSection>
+
                         <InforBar>
                             <InforContents>
                                 <Number>번호</Number>
@@ -240,11 +298,6 @@ function Board(props) {
                             :
                             null
                         }
-
-                        <CreateBtnLink
-                            to={`/board/8/1/LASTEST/false`}>
-                            예시링크
-                        </CreateBtnLink>  
 
                         <Pagination
                             total={totalPage}
