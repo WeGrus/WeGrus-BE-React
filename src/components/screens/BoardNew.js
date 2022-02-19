@@ -164,7 +164,7 @@ function Board(props) {
             .then(function (res) {
                 console.log(res);
               const category = [...res.data.data.boards.filter((element) => element.boardCategoryName === boardCategory)];
-              const categoryTarget = category.find((item)=>item.boardId === param.boardId).boardName 
+              const categoryTarget = category.find((item)=>item.boardId === parseInt(param.boardId)).boardName 
               console.log(category);
               setSubCategory((previous) => category);
               console.log(categoryTarget);
