@@ -1,15 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
-import Study from "./components/screens/Study";
 import Page from "./components/screens/Page";
-import Group from "./components/screens/Group";
-import CreatePage from "./components/screens/Page_Create.js";
 import UpdatePage from "./components/screens/Page_Update.js";
-import Announce from "./components/screens/Announce";
 import Profile from "./components/screens/Profile/Profile";
 import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
-import Board from "./components/screens/Board";
 import Layout from "./components/Layout";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import EmailAuth from "./components/screens/EmailAuth";
@@ -23,8 +18,14 @@ import { actionCreators } from "./store";
 import jwt_decode from "jwt-decode";
 import About from "./components/screens/About/About";
 import { Cookies, useCookies } from "react-cookie";
-import NewPage from "./components/screens/PageNew"
-import NewUpdatePage from "./components/screens/Page_UpdateNew";
+
+const Study = React.lazy(()=> import ("./components/screens/Study"))
+const Group = React.lazy(()=> import ("./components/screens/Group"))
+const Announce = React.lazy(()=> import ("./components/screens/Announce"))
+const Board = React.lazy(()=> import ("./components/screens/Board"))
+const CreatePage = React.lazy(()=> import ("./components/screens/Page_Create.js"))
+const NewPage = React.lazy(()=> import ("./components/screens/PageNew"))
+const NewUpdatePage = React.lazy(()=> import ("./components/screens/Page_UpdateNew"))
 
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -228,7 +229,7 @@ function App(props) {
                 <Route path="/profile" element={<Profile />} />
 
                 <Route path="/" element={<About />} />
-                
+
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />

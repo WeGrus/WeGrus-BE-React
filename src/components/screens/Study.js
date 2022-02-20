@@ -1,5 +1,3 @@
-
-
 import * as React from "react";
 import { Outlet, useLocation, useParams,useSearchParams,useNavigate } from "react-router-dom";
 import { Content } from "../shared/Content";
