@@ -22,6 +22,7 @@ import {
   Write,
 } from "./../shared/PageElements";
 import { current } from "@reduxjs/toolkit";
+import { usePrompt } from "./../Blocker";
 
 function mapStateToProps(state) {
   return state;
@@ -33,6 +34,8 @@ let filecheck = false
 
 
 function Page(props) {
+  usePrompt('현재 작성중인 페이지에서 벗어나시겠습니까?', true)
+
   const location = useLocation().state;
   const [secret, setSecret] = React.useState(false);
   const [notice, setNotice] = React.useState(false);

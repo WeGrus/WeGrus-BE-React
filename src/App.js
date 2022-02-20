@@ -26,6 +26,7 @@ import CreatePage from "./components/screens/Page_Create.js";
 import NewPage from "./components/screens/PageNew"
 import NewUpdatePage from "./components/screens/Page_UpdateNew";
 
+
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
 
@@ -256,7 +257,16 @@ function App(props) {
             <Route path="/" element={<About />} />
           )}
 
-          <Route path="*" element={<Navigate replace to="/" />} />
+
+          <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>There's nothing here!</p>
+              </main>
+            }
+          />
+          {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
