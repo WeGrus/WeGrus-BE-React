@@ -219,12 +219,12 @@ function App(props) {
                 <Route path="/study/:boardId/:page/:sorted/:isSearch" element={<Study />} />
                 <Route path="/study/:pagenum" element={<NewPage />} />
                 <Route path="/study/write/:userid" element={<CreatePage />} />
-                <Route path="/study/update/:pagenum/:userid" element={<NewUpdatePage />}/>
+                <Route path="/study/update/:pagenum/:userid" element={<NewUpdatePage />} />
 
                 <Route path="/board/:boardId/:page/:sorted/:isSearch" element={<Board />} />
                 <Route path="/board/write/:userid" element={<CreatePage />} />
                 <Route path="/board/:pagenum" element={<NewPage />} />
-                <Route path="/board/update/:pagenum/:userid"element={<NewUpdatePage />}/>
+                <Route path="/board/update/:pagenum/:userid" element={<NewUpdatePage />} />
                 <Route path="/profile" element={<Profile />} />
 
                 <Route path="/" element={<About />} />
@@ -243,6 +243,7 @@ function App(props) {
            
             </>
             )}
+            <Route path="*" element={<Navigate replace to="/" />} />
           </Route>
           <Route path="/login" element={<Login />} />
           {!authenticated ? (
@@ -254,7 +255,7 @@ function App(props) {
           ) : (
             <Route path="/" element={<About />} />
           )}
-          <Route path="*" element={<Navigate replace to="/" />} />
+          
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
