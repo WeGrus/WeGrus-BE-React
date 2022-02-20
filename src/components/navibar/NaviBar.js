@@ -105,40 +105,33 @@ const NaviBar = (props) => {
               About
             </NavLink>
             <NavLink
-              to="/announce"
-              onClick={(e) => {
-                handleLink(e, "NOTICE");
-              }}
+              to="/announce/1/1/LASTEST/false"
+              style={({ isActive }) => ({})}
             >
               공지사항
             </NavLink>
             <NavLink
-              to="/group"
-              onClick={(e) => {
-                handleLink(e, "GROUP");
-              }}
+              to="/group/2/1/LASTEST/false"
+
               style={({ isActive }) => ({})}
             >
               소모임
             </NavLink>
             <NavLink
-              to="/study"
-              onClick={(e) => {
-                handleLink(e, "STUDY");
-              }}
+              to="/study/6/1/LASTEST/false"
               style={({ isActive }) => ({})}
             >
               스터디
             </NavLink>
+
             <NavLink
-              to="/board"
-              onClick={(e) => {
-                handleLink(e, "BOARD");
-              }}
+            to="/board/7/1/LASTEST/false"
               style={({ isActive }) => ({})}
             >
               커뮤니티
             </NavLink>
+
+
             {isAuthority ? (
               <NavLink
                 to="/operator"

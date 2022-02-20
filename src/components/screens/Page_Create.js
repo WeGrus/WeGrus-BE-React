@@ -27,26 +27,23 @@ function mapStateToProps(state) {
   return state;
 }
 
-let aaaa;
+let file;
+let filecheck = false
 
 function Page(props) {
   const location = useLocation().state;
   const [secret, setSecret] = React.useState(false);
   const [notice, setNotice] = React.useState(false);
   const [title, setTitle] = React.useState("");
-  const [test, setTest] = React.useState(false); // file이 올라오는 지 아닌지 확인
-  const [url, setURL] = React.useState(""); // download할 url link
   const [postImageIds, setPostImageIds] = React.useState([]);
   
 
   const editorRef = React.useRef();
-  const downRef = React.createRef();
 
   const Navigate = useNavigate(); 
   const isClubExecutives =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
   const isGroupExecutives =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT"].includes(i))
 
-  let aBlob;
 
   const handleSecretOptionChange = (event) => {
     setSecret(!secret);
@@ -66,11 +63,6 @@ function Page(props) {
 
   function printTextBody() {
     const deitorInstance = editorRef.current.getInstance();
-
-    //console.log(deitorInstance);
-    // const getContent_md = deitorInstance.getMarkdown();
-    // console.log("마크다운");
-    // console.log(getContent_md);
     const getContent_html = deitorInstance.getHTML();
     return getContent_html;
   }
@@ -78,7 +70,7 @@ function Page(props) {
 
   function submit(){
     const data = {
-      "boardId": props.PageReducer.boardId,
+      "boardId": location.boardId,
       "content": printTextBody(),
       "postImage":postImageIds,
       "secretFlag": secret,
@@ -86,16 +78,20 @@ function Page(props) {
       "type": isNotice()
     }
 
-    //console.log(aaaa);
-
      let postCreateRequest  = new FormData();
      postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
 
      console.log("ddasdasdasadad");
+
+     if(filecheck){
+      postCreateRequest.append('file',file);
+    }
+
     axios.post(`/posts`,postCreateRequest,{
       headers: {
         'Authorization': `Bearer ${props.userReducer.token}`,
-        "content-type": "multipart/form-data"
+        "content-type": "multipart/mixed"
+        
       }
     })
     .catch(function (error) {
@@ -103,9 +99,10 @@ function Page(props) {
       //console.log("코드가 반복인가? 2");
     })
     .then(function (res) {
+      //"content-type": "multipart/form-data"
       console.log(res);
-      console.log("코드가 반복인가? 1");
-      //Navigate(props.PageReducer.boardCategoryName);
+      console.log("깃허브도 새롭게 업데이트 되었다!1");
+      Navigate(-1);
     })
 
 
@@ -144,24 +141,11 @@ function Page(props) {
 
   const handleTest = (e) => {
     console.log(e.target.files[0]);
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    console.log(formData);
-    aaaa = formData
-    //console.log(e.target.files);
-
-    // const formData = new FormData();
-    // formData.append('file',e.target.files[0]);
-
-    aBlob = new Blob(e.target.files, { type: e.target.files[0].type });
-    setURL(URL.createObjectURL(aBlob));
-    console.log(url);
-    setTest(true);
+    file = e.target.files[0]
+    console.log(e.target.files);
+    filecheck = true;
   };
 
-  setTimeout(function () {
-    URL.revokeObjectURL(url);
-  }, 1000);
 
   const handleDownload = (e) => {};
   console.log();
@@ -191,23 +175,19 @@ function Page(props) {
             ref={editorRef}
           />
           <input type="file" id="docpicker" onChange={handleTest}></input>
-          {test ? (
-            <a href={url} download ref={downRef}>
-              download
-            </a>
-          ) : null}
+
           <BtnSection>
 
-            <Link to={`${props.PageReducer.boardCategoryName}`}><GoToList >목록으로</GoToList></Link>
+            <GoToList onClick={()=>{Navigate(-1);}}>목록으로</GoToList>
             <Right>
-              {(isClubExecutives === true && props.PageReducer.viewCategoryName !== "소모임")?
+              {(isClubExecutives === true && location.category !== "소모임")?
                           <SetOption>
                           <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
                           <Checkbox checked={notice} onChange={handleNoticeOptionChange}/>
                         </SetOption>
               :
               null}
-              {(isGroupExecutives === true && props.PageReducer.viewCategoryName === "소모임") ?
+              {(isGroupExecutives === true && location.category === "소모임") ?
                 <SetOption>
                   <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
                   <Checkbox checked={notice} onChange={handleNoticeOptionChange} />
