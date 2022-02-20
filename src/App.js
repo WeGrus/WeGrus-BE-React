@@ -151,7 +151,9 @@ function App(props) {
         //토큰을 디코딩합니다
         // const ID = decoded.sub; //회원번호
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${props?.userReducer?.token}`;
 
         axios //유저 정보를 가져옵니다.
           .get(`/info`)
@@ -160,9 +162,8 @@ function App(props) {
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
             window.sessionStorage.setItem("userRole", JSON.stringify(role));
-            console.log(window.sessionStorage.getItem("userRole"));
             setUserInfo(true);
-
+            console.log(token);
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
           })
           .catch((err) => {

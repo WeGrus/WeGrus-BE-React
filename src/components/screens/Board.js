@@ -180,7 +180,7 @@ function Board(props) {
           console.log(res);
           const category = [
             ...res?.data?.data?.boards?.filter(
-              (element) => element.boardCategoryName === boardCategory
+              (element) => element?.boardCategoryName === boardCategory
             ),
           ];
           const categoryTarget = category.find(
