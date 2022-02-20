@@ -23,8 +23,8 @@ export const SearchBarSelect = styled.select`
   padding-left: 8px;
   border-radius: 50px;
   line-height: 16.41px;
-  color: #c4c4c4;
-  border: 1px solid #c4c4c4;
+  color: black;
+  border: 1px solid black;
 
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -41,7 +41,7 @@ export const SearchBar = styled.div`
 export const SearchBarInput = styled.input`
   min-width: 331.48px;
   height: 31.59px;
-  border: 1px solid #c4c4c4;
+  border: 1px solid black;
   border-radius: 50px;
   padding-left: 19.87px;
 `;
@@ -64,7 +64,7 @@ export const SearchBarFilter = styled.select`
   line-height: 16.41px;
   margin-top: 24px;
   margin-left: 100.52px;
-  border: none;
+  border: 1px solid black;
 
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -338,3 +338,16 @@ border-radius: 15px;
 cursor: pointer;
 `
 
+export const ViewSearchBarSubmit = styled.div`
+display: block;
+position: absolute;
+right: 3.71px;
+top: 4.25px;
+width: 28.9px;
+height: 20.27px;
+line-height: 25.27px;
+border:none;
+border-radius: 50px;
+text-align: center;
+padding-top: 5px;  
+`

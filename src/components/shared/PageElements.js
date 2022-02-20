@@ -188,6 +188,7 @@ export const CommentWrite = styled.textarea`
   padding-left: 20px;
   padding-right: 20px;
   height: content-max;
+  resize: none;
 `;
 
 export const CommentSubmit = styled.button`

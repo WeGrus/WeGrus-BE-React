@@ -26,8 +26,12 @@ import {
   Date,
   Hits,
   Recommendation,
+  ViewSearchBarSubmit
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons"
+
 
 const boardCategory = "BOARD";
 
@@ -264,8 +268,9 @@ function Board(props) {
                                     <option>작성자</option>
                                 </SearchBarSelect>
                                 <SearchBar>
-                                    <SearchBarInput {...register("keyword", { required: true })} />
+                                    <SearchBarInput placeholder="검색어를 입력하세요." {...register("keyword", { required: true })} />
                                     <SearchBarSubmit type="submit" value="" />
+                                    <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
                                 </SearchBar>
                             </SearchBarForm>
 

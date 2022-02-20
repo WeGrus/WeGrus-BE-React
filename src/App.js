@@ -114,6 +114,8 @@ function App(props) {
   const token = props?.userReducer?.token;
   const [userInfo, setUserInfo] = useState(false);
 
+
+  
   let isAuthority = false;
   let isJoinGroup = false;
   const joinPermission = props?.userReducer?.group; //
