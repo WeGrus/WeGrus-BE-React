@@ -227,23 +227,23 @@ function App(props) {
                 <Route path="/board/update/:pagenum/:userid" element={<NewUpdatePage />} />
                 <Route path="/profile" element={<Profile />} />
 
-                <Route path="/" element={<About />} />
+               
 
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
                   ) : null}
                 </>
-
-               
+                <Route path="/" element={<NewPage />} />
+                {/* <Route path="/" element={<About />} /> */}
               </>
-            ) : (<>
-
-            <Route path="/" element={<About />} />
-           
+            ) : (
+            <>
+            <Route path="/" element={<Profile />} />
+            {/* <Route path="/" element={<About />} /> */}
             </>
             )}
-            <Route path="*" element={<Navigate replace to="/" />} />
+            
           </Route>
           <Route path="/login" element={<Login />} />
           {!authenticated ? (
@@ -255,7 +255,8 @@ function App(props) {
           ) : (
             <Route path="/" element={<About />} />
           )}
-          
+
+          <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
