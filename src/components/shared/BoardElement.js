@@ -31,7 +31,7 @@ export const SearchBarSelect = styled.select`
   appearance: none;
   background: url(${img});
   background-repeat: no-repeat;
-  background-size: 17px 17px;
+  background-size: 12px 12px;
   background-position: bottom 8px right 11px;
 `;
 export const SearchBar = styled.div`
