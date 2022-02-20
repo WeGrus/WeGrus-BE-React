@@ -109,7 +109,7 @@ function App(props) {
   const authenticated = props?.userReducer?.authenticated;
   console.log(authenticated);
 
-  const token = props?.userReducer?.token;
+  const [token, setToken] = useState(null);
   const [userInfo, setUserInfo] = useState(false);
 
   let isAuthority = false;
@@ -165,7 +165,7 @@ function App(props) {
             window.sessionStorage.setItem("userRole", JSON.stringify(role));
             console.log(window.sessionStorage.getItem("userRole"));
             setUserInfo(true);
-
+            setToken(props?.userReducer?.token);
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
           })
           .catch((err) => {
