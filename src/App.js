@@ -82,7 +82,6 @@ const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 export const jsonType = { "content-type": "application/json" };
 
 export const cookies = new Cookies();
-const [userInfo, setUserInfo] = useState(false);
 
 function App(props) {
   // const [setCookie, removeCookie] = useCookies(["refreshToken"]);
@@ -162,7 +161,7 @@ function App(props) {
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
-            checkRender = true;
+
             setUserInfo(true);
 
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
