@@ -313,7 +313,7 @@ function Board(props) {
                             param={param}
                             searchParams={searchParams}
                         />
-                        <Outlet />
+                        
                     </Content>
                 </>
                 :

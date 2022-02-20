@@ -25,7 +25,6 @@ import About from "./components/screens/About/About";
 import { Cookies, useCookies } from "react-cookie";
 import NewPage from "./components/screens/PageNew"
 import NewUpdatePage from "./components/screens/Page_UpdateNew";
-import TestPage from "./components/Test"
 
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -228,13 +227,15 @@ function App(props) {
                 <Route path="/board/update/:pagenum/:userid"element={<NewUpdatePage />}/>
                 <Route path="/profile" element={<Profile />} />
 
+                <Route path="/" element={<About />} />
+                
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
                   ) : null}
                 </>
 
-                <Route path="/" element={<About />} />
+               
               </>
             ) : (<>
 
@@ -253,8 +254,7 @@ function App(props) {
           ) : (
             <Route path="/" element={<About />} />
           )}
-          <Route path="/test" element={<TestPage />} />
-          {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
+          <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>

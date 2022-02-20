@@ -327,7 +327,6 @@ function Group(props) {
               param={param}
               searchParams={searchParams}
             />
-            <Outlet />
           </Content>
         </>
         :
