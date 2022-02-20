@@ -53,9 +53,8 @@ export const SearchBarSubmit = styled.input`
   height: 25.27px;
   border: none;
   border-radius: 50px;
-  border-color: #c4c4c4;
-  background-color: #c4c4c4;
   cursor: pointer;
+  z-index:1;
 `;
 
 export const SearchBarFilter = styled.select`
@@ -349,5 +348,4 @@ line-height: 25.27px;
 border:none;
 border-radius: 50px;
 text-align: center;
-padding-top: 5px;  
 `
