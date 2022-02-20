@@ -152,6 +152,7 @@ function Page(props) {
 
   window.addEventListener('beforeunload', (event) => {
     event.preventDefault();
+    return ''
   });
 
   return (
