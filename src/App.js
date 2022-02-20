@@ -18,14 +18,13 @@ import { actionCreators } from "./store";
 import jwt_decode from "jwt-decode";
 import About from "./components/screens/About/About";
 import { Cookies, useCookies } from "react-cookie";
-
-const Study = React.lazy(()=> import ("./components/screens/Study"))
-const Group = React.lazy(()=> import ("./components/screens/Group"))
-const Announce = React.lazy(()=> import ("./components/screens/Announce"))
-const Board = React.lazy(()=> import ("./components/screens/Board"))
-const CreatePage = React.lazy(()=> import ("./components/screens/Page_Create.js"))
-const NewPage = React.lazy(()=> import ("./components/screens/PageNew"))
-const NewUpdatePage = React.lazy(()=> import ("./components/screens/Page_UpdateNew"))
+import Study from "./components/screens/Study";
+import Group from "./components/screens/Group";
+import Announce from "./components/screens/Announce";
+import Board from "./components/screens/Board";
+import CreatePage from "./components/screens/Page_Create.js";
+import NewPage from "./components/screens/PageNew"
+import NewUpdatePage from "./components/screens/Page_UpdateNew";
 
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
