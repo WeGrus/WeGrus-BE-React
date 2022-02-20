@@ -30,6 +30,11 @@ function mapStateToProps(state) {
 let file;
 let filecheck = false
 
+window.addEventListener('beforeunload', (event) => {
+  event.preventDefault();
+  return ''
+});
+
 function Page(props) {
   const location = useLocation().state;
   const [secret, setSecret] = React.useState(false);
@@ -150,10 +155,7 @@ function Page(props) {
   const handleDownload = (e) => {};
   console.log();
 
-  window.addEventListener('beforeunload', (event) => {
-    event.preventDefault();
-    return ''
-  });
+
 
   return (
     <div>
