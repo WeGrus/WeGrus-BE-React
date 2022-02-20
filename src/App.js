@@ -85,6 +85,12 @@ export const cookies = new Cookies();
 
 let checkRender = false
 
+window.addEventListener('beforeunload', (event) => { 
+  // 명세에 따라 preventDefault는 호출해야하며, 기본 동작을 방지합니다. 
+  event.preventDefault(); 
+  event.returnValue = '';
+});
+
 function App(props) {
   // const [setCookie, removeCookie] = useCookies(["refreshToken"]);
 
