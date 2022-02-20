@@ -89,7 +89,7 @@ function Page(props) {
       setPageData(res.data.data.board)
       setCommentData((current) => res.data.data.replies)
       setCountOfRecommend(res.data.data.board.postLike)
-      setCountOfScrape(0) // 스크랩 이후 수정
+      setCountOfScrape(res.data.data.board.postBookmarks) // 스크랩 이후 수정
       setCountOfComment(res.data.data.board.postReplies)
     });
 
@@ -108,7 +108,7 @@ function Page(props) {
 
 
   const postRecommand = () => { // 게시글 추천하는 함수
-    if (isRecommend === "추천취소") {
+    if (isRecommend === true) {
       axios.delete(`/posts/like?postId=${pageDate.postId}`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
@@ -119,7 +119,7 @@ function Page(props) {
         console.log(res);
       });
       setCountOfRecommend((count) => count - 1);
-      setIsRecommend("추천")
+      setIsRecommend(false)
     }
     else {
       axios.post(`/posts/like?postId=${pageDate.postId}`,{},{
@@ -132,14 +132,13 @@ function Page(props) {
         console.log(res);
       });
       setCountOfRecommend((count) => count + 1);
-      setIsRecommend("추천취소")
+      setIsRecommend(true)
     }
   }
 
   const handlePostScrape = () => {
     if(isScraped === true){ // 이미 추가했다면 북마크 해제
       console.log("북마크 해제");
-      
       axios.delete(`/members/bookmarks?postId=${pageDate.postId}`,{
         headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })

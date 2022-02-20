@@ -228,9 +228,7 @@ function App(props) {
                 <Route path="/board/:pagenum" element={<NewPage />} />
                 <Route path="/board/update/:pagenum/:userid" element={<NewUpdatePage />} />
                 <Route path="/profile" element={<Profile />} />
-
-
-
+                
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
