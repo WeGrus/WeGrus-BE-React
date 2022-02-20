@@ -176,20 +176,19 @@ function Board(props) {
               console.log("param.sorted "+param.sorted);
               setSelected(param.sorted)
               setLoad(true)
-            });
-
-            if(param.isSearch === "false"){
+              if (param.isSearch === "false") {
                 console.log("param.isSearch가 false");
-                loadPageList(param.boardId,parseInt(param.page),param.sorted); // boardId,page,selected
+                loadPageList(param.boardId, parseInt(param.page), param.sorted); // boardId,page,selected
 
-            }
-            else if(param.isSearch === "true"){
+              }
+              else if (param.isSearch === "true") {
                 console.log("param.isSearch가 true");
                 const option = searchParams.get("option")
                 const keyword = searchParams.get("keyword")
-                handleSearchFunction(option,keyword,param.boardId,parseInt(param.page),param.sorted);
+                handleSearchFunction(option, keyword, param.boardId, parseInt(param.page), param.sorted);
                 // option, keyword, boardId, page, seleted
-            }
+              }
+            });
         }
         else{
             console.log("subCategory가 undifined가 아님!!!");
@@ -313,7 +312,7 @@ function Board(props) {
                             param={param}
                             searchParams={searchParams}
                         />
-                        <Outlet />
+                        
                     </Content>
                 </>
                 :

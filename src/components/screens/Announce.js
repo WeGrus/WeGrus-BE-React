@@ -315,7 +315,7 @@ function Announce(props) {
               param={param}
               searchParams={searchParams}
             />
-            <Outlet />
+
           </Content>
         </>
         :
