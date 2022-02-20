@@ -2,11 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
 import Study from "./components/screens/Study";
 import Page from "./components/screens/Page";
-
 import Group from "./components/screens/Group";
 import CreatePage from "./components/screens/Page_Create.js";
 import UpdatePage from "./components/screens/Page_Update.js";
-
 import Announce from "./components/screens/Announce";
 import Profile from "./components/screens/Profile/Profile";
 import { GlobalStyles } from "./styles";
@@ -27,6 +25,7 @@ import About from "./components/screens/About/About";
 import { Cookies, useCookies } from "react-cookie";
 import NewPage from "./components/screens/PageNew"
 import NewUpdatePage from "./components/screens/Page_UpdateNew";
+import TestPage from "./components/Test"
 
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -194,12 +193,9 @@ function App(props) {
       <BrowserRouter>
         <GlobalStyles />
         <Routes>
-          <Route path="/" element={<Layout />}>
-          
+          <Route path="/" element={<Layout />}>    
             {role !== null ? (
               <>
-                <Route path="/" element={<About />} />
-
                 <Route path="/announce/:boardId/:page/:sorted/:isSearch" element={<Announce />} />
                 <Route path="/announce/:pagenum" element={<NewPage />} />
                 <Route path="/announce/write/:userid" element={<CreatePage />}/>
@@ -237,6 +233,8 @@ function App(props) {
                     <Route path="/operator" element={<Operator />} />
                   ) : null}
                 </>
+
+                <Route path="/" element={<About />} />
               </>
             ) : (<>
 
@@ -255,8 +253,8 @@ function App(props) {
           ) : (
             <Route path="/" element={<About />} />
           )}
-
-          <Route path="*" element={<Navigate replace to="/" />} />
+          <Route path="/test" element={<TestPage />} />
+          {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
