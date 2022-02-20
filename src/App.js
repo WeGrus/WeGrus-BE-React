@@ -83,6 +83,8 @@ export const jsonType = { "content-type": "application/json" };
 
 export const cookies = new Cookies();
 
+let checkRender = false
+
 function App(props) {
   // const [setCookie, removeCookie] = useCookies(["refreshToken"]);
 
@@ -160,8 +162,8 @@ function App(props) {
           .then((res) => {
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
-
             props.putUserInfo(...INFO_ARRAY);
+            checkRender = true
             //setUserInfo(true);
 
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
@@ -192,59 +194,63 @@ function App(props) {
       <BrowserRouter>
         <GlobalStyles />
         <Routes>
-          <Route path="/" element={<Layout />}>    
-            {role !== null ? (
-              <>
-                <Route path="/announce/:boardId/:page/:sorted/:isSearch" element={<Announce />} />
-                <Route path="/announce/:pagenum" element={<NewPage />} />
-                <Route path="/announce/write/:userid" element={<CreatePage />}/>
-                <Route path="/announce/update/:pagenum/:userid" element={<NewUpdatePage />}/>
-                
-                {(joinPermission !== null && joinPermission?.length !== 0) ||
-                isJoinGroup ? (
-                  <>
-                    <Route path="/group/:boardId/:page/:sorted/:isSearch" element={<Group />} />
-                    <Route path="/group/:pagenum" element={<NewPage />} />
-                    <Route
-                      path="/group/write/:userid"
-                      element={<CreatePage />}
-                    />
-                    <Route
-                      path="/group/update/:pagenum/:userid"
-                      element={<NewUpdatePage />}
-                    />
-                  </>
-                ) : null}
-
-                <Route path="/study/:boardId/:page/:sorted/:isSearch" element={<Study />} />
-                <Route path="/study/:pagenum" element={<NewPage />} />
-                <Route path="/study/write/:userid" element={<CreatePage />} />
-                <Route path="/study/update/:pagenum/:userid" element={<NewUpdatePage />} />
-
-                <Route path="/board/:boardId/:page/:sorted/:isSearch" element={<Board />} />
-                <Route path="/board/write/:userid" element={<CreatePage />} />
-                <Route path="/board/:pagenum" element={<NewPage />} />
-                <Route path="/board/update/:pagenum/:userid" element={<NewUpdatePage />} />
-                <Route path="/profile" element={<Profile />} />
-
-               
-
-                <>
-                  {isAuthority === true ? (
-                    <Route path="/operator" element={<Operator />} />
-                  ) : null}
-                </>
-                <Route path="/" element={<NewPage />} />
-                {/* <Route path="/" element={<About />} /> */}
-              </>
-            ) : (
-            <>
-            <Route path="/" element={<Profile />} />
-            {/* <Route path="/" element={<About />} /> */}
-            </>
-            )}
-            
-          </Route>
+          {(checkRender === true)?
+                    <Route path="/" element={<Layout />}>    
+                    {role !== null ? (
+                      <>
+                        <Route path="/announce/:boardId/:page/:sorted/:isSearch" element={<Announce />} />
+                        <Route path="/announce/:pagenum" element={<NewPage />} />
+                        <Route path="/announce/write/:userid" element={<CreatePage />}/>
+                        <Route path="/announce/update/:pagenum/:userid" element={<NewUpdatePage />}/>
+                        
+                        {(joinPermission !== null && joinPermission?.length !== 0) ||
+                        isJoinGroup ? (
+                          <>
+                            <Route path="/group/:boardId/:page/:sorted/:isSearch" element={<Group />} />
+                            <Route path="/group/:pagenum" element={<NewPage />} />
+                            <Route
+                              path="/group/write/:userid"
+                              element={<CreatePage />}
+                            />
+                            <Route
+                              path="/group/update/:pagenum/:userid"
+                              element={<NewUpdatePage />}
+                            />
+                          </>
+                        ) : null}
+        
+                        <Route path="/study/:boardId/:page/:sorted/:isSearch" element={<Study />} />
+                        <Route path="/study/:pagenum" element={<NewPage />} />
+                        <Route path="/study/write/:userid" element={<CreatePage />} />
+                        <Route path="/study/update/:pagenum/:userid" element={<NewUpdatePage />} />
+        
+                        <Route path="/board/:boardId/:page/:sorted/:isSearch" element={<Board />} />
+                        <Route path="/board/write/:userid" element={<CreatePage />} />
+                        <Route path="/board/:pagenum" element={<NewPage />} />
+                        <Route path="/board/update/:pagenum/:userid" element={<NewUpdatePage />} />
+                        <Route path="/profile" element={<Profile />} />
+        
+                       
+        
+                        <>
+                          {isAuthority === true ? (
+                            <Route path="/operator" element={<Operator />} />
+                          ) : null}
+                        </>
+                        <Route path="/" element={<NewPage />} />
+                        {/* <Route path="/" element={<About />} /> */}
+                      </>
+                    ) : (
+                    <>
+                    <Route path="/" element={<Profile />} />
+                    {/* <Route path="/" element={<About />} /> */}
+                    </>
+                    )}
+                    
+                  </Route>
+          :
+          null
+          }
           <Route path="/login" element={<Login />} />
           {!authenticated ? (
             <>
