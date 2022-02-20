@@ -144,20 +144,20 @@ function App(props) {
       })
       .then((res) => {
         const accessToken = res?.data?.data?.accessToken;
-        console.log(accessToken);
+
         props.loginSuccess(accessToken);
         //store에 토큰이 있을 경우(=로그인 했을 경우)
-        var decoded = jwt_decode(token);
+        //var decoded = jwt_decode(token);
 
         //토큰을 디코딩합니다
-        const ID = decoded.sub; //회원번호
+        // const ID = decoded.sub; //회원번호
 
         axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${props?.userReducer?.token}`;
 
         axios //유저 정보를 가져옵니다.
-          .get(`/members/info/${ID}`)
+          .get(`/info`)
           .then((res) => {
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
@@ -187,7 +187,7 @@ function App(props) {
       });
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
-  }, [authenticated, userInfo]);
+  }, [token, userInfo]);
 
   return (
     <HelmetProvider>
