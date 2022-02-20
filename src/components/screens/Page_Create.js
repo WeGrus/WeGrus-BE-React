@@ -150,6 +150,10 @@ function Page(props) {
   const handleDownload = (e) => {};
   console.log();
 
+  window.addEventListener('beforeunload', (event) => {
+    event.preventDefault();
+  });
+
   return (
     <div>
       <Background>
