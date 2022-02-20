@@ -88,6 +88,7 @@ export const CreateBtnLink = styled(Link)`
   transition: all 0.2s ease-in-out;
   margin-left: 100.32px;
   margin-top: 15.85px;
+  font-size: 20px;
 `;
 
 export const InforBar = styled.div`
