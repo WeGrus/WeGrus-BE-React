@@ -108,7 +108,7 @@ function App(props) {
 
   const authenticated = props?.userReducer?.authenticated;
   console.log(authenticated);
-  const role = props?.userReducer?.roles;
+
   const token = props?.userReducer?.token;
   const [userInfo, setUserInfo] = useState(false);
 
@@ -136,6 +136,7 @@ function App(props) {
   }
 
   useEffect(() => {
+    const role = props?.userReducer?.roles;
     axios
       .post("/reissue", {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -161,7 +162,8 @@ function App(props) {
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
-
+            window.sessionStorage.setItem("userRole", JSON.stringify(role));
+            console.log(window.sessionStorage.getItem("userRole"));
             setUserInfo(true);
 
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
@@ -193,7 +195,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {role !== null ? (
+            {window.sessionStorage.getItem("userRole") !== null ? (
               <>
                 <Route
                   path="/announce/:boardId/:page/:sorted/:isSearch"
