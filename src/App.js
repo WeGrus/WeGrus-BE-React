@@ -143,18 +143,16 @@ function App(props) {
         withCredentials: true,
       })
       .then((res) => {
-        const accessToken = res?.data?.data?.accessToken;
+        token = res?.data?.data?.accessToken;
 
-        props.loginSuccess(accessToken);
+        props.loginSuccess(token);
         //store에 토큰이 있을 경우(=로그인 했을 경우)
         //var decoded = jwt_decode(token);
 
         //토큰을 디코딩합니다
         // const ID = decoded.sub; //회원번호
 
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${props?.userReducer?.token}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
         axios //유저 정보를 가져옵니다.
           .get(`/info`)
@@ -165,7 +163,7 @@ function App(props) {
             window.sessionStorage.setItem("userRole", JSON.stringify(role));
             console.log(window.sessionStorage.getItem("userRole"));
             setUserInfo(true);
-            setToken(props?.userReducer?.token);
+            setToken(token);
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
           })
           .catch((err) => {
