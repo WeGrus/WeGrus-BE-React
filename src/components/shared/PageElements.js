@@ -151,7 +151,7 @@ export const CommentRecommand = styled.span`
 `;
 export const CommentContent = styled.div`
   padding-top: 10px;
-  margin-left: 49px;
+  margin-left: 20px;
   max-width: 608px;
   min-height: 96.22px;
   white-space: pre-wrap;
@@ -336,12 +336,12 @@ export const ReComment = styled.div`
   padding-bottom: 8px;
   font-size: 14px;
   line-height: 16px;
-  border: 1px solid #c5c5c5;
+  border: 1px solid #ebebeb;
   border-bottom: none;
   position: relative;
   width: 880px;
   margin: 0 auto;
-  background-color: #e5e5e5;
+  background-color: #f9f9f9;
 `;
 
 export const CommentSpan = styled.span`
