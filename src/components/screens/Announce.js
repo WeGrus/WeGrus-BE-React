@@ -32,11 +32,11 @@ import {
   Date,
   Hits,
   Recommendation,
-  ViewSearchBarSubmit
+  ViewSearchBarSubmit,
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faSearch} from "@fortawesome/free-solid-svg-icons"
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 const boardCategory = "공지사항";
 
 const selectDate = [
@@ -82,7 +82,7 @@ function Announce(props) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const isAuthority = props.userReducer.roles.some((i) =>
+  const isAuthority = props?.userReducer?.roles?.some((i) =>
     [
       "ROLE_GROUP_EXECUTIVE",
       "ROLE_GROUP_PRESIDENT",
@@ -318,7 +318,9 @@ function Announce(props) {
                     {...register("keyword", { required: true })}
                   />
                   <SearchBarSubmit type="submit" value="" />
-                  <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
+                  <ViewSearchBarSubmit>
+                    <FontAwesomeIcon icon={faSearch} />
+                  </ViewSearchBarSubmit>
                 </SearchBar>
               </SearchBarForm>
 
