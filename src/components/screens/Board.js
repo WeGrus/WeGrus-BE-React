@@ -33,7 +33,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons"
 
 
-const boardCategory = "BOARD";
+const boardCategory = "게시판";
 
 const selectDate = [
   // 게시물 나열할 때, 어떤 순으로 나열할지.
