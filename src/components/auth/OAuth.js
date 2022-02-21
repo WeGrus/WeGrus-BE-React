@@ -33,12 +33,12 @@ function mapDispatchToProps(dispatch) {
 function OAuth(props) {
   let navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(async () => {
     let params = new URL(document.location.toString()).searchParams;
     let code = params.get("code"); // url 파라미터에서 인가코드 받는 부분
     //let grant_type = "authorization_code";
     //let client_id = "65cd2fc55aec40658e2efbc951d47164";
-    axios
+    await axios
       .post(`/signin?authorizationCode=${code}`, {
         headers: {
           "Access-Control-Allow-Origin": "http://api.igrus.net:8080/", // 서버 domain
@@ -56,11 +56,11 @@ function OAuth(props) {
         if (RESULT === "fail") {
           navigate("/login/email-auth");
         } else if ("success") {
-          const ACCESS_TOKEN = res.data.data.accessToken;
-          props.loginSuccess(ACCESS_TOKEN);
-
-          props.setToken(res.data.data.accessToken);
-          console.log(ACCESS_TOKEN);
+          //const ACCESS_TOKEN = res.data.data.accessToken;
+          //props.loginSuccess(ACCESS_TOKEN);
+          console.log(res);
+          //props.setToken(res.data.data.accessToken);
+          //console.log(ACCESS_TOKEN);
           //서버에서 쿠키로 전송한 refresh_token을 확인하는 코드입니다
           //sameSite - lax의 경우 다른 도메인간 쿠키 전송이 불가능 하기 때문에 sameSite none으로 설정하고 https를 통해 secure 설정을 하여 전송하거나 도메인을 통합해야 합니다.
 
