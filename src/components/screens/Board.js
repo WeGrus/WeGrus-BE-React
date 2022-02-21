@@ -160,7 +160,7 @@ function Board(props) {
 
   const loadPageList = (boardId, page, type) => {
     axios
-      .get(`/boards/?boardId=${boardId}&page=${page - 1}&pageSize=19&type=${type}`)
+      .get(`/boards/${boardId}?page=${page - 1}&pageSize=19&type=${type}`)
       .catch(function (error) {
         console.log(error.toJSON());
       })
