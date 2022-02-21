@@ -1,5 +1,11 @@
 import * as React from "react";
-import { Outlet, useLocation, useParams, useSearchParams, useNavigate } from "react-router-dom";
+import {
+  Outlet,
+  useLocation,
+  useParams,
+  useSearchParams,
+  useNavigate,
+} from "react-router-dom";
 import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
@@ -38,7 +44,6 @@ const selectDate = [
   { viewValue: "댓글순", value: "REPLYEST" },
 ];
 
-
 function mapStateToProps(state) {
   return state;
 }
@@ -58,10 +63,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-
 function Announce(props) {
   const location = useLocation();
-  const { pathname } = location
+  const { pathname } = location;
   const param = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -76,9 +80,14 @@ function Announce(props) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-
-  const isAuthority = props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE", "ROLE_GROUP_PRESIDENT", "ROLE_CLUB_EXECUTIVE", "ROLE_CLUB_PRESIDENT"].includes(i))
-
+  const isAuthority = props.userReducer.roles.some((i) =>
+    [
+      "ROLE_GROUP_EXECUTIVE",
+      "ROLE_GROUP_PRESIDENT",
+      "ROLE_CLUB_EXECUTIVE",
+      "ROLE_CLUB_PRESIDENT",
+    ].includes(i)
+  );
 
   if (searchParams.get("isSearch") !== null) {
     console.log(searchParams.get("isSearch"));
@@ -86,11 +95,22 @@ function Announce(props) {
     console.log(searchParams.get("keyword"));
   }
 
-  const handleSearchFunction = (option, keyword, currentBoardType, page, currentType) => {
+  const handleSearchFunction = (
+    option,
+    keyword,
+    currentBoardType,
+    page,
+    currentType
+  ) => {
     // 검색일 경우 실행
     console.log(option);
     if (option === "제목+내용") {
-      axios.get(`/search/all/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`)
+      axios
+        .get(
+          `/search/all/${currentBoardType}?keyword=${keyword}&page=${
+            page - 1
+          }&pageSize=19&type=${currentType}`
+        )
         .catch(function (error) {
           console.log(error.toJSON());
         })
@@ -100,13 +120,16 @@ function Announce(props) {
           setPosts(res.data.data.posts.content);
           console.log("제목+내용검색");
         });
-    }
-    else if (option === "제목") {
-      axios.get(`/search/title/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`,
-        {
-          headers: { Authorization: `Bearer ${props.userReducer.token}` },
-        }
-      )
+    } else if (option === "제목") {
+      axios
+        .get(
+          `/search/title/${currentBoardType}?keyword=${keyword}&page=${
+            page - 1
+          }&pageSize=19&type=${currentType}`,
+          {
+            headers: { Authorization: `Bearer ${props.userReducer.token}` },
+          }
+        )
         .catch(function (error) {
           console.log(error.toJSON());
         })
@@ -116,13 +139,16 @@ function Announce(props) {
           setPosts(res.data.data.posts.content);
           console.log("제목검색");
         });
-    }
-    else {
-      axios.get(`/search/writer/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`,
-        {
-          headers: { Authorization: `Bearer ${props.userReducer.token}` },
-        }
-      )
+    } else {
+      axios
+        .get(
+          `/search/writer/${currentBoardType}?keyword=${keyword}&page=${
+            page - 1
+          }&pageSize=19&type=${currentType}`,
+          {
+            headers: { Authorization: `Bearer ${props.userReducer.token}` },
+          }
+        )
         .catch(function (error) {
           console.log(error.toJSON());
         })
@@ -136,9 +162,10 @@ function Announce(props) {
   };
 
   const loadPageList = (boardId, page, type) => {
-    axios.get(`/boards/${boardId}?page=${page - 1}&pageSize=19&type=${type}`, {
-      headers: { Authorization: `Bearer ${props.userReducer.token}` },
-    })
+    axios
+      .get(`/boards/${boardId}?page=${page - 1}&pageSize=19&type=${type}`, {
+        headers: { Authorization: `Bearer ${props.userReducer.token}` },
+      })
       .catch(function (error) {
         console.log(error.toJSON());
       })
@@ -152,71 +179,88 @@ function Announce(props) {
   React.useEffect(() => {
     console.log("useEffect호출!");
     if (subCategory === undefined) {
-      axios.get(`/boards/categories`, {
-        headers: { Authorization: `Bearer ${props.userReducer.token}` },
-      })
+      axios
+        .get(`/boards/categories`, {
+          headers: { Authorization: `Bearer ${props.userReducer.token}` },
+        })
         .catch(function (error) {
           console.log(error.toJSON());
         })
         .then(function (res) {
           console.log(res);
-          const category = [...res.data.data.boards.filter((element) => element.boardCategoryName === boardCategory)];
-          const categoryTarget = category.find((item) => item.boardId === parseInt(param.boardId)).boardName
+          const category = [
+            ...res.data.data.boards.filter(
+              (element) => element?.boardCategoryName === boardCategory
+            ),
+          ];
+          const categoryTarget = category.find(
+            (item) => item?.boardId === parseInt(param?.boardId)
+          ).boardName;
           console.log(category);
           setSubCategory((previous) => category);
           console.log(categoryTarget);
           setTarget((current) => categoryTarget);
           console.log("param.page " + parseInt(param.page));
-          setPage(parseInt(param.page))
+          setPage(parseInt(param.page));
           console.log("param.sorted " + param.sorted);
-          setSelected(param.sorted)
-          setLoad(true)
+          setSelected(param.sorted);
+          setLoad(true);
         });
 
       if (param.isSearch === "false") {
         console.log("param.isSearch가 false");
         loadPageList(param.boardId, parseInt(param.page), param.sorted); // boardId,page,selected
-
-      }
-      else if (param.isSearch === "true") {
+      } else if (param.isSearch === "true") {
         console.log("param.isSearch가 true");
-        const option = searchParams.get("option")
-        const keyword = searchParams.get("keyword")
-        handleSearchFunction(option, keyword, param.boardId, parseInt(param.page), param.sorted);
+        const option = searchParams.get("option");
+        const keyword = searchParams.get("keyword");
+        handleSearchFunction(
+          option,
+          keyword,
+          param.boardId,
+          parseInt(param.page),
+          param.sorted
+        );
         // option, keyword, boardId, page, seleted
       }
-    }
-    else {
+    } else {
       console.log("subCategory가 undifined가 아님!!!");
-      const categoryTarget = subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardName
+      const categoryTarget = subCategory.find(
+        (item) => item.boardId === parseInt(param.boardId)
+      ).boardName;
       setTarget((current) => categoryTarget);
       console.log("page변경!!!");
-      setPage((current) => parseInt(param.page))
+      setPage((current) => parseInt(param.page));
       if (param.isSearch === "false") {
         console.log("검색한 것 없음!");
         loadPageList(param.boardId, parseInt(param.page), param.sorted);
-      }
-      else if (param.isSearch === "true") {
+      } else if (param.isSearch === "true") {
         console.log("검색한거 많음!");
-        const option = searchParams.get("option")
-        const keyword = searchParams.get("keyword")
+        const option = searchParams.get("option");
+        const keyword = searchParams.get("keyword");
         console.log(option);
         console.log(keyword);
-        handleSearchFunction(option, keyword, param.boardId, parseInt(param.page), param.sorted);
+        handleSearchFunction(
+          option,
+          keyword,
+          param.boardId,
+          parseInt(param.page),
+          param.sorted
+        );
       }
     }
-  }, [location])
+  }, [location]);
 
   React.useEffect(() => {
     if (subCategory !== undefined) {
       setSelected("최신순");
     }
-  }, [target])
+  }, [target]);
 
   const handleSearching = (data, e) => {
     // 사용자가 검색을 했을때
     console.log(data);
-    let url = `/board/${param.boardId}/1/LASTEST/true?option=${data.option}&keyword=${data.keyword}`
+    let url = `/board/${param.boardId}/1/LASTEST/true?option=${data.option}&keyword=${data.keyword}`;
     url = url.replace(/\+/g, "%2B");
     console.log(url);
     navigate(url);
@@ -235,9 +279,12 @@ function Announce(props) {
     setSelected(e.target.value);
     if (param.isSearch === "false") {
       navigate(`/board/${param.boardId}/${page}/${type}/false`);
-    }
-    else if (param.isSearch === "true") {
-      let url = `/board/${param.boardId}/${page}/${type}/true?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`
+    } else if (param.isSearch === "true") {
+      let url = `/board/${
+        param.boardId
+      }/${page}/${type}/true?option=${searchParams.get(
+        "option"
+      )}&keyword=${searchParams.get("keyword")}`;
       url = url.replace(/\+/g, "%2B");
       navigate(url);
     }
@@ -245,10 +292,15 @@ function Announce(props) {
 
   return (
     <>
-      {(load) ?
+      {load ? (
         <>
           <PageTitle title="공지사항" />
-          <SideBar posts={subCategory} getFilter={setTarget} target={target} linkHeader={"announce"} ></SideBar>
+          <SideBar
+            posts={subCategory}
+            getFilter={setTarget}
+            target={target}
+            linkHeader={"announce"}
+          ></SideBar>
           <Content>
             <ScreenTitle>{`공지사항 | ${target}`}</ScreenTitle>
 
@@ -260,12 +312,17 @@ function Announce(props) {
                   <option>작성자</option>
                 </SearchBarSelect>
                 <SearchBar>
-                  <SearchBarInput {...register("keyword", { required: true })} />
+                  <SearchBarInput
+                    {...register("keyword", { required: true })}
+                  />
                   <SearchBarSubmit type="submit" value="" />
                 </SearchBar>
               </SearchBarForm>
 
-              <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
+              <SearchBarFilter
+                onChange={handleSearchBarFilter}
+                value={selected}
+              >
                 {selectDate.map((value) => (
                   <option value={value.value} key={value.viewValue}>
                     {value.viewValue}
@@ -273,19 +330,18 @@ function Announce(props) {
                 ))}
               </SearchBarFilter>
 
-
-              {(isAuthority === true) ?
+              {isAuthority === true ? (
                 <CreateBtnLink
                   to={`/announce/write/${props.userReducer.id}`}
-                  state={{ category: "공지사항", subCategory: target, boardId: param.boardId }}
+                  state={{
+                    category: "공지사항",
+                    subCategory: target,
+                    boardId: param.boardId,
+                  }}
                 >
                   create
                 </CreateBtnLink>
-                :
-                null
-              }
-
-
+              ) : null}
             </SearchBarSection>
 
             <InforBar>
@@ -300,11 +356,14 @@ function Announce(props) {
             </InforBar>
 
             {posts !== null ? (
-              <PostBar page={page} data={posts} userReducer={props.userReducer} linkHeader={"announce"} category={"공지사항"} />
-            )
-              :
-              null
-            }
+              <PostBar
+                page={page}
+                data={posts}
+                userReducer={props.userReducer}
+                linkHeader={"announce"}
+                category={"공지사항"}
+              />
+            ) : null}
 
             <Pagination
               total={totalPage}
@@ -315,13 +374,9 @@ function Announce(props) {
               param={param}
               searchParams={searchParams}
             />
-
           </Content>
         </>
-        :
-        null
-      }
-
+      ) : null}
     </>
   );
 }

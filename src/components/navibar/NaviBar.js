@@ -50,8 +50,15 @@ const NaviBar = (props) => {
   const Navigate = useNavigate();
 
   //useEffect(() => {}, [logOut]);
-  const handleLogOut = () => {
-    console.log("log out!");
+  const handleLogOut = async () => {
+    await axios
+      .post("/signout")
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleLink = (e, boardCategoryName) => {
@@ -112,7 +119,6 @@ const NaviBar = (props) => {
             </NavLink>
             <NavLink
               to="/group/2/1/LASTEST/false"
-
               style={({ isActive }) => ({})}
             >
               소모임
@@ -125,12 +131,11 @@ const NaviBar = (props) => {
             </NavLink>
 
             <NavLink
-            to="/board/7/1/LASTEST/false"
+              to="/board/7/1/LASTEST/false"
               style={({ isActive }) => ({})}
             >
               커뮤니티
             </NavLink>
-
 
             {isAuthority ? (
               <NavLink
