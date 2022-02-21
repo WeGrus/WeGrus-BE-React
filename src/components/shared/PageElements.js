@@ -155,6 +155,7 @@ export const CommentContent = styled.div`
   max-width: 608px;
   min-height: 96.22px;
   white-space: pre-wrap;
+  word-break: break-all;
 `;
 
 export const Recode = styled.div`
