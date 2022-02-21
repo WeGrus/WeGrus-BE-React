@@ -52,7 +52,9 @@ const NaviBar = (props) => {
   //useEffect(() => {}, [logOut]);
   const handleLogOut = async () => {
     await axios
-      .post("/signout")
+      .post("/signout", {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res);
         props.logUserOut();
