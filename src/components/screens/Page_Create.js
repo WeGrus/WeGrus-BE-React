@@ -23,6 +23,7 @@ import {
 } from "./../shared/PageElements";
 import { current } from "@reduxjs/toolkit";
 import { usePrompt } from "./../Blocker";
+import { useBeforeunload } from "react-beforeunload";
 
 function mapStateToProps(state) {
   return state;
@@ -30,7 +31,7 @@ function mapStateToProps(state) {
 
 let file;
 let filecheck = false
-
+let refreshCheck = true
 
 
 function Page(props) {
@@ -107,6 +108,7 @@ function Page(props) {
       //"content-type": "multipart/form-data"
       console.log(res);
       console.log("깃허브도 새롭게 업데이트 되었다!1");
+      refreshCheck = false
       Navigate(-1);
     })
 
@@ -151,14 +153,14 @@ function Page(props) {
     filecheck = true;
   };
 
-
-  const handleDownload = (e) => {};
-  console.log();
-
-  window.addEventListener('beforeunload', (event) => { 
-    event.preventDefault(); 
-    event.returnValue = '';
+  const [value, setValue] = React.useState('ddd');
+  
+  useBeforeunload((event) => {
+    if (refreshCheck === true) {
+      event.preventDefault();
+    }
   });
+  
 
   return (
     <div>
