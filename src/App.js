@@ -266,7 +266,7 @@ function App(props) {
           /> */}
           {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
           {/* <Route path="*" element={<Navigate to="/" />} /> */}
-          <Route path="*" element={<About />} />
+          <Route path="*" element={<Layout />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
