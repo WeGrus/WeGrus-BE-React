@@ -160,6 +160,7 @@ function App(props) {
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
+            props.loginSuccess();
 
             //setRole(props?.userReducer?.roles);
             //window.sessionStorage.setItem("userRole", JSON.stringify(role));
