@@ -258,15 +258,16 @@ function App(props) {
           )}
 
 
-          <Route
+          {/* <Route
             path="*"
             element={
               <main style={{ padding: "1rem" }}>
                 <p>There's nothing here!</p>
               </main>
             }
-          />
+          /> */}
           {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
