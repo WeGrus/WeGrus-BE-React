@@ -184,7 +184,7 @@ function App(props) {
       });
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
-  }, [token, userInfo]);
+  }, [userInfo]);
 
   return (
     <HelmetProvider>
