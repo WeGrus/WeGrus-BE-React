@@ -157,11 +157,10 @@ function App(props) {
         await axios //유저 정보를 가져옵니다.
           .get(`/info`)
           .then((res) => {
-            console.log(res.data.data);
+            props.loginSuccess(token);
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
-            props.loginSuccess(token);
 
             //setRole(props?.userReducer?.roles);
             //window.sessionStorage.setItem("userRole", JSON.stringify(role));
@@ -189,7 +188,7 @@ function App(props) {
       });
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
-  }, [props.userReducer.token]);
+  }, [token]);
 
   return (
     <HelmetProvider>
