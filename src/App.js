@@ -143,7 +143,7 @@ function App(props) {
       })
       .then(async (res) => {
         //setToken(res?.data?.data?.accessToken);
-        props.loginSuccess(res?.data?.data?.accessToken);
+        //props.loginSuccess(res?.data?.data?.accessToken);
         //store에 토큰이 있을 경우(=로그인 했을 경우)
         //var decoded = jwt_decode(token);
 
@@ -152,7 +152,7 @@ function App(props) {
 
         axios.defaults.headers.common[
           "Authorization"
-        ] = `Bearer ${props.userReducer.token}`;
+        ] = `Bearer ${res?.data?.data?.accessToken}`;
 
         await axios //유저 정보를 가져옵니다.
           .get(`/info`)
