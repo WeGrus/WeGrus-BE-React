@@ -26,7 +26,6 @@ import CreatePage from "./components/screens/Page_Create.js";
 import NewPage from "./components/screens/PageNew";
 import NewUpdatePage from "./components/screens/Page_UpdateNew";
 
-
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
 
@@ -113,8 +112,6 @@ function App(props) {
 
   const [userInfo, setUserInfo] = useState(false);
 
-
-  
   let isAuthority = false;
   let isJoinGroup = false;
   const joinPermission = props?.userReducer?.group; //
@@ -145,15 +142,17 @@ function App(props) {
         withCredentials: true,
       })
       .then(async (res) => {
-        setToken(res?.data?.data?.accessToken);
-        props.loginSuccess(token);
+        //setToken(res?.data?.data?.accessToken);
+        props.loginSuccess(res?.data?.data?.accessToken);
         //store에 토큰이 있을 경우(=로그인 했을 경우)
         //var decoded = jwt_decode(token);
 
         //토큰을 디코딩합니다
         // const ID = decoded.sub; //회원번호
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${props.userReducer.token}`;
 
         await axios //유저 정보를 가져옵니다.
           .get(`/info`)
@@ -162,10 +161,10 @@ function App(props) {
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
 
-            setRole(props?.userReducer?.roles);
+            //setRole(props?.userReducer?.roles);
             //window.sessionStorage.setItem("userRole", JSON.stringify(role));
-            setUserInfo(true);
-            console.log(token);
+            //setUserInfo(true);
+            //console.log(token);
 
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
           })
@@ -188,7 +187,7 @@ function App(props) {
       });
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
-  }, [userInfo]);
+  }, [props.userReducer]);
 
   return (
     <HelmetProvider>
@@ -196,7 +195,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {role !== null ? (
+            {props.userReducer.authenticated ? (
               <>
                 <Route
                   path="/announce/:boardId/:page/:sorted/:isSearch"
@@ -254,7 +253,6 @@ function App(props) {
                 />
                 <Route path="/profile" element={<Profile />} />
 
-
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
@@ -278,7 +276,6 @@ function App(props) {
           ) : (
             <Route path="/" element={<About />} />
           )}
-
 
           {/* <Route
             path="*"
