@@ -180,7 +180,7 @@ const SmallDescriptionBox = styled.div`
 `;
 
 const Hashtag = styled.div`
-  width: 400px;
+  width: 500px;
   display: flex;
   justify-content: space-between;
 `;
