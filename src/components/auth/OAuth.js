@@ -56,9 +56,9 @@ function OAuth(props) {
         if (RESULT === "fail") {
           navigate("/login/email-auth");
         } else if ("success") {
-          //const ACCESS_TOKEN = res.data.data.accessToken;
-          //props.loginSuccess(ACCESS_TOKEN);
-          console.log(res);
+          const ACCESS_TOKEN = res.data.data.accessToken;
+          props.loginSuccess(ACCESS_TOKEN);
+
           //props.setToken(res.data.data.accessToken);
           //console.log(ACCESS_TOKEN);
           //서버에서 쿠키로 전송한 refresh_token을 확인하는 코드입니다
