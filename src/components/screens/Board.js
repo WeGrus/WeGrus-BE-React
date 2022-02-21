@@ -184,7 +184,7 @@ function Board(props) {
             ),
           ];
           const categoryTarget = category.find(
-            (item) => item.boardId === parseInt(param.boardId)
+            (item) => item?.boardId === parseInt(param?.boardId)
           ).boardName;
           console.log(category);
           setSubCategory((previous) => category);
