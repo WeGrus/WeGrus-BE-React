@@ -26,9 +26,11 @@ import {
   Date,
   Hits,
   Recommendation,
+  ViewSearchBarSubmit
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons"
 const boardCategory = "NOTICE";
 
 const selectDate = [
@@ -262,6 +264,7 @@ function Announce(props) {
                 <SearchBar>
                   <SearchBarInput {...register("keyword", { required: true })} />
                   <SearchBarSubmit type="submit" value="" />
+                  <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
                 </SearchBar>
               </SearchBarForm>
 
