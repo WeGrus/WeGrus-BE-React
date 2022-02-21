@@ -83,7 +83,7 @@ export const jsonType = { "content-type": "application/json" };
 
 export const cookies = new Cookies();
 
-async function App(props) {
+function App(props) {
   // const [setCookie, removeCookie] = useCookies(["refreshToken"]);
 
   /*const getReissue = () => {
@@ -136,14 +136,14 @@ async function App(props) {
     );
   }
 
-  await useEffect(async () => {
+  useEffect(async () => {
     await axios
       .post("/reissue", {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         withCredentials: true,
       })
       .then(async (res) => {
-        await setToken(res?.data?.data?.accessToken);
+        setToken(res?.data?.data?.accessToken);
         props.loginSuccess(token);
         //store에 토큰이 있을 경우(=로그인 했을 경우)
         //var decoded = jwt_decode(token);
