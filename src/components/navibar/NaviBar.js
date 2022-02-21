@@ -55,6 +55,7 @@ const NaviBar = (props) => {
       .post("/signout")
       .then((res) => {
         console.log(res);
+        props.logUserOut();
       })
       .catch((err) => {
         console.log(err);
