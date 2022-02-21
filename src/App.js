@@ -151,9 +151,7 @@ function App(props) {
         //토큰을 디코딩합니다
         // const ID = decoded.sub; //회원번호
 
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${props?.userReducer?.token}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
         axios //유저 정보를 가져옵니다.
           .get(`/info`)
@@ -161,7 +159,7 @@ function App(props) {
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
-            setRole = props?.userReducer?.roles;
+            setRole(props?.userReducer?.roles);
             //window.sessionStorage.setItem("userRole", JSON.stringify(role));
             setUserInfo(true);
             console.log(token);
