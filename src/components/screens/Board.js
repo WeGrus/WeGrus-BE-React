@@ -32,12 +32,11 @@ import {
   Date,
   Hits,
   Recommendation,
-  ViewSearchBarSubmit
+  ViewSearchBarSubmit,
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faSearch} from "@fortawesome/free-solid-svg-icons"
-
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const boardCategory = "게시판";
 
@@ -167,8 +166,8 @@ function Board(props) {
       })
       .then(function (res) {
         console.log("loadPageList 동작!");
-        settotalPage(res.data.data.posts.totalPages);
-        setPosts(res.data.data.posts.content);
+        settotalPage(res?.data?.data?.posts?.totalPages);
+        setPosts(res?.data?.data?.posts?.content);
       });
   };
 
@@ -255,15 +254,18 @@ function Board(props) {
     console.log(e.target.value);
     const type = e.target.value;
     setSelected(e.target.value);
-    if(param.isSearch === "false"){
-        navigate(`/board/${param.boardId}/${page}/${type}/false`);
+    if (param.isSearch === "false") {
+      navigate(`/board/${param.boardId}/${page}/${type}/false`);
+    } else if (param.isSearch === "true") {
+      let url = `/board/${
+        param.boardId
+      }/${page}/${type}/true?option=${searchParams.get(
+        "option"
+      )}&keyword=${searchParams.get("keyword")}`;
+      url = url.replace(/\+/g, "%2B");
+      navigate(url);
     }
-    else if(param.isSearch === "true"){
-        let url = `/board/${param.boardId}/${page}/${type}/true?option=${searchParams.get("option")}&keyword=${searchParams.get("keyword")}`
-        url= url.replace(/\+/g,"%2B");
-        navigate(url);
-    }
-};
+  };
 
   const handleSearching = (data, e) => {
     // 사용자가 검색을 했을때
@@ -282,78 +284,94 @@ function Board(props) {
 
   return (
     <>
-        {(load) ?
-            <>
-                <PageTitle title="커뮤니티" />
-                <SideBar posts={subCategory} getFilter={setTarget} target={target} linkHeader={"board"} ></SideBar>
-                <Content>
-                    <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
+      {load ? (
+        <>
+          <PageTitle title="커뮤니티" />
+          <SideBar
+            posts={subCategory}
+            getFilter={setTarget}
+            target={target}
+            linkHeader={"board"}
+          ></SideBar>
+          <Content>
+            <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
 
-                    <SearchBarSection>
-                        <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
-                            <SearchBarSelect {...register("option")}>
-                                <option>제목+내용</option>
-                                <option>제목</option>
-                                <option>작성자</option>
-                            </SearchBarSelect>
-                            <SearchBar>
-                                <SearchBarInput placeholder="검색어를 입력하세요." {...register("keyword", { required: true })} />
-                                <SearchBarSubmit type="submit" value="" />
-                                <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
-                            </SearchBar>
-                        </SearchBarForm>
+            <SearchBarSection>
+              <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
+                <SearchBarSelect {...register("option")}>
+                  <option>제목+내용</option>
+                  <option>제목</option>
+                  <option>작성자</option>
+                </SearchBarSelect>
+                <SearchBar>
+                  <SearchBarInput
+                    placeholder="검색어를 입력하세요."
+                    {...register("keyword", { required: true })}
+                  />
+                  <SearchBarSubmit type="submit" value="" />
+                  <ViewSearchBarSubmit>
+                    <FontAwesomeIcon icon={faSearch} />
+                  </ViewSearchBarSubmit>
+                </SearchBar>
+              </SearchBarForm>
 
-                        <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
-                            {selectDate.map((value) => (
-                                <option value={value.value} key={value.viewValue}>
-                                    {value.viewValue}
-                                </option>
-                            ))}
-                        </SearchBarFilter>
+              <SearchBarFilter
+                onChange={handleSearchBarFilter}
+                value={selected}
+              >
+                {selectDate.map((value) => (
+                  <option value={value.value} key={value.viewValue}>
+                    {value.viewValue}
+                  </option>
+                ))}
+              </SearchBarFilter>
 
-                        <CreateBtnLink
-                            to={`/board/write/${props.userReducer.id}`}
-                            state={{ category: "커뮤니티", subCategory: target, boardId: param.boardId}}
-                        >
-                            create
-                        </CreateBtnLink>
-                    </SearchBarSection>
+              <CreateBtnLink
+                to={`/board/write/${props.userReducer.id}`}
+                state={{
+                  category: "커뮤니티",
+                  subCategory: target,
+                  boardId: param.boardId,
+                }}
+              >
+                create
+              </CreateBtnLink>
+            </SearchBarSection>
 
-                    <InforBar>
-                        <InforContents>
-                            <Number>번호</Number>
-                            <Title>제목</Title>
-                            <Writer>작성자</Writer>
-                            <Date>작성일자</Date>
-                            <Recommendation>추천</Recommendation>
-                            <Hits>조회</Hits>
-                        </InforContents>
-                    </InforBar>
+            <InforBar>
+              <InforContents>
+                <Number>번호</Number>
+                <Title>제목</Title>
+                <Writer>작성자</Writer>
+                <Date>작성일자</Date>
+                <Recommendation>추천</Recommendation>
+                <Hits>조회</Hits>
+              </InforContents>
+            </InforBar>
 
-                    {posts !== null ? (
-                        <PostBar page={page} data={posts} userReducer={props.userReducer} linkHeader={"board"} category={"커뮤니티"}/>
-                    )
-                        :
-                        null
-                    }
+            {posts !== null ? (
+              <PostBar
+                page={page}
+                data={posts}
+                userReducer={props.userReducer}
+                linkHeader={"board"}
+                category={"커뮤니티"}
+              />
+            ) : null}
 
-                    <Pagination
-                        total={totalPage}
-                        limit={19}
-                        page={page}
-                        setPage={setPage}
-                        linkHeader={"board"}
-                        param={param}
-                        searchParams={searchParams}
-                    />
-                    
-                </Content>
-            </>
-            :
-            null
-        }
-
+            <Pagination
+              total={totalPage}
+              limit={19}
+              page={page}
+              setPage={setPage}
+              linkHeader={"board"}
+              param={param}
+              searchParams={searchParams}
+            />
+          </Content>
+        </>
+      ) : null}
     </>
-);
+  );
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Board);

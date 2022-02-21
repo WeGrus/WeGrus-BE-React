@@ -32,11 +32,11 @@ import {
   Date,
   Hits,
   Recommendation,
-  ViewSearchBarSubmit
+  ViewSearchBarSubmit,
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faSearch} from "@fortawesome/free-solid-svg-icons"
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 const boardCategory = "스터디";
 
 const selectDate = [
@@ -164,8 +164,8 @@ function Study(props) {
       })
       .then(function (res) {
         console.log("loadPageList 동작!");
-        settotalPage(res.data.data.posts.totalPages);
-        setPosts(res.data.data.posts.content);
+        settotalPage(res?.data?.data?.posts?.totalPages);
+        setPosts(res?.data?.data?.posts?.content);
       });
   };
 
@@ -283,80 +283,95 @@ function Study(props) {
     }
   };
 
-
   return (
     <>
-        {(load) ?
-            <>
-                <PageTitle title="스터디" />
-                <SideBar posts={subCategory} getFilter={setTarget} target={target} linkHeader={"study"} ></SideBar>
-                <Content>
-                    <ScreenTitle>{`스터디 | ${target}`}</ScreenTitle>
+      {load ? (
+        <>
+          <PageTitle title="스터디" />
+          <SideBar
+            posts={subCategory}
+            getFilter={setTarget}
+            target={target}
+            linkHeader={"study"}
+          ></SideBar>
+          <Content>
+            <ScreenTitle>{`스터디 | ${target}`}</ScreenTitle>
 
-                    <SearchBarSection>
-                        <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
-                            <SearchBarSelect {...register("option")}>
-                                <option>제목+내용</option>
-                                <option>제목</option>
-                                <option>작성자</option>
-                            </SearchBarSelect>
-                            <SearchBar>
-                                <SearchBarInput {...register("keyword", { required: true })} />
-                                <SearchBarSubmit type="submit" value="" />
-                                <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
-                            </SearchBar>
-                        </SearchBarForm>
+            <SearchBarSection>
+              <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
+                <SearchBarSelect {...register("option")}>
+                  <option>제목+내용</option>
+                  <option>제목</option>
+                  <option>작성자</option>
+                </SearchBarSelect>
+                <SearchBar>
+                  <SearchBarInput
+                    {...register("keyword", { required: true })}
+                  />
+                  <SearchBarSubmit type="submit" value="" />
+                  <ViewSearchBarSubmit>
+                    <FontAwesomeIcon icon={faSearch} />
+                  </ViewSearchBarSubmit>
+                </SearchBar>
+              </SearchBarForm>
 
-                        <SearchBarFilter onChange={handleSearchBarFilter} value={selected}>
-                            {selectDate.map((value) => (
-                                <option value={value.value} key={value.viewValue}>
-                                    {value.viewValue}
-                                </option>
-                            ))}
-                        </SearchBarFilter>
+              <SearchBarFilter
+                onChange={handleSearchBarFilter}
+                value={selected}
+              >
+                {selectDate.map((value) => (
+                  <option value={value.value} key={value.viewValue}>
+                    {value.viewValue}
+                  </option>
+                ))}
+              </SearchBarFilter>
 
-                        <CreateBtnLink
-                            to={`/study/write/${props.userReducer.id}`}
-                            state={{ category: "스터디", subCategory: target, boardId: param.boardId}}
-                        >
-                            create
-                        </CreateBtnLink>
-                    </SearchBarSection>
+              <CreateBtnLink
+                to={`/study/write/${props.userReducer.id}`}
+                state={{
+                  category: "스터디",
+                  subCategory: target,
+                  boardId: param.boardId,
+                }}
+              >
+                create
+              </CreateBtnLink>
+            </SearchBarSection>
 
-                    <InforBar>
-                        <InforContents>
-                            <Number>번호</Number>
-                            <Title>제목</Title>
-                            <Writer>작성자</Writer>
-                            <Date>작성일자</Date>
-                            <Recommendation>추천</Recommendation>
-                            <Hits>조회</Hits>
-                        </InforContents>
-                    </InforBar>
+            <InforBar>
+              <InforContents>
+                <Number>번호</Number>
+                <Title>제목</Title>
+                <Writer>작성자</Writer>
+                <Date>작성일자</Date>
+                <Recommendation>추천</Recommendation>
+                <Hits>조회</Hits>
+              </InforContents>
+            </InforBar>
 
-                    {posts !== null ? (
-                        <PostBar page={page} data={posts} userReducer={props.userReducer} linkHeader={"study"} category={"스터디"}/>
-                    )
-                        :
-                        null
-                    }
+            {posts !== null ? (
+              <PostBar
+                page={page}
+                data={posts}
+                userReducer={props.userReducer}
+                linkHeader={"study"}
+                category={"스터디"}
+              />
+            ) : null}
 
-                    <Pagination
-                        total={totalPage}
-                        limit={19}
-                        page={page}
-                        setPage={setPage}
-                        linkHeader={"study"}
-                        param={param}
-                        searchParams={searchParams}
-                    />
-                </Content>
-            </>
-            :
-            null
-        }
-
+            <Pagination
+              total={totalPage}
+              limit={19}
+              page={page}
+              setPage={setPage}
+              linkHeader={"study"}
+              param={param}
+              searchParams={searchParams}
+            />
+          </Content>
+        </>
+      ) : null}
     </>
-);
+  );
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Study);
