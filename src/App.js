@@ -106,7 +106,7 @@ function App(props) {
   };*/
 
   const authenticated = props?.userReducer?.authenticated;
-  console.log(authenticated);
+
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
 
@@ -142,7 +142,7 @@ function App(props) {
         withCredentials: true,
       })
       .then(async (res) => {
-        //setToken(res?.data?.data?.accessToken);
+        setToken(res?.data?.data?.accessToken);
         //props.loginSuccess(res?.data?.data?.accessToken);
         //store에 토큰이 있을 경우(=로그인 했을 경우)
         //var decoded = jwt_decode(token);
@@ -157,10 +157,11 @@ function App(props) {
         await axios //유저 정보를 가져옵니다.
           .get(`/info`)
           .then((res) => {
+            console.log(res.data.data);
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
-            props.loginSuccess();
+            props.loginSuccess(token);
 
             //setRole(props?.userReducer?.roles);
             //window.sessionStorage.setItem("userRole", JSON.stringify(role));
