@@ -35,7 +35,7 @@ let refreshCheck = true
 
 
 function Page(props) {
-  usePrompt('현재 작성중인 페이지에서 벗어나시겠습니까?', refreshCheck)
+  //usePrompt('현재 작성중인 페이지에서 벗어나시겠습니까?', refreshCheck)
 
   const location = useLocation().state;
   const [secret, setSecret] = React.useState(false);
