@@ -31,18 +31,19 @@ function mapStateToProps(state) {
 
 let file;
 let filecheck = false
-let refreshCheck = true
+
 
 
 function Page(props) {
-  //usePrompt('현재 작성중인 페이지에서 벗어나시겠습니까?', refreshCheck)
-
+  
+  const [refreshCheck, setRefreshCheck] = React.useState(true);
   const location = useLocation().state;
   const [secret, setSecret] = React.useState(false);
   const [notice, setNotice] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [postImageIds, setPostImageIds] = React.useState([]);
   
+  usePrompt('현재 작성중인 페이지에서 벗어나시겠습니까?', refreshCheck)
 
   const editorRef = React.useRef();
 
@@ -75,7 +76,8 @@ function Page(props) {
 
 
   function submit(){
-    refreshCheck = false
+    setRefreshCheck(false)
+    
     const data = {
       "boardId": location.boardId,
       "content": printTextBody(),
@@ -154,7 +156,6 @@ function Page(props) {
     filecheck = true;
   };
 
-  const [value, setValue] = React.useState('ddd');
   
   useBeforeunload((event) => {
     if (refreshCheck === true) {
