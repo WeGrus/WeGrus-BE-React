@@ -297,7 +297,6 @@ export const actionCreators = {
   userSignUp,
   loginSuccess,
   putUserInfo,
-
   setToken,
   setAll,
   setBoardId,

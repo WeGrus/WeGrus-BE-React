@@ -23,7 +23,7 @@ import Group from "./components/screens/Group";
 import Announce from "./components/screens/Announce";
 import Board from "./components/screens/Board";
 import CreatePage from "./components/screens/Page_Create.js";
-import NewPage from "./components/screens/PageNew"
+import NewPage from "./components/screens/PageNew";
 import NewUpdatePage from "./components/screens/Page_UpdateNew";
 
 
@@ -84,8 +84,6 @@ export const jsonType = { "content-type": "application/json" };
 
 export const cookies = new Cookies();
 
-let checkRender = false
-
 function App(props) {
   // const [setCookie, removeCookie] = useCookies(["refreshToken"]);
   /*const getReissue = () => {
@@ -110,8 +108,9 @@ function App(props) {
 
   const authenticated = props?.userReducer?.authenticated;
   console.log(authenticated);
-  const role = props?.userReducer?.roles;
-  const token = props?.userReducer?.token;
+  const [token, setToken] = useState(null);
+  const [role, setRole] = useState(null);
+
   const [userInfo, setUserInfo] = useState(false);
 
 
@@ -139,34 +138,35 @@ function App(props) {
     );
   }
 
-  useEffect(() => {
-    axios
+  useEffect(async () => {
+    await axios
       .post("/reissue", {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         withCredentials: true,
       })
-      .then((res) => {
-        const accessToken = res?.data?.data?.accessToken;
-        console.log(accessToken);
-        props.loginSuccess(accessToken);
+      .then(async (res) => {
+        setToken(res?.data?.data?.accessToken);
+        props.loginSuccess(token);
         //store에 토큰이 있을 경우(=로그인 했을 경우)
-        var decoded = jwt_decode(token);
+        //var decoded = jwt_decode(token);
 
         //토큰을 디코딩합니다
-        const ID = decoded.sub; //회원번호
+        // const ID = decoded.sub; //회원번호
 
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${props?.userReducer?.token}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-        axios //유저 정보를 가져옵니다.
-          .get(`/members/info/${ID}`)
+        await axios //유저 정보를 가져옵니다.
+          .get(`/info`)
           .then((res) => {
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
-            checkRender = true
-            //setUserInfo(true);
+
+            setRole(props?.userReducer?.roles);
+            //window.sessionStorage.setItem("userRole", JSON.stringify(role));
+            setUserInfo(true);
+            console.log(token);
+
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
           })
           .catch((err) => {
@@ -188,7 +188,7 @@ function App(props) {
       });
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
-  }, [authenticated]);
+  }, [userInfo]);
 
   return (
     <HelmetProvider>
@@ -198,15 +198,27 @@ function App(props) {
           <Route path="/" element={<Layout />}>
             {role !== null ? (
               <>
-                <Route path="/announce/:boardId/:page/:sorted/:isSearch" element={<Announce />} />
+                <Route
+                  path="/announce/:boardId/:page/:sorted/:isSearch"
+                  element={<Announce />}
+                />
                 <Route path="/announce/:pagenum" element={<NewPage />} />
-                <Route path="/announce/write/:userid" element={<CreatePage />} />
-                <Route path="/announce/update/:pagenum/:userid" element={<NewUpdatePage />} />
+                <Route
+                  path="/announce/write/:userid"
+                  element={<CreatePage />}
+                />
+                <Route
+                  path="/announce/update/:pagenum/:userid"
+                  element={<NewUpdatePage />}
+                />
 
                 {(joinPermission !== null && joinPermission?.length !== 0) ||
-                  isJoinGroup ? (
+                isJoinGroup ? (
                   <>
-                    <Route path="/group/:boardId/:page/:sorted/:isSearch" element={<Group />} />
+                    <Route
+                      path="/group/:boardId/:page/:sorted/:isSearch"
+                      element={<Group />}
+                    />
                     <Route path="/group/:pagenum" element={<NewPage />} />
                     <Route
                       path="/group/write/:userid"
@@ -219,17 +231,30 @@ function App(props) {
                   </>
                 ) : null}
 
-                <Route path="/study/:boardId/:page/:sorted/:isSearch" element={<Study />} />
+                <Route
+                  path="/study/:boardId/:page/:sorted/:isSearch"
+                  element={<Study />}
+                />
                 <Route path="/study/:pagenum" element={<NewPage />} />
                 <Route path="/study/write/:userid" element={<CreatePage />} />
-                <Route path="/study/update/:pagenum/:userid" element={<NewUpdatePage />} />
+                <Route
+                  path="/study/update/:pagenum/:userid"
+                  element={<NewUpdatePage />}
+                />
 
-                <Route path="/board/:boardId/:page/:sorted/:isSearch" element={<Board />} />
+                <Route
+                  path="/board/:boardId/:page/:sorted/:isSearch"
+                  element={<Board />}
+                />
                 <Route path="/board/write/:userid" element={<CreatePage />} />
                 <Route path="/board/:pagenum" element={<NewPage />} />
-                <Route path="/board/update/:pagenum/:userid" element={<NewUpdatePage />} />
+                <Route
+                  path="/board/update/:pagenum/:userid"
+                  element={<NewUpdatePage />}
+                />
                 <Route path="/profile" element={<Profile />} />
-                
+
+
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
@@ -242,7 +267,6 @@ function App(props) {
                 <Route path="/" element={<About />} />
               </>
             )}
-
           </Route>
           <Route path="/login" element={<Login />} />
           {!authenticated ? (
