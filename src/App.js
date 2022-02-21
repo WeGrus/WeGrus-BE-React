@@ -88,7 +88,7 @@ let checkRender = false
 
 function App(props) {
   // const [setCookie, removeCookie] = useCookies(["refreshToken"]);
-
+  const [load,setLoad] = React.useState(false)
   /*const getReissue = () => {
     axios
       .post("/reissue", {
@@ -168,12 +168,13 @@ function App(props) {
             props.putUserInfo(...INFO_ARRAY);
             checkRender = true
             //setUserInfo(true);
-
+            setLoad(true)
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
           })
           .catch((err) => {
             const ERR = err.response.data.status;
             console.log(ERR);
+            setLoad(true)
             if (ERR === 403) {
               window.alert(
                 "GUEST 권한입니다. 동아리 가입 신청 후 MEMBER 권한을 획득하면 이용 가능합니다."
@@ -197,7 +198,7 @@ function App(props) {
       <BrowserRouter>
         <GlobalStyles />
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Layout load={load} />}>
             {role !== null ? (
               <>
                 <Route path="/announce/:boardId/:page/:sorted/:isSearch" element={<Announce />} />
