@@ -32,10 +32,14 @@ import {
   Date,
   Hits,
   Recommendation,
+  ViewSearchBarSubmit
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons"
 
-const boardCategory = "BOARD";
+
+const boardCategory = "게시판";
 
 const selectDate = [
   // 게시물 나열할 때, 어떤 순으로 나열할지.
@@ -261,37 +265,21 @@ function Board(props) {
     console.log("error");
   };
 
-  const handleSearchBarFilter = (e) => {
-    //사용자가 검색바 필터를 바꾸었을 때.
-    console.log(e.target.value);
-    const type = e.target.value;
-    setSelected(e.target.value);
-    if (param.isSearch === "false") {
-      navigate(`/board/${param.boardId}/${page}/${type}/false`);
-    } else if (param.isSearch === "true") {
-      let url = `/board/${
-        param.boardId
-      }/${page}/${type}/true?option=${searchParams.get(
-        "option"
-      )}&keyword=${searchParams.get("keyword")}`;
-      url = url.replace(/\+/g, "%2B");
-      navigate(url);
-    }
-  };
 
-  return (
-    <>
-      {load ? (
-        <>
-          <PageTitle title="커뮤니티" />
-          <SideBar
-            posts={subCategory}
-            getFilter={setTarget}
-            target={target}
-            linkHeader={"board"}
-          ></SideBar>
-          <Content>
-            <ScreenTitle>{`커뮤니티 | ${target}`}</ScreenTitle>
+                        <SearchBarSection>
+                            <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
+                                <SearchBarSelect {...register("option")}>
+                                    <option>제목+내용</option>
+                                    <option>제목</option>
+                                    <option>작성자</option>
+                                </SearchBarSelect>
+                                <SearchBar>
+                                    <SearchBarInput placeholder="검색어를 입력하세요." {...register("keyword", { required: true })} />
+                                    <SearchBarSubmit type="submit" value="" />
+                                    <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
+                                </SearchBar>
+                            </SearchBarForm>
+
 
             <SearchBarSection>
               <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>

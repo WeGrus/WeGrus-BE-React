@@ -26,10 +26,12 @@ import {
   Date,
   Hits,
   Recommendation,
+  ViewSearchBarSubmit
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
-
-const boardCategory = "GROUP";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons"
+const boardCategory = "소모임";
 
 const selectDate = [
   // 게시물 나열할 때, 어떤 순으로 나열할지.
@@ -276,6 +278,7 @@ function Group(props) {
                 <SearchBar>
                   <SearchBarInput {...register("keyword", { required: true })} />
                   <SearchBarSubmit type="submit" value="" />
+                  <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
                 </SearchBar>
               </SearchBarForm>
 

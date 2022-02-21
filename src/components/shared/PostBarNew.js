@@ -53,30 +53,22 @@ function PostBar(props) {
             <PostCotent>
               <Number>{i + 1 + number}</Number>
               <Title>
-                <Link
-                  to={`/${linkHeader}/${i + 1 + number}`}
-                  state={{ postId: data.postId, category: category }}
-                >
+                <Link to={`/${linkHeader}/${i + 1 + number}`} state={{ postId: data.postId, category: category }}>
                   {"비밀글 " + data.title}
                 </Link>
-                <HashLink
-                  to={`/${linkHeader}/${i + 1 + number}`}
-                  state={{ postId: data.postId, category:category, linkHeader:linkHeader}}
-                >
-                  <Test>[{data.postReplies}]</Test>
-                </HashLink>
               </Title>
               <Writer>{data.memberName}</Writer>
               <Date>{splitDate(data.createdDate)}</Date>
               <Recommendation>{data.postLike}</Recommendation>
               <Hits>{data.postView}</Hits>
             </PostCotent>
-          ) : (
+          ) 
+          : 
+          (
             <PostCotent>
               <Number>{i + 1 + number}</Number>
               <Title>
                 {"비밀글 입니다."}
-                <Test>[{data.postReplies}]</Test>
               </Title>
               <Writer>{"작성자"}</Writer>
               <Date>{splitDate(data.createdDate)}</Date>
@@ -85,59 +77,49 @@ function PostBar(props) {
             </PostCotent>
           )}
         </>
-      ) : (
+      ) 
+      : 
+      (
         <>
-          {data.type === "NORMAL" ? ( // 비밀글이 아닐때.
+          {data.type === "NORMAL" ? ( // 공지글이 아닐때.
             <PostCotent>
               <Number>{i + 1 + number}</Number>
-
               <Title>
                 <Link
-                  to={`/${linkHeader}/${i + 1 + number}`}
-                  state={{
-                    postId: data.postId,
-                    category:category
-                    , linkHeader:linkHeader
-                  }}
-                >
+                  to={`/${linkHeader}/${i + 1 + number}`} state={{ postId: data.postId, category:category, linkHeader:linkHeader}}>
                   {data.title}
                 </Link>
-                <HashLink
-                  to={`/${linkHeader}/${i + 1 + number}`}
-                  state={{
-                    postId: data.postId, category:category, linkHeader:linkHeader
-                  }}
-                >
-                  <Test>[{data.postReplies}]</Test>
-                </HashLink>
+                  {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
+                    <HashLink to={`/${linkHeader}/${i + 1 + number}`} state={{ postId: data.postId, category: category, linkHeader: linkHeader }}>
+                      <Test>[{data.postReplies}]</Test>
+                    </HashLink>
+                    :
+                    null
+                  }
               </Title>
               <Writer>{data.memberName}</Writer>
               <Date>{splitDate(data.createdDate)}</Date>
               <Recommendation>{data.postLike}</Recommendation>
               <Hits>{data.postView}</Hits>
             </PostCotent>
-          ) : (
+          ) 
+          : 
+          (
             <PostCotent bold>
               <Number>
                 <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
               </Number>
               <Title>
-                <Link
-                  to={`/${linkHeader}/${i + 1 + number}`}
-                  state={{
-                    postId: data.postId, category:category, linkHeader:linkHeader
-                  }}
-                >
+                <Link to={`/${linkHeader}/${i + 1 + number}`} state={{ postId: data.postId, category:category, linkHeader:linkHeader}}>
                   {data.title}
                 </Link>
-                <HashLink
-                  to={`/${linkHeader}/${i + 1 + number}`}
-                  state={{
-                    postId: data.postId, category:category, linkHeader:linkHeader
-                  }}
-                >
-                  <Test>[{data.postReplies}]</Test>
-                </HashLink>
+                    {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
+                      <HashLink to={`/${linkHeader}/${i + 1 + number}`} state={{ postId: data.postId, category: category, linkHeader: linkHeader }}>
+                        <Test>[{data.postReplies}]</Test>
+                      </HashLink>
+                      :
+                      null
+                    }
               </Title>
               <Writer>{data.memberName}</Writer>
               <Date>{splitDate(data.createdDate)}</Date>

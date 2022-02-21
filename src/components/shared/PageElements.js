@@ -151,10 +151,11 @@ export const CommentRecommand = styled.span`
 `;
 export const CommentContent = styled.div`
   padding-top: 10px;
-  margin-left: 49px;
+  margin-left: 20px;
   max-width: 608px;
   min-height: 96.22px;
   white-space: pre-wrap;
+  word-break: break-all;
 `;
 
 export const Recode = styled.div`
@@ -188,6 +189,7 @@ export const CommentWrite = styled.textarea`
   padding-left: 20px;
   padding-right: 20px;
   height: content-max;
+  resize: none;
 `;
 
 export const CommentSubmit = styled.button`
@@ -336,12 +338,12 @@ export const ReComment = styled.div`
   padding-bottom: 8px;
   font-size: 14px;
   line-height: 16px;
-  border: 1px solid #c5c5c5;
+  border: 1px solid #ebebeb;
   border-bottom: none;
   position: relative;
   width: 880px;
   margin: 0 auto;
-  background-color: #e5e5e5;
+  background-color: #f9f9f9;
 `;
 
 export const CommentSpan = styled.span`

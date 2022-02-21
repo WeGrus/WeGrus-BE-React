@@ -11,13 +11,14 @@ const Box = styled.main`
   margin-top: 24px;
 `;
 
-function Layout() {
+function Layout(props) {
   return (
     <>
       <NaviBar />
       <Box>
-        <Outlet />
-      </Box>
+            <Outlet />
+          </Box>
+
     </>
   );
 }

@@ -22,6 +22,8 @@ import {
   Write,
 } from "./../shared/PageElements";
 import { current } from "@reduxjs/toolkit";
+import { usePrompt } from "./../Blocker";
+import { useBeforeunload } from "react-beforeunload";
 
 function mapStateToProps(state) {
   return state;
@@ -30,13 +32,18 @@ function mapStateToProps(state) {
 let file;
 let filecheck = false
 
+
+
 function Page(props) {
+  
+  const [refreshCheck, setRefreshCheck] = React.useState(true);
   const location = useLocation().state;
   const [secret, setSecret] = React.useState(false);
   const [notice, setNotice] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [postImageIds, setPostImageIds] = React.useState([]);
   
+  usePrompt('현재 작성중인 페이지에서 벗어나시겠습니까?', refreshCheck)
 
   const editorRef = React.useRef();
 
@@ -69,6 +76,8 @@ function Page(props) {
 
 
   function submit(){
+    setRefreshCheck(false)
+    
     const data = {
       "boardId": location.boardId,
       "content": printTextBody(),
@@ -102,6 +111,7 @@ function Page(props) {
       //"content-type": "multipart/form-data"
       console.log(res);
       console.log("깃허브도 새롭게 업데이트 되었다!1");
+      
       Navigate(-1);
     })
 
@@ -146,9 +156,13 @@ function Page(props) {
     filecheck = true;
   };
 
-
-  const handleDownload = (e) => {};
-  console.log();
+  
+  useBeforeunload((event) => {
+    if (refreshCheck === true) {
+      event.preventDefault();
+    }
+  });
+  
 
   return (
     <div>

@@ -23,15 +23,15 @@ export const SearchBarSelect = styled.select`
   padding-left: 8px;
   border-radius: 50px;
   line-height: 16.41px;
-  color: #c4c4c4;
-  border: 1px solid #c4c4c4;
+  color: black;
+  border: 1px solid black;
 
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
   background: url(${img});
   background-repeat: no-repeat;
-  background-size: 17px 17px;
+  background-size: 12px 12px;
   background-position: bottom 8px right 11px;
 `;
 export const SearchBar = styled.div`
@@ -41,7 +41,7 @@ export const SearchBar = styled.div`
 export const SearchBarInput = styled.input`
   min-width: 331.48px;
   height: 31.59px;
-  border: 1px solid #c4c4c4;
+  border: 1px solid black;
   border-radius: 50px;
   padding-left: 19.87px;
 `;
@@ -53,9 +53,8 @@ export const SearchBarSubmit = styled.input`
   height: 25.27px;
   border: none;
   border-radius: 50px;
-  border-color: #c4c4c4;
-  background-color: #c4c4c4;
   cursor: pointer;
+  z-index:1;
 `;
 
 export const SearchBarFilter = styled.select`
@@ -64,7 +63,7 @@ export const SearchBarFilter = styled.select`
   line-height: 16.41px;
   margin-top: 24px;
   margin-left: 100.52px;
-  border: none;
+  border: 1px solid black;
 
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -89,6 +88,7 @@ export const CreateBtnLink = styled(Link)`
   transition: all 0.2s ease-in-out;
   margin-left: 100.32px;
   margin-top: 15.85px;
+  font-size: 20px;
 `;
 
 export const InforBar = styled.div`
@@ -338,3 +338,15 @@ border-radius: 15px;
 cursor: pointer;
 `
 
+export const ViewSearchBarSubmit = styled.div`
+display: block;
+position: absolute;
+right: 3.71px;
+top: 4.25px;
+width: 28.9px;
+height: 20.27px;
+line-height: 25.27px;
+border:none;
+border-radius: 50px;
+text-align: center;
+`

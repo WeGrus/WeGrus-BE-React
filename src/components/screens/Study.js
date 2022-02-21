@@ -32,10 +32,12 @@ import {
   Date,
   Hits,
   Recommendation,
+  ViewSearchBarSubmit
 } from "./../shared/BoardElement";
 import { actionCreators } from "../../store";
-
-const boardCategory = "STUDY";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons"
+const boardCategory = "스터디";
 
 const selectDate = [
   // 게시물 나열할 때, 어떤 순으로 나열할지.
@@ -281,19 +283,21 @@ function Study(props) {
     }
   };
 
-  return (
-    <>
-      {load ? (
-        <>
-          <PageTitle title="스터디" />
-          <SideBar
-            posts={subCategory}
-            getFilter={setTarget}
-            target={target}
-            linkHeader={"study"}
-          ></SideBar>
-          <Content>
-            <ScreenTitle>{`스터디 | ${target}`}</ScreenTitle>
+
+                        <SearchBarSection>
+                            <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>
+                                <SearchBarSelect {...register("option")}>
+                                    <option>제목+내용</option>
+                                    <option>제목</option>
+                                    <option>작성자</option>
+                                </SearchBarSelect>
+                                <SearchBar>
+                                    <SearchBarInput {...register("keyword", { required: true })} />
+                                    <SearchBarSubmit type="submit" value="" />
+                                    <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
+                                </SearchBar>
+                            </SearchBarForm>
+
 
             <SearchBarSection>
               <SearchBarForm onSubmit={handleSubmit(handleSearching, OnError)}>

@@ -26,6 +26,7 @@ import CreatePage from "./components/screens/Page_Create.js";
 import NewPage from "./components/screens/PageNew";
 import NewUpdatePage from "./components/screens/Page_UpdateNew";
 
+
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
 
@@ -85,7 +86,6 @@ export const cookies = new Cookies();
 
 function App(props) {
   // const [setCookie, removeCookie] = useCookies(["refreshToken"]);
-
   /*const getReissue = () => {
     axios
       .post("/reissue", {
@@ -113,6 +113,8 @@ function App(props) {
 
   const [userInfo, setUserInfo] = useState(false);
 
+
+  
   let isAuthority = false;
   let isJoinGroup = false;
   const joinPermission = props?.userReducer?.group; //
@@ -159,10 +161,12 @@ function App(props) {
             const INFO = res.data.data.info;
             const INFO_ARRAY = Object.values(INFO);
             props.putUserInfo(...INFO_ARRAY);
+
             setRole(props?.userReducer?.roles);
             //window.sessionStorage.setItem("userRole", JSON.stringify(role));
             setUserInfo(true);
             console.log(token);
+
             //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
           })
           .catch((err) => {
@@ -250,6 +254,7 @@ function App(props) {
                 />
                 <Route path="/profile" element={<Profile />} />
 
+
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
@@ -274,7 +279,18 @@ function App(props) {
             <Route path="/" element={<About />} />
           )}
 
-          <Route path="*" element={<Navigate replace to="/" />} />
+
+          {/* <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>There's nothing here!</p>
+              </main>
+            }
+          /> */}
+          {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
+          {/* <Route path="*" element={<Navigate to="/" />} /> */}
+          <Route path="*" element={<Layout />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
