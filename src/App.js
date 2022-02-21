@@ -135,8 +135,8 @@ function App(props) {
     );
   }
 
-  useEffect(async () => {
-    await axios
+  useEffect(() => {
+    axios
       .post("/reissue", {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         withCredentials: true,
@@ -189,7 +189,7 @@ function App(props) {
       });
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
-  }, [props.userReducer.token]);
+  }, [token]);
 
   return (
     <HelmetProvider>
