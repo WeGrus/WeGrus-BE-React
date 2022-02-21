@@ -35,7 +35,7 @@ let refreshCheck = true
 
 
 function Page(props) {
-  usePrompt('현재 작성중인 페이지에서 벗어나시겠습니까?', true)
+  usePrompt('현재 작성중인 페이지에서 벗어나시겠습니까?', refreshCheck)
 
   const location = useLocation().state;
   const [secret, setSecret] = React.useState(false);
@@ -75,6 +75,7 @@ function Page(props) {
 
 
   function submit(){
+    refreshCheck = false
     const data = {
       "boardId": location.boardId,
       "content": printTextBody(),
@@ -108,7 +109,7 @@ function Page(props) {
       //"content-type": "multipart/form-data"
       console.log(res);
       console.log("깃허브도 새롭게 업데이트 되었다!1");
-      refreshCheck = false
+      
       Navigate(-1);
     })
 
