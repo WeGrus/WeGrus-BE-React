@@ -63,7 +63,7 @@ function Page(props) {
             "postId": pageData.postId,
             "type": "NOTICE"
         },{
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+        
         })
       }
       else{
@@ -71,7 +71,7 @@ function Page(props) {
           "postId": pageData.postId,
           "type": "NORMAL"
       },{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+       
       })
       }
       setNotice(!notice)
@@ -84,7 +84,7 @@ function Page(props) {
             "postId": pageData.postId,
             "type": "NOTICE"
         },{
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+         
         })
       }
       else{
@@ -92,7 +92,7 @@ function Page(props) {
           "postId": pageData.postId,
           "type": "NORMAL"
       },{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+       
       })
       }
       setNotice(!notice)

@@ -13,7 +13,8 @@ import {
 import { faVolumeOff } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { HashLink } from "react-router-hash-link";
-
+import { actionCreators } from "../../store";
+import { connect } from "react-redux";
 const Number = styled.div`
   min-width: 65px;
   text-align: center;
@@ -31,12 +32,31 @@ const splitDate = (data) => {
   return ymd;
 };
 
+function mapStateToProps(state) {
+  return state;
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setAll: (boardId, page, isSearching, selected, boardCategoryName) =>
+      dispatch(
+        actionCreators.setAll(
+          boardId,
+          page,
+          isSearching,
+          selected,
+          boardCategoryName
+        )
+      ),
+  };
+}
+
 function PostBar(props) {
   const { page, data, userReducer, linkHeader, category } = props
   const number = (page - 1) * 16;
   console.log("새로운 포스트바!");
   console.log(props);
-  const isAuthority = userReducer.roles.some((i) =>
+  const isAuthority = userReducer?.roles?.some((i) =>
     [
       "ROLE_GROUP_EXECUTIVE",
       "ROLE_GROUP_PRESIDENT",
@@ -45,7 +65,7 @@ function PostBar(props) {
     ].includes(i)
   );
 
-  const postdata = data.map((data, i) => (
+  const postdata = data?.map((data, i) => (
     <PostInforBar key={i + 1}>
       {data.secretFlag === true ? ( // 비밀글일때,
         <>
@@ -135,4 +155,4 @@ function PostBar(props) {
   return <>{postdata}</>;
 }
 
-export default React.memo(PostBar);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(PostBar));

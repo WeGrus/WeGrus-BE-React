@@ -160,7 +160,7 @@ function Board(props) {
 
   const loadPageList = (boardId, page, type) => {
     axios
-      .get(`/boards/${boardId}?page=${page - 1}&pageSize=19&type=${type}`)
+      .get(`/boards/?${boardId}&page=${page - 1}&pageSize=19&type=${type}`)
       .catch(function (error) {
         console.log(error.toJSON());
       })
@@ -353,7 +353,7 @@ function Board(props) {
               <PostBar
                 page={page}
                 data={posts}
-                userReducer={props.userReducer}
+                userReducer={props?.userReducer}
                 linkHeader={"board"}
                 category={"커뮤니티"}
               />
