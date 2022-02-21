@@ -12,17 +12,12 @@ const Box = styled.main`
 `;
 
 function Layout(props) {
-  const {load} = props
   return (
     <>
       <NaviBar />
-      {load?
-            <Box>
+      <Box>
             <Outlet />
           </Box>
-      :
-      null
-      }
 
     </>
   );
