@@ -38,6 +38,7 @@ function OAuth(props) {
     let code = params.get("code"); // url 파라미터에서 인가코드 받는 부분
     //let grant_type = "authorization_code";
     //let client_id = "65cd2fc55aec40658e2efbc951d47164";
+    console.log(code);
     await axios
       .post(`/signin?authorizationCode=${code}`, {
         headers: {
