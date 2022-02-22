@@ -33,12 +33,12 @@ function mapDispatchToProps(dispatch) {
 function OAuth(props) {
   let navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(async () => {
     let params = new URL(document.location.toString()).searchParams;
     let code = params.get("code"); // url 파라미터에서 인가코드 받는 부분
     //let grant_type = "authorization_code";
     //let client_id = "65cd2fc55aec40658e2efbc951d47164";
-    axios
+    await axios
       .post(`/signin?authorizationCode=${code}`, {
         headers: {
           "Access-Control-Allow-Origin": "http://api.igrus.net:8080/", // 서버 domain
