@@ -111,6 +111,9 @@ const NaviBar = (props) => {
             <LogoLink to="/">
               <img src={require("../../images/logo2.png")} alt="logo" />
             </LogoLink>
+            <NavLink to="/" style={({ isActive }) => ({})}>
+              About
+            </NavLink>
             <NavLink
               to="/announce/1/1/LASTEST/false"
               style={({ isActive }) => ({})}

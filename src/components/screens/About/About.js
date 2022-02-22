@@ -38,11 +38,9 @@ const WelcomeTitle = styled.div`
 const AboutTitle = styled.h2`
   font-size: 20px;
   font-weight: 600;
-  margin: 40px 10px 40px 10px;
+  margin: 40px 0 40px 0;
 `;
 const BigTitle = styled.h1`
-  display: flex;
-  align-items: center;
   font-size: 25px;
   font-weight: 700;
   margin: 40px 0 40px 0;
@@ -182,7 +180,7 @@ const SmallDescriptionBox = styled.div`
 `;
 
 const Hashtag = styled.div`
-  width: 500px;
+  width: 400px;
   display: flex;
   justify-content: space-between;
 `;
