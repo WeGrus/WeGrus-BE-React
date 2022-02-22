@@ -245,7 +245,7 @@ function PostGroupPermissionBar(props){
             }
             {(props.type === "그룹 강제 탈퇴")?
                 <>
-                    <Btn data-id={data.id} onClick={handlePromote} red></Btn>
+                    <Btn data-id={data.id} onClick={handleKick} red></Btn>
                 </>
                 :
                 null
