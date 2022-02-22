@@ -33,19 +33,19 @@ function mapDispatchToProps(dispatch) {
 function OAuth(props) {
   let navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(async () => {
     let params = new URL(document.location.toString()).searchParams;
     let code = params.get("code"); // url 파라미터에서 인가코드 받는 부분
     //let grant_type = "authorization_code";
     //let client_id = "65cd2fc55aec40658e2efbc951d47164";
-    axios
+    await axios
       .post(`/signin?authorizationCode=${code}`, {
         headers: {
           "Access-Control-Allow-Origin": "http://api.igrus.net:8080/", // 서버 domain
         },
         withCredentials: true,
       }) //로그인 api로 인가코드를 보내 백엔드에서 카카오 로그인 완료
-      .then(async (res) => {
+      .then((res) => {
         const KAKAO_ID = res.data.data.userId;
         const RESULT = res.data.data.status;
 
@@ -57,7 +57,7 @@ function OAuth(props) {
           navigate("/login/email-auth");
         } else if ("success") {
           const ACCESS_TOKEN = res.data.data.accessToken;
-          await props.loginSuccess(ACCESS_TOKEN);
+          props.loginSuccess(ACCESS_TOKEN);
 
           //console.log(ACCESS_TOKEN);
           //서버에서 쿠키로 전송한 refresh_token을 확인하는 코드입니다
