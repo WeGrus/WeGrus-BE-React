@@ -106,7 +106,7 @@ function App(props) {
   };*/
 
   const authenticated = props?.userReducer?.authenticated;
-  console.log(authenticated);
+
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
 
@@ -197,7 +197,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {authenticated ? (
+            {props.userReducer.authenticated ? (
               <>
                 <Route
                   path="/announce/:boardId/:page/:sorted/:isSearch"
