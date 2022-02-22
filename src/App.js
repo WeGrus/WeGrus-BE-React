@@ -136,62 +136,57 @@ function App(props) {
   }
 
   useEffect(async () => {
-    if (props.userReducer.props) {
-      await axios
-        .post("/reissue", {
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          withCredentials: true,
-        })
-        .then(async (res) => {
-          setToken(res?.data?.data?.accessToken);
-          // props.loginSuccess(res?.data?.data?.accessToken);
-          //store에 토큰이 있을 경우(=로그인 했을 경우)
-          //var decoded = jwt_decode(token);
+    await axios
+      .post("/reissue", {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        withCredentials: true,
+      })
+      .then(async (res) => {
+        setToken(res?.data?.data?.accessToken);
+        // props.loginSuccess(res?.data?.data?.accessToken);
+        //store에 토큰이 있을 경우(=로그인 했을 경우)
+        //var decoded = jwt_decode(token);
 
-          //토큰을 디코딩합니다
-          // const ID = decoded.sub; //회원번호
+        //토큰을 디코딩합니다
+        // const ID = decoded.sub; //회원번호
 
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${res?.data?.data?.accessToken}`;
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${res?.data?.data?.accessToken}`;
 
-          await axios //유저 정보를 가져옵니다.
-            .get(`/info`)
-            .then((res) => {
-              console.log(res.data.data);
-              const INFO = res.data.data.info;
-              const INFO_ARRAY = Object.values(INFO);
-              props.putUserInfo(...INFO_ARRAY);
-              props.loginSuccess(token);
+        await axios //유저 정보를 가져옵니다.
+          .get(`/info`)
+          .then((res) => {
+            console.log(res.data.data);
+            const INFO = res.data.data.info;
+            const INFO_ARRAY = Object.values(INFO);
+            props.putUserInfo(...INFO_ARRAY);
+            props.loginSuccess(token);
 
-              //setRole(props?.userReducer?.roles);
-              //window.sessionStorage.setItem("userRole", JSON.stringify(role));
-              //setUserInfo(true);
-              //console.log(token);
+            //setRole(props?.userReducer?.roles);
+            //window.sessionStorage.setItem("userRole", JSON.stringify(role));
+            //setUserInfo(true);
+            //console.log(token);
 
-              //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
-            })
-            .catch((err) => {
-              const ERR = err.response.data.status;
-              console.log(ERR);
-              if (ERR === 403) {
-                window.alert(
-                  "GUEST 권한입니다. 동아리 가입 신청 후 MEMBER 권한을 획득하면 이용 가능합니다."
-                );
-              }
-            });
-          //reissue 성공
-        })
-        .catch((err) => {
-          console.log(err);
-          //cookies.remove("refreshToken", []);
-          //props.logUserOut();
-          // ... 로그인 실패 처리(리프레시 토큰을 삭제해주어야함)
-        });
-    } else {
-      console.log(props);
-    }
-
+            //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
+          })
+          .catch((err) => {
+            const ERR = err.response.data.status;
+            console.log(ERR);
+            if (ERR === 403) {
+              window.alert(
+                "GUEST 권한입니다. 동아리 가입 신청 후 MEMBER 권한을 획득하면 이용 가능합니다."
+              );
+            }
+          });
+        //reissue 성공
+      })
+      .catch((err) => {
+        console.log(err);
+        //cookies.remove("refreshToken", []);
+        //props.logUserOut();
+        // ... 로그인 실패 처리(리프레시 토큰을 삭제해주어야함)
+      });
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
   }, [props.userReducer.token]);
