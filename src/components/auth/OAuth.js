@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
 
 function OAuth(props) {
   let navigate = useNavigate();
-  /*
+
   useEffect(async () => {
     let params = new URL(document.location.toString()).searchParams;
     let code = params.get("code"); // url 파라미터에서 인가코드 받는 부분
@@ -76,7 +76,7 @@ function OAuth(props) {
         window.alert("페이지를 찾을 수 없습니다.");
         navigate("/");
       });
-  }, []);*/
+  }, []);
 
   return (
     <Redirecting>
