@@ -222,10 +222,10 @@ export const Permission = styled.div`
 `;
 
 export const PhoneNumber = styled.div`
-  width: 100px;
+  width: 110px;
   position: relative;
   text-align: ${(props) => (props.post ? "center" : "")};
-  margin-left: 45px;
+  margin-left: 35px;
   word-spacing: -10px;
   cursor: ${(props) => (props.post ? "pointer" : "auto")};
 `;
@@ -284,9 +284,9 @@ export const PostCotent = styled.div`
 `;
 
 export const PostRole = styled.div`
-  width: 64px;
+  width: 74px;
   text-align: center;
-  margin-left: 45px;
+  margin-left: 35px;
   word-spacing: -3px;
   position: relative;
 `;
