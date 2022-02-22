@@ -45,7 +45,7 @@ function OAuth(props) {
         },
         withCredentials: true,
       }) //로그인 api로 인가코드를 보내 백엔드에서 카카오 로그인 완료
-      .then((res) => {
+      .then(async (res) => {
         const KAKAO_ID = res.data.data.userId;
         const RESULT = res.data.data.status;
 
@@ -57,7 +57,7 @@ function OAuth(props) {
           navigate("/login/email-auth");
         } else if ("success") {
           const ACCESS_TOKEN = res.data.data.accessToken;
-          props.loginSuccess(ACCESS_TOKEN);
+          await props.loginSuccess(ACCESS_TOKEN);
 
           //console.log(ACCESS_TOKEN);
           //서버에서 쿠키로 전송한 refresh_token을 확인하는 코드입니다
