@@ -65,6 +65,7 @@ function OAuth(props) {
           //sameSite - lax의 경우 다른 도메인간 쿠키 전송이 불가능 하기 때문에 sameSite none으로 설정하고 https를 통해 secure 설정을 하여 전송하거나 도메인을 통합해야 합니다.
 
           navigate("/");
+          props.loginSuccess(ACCESS_TOKEN);
         } else {
           window.alert("로그인 실패하였습니다. 다시 시도해주세요.");
           navigate("/");
