@@ -143,7 +143,7 @@ function App(props) {
       })
       .then(async (res) => {
         setToken(res?.data?.data?.accessToken);
-        //props.loginSuccess(res?.data?.data?.accessToken);
+        // props.loginSuccess(res?.data?.data?.accessToken);
         //store에 토큰이 있을 경우(=로그인 했을 경우)
         //var decoded = jwt_decode(token);
 
