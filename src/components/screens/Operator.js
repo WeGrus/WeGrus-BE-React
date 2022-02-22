@@ -5,7 +5,7 @@ import SideBar from "../shared/SideBar";
 import { Content } from "../shared/Content";
 import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,InforBar,InforContents,
   Grade,StudentId,Name,Role,Attendance,PostInforBar,PhoneNumber,Gender,Check,CheckBtn,PostCotent,PostRole,PostAttendance,PostGender,
-  InforSelection} from "./../shared/BoardElement.js"
+  InforSelection,ViewSearchBarSubmit} from "./../shared/BoardElement.js"
 import { useForm } from "react-hook-form";
 import Pagination from "../shared/Pagination";
 import styled from "styled-components";
@@ -19,6 +19,10 @@ import PostGroupPermissionBar from './../shared/PostGroupPermissionBar'
 import { actionCreators } from "./../../store";
 import ResetAllMember from "./../shared/ResetAllMember"
 import BoardEdit from "../shared/BoardEdit";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+
+
 const Number = styled.div`
 width: 40px;
 text-align: left;
@@ -1014,6 +1018,9 @@ function Operator(props) {
         <SearchBar>
         <SearchBarInput {...register("keyword", { required: true })} />
             <SearchBarSubmit type="submit" value="" />
+            <ViewSearchBarSubmit>
+                    <FontAwesomeIcon icon={faSearch} />
+                  </ViewSearchBarSubmit>
         </SearchBar>
       </SearchBarForm>
     </SearchBarSection>
@@ -1032,6 +1039,7 @@ function Operator(props) {
           <SearchBar>
           <SearchBarInput {...register("keyword", { required: true })} />
               <SearchBarSubmit type="submit" value="" />
+              <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
           </SearchBar>
         </SearchBarForm>
       </SearchBarSection>
@@ -1054,6 +1062,7 @@ function Operator(props) {
       <SearchBar>
       <SearchBarInput {...register("keyword", { required: true })} />
           <SearchBarSubmit type="submit" value="" />
+          <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
       </SearchBar>
     </SearchBarForm>
   </SearchBarSection>
@@ -1082,9 +1091,9 @@ function Operator(props) {
       <StudentId onClick={(e)=>{handleSort("StudentId")}}>학번<InforSelection src={img} desc></InforSelection></StudentId>
     }
     {(phoneNumberDirection === true) ?
-      <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}}>연락처<InforSelection src={img}></InforSelection></PhoneNumber>
+      <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}} post>연락처<InforSelection src={img}></InforSelection></PhoneNumber>
       :
-      <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}}>연락처<InforSelection src={img} desc></InforSelection></PhoneNumber>
+      <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}} post>연락처<InforSelection src={img} desc></InforSelection></PhoneNumber>
     }
     {(nameDirection === true) ?
       <Name onClick={(e)=>{handleSort("Name")}}>이름<InforSelection src={img}></InforSelection></Name>
@@ -1102,7 +1111,7 @@ function Operator(props) {
       :
       <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img} desc></InforSelection></Gender>
     }
-    {(target !== "회원 목록 조회") ? <Check>버튼</Check> : null}
+    {((target !== "회원 목록 조회")||(target !=="그룹 회원 목록 조회")) ? <Check>버튼</Check> : null}
   </InforContents>
 </InforBar>
   }
