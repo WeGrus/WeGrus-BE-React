@@ -185,12 +185,14 @@ function UserInfo(props) {
             <ProfilePhoto>
               <img src={`${DATA.imageUrl}`} alt="profile" />
             </ProfilePhoto>
-            <ButtonBox>
-              <FileUploadComponent />
-              <EditButton type="file" onClick={() => handleDeletePhoto()}>
-                삭제
-              </EditButton>
-            </ButtonBox>
+            {props?.userReducer?.roles === ["ROLE_GUEST"] ? (
+              <ButtonBox>
+                <FileUploadComponent />
+                <EditButton type="file" onClick={() => handleDeletePhoto()}>
+                  삭제
+                </EditButton>
+              </ButtonBox>
+            ) : null}
           </ContentBox>
         </DetailBox>
         <DetailBox title="회원 정보">
@@ -204,11 +206,13 @@ function UserInfo(props) {
                 <span>상태 | {DATA.academicStatus}</span>
                 <span>연락처 | {DATA.phone}</span>
                 <span>소개 | {DATA.introduce}</span>
-                <ButtonBox>
-                  <EditButton onClick={() => handleEditProfile()}>
-                    수정
-                  </EditButton>
-                </ButtonBox>
+                {props?.userReducer?.roles === ["ROLE_GUEST"] ? (
+                  <ButtonBox>
+                    <EditButton onClick={() => handleEditProfile()}>
+                      수정
+                    </EditButton>
+                  </ButtonBox>
+                ) : null}
               </InfoText>
             </>
           ) : (
