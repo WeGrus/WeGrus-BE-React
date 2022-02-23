@@ -75,6 +75,8 @@ switch(value){
   }
 }
 }
+// 새로 고침시에도 데이터를 받은 뒤 수정을 할때의 경로를 얻기위해 만든 함수입니다.
+
 
 function Page(props) {
   
