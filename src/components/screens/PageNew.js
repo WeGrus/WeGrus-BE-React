@@ -260,7 +260,7 @@ function Page(props) {
                 {(props.userReducer.id === pageDate.memberId||isAuthority === true) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
                   <div style={{ float: "right" }}>
                     <Link
-                      to={`${checkLinkHeader(pageDate.boardCategory)}/update/${props.userReducer.id}/${props.userReducer.name}`}
+                      to={`/${checkLinkHeader(pageDate.boardCategory)}/update/${props.userReducer.id}/${props.userReducer.name}`}
                       state={
                         {
                           category: pageDate.boardCategory,
