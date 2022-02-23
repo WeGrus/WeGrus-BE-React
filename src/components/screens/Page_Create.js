@@ -112,9 +112,7 @@ function Page(props) {
  
      axios.post(`/posts`,postCreateRequest,{
        headers: {
-         'Authorization': `Bearer ${props.userReducer.token}`,
          "content-type": "multipart/mixed"
-         
        }
      })
      .catch(function (error) {

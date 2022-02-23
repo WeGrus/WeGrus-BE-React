@@ -49,7 +49,6 @@ function PostMemberPermissionBar(props){
 
     const permissionMember = (requestId) => { //회원 권한 요청 승인
         axios.post(`/club/executives/authority?requestId=${requestId}`,{},{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
             console.log(error);
@@ -63,7 +62,6 @@ function PostMemberPermissionBar(props){
 
     const rejectMember = (requestId) => { // 회원 권한 요청 거절
         axios.delete(`/club/executives/authority?requestId=${requestId}`,{},{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
             console.log(error);

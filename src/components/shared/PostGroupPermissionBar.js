@@ -61,7 +61,6 @@ function PostGroupPermissionBar(props){
     const permissionGroup = (groupId, memberId) => {
         axios.patch(`/groups/executives/applicants/approve?groupId=${groupId}&memberId=${memberId}`,
         {
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
             console.log(error);
@@ -75,7 +74,6 @@ function PostGroupPermissionBar(props){
 
     const rejectionGroup = (groupId, memberId) => {
         axios.delete(`/groups/executives/applicants/reject?groupId=${groupId}&memberId=${memberId}`,{},{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
             console.log(error);
@@ -89,7 +87,6 @@ function PostGroupPermissionBar(props){
 
     const promoteGroup = (groupId,memberId) => { // 임원 승급
         axios.patch(`/groups/president/promote?groupId=${groupId}&memberId=${memberId}`,{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
             console.log(error);
@@ -103,7 +100,6 @@ function PostGroupPermissionBar(props){
 
     const degradeGroup = (groupId,memberId) => { // 임원 하락
         axios.patch(`/groups/president/degrade?groupId=${groupId}&memberId=${memberId}`,{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
             console.log(error);
@@ -117,7 +113,6 @@ function PostGroupPermissionBar(props){
 
     const delegateGroup = (groupId,memberId) => {
         axios.patch(`/groups/president/delegate?groupId=${groupId}&memberId=${memberId}`,{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
             console.log(error);
@@ -131,7 +126,6 @@ function PostGroupPermissionBar(props){
 
     const kickGroup = (groupId,memberId) => {
         axios.patch(`/groups/president/kick?groupId=${groupId}&memberId=${memberId}`,{
-            headers : { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
             console.log(error);

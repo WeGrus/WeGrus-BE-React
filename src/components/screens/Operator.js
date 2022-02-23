@@ -131,7 +131,6 @@ function Operator(props) {
 
   const loadMemberList = (direction,page,type) => { //회원 목록 조회
     axios.get(`/club/executives/members?direction=${direction}&page=${page}&size=19&type=${type}`,{
-      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -146,7 +145,6 @@ function Operator(props) {
 
   const loadMeberSearchList = (direction,page,searchType,sortType,word) => { //회원 검색 검색어
     axios.get(`/club/executives/members/search?direction=${direction}&page=${page}&searchType=${searchType}&size=19&sortType=${sortType}&word=${word}`,{
-      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -161,7 +159,6 @@ function Operator(props) {
 
   const loadMemberSearchAcademicStatusesList = (direction,academicStatus,page,sortType) => { // 회원 검색 (학적상태)
     axios.get(`/club/executives/members/academic-statuses?academicStatus=${academicStatus}&direction=${direction}&page=${page}&size=19&sortType=${sortType}`,{
-      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -176,7 +173,6 @@ function Operator(props) {
 
   const loadMemberSearchAuthoritiesList = (direction,authority,page,sortType) => { // 회원 검색 (권한)
     axios.get(`/club/executives/members/authorities?authority=${authority}&direction=${direction}&page=${page}&size=19&sortType=${sortType}`,{
-      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -192,7 +188,6 @@ function Operator(props) {
 
   const loadMemberSearchGenderList = (direction,gender,page,sortType) => { // 회원 검색 (성별)
     axios.get(`/club/executives/members/genders?direction=${direction}&gender=${gender}&page=${page}&size=19&sortType=${sortType}`,{
-      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -206,7 +201,6 @@ function Operator(props) {
 
   const loadMemberSearchGradesList = (direction,grade,page,sortType) => { // 회원 검색 (학년)
     axios.get(`/club/executives/members/grades?direction=${direction}&grade=${grade}&page=${page}&size=19&sortType=${sortType}`,{
-      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -220,7 +214,6 @@ function Operator(props) {
 
   const loadMemberSearchGruopList = (direction,groupId,page,sortType) => { // 회원 검색 (그룹)
     axios.get(`/club/executives/members/groups?direction=${direction}&groupId=${groupId}&page=${page}&size=19&sortType=${sortType}`,{
-      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -387,7 +380,6 @@ function Operator(props) {
   // 회원 가입 승인 탭에 관련된 함수
   const loadMemberPermissionList = (page) => { // 회원 권한 요청 목록 조회
     axios.get(`/club/executives/requests?page=${page}&role=ROLE_MEMBER&size=${19}`,{
-      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -402,7 +394,6 @@ function Operator(props) {
 
   const loadMemberPermissionSearch = (page,type,word) => {// 회원 권한 요청 목록 검색
     axios.get(`/club/executives/requests/search?page=${page}&size=19&type=${type}&word=${word}`,{
-      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -432,7 +423,6 @@ function Operator(props) {
 
   const loadGroupMemberList = (direction, groupId, page, role, type) => { // 그룹원 목록 조회
     axios.get(`/groups/executives/members?direction=${direction}&groupId=${groupId}&page=${page}&role=${role}&size=19&type=${type}`,{
-      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
     .catch(function (error) {
       console.log(error.toJSON());
@@ -632,7 +622,6 @@ function Operator(props) {
       console.log(AllLeader,ClubLeaderGroupExecutive,ClubLeader,ClubExecutiveGroupLeader,GroupLeader,ClubExecutiveGroupExecutive,ClubExecutive,GroupExecutive);
       console.log(category);
       axios.get(`/members/groups`,{
-        headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -671,7 +660,6 @@ function Operator(props) {
       
       if(category.find(item => item.boardName === "회원 목록 조회") !== undefined){ // 회원 목록 조회 즉 동아리 회장이거나 임원일때
         axios.get(`/club/executives/members?direction=${"ASC"}&page=${0}&size=19&type=${"ID"}`,{
-          headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
           console.log(error.toJSON());
@@ -690,7 +678,6 @@ function Operator(props) {
       else if(category.find(item => item.boardName === "그룹 회원 목록 조회")){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
 
         axios.get(`/groups/executives/members?direction=${"ASC"}&groupId=${groupId}&page=1&role=MEMBER&size=19&type=ID`,{
-          headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
           console.log(error.toJSON());
