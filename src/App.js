@@ -197,7 +197,7 @@ function App(props) {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<Layout />}>
-            {props.userReducer.authenticated ? (
+            {token ? (
               <>
                 <Route
                   path="/announce/:boardId/:page/:sorted/:isSearch"
