@@ -114,7 +114,6 @@ function Group(props) {
         else if (option === "제목") {
             axios.get(`/search/title/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`,
               {
-                headers: { Authorization: `Bearer ${props.userReducer.token}` },
               }
             )
             .catch(function (error) {
@@ -130,7 +129,6 @@ function Group(props) {
         else {
           axios.get(`/search/writer/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`,
               {
-                headers: { Authorization: `Bearer ${props.userReducer.token}` },
               }
             )
             .catch(function (error) {
@@ -147,7 +145,6 @@ function Group(props) {
     
       const loadPageList = (boardId, page, type) => {
         axios.get(`/boards/${boardId}?page=${page - 1}&pageSize=19&type=${type}`, {
-            headers: { Authorization: `Bearer ${props.userReducer.token}` },
           })
           .catch(function (error) {
             console.log(error.toJSON());
@@ -163,7 +160,6 @@ function Group(props) {
         console.log("useEffect호출!");
         if(subCategory === undefined){
             axios.get(`/boards/categories`, {
-              headers: { Authorization: `Bearer ${props.userReducer.token}` },
             })
             .catch(function (error) {
               console.log(error.toJSON());

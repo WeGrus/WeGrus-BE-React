@@ -76,9 +76,11 @@ function Page(props) {
 
   const emptyChecker = (content) => {
     if(title === "" || content === null || content === undefined){
-      return false;
+      console.log(title);
+      console.log(content);
+      return true;
     }
-    return true;
+    return false;
     
   }
 
@@ -95,7 +97,7 @@ function Page(props) {
       "type": isNotice()
     }
 
-    if(emptyChecker(data.content)){
+    if(emptyChecker(data.content) === true){
       alert("제목이나 게시글이 공백이면 작성하실 수 없습니다.")
     }
     else{

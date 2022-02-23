@@ -77,7 +77,6 @@ function CommentSection(props){
           "replyId": -1
         },
         {
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
         })
         .catch(function (error) {
           console.log(error.toJSON());
@@ -97,7 +96,6 @@ function CommentSection(props){
       if(value){
         axios.delete(`/comments?replyId=${replyId}`,
         {
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
         })
         .catch(function (error) {
           console.log(error.toJSON());
@@ -114,7 +112,6 @@ function CommentSection(props){
       const commentId = Number(info);
 
       axios.delete(`/comments/like?replyId=${commentId}`, {
-        headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
       })
       .then(function (res) {
           console.log(res);
@@ -132,7 +129,6 @@ function CommentSection(props){
     // const changeNum = Number(e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].innerText) + 1
     // e.target.parentNode.parentNode.childNodes[0].childNodes[1].childNodes[1].childNodes[1].childNodes[1].textContent = changeNum
     axios.post(`/comments/like?replyId=${commentId}`, {}, {
-      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
       .catch(function (error) {
         console.log(error);
@@ -153,7 +149,6 @@ function CommentSection(props){
 
     console.log(e.target.parentNode.parentNode);
     axios.post(`/comments/like?replyId=${commentId}`, {}, {
-      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
       .catch(function (error) {
         console.log(error);
@@ -177,7 +172,6 @@ function CommentSection(props){
     const commentId = Number(e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.dataset.id)
     console.log(commentId);
     axios.delete(`/comments/like?replyId=${commentId}`, {
-      headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
     })
     .catch(function (error) {
       console.log(error);
@@ -214,7 +208,6 @@ function CommentSection(props){
         "replyId": parentId
       },
       {
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -238,7 +231,6 @@ function CommentSection(props){
         if(value){
           axios.delete(`/comments?replyId=${index}`,
           {
-            headers: {'Authorization': `Bearer ${props.userReducer.token}`}
           })
           .catch(function (error) {
             console.log(error.toJSON());
