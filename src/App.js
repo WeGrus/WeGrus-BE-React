@@ -135,8 +135,8 @@ function App(props) {
     );
   }
 
-  useEffect(() => {
-    axios
+  useEffect(async () => {
+    await axios
       .post("/reissue", {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         withCredentials: true,
@@ -189,7 +189,7 @@ function App(props) {
       });
     //렌더링시 자동으로 리이슈 api 요청
     //reissue api를 요청합니다.
-  }, [token]);
+  }, [props.userReducer.token]);
 
   return (
     <HelmetProvider>
@@ -289,7 +289,7 @@ function App(props) {
           /> */}
           {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
           {/* <Route path="*" element={<Navigate to="/" />} /> */}
-          <Route path="*" element={<Layout />} />
+          <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
