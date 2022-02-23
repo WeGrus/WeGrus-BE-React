@@ -190,8 +190,11 @@ function handleEnrollClub() {
     .post("/club/apply")
     .then((res) => {
       console.log(res);
-      window.open(
+      /*window.open(
         "https://docs.google.com/forms/d/e/1FAIpQLSeZRvnQlGu4h7hEwiM7migxQ069AurA_jZK7EXHKFo94AGvBQ/closedform"
+      );*/
+      window.alert(
+        "동아리 가입 신청이 완료되었습니다. 운영진 승인 이후 게시글 확인이 가능합니다."
       );
     })
     .catch((err) => {
