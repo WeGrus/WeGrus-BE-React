@@ -46,6 +46,7 @@ function UserGroup(props) {
     axios
       .post(`/members/groups/apply?groupId=${data.id}`)
       .then((res) => {
+        window.alert(res.data.message);
         console.log(res);
       })
       .catch((err) => {

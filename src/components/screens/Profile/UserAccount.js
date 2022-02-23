@@ -40,7 +40,7 @@ function UserAccount(props) {
 
   const handleDelUser = () => {
     console.log(DATA.email);
-
+    window.alert("인하대학교 이메일에서 인증번호를 확인해주세요.");
     axios
       .post("/members/verify") //회원 탈퇴를 위해 인증코드를 이메일로 보냄
       .then((res) => {
