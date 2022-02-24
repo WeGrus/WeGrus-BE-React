@@ -74,6 +74,16 @@ function Page(props) {
     return getContent_html;
   }
 
+  const emptyChecker = (content) => {
+    if(title === "" || content === null || content === undefined){
+      console.log(title);
+      console.log(content);
+      return true;
+    }
+    return false;
+    
+  }
+
 
   function submit(){
     setRefreshCheck(false)
@@ -87,33 +97,39 @@ function Page(props) {
       "type": isNotice()
     }
 
-     let postCreateRequest  = new FormData();
-     postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
+    if(emptyChecker(data.content) === true){
+      alert("제목이나 게시글이 공백이면 작성하실 수 없습니다.")
+    }
+    else{
+      let postCreateRequest  = new FormData();
+      postCreateRequest.append("postCreateRequest", new Blob([JSON.stringify(data)], {type : 'application/json'}))
+ 
+      console.log("ddasdasdasadad");
+ 
+      if(filecheck){
+       postCreateRequest.append('file',file);
+     }
+ 
+     axios.post(`/posts`,postCreateRequest,{
+       headers: {
+         "content-type": "multipart/mixed"
+       }
+     })
+     .catch(function (error) {
+       console.log(error.toJSON());
+       //console.log("코드가 반복인가? 2");
+     })
+     .then(function (res) {
+       //"content-type": "multipart/form-data"
+       console.log(res);
+       console.log("깃허브도 새롭게 업데이트 되었다!1");
+       
+       Navigate(-1);
+     })
 
-     console.log("ddasdasdasadad");
-
-     if(filecheck){
-      postCreateRequest.append('file',file);
     }
 
-    axios.post(`/posts`,postCreateRequest,{
-      headers: {
-        'Authorization': `Bearer ${props.userReducer.token}`,
-        "content-type": "multipart/mixed"
-        
-      }
-    })
-    .catch(function (error) {
-      console.log(error.toJSON());
-      //console.log("코드가 반복인가? 2");
-    })
-    .then(function (res) {
-      //"content-type": "multipart/form-data"
-      console.log(res);
-      console.log("깃허브도 새롭게 업데이트 되었다!1");
-      
-      Navigate(-1);
-    })
+
 
 
   }

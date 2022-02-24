@@ -32,7 +32,6 @@ function ResetAllMember(props){
 
     const resetMember = () => {
         axios.patch(`/club/president/reset`,{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}`}
         })
         .catch(function (error) {
             console.log(error.toJSON());
