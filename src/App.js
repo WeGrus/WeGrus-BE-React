@@ -183,7 +183,6 @@ function App(props) {
       })
       .catch((err) => {
         console.log(err);
-        //cookies.remove("refreshToken", []);
         //props.logUserOut();
         // ... 로그인 실패 처리(리프레시 토큰을 삭제해주어야함)
       });
