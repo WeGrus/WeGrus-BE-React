@@ -35,7 +35,7 @@ let filecheck = false
 
 
 function Page(props) {
-  
+  const {isSecret} = props;
   const [refreshCheck, setRefreshCheck] = React.useState(true);
   const location = useLocation().state;
   const [secret, setSecret] = React.useState(false);
@@ -225,16 +225,20 @@ function Page(props) {
                 :
                 null}
 
+              {(isSecret === true) ?
+                <SetOption>
+                  <Text>
+                    <span style={{ marginRight: 8 }}>비밀글 설정하기</span>
+                  </Text>
+                  <Checkbox
+                    checked={secret}
+                    onChange={handleSecretOptionChange}
+                  />
+                </SetOption>
+                :
+                null
+              }
 
-              <SetOption>
-                <Text>
-                  <span style={{ marginRight: 8 }}>비밀글 설정하기</span>
-                </Text>
-                <Checkbox
-                  checked={secret}
-                  onChange={handleSecretOptionChange}
-                />
-              </SetOption>
               <Write onClick={submit}>작성</Write>
             </Right>
           </BtnSection>

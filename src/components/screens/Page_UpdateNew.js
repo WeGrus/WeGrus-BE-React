@@ -209,7 +209,7 @@ function Page(props) {
                   :
                   null}
 
-              <SetOption>
+              {/* <SetOption>
                 <Text>
                   <span style={{ marginRight: 8 }}>비밀글 설정하기</span>
                 </Text>
@@ -217,7 +217,7 @@ function Page(props) {
                   checked={secret}
                   onChange={handleSecretOptionChange}
                 />
-              </SetOption>
+              </SetOption> */}
               <Write onClick={submit}>작성</Write>
             </Right>
           </BtnSection>

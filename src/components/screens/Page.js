@@ -60,7 +60,6 @@ function mapDispatchToProps(dispatch){
 }
 
 function Page(props) {
-  
   //const params = useParams();
   const location = useLocation().state;
 

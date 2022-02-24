@@ -75,6 +75,7 @@ function Group(props) {
     const [posts, setPosts] = React.useState(null); // API로 받은 값
     const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
     const [permissionCreateBtn,SetPermissionCreateBtn] = React.useState(false);
+    const [isSecret, SetIsSecret] = React.useState(false)
 
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
@@ -178,6 +179,7 @@ function Group(props) {
               setSelected(param.sorted)
               const checkCreateBtn = createChecker(categoryTarget)
               SetPermissionCreateBtn(checkCreateBtn)
+              SetIsSecret(category.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
               setLoad(true)
             });
 
@@ -202,7 +204,7 @@ function Group(props) {
             setPage((current) =>parseInt(param.page))
             const checkCreateBtn = createChecker(categoryTarget)
             SetPermissionCreateBtn(checkCreateBtn)
-
+            SetIsSecret(subCategory.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
 
             if (param.isSearch === "false") {
                 console.log("검색한 것 없음!");
@@ -289,7 +291,7 @@ function Group(props) {
               {(permissionCreateBtn) === true ?
                 <CreateBtnLink
                   to={`/group/write/${props.userReducer.id}`}
-                  state={{ category: "소모임", subCategory: target, boardId: param.boardId }}
+                  state={{ category: "소모임", subCategory: target, boardId: param.boardId,isSecret: isSecret }}
                 >
                   create
                 </CreateBtnLink>

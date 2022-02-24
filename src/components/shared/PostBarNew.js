@@ -52,7 +52,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function PostBar(props) {
-  const { page, data, userReducer, linkHeader } = props
+  const { page, data, userReducer, linkHeader} = props
   const number = (page - 1) * 16;
   console.log("새로운 포스트바!");
   console.log(props);
@@ -73,7 +73,7 @@ function PostBar(props) {
             <PostCotent>
               <Number>{i + 1 + number}</Number>
               <Title>
-                <Link to={`/${linkHeader}/${data.postId}`} >
+                <Link to={`/${linkHeader}/${data.postId}`}>
                   {"비밀글 " + data.title}
                 </Link>
               </Title>
@@ -130,7 +130,7 @@ function PostBar(props) {
                 <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
               </Number>
               <Title>
-                <Link to={`/${linkHeader}/${data.postId}`}>
+                <Link to={`/${linkHeader}/${data.postId}`} >
                   {data.title}
                 </Link>
                     {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
