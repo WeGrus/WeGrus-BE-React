@@ -281,6 +281,7 @@ export const PostCotent = styled.div`
   :hover {
     font-weight: 700;
   }
+  font-weight: ${(props) => (props.bold ? "700" : "400")};
 `;
 
 export const PostRole = styled.div`
