@@ -31,6 +31,7 @@ function PostBar(props) {
   const number = (page - 1) * 16;
   console.log("새로운 포스트바!");
   console.log(props);
+
   const isAuthority = userReducer?.roles?.some((i) =>
     [
       "ROLE_GROUP_EXECUTIVE",
@@ -39,11 +40,12 @@ function PostBar(props) {
       "ROLE_CLUB_PRESIDENT",
     ].includes(i)
   );
-  const isMember = userReducer?.roles?.some((i) =>["ROLE_MEMBER",].includes(i));
-
+  console.log("isAuthority"+isAuthority);
+  const isMember = userReducer.roles.some((i) =>["ROLE_MEMBER"].includes(i));
+  console.log("isMember"+isMember);
   const postdata = data?.map((data, i) => (
     <PostInforBar key={i + 1}>
-      {(isMember === true) ?
+      {(isMember === true) ? // 멤버 권한이 있다면
         <>
           {data.secretFlag === true ? ( // 비밀글일때,
             <>
@@ -64,7 +66,7 @@ function PostBar(props) {
                 )
                   :
                   (
-                    <PostBarContent number={i + 1 + number} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={data.title} writer={data.memberName} isBold={"bold"} />
+                    <PostBarContent number={"NOTICE"} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={data.title} writer={data.memberName} isBold={"bold"} />
                   )}
               </>
             )}
