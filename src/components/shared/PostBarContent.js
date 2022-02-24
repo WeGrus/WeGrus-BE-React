@@ -49,7 +49,12 @@ const goSignUP = (e) => {
 
 return(
     <PostCotent {...isBold}>
+    {(number === "NOTICE")?
+    <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
+    :
     <Number>{number}</Number>
+    }
+    
     <Title>
       {(link !== `/`)?
       <>

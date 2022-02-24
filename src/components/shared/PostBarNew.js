@@ -2,8 +2,6 @@ import * as React from "react";
 import {
   PostInforBar,
 } from "./BoardElement";
-import { faVolumeOff } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { actionCreators } from "../../store";
 import { connect } from "react-redux";
 import PostBarContent from "./PostBarContent";
@@ -88,7 +86,7 @@ function PostBar(props) {
                 )
                   :
                   (
-                    <PostBarContent number={<FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />} hasLink={true} link={`/`} data={data} title={data.title} writer={data.memberName} isBold={"bold"} />
+                    <PostBarContent number={"NOTICE"} hasLink={true} link={`/`} data={data} title={data.title} writer={data.memberName} isBold={"bold"} />
                   )}
               </>
             )}
