@@ -129,7 +129,6 @@ function Announce(props) {
             page - 1
           }&pageSize=19&type=${currentType}`,
           {
-            headers: { Authorization: `Bearer ${props.userReducer.token}` },
           }
         )
         .catch(function (error) {
@@ -148,7 +147,6 @@ function Announce(props) {
             page - 1
           }&pageSize=19&type=${currentType}`,
           {
-            headers: { Authorization: `Bearer ${props.userReducer.token}` },
           }
         )
         .catch(function (error) {
@@ -166,7 +164,6 @@ function Announce(props) {
   const loadPageList = (boardId, page, type) => {
     axios
       .get(`/boards/${boardId}?page=${page - 1}&pageSize=19&type=${type}`, {
-        headers: { Authorization: `Bearer ${props.userReducer.token}` },
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -183,7 +180,6 @@ function Announce(props) {
     if (subCategory === undefined) {
       axios
         .get(`/boards/categories`, {
-          headers: { Authorization: `Bearer ${props.userReducer.token}` },
         })
         .catch(function (error) {
           console.log(error.toJSON());

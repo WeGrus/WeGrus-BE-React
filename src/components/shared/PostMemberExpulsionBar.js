@@ -49,7 +49,6 @@ function PostMemberExpulsionBar(props){
 
     const expulsionMember = (memberId) => {
         axios.patch(`/club/president/ban?memberId=${memberId}`,{},{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .catch(function (error) {
             console.log(error);

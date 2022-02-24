@@ -54,7 +54,6 @@ function PostMemberBar(props) { //
 
     const delegateClub = (memberId) => { //회장 위임
         axios.patch(`/club/president/delegate?memberId=${memberId}`, {}, {
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
             .catch(function (error) {
                 console.log(error);
@@ -77,7 +76,6 @@ function PostMemberBar(props) { //
 
     const empowerClub = (memberId,type) => { // 회원 권한 부여
         axios.post(`/club/president/empower?memberId=${memberId}&type=${type}`,{},{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .then(function(res){
             const PageReducer = props.PageReducer
@@ -111,7 +109,6 @@ function PostMemberBar(props) { //
 
     const revokePermissionClub = (memberId,type) => { //회원 권한 해제
         axios.delete(`/club/president/authority?memberId=${memberId}&type=${type}`,{},{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .then(function(res){
             const PageReducer = props.PageReducer
@@ -144,7 +141,6 @@ function PostMemberBar(props) { //
     
     const empowerGroupLeader = (memberId,groupId) => { // 소모임장 권한 부여
         axios.post(`/club/executives/groups?groupId=${groupId}&memberId=${memberId}`,{},{
-            headers: { 'Authorization': `Bearer ${props.userReducer.token}` }
         })
         .then(function(res){
             const PageReducer = props.PageReducer

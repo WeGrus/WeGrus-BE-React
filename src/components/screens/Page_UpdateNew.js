@@ -63,7 +63,6 @@ function Page(props) {
             "postId": pageData.postId,
             "type": "NOTICE"
         },{
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
         })
       }
       else{
@@ -71,7 +70,6 @@ function Page(props) {
           "postId": pageData.postId,
           "type": "NORMAL"
       },{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       }
       setNotice(!notice)
@@ -84,7 +82,6 @@ function Page(props) {
             "postId": pageData.postId,
             "type": "NOTICE"
         },{
-          headers: {'Authorization': `Bearer ${props.userReducer.token}`}
         })
       }
       else{
@@ -92,7 +89,6 @@ function Page(props) {
           "postId": pageData.postId,
           "type": "NORMAL"
       },{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       }
       setNotice(!notice)
@@ -110,13 +106,29 @@ function Page(props) {
     return getContent_html;
   }
 
+  const emptyChecker = (content) => {
+    if(title === "" || content === null || content === undefined){
+      console.log(title);
+      console.log(content);
+      return true;
+    }
+    return false;
+    
+  }
+
   function submit() {
     // 작성 버튼을 눌렀을 시 작동
-    axios
+    const content = printTextBody()
+
+    if(emptyChecker(content) === true){
+      alert("제목이나 게시글이 공백이면 작성하실 수 없습니다.")
+    }
+    else{
+      axios
       .put(
         `/posts`,
         {
-          content: printTextBody(),
+          content: content,
           postId: pageData.postId,
           secretFlag: secret,
           title: title,
@@ -135,6 +147,9 @@ function Page(props) {
         //Navigate("/board", {state:{category:location.subCategory, page:1}});
         Navigate(-1);
       });
+    }
+
+    
 
      }
 

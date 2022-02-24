@@ -1,7 +1,7 @@
 import * as React from 'react';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/react-editor';
-import { useLocation, Link, useNavigate  } from "react-router-dom";
+import { useLocation, Link, useNavigate,useParams  } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { connect } from 'react-redux';
@@ -59,10 +59,31 @@ function mapDispatchToProps(dispatch){
   }
 }
 
+const checkLinkHeader = (value) => {
+switch(value){
+  case "공지사항":{
+    return "announce"
+  }
+  case "소모임":{
+    return "group"
+  }
+  case "스터디":{
+    return "study"
+  }
+  case "게시판":{
+    return "board"
+  }
+}
+}
+// 새로 고침시에도 데이터를 받은 뒤 수정을 할때의 경로를 얻기위해 만든 함수입니다.
+
+
 function Page(props) {
   
   //const params = useParams();
-  const location = useLocation().state;
+  //const location = useLocation().state;
+  const param = useParams();
+  const postId = param?.pagenum
 
   const [pageDate, setPageData] = React.useState(null);
   const [commentData, setCommentData]= React.useState(null);
@@ -79,21 +100,20 @@ function Page(props) {
   const downRef = React.useRef();
 
   React.useEffect(()=>{
-    axios.get(`/posts/${location.postId}`,{
-      headers: {'Authorization': `Bearer ${props.userReducer.token}`}
+    axios.get(`/posts/${postId}`,{
     })
     .catch(function (error) {
       console.log(error.toJSON());
     })
     .then(function(res){
-      setPageData(res.data.data.board)
-      setCommentData((current) => res.data.data.replies)
-      setCountOfRecommend(res.data.data.board.postLike)
-      setCountOfScrape(res.data.data.board.postBookmarks) // 스크랩 이후 수정
-      setCountOfComment(res.data.data.board.postReplies)
+      setPageData(res?.data?.data?.board)
+      setCommentData((current) => res?.data?.data?.replies)
+      setCountOfRecommend(res?.data?.data?.board?.postLike)
+      setCountOfScrape(res?.data?.data?.board?.postBookmarks) // 스크랩 이후 수정
+      setCountOfComment(res?.data?.data?.board?.postReplies)
     });
 
-  },[location,trigger])
+  },[param,trigger])
 
   React.useEffect(()=>{
     if(pageDate !== null){
@@ -110,7 +130,6 @@ function Page(props) {
   const postRecommand = () => { // 게시글 추천하는 함수
     if (isRecommend === true) {
       axios.delete(`/posts/like?postId=${pageDate.postId}`,{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -123,7 +142,6 @@ function Page(props) {
     }
     else {
       axios.post(`/posts/like?postId=${pageDate.postId}`,{},{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -141,7 +159,6 @@ function Page(props) {
       console.log("북마크 해제");
       
       axios.delete(`/members/bookmarks?postId=${pageDate.postId}`,{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -156,7 +173,6 @@ function Page(props) {
       console.log("북마크 성공");
       setIsScraped(true);
       axios.post(`/members/bookmarks?postId=${pageDate.postId}`,{},{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -173,7 +189,6 @@ function Page(props) {
     let value = window.confirm("해당 게시물을 삭제하겠습니까?")
     if (value === true) {
       axios.delete(`/posts?postId=${pageDate.postId}`,{
-        headers: {'Authorization': `Bearer ${props.userReducer.token}`}
       })
       .catch(function (error) {
         console.log(error.toJSON());
@@ -208,7 +223,7 @@ function Page(props) {
       {(load !== false)?
             <Background>
             <Content>
-              <Category>{location.category}|{pageDate.board}</Category>
+              <Category>{pageDate.boardCategory}|{pageDate.board}</Category>
     
               <Header>
                 <PageImage src={`${pageDate.image.url}`}></PageImage>
@@ -247,11 +262,11 @@ function Page(props) {
                 {(props.userReducer.id === pageDate.memberId||isAuthority === true) ?  // user의 이름과 게시글 작성자가 같다면 보여주고 아니라면 편집기능 구현 x
                   <div style={{ float: "right" }}>
                     <Link
-                      to={`${location.linkHeader}/update/${props.userReducer.id}/${props.userReducer.name}`}
+                      to={`/${checkLinkHeader(pageDate.boardCategory)}/update/${props.userReducer.id}/${props.userReducer.name}`}
                       state={
                         {
-                          category: location.category,
-                          subCategory: location.subCategory,
+                          category: pageDate.boardCategory,
+                          subCategory: pageDate.board,
                           postId: pageDate.postId,
                           pageData: pageDate
                         }
