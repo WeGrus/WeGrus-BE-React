@@ -72,7 +72,7 @@ return(
               }
             </>
             :
-            { title }
+            <div>{ title }</div>
           }
       </>
       :

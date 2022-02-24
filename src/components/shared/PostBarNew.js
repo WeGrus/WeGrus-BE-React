@@ -49,7 +49,7 @@ function PostBar(props) {
         <>
           {data.secretFlag === true ? ( // 비밀글일때,
             <>
-              {isAuthority === true || data.memberId === userReducer.id ? (
+              {isAuthority === true || data.memberId === userReducer?.id ? (
                 <PostBarContent number={i + 1 + number} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={"비밀글 " + data.title} writer={data.memberName} isBold={""} />
               )
                 :
