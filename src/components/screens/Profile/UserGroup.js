@@ -78,7 +78,7 @@ function UserGroup(props) {
       <InfoBox>
         <DetailBox title="내 그룹">
           <InfoText>
-            {userGroup !== [] ? (
+            {userGroup === [] ? (
               <span>소모임에 가입하지 않았습니다.</span>
             ) : (
               userGroup.map((data) => <span>{data}</span>)
