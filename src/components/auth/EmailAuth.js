@@ -62,7 +62,7 @@ function EmailAuth(props) {
 
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState(false);
-  //const [message, setMessage] = useState("");
+  const [verificationKey, setVerificationKey] = useState();
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
@@ -93,7 +93,7 @@ function EmailAuth(props) {
     }*/
 
     let params = new URL(document.location.toString()).searchParams;
-    let verificationKey = params.get("verificationKey");
+    setVerificationKey(params.get("verificationKey"));
 
     if (verificationKey) {
       axios
@@ -115,29 +115,35 @@ function EmailAuth(props) {
   return (
     <AuthLayout>
       <PageTitle title="이메일 인증" />
-      <HeaderContainer>
-        <span>인하대학교 학생 이메일을 통해 인증을 완료해 주세요.</span>
-      </HeaderContainer>
-      <LoginForm onSubmit={handleSubmit(onSubmit)}>
-        <InhaEmail>
-          <input
-            {...register("email", {
-              required: "학번을 입력하세요.",
-            })}
-            placeholder="*학번 입력"
-            type="text"
-          />
-          <span>@inha.edu</span>
-        </InhaEmail>
+      {verificationKey ? (
+        <h2>진행하던 회원 가입 브라우저로 이동하여 다음 버튼을 눌러주세요.</h2>
+      ) : (
+        <>
+          <HeaderContainer>
+            <span>인하대학교 학생 이메일을 통해 인증을 완료해 주세요.</span>
+          </HeaderContainer>
+          <LoginForm onSubmit={handleSubmit(onSubmit)}>
+            <InhaEmail>
+              <input
+                {...register("email", {
+                  required: "학번을 입력하세요.",
+                })}
+                placeholder="*학번 입력"
+                type="text"
+              />
+              <span>@inha.edu</span>
+            </InhaEmail>
 
-        {emailAuth ? (
-          <NextButton to="/signup" color="#30B0B0" ftcolor="white">
-            <span>다음 단계</span>
-          </NextButton>
-        ) : (
-          <Button color="#106557" ftcolor="white" type="submit" />
-        )}
-      </LoginForm>
+            {emailAuth ? (
+              <NextButton to="/signup" color="#30B0B0" ftcolor="white">
+                <span>다음 단계</span>
+              </NextButton>
+            ) : (
+              <Button color="#106557" ftcolor="white" type="submit" />
+            )}
+          </LoginForm>
+        </>
+      )}
     </AuthLayout>
   );
 }

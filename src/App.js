@@ -1,13 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
-import Page from "./components/screens/Page";
-import UpdatePage from "./components/screens/Page_Update.js";
 import Profile from "./components/screens/Profile/Profile";
 import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
 import Layout from "./components/Layout";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import EmailAuth from "./components/screens/EmailAuth";
+import EmailAuth from "./components/auth/EmailAuth";
 import React, { useEffect, useState } from "react";
 import OAuth from "./components/auth/OAuth";
 import Loading from "./components/screens/Loading";
@@ -84,27 +82,6 @@ export const jsonType = { "content-type": "application/json" };
 export const cookies = new Cookies();
 
 function App(props) {
-  // const [setCookie, removeCookie] = useCookies(["refreshToken"]);
-  /*const getReissue = () => {
-    axios
-      .post("/reissue", {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        withCredentials: true,
-      })
-      .then((res) => {
-        const accessToken = res.data.data.accessToken;
-        console.log(accessToken);
-        props.loginSuccess(accessToken);
-        //reissue 성공
-      })
-      .catch((err) => {
-        console.log(err);
-        cookies.remove("refreshToken", []);
-        props.logUserOut();
-        // ... 로그인 실패 처리
-      });
-  };*/
-
   const authenticated = props?.userReducer?.authenticated;
 
   const [token, setToken] = useState(null);
@@ -143,12 +120,6 @@ function App(props) {
       })
       .then(async (res) => {
         setToken(res?.data?.data?.accessToken);
-        // props.loginSuccess(res?.data?.data?.accessToken);
-        //store에 토큰이 있을 경우(=로그인 했을 경우)
-        //var decoded = jwt_decode(token);
-
-        //토큰을 디코딩합니다
-        // const ID = decoded.sub; //회원번호
 
         axios.defaults.headers.common[
           "Authorization"
