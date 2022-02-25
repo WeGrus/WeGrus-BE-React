@@ -57,6 +57,14 @@ const LoginForm = styled.form`
   flex-direction: column;
 `;
 
+const MoveOnMessage = styled.div`
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 function EmailAuth(props) {
   let navigate = useNavigate();
 
@@ -116,7 +124,9 @@ function EmailAuth(props) {
     <AuthLayout>
       <PageTitle title="이메일 인증" />
       {verificationKey ? (
-        <h2>진행하던 회원 가입 브라우저로 이동하여 다음 버튼을 눌러주세요.</h2>
+        <MoveOnMessage>
+          <h2>진행하던 회원 가입 페이지로 이동하여 다음 버튼을 눌러주세요.</h2>
+        </MoveOnMessage>
       ) : (
         <>
           <HeaderContainer>
