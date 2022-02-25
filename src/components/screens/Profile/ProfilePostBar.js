@@ -26,12 +26,20 @@ const splitDate = (data) => {
   return ymd;
 };
 
-function ProfilePostBar({ page, data, userReducer }) {
+function ProfilePostBar({ page, data }) {
   // 기존의 postBar에서 userReducer가 추가되었습니다. 변경하고 나서 문제가 생기실 수도 있으니 한번 확인해주시길 바랍니다.
-  const limit = 19;
-  const offset = (page - 1) * limit;
-  const number = page * 16;
+  const number = (page - 1) * 16;
 
+  let linkHeader = data.boardCategory;
+  if (linkHeader === "게시판") {
+    linkHeader = "board";
+  } else if (linkHeader === "스터디") {
+    linkHeader = "study";
+  } else if (linkHeader === "공지사항") {
+    linkHeader = "announce";
+  } else if (linkHeader === "소모임") {
+    linkHeader = "group";
+  }
   const postdata = data.map((data, i) => (
     <PostInforBar key={i + 1}>
       <PostCotent>
@@ -39,24 +47,8 @@ function ProfilePostBar({ page, data, userReducer }) {
           {data.boardCategory} / {data.board}
         </BoardName>
         <Title>
-          <Link
-            to={`${i + 1 + number}`}
-            state={{
-              category: "커뮤니티",
-
-              postId: data.postId,
-            }}
-          >
-            {data.title}
-          </Link>
-          <HashLink
-            to="1#commentTag"
-            state={{
-              category: "커뮤니티",
-
-              postId: data.postId,
-            }}
-          >
+          <Link to={`/${linkHeader}/${data.postId}`}>{data.title}</Link>
+          <HashLink to={`/${linkHeader}/${data.postId}`}>
             <Test>[{data.postReplies}]</Test>
           </HashLink>
         </Title>

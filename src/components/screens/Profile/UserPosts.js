@@ -100,7 +100,6 @@ function UserPosts(props) {
             //target={target}
             page={page}
             data={posts}
-            userReducer={props.userReducer}
           />
           <Pagination
             total={totalPage}
