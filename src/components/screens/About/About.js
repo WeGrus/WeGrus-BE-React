@@ -217,7 +217,7 @@ function About(props) {
           <BigTitle>
             <Emoji>🙋🏻</Emoji> IGRUS는 어떤 동아리인가요?
           </BigTitle>
-          {props?.userReducer?.roles?.includes("ROLE_GUEST") ? (
+          {props?.userReducer?.roles?.length === 1 ? (
             <BtnLink onClick={handleEnrollClub}>동아리 가입 신청</BtnLink>
           ) : null}
         </TitleBox>
