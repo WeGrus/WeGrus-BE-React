@@ -26,11 +26,11 @@ const splitDate = (data) => {
   return ymd;
 };
 
-function ProfilePostBar({ page, data }) {
+function ProfilePostBar(props) {
+  const { page, data, userReducer, linkHeader } = props;
   // 기존의 postBar에서 userReducer가 추가되었습니다. 변경하고 나서 문제가 생기실 수도 있으니 한번 확인해주시길 바랍니다.
   const number = (page - 1) * 16;
 
-  let linkHeader = data.boardCategory;
   if (linkHeader === "게시판") {
     linkHeader = "board";
   } else if (linkHeader === "스터디") {
