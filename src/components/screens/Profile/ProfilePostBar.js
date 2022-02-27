@@ -31,15 +31,18 @@ function ProfilePostBar(props) {
   // 기존의 postBar에서 userReducer가 추가되었습니다. 변경하고 나서 문제가 생기실 수도 있으니 한번 확인해주시길 바랍니다.
   const number = (page - 1) * 16;
 
+  console.log(data);
+
   function pickBoardCategory(linkHeader) {
     if (linkHeader === "게시판") {
-      linkHeader = "board";
+      console.log(linkHeader);
+      return "board";
     } else if (linkHeader === "스터디") {
-      linkHeader = "study";
+      return "study";
     } else if (linkHeader === "공지사항") {
-      linkHeader = "announce";
+      return "announce";
     } else if (linkHeader === "소모임") {
-      linkHeader = "group";
+      return "group";
     }
   }
 
