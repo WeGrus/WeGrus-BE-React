@@ -53,6 +53,10 @@ function ProfilePostBar(props) {
           {data.boardCategory} / {data.board}
         </BoardName>
         <Title>
+          {console.log(
+            data.boardCategory,
+            pickBoardCategory(data.boardCategory)
+          )}
           <Link to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}>
             {data.title}
           </Link>
