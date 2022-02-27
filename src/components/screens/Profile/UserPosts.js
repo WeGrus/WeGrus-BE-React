@@ -100,7 +100,6 @@ function UserPosts(props) {
             page={page}
             data={posts}
             userReducer={props?.userReducer}
-            linkHeader={posts?.boardCategory}
           />
           <Pagination
             total={totalPage}
