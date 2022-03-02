@@ -208,16 +208,20 @@ function Page(props) {
                   </SetOption>
                   :
                   null}
+              {(pageData.type !== "NORMAL") ?
+                <SetOption>
+                  <Text>
+                    <span style={{ marginRight: 8 }}>비밀글 설정하기</span>
+                  </Text>
+                  <Checkbox
+                    checked={secret}
+                    onChange={handleSecretOptionChange}
+                  />
+                </SetOption>
+                :
+                null
+              }
 
-              {/* <SetOption>
-                <Text>
-                  <span style={{ marginRight: 8 }}>비밀글 설정하기</span>
-                </Text>
-                <Checkbox
-                  checked={secret}
-                  onChange={handleSecretOptionChange}
-                />
-              </SetOption> */}
               <Write onClick={submit}>작성</Write>
             </Right>
           </BtnSection>
