@@ -109,7 +109,7 @@ function Board(props) {
     // 검색일 경우 실행
     console.log(option);
     if(option === ""){
-      navigate(`/board/${param.boardId}/${page}/${type}/false`);
+      navigate(`/board/${param.boardId}/${param.page}/${param.type}/false`);
     }
     else if (option === "제목+내용") {
       axios
