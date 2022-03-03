@@ -108,7 +108,10 @@ function Board(props) {
   ) => {
     // 검색일 경우 실행
     console.log(option);
-    if (option === "제목+내용") {
+    if(option === ""){
+      navigate(`/board/${param.boardId}/${page}/${type}/false`);
+    }
+    else if (option === "제목+내용") {
       axios
         .get(
           `/search/all/${currentBoardType}?keyword=${keyword}&page=${
@@ -303,7 +306,7 @@ function Board(props) {
                 <SearchBar>
                   <SearchBarInput
                     placeholder="검색어를 입력하세요."
-                    {...register("keyword", { required: true })}
+                    {...register("keyword")}
                   />
                   <SearchBarSubmit type="submit" value="" />
                   <ViewSearchBarSubmit>
