@@ -70,7 +70,7 @@ return(
                   <Number>{number}</Number>
                 }
                 <Title>
-                  <div>{title}</div>
+                  {title}
                   {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
                     <HashLinkComment to={`${link}#commentTag`}>
                       [{data.postReplies}]
