@@ -84,9 +84,9 @@ function Board(props) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  console.log(pathname);
-   console.log("파람값");
-   console.log(param);
+  //console.log(pathname);
+ //  console.log("파람값");
+  // console.log(param);
   // console.log(param.boardId);
   // console.log(param.isSearch);
   // console.log(param.page);
@@ -109,7 +109,8 @@ function Board(props) {
     // 검색일 경우 실행
     console.log(option);
     if(option === ""){
-      navigate(`/board/${param.boardId}/${param.page}/${param.type}/false`);
+      console.log("option이 빈값인 걸 확인!");
+      navigate({to:`/board/${param.boardId}/${param.page}/${param.type}/false`}, { replace: true });
     }
     else if (option === "제목+내용") {
       axios
