@@ -57,54 +57,70 @@ const goSignUP = (e) => {
 }
 
 return(
-  <PostCotent {...isBold}>
-    {(link !== `/`)?
+  <>
+      {(link !== `/`)?
     <>
-       {(hasLink === true)?
-       <>
+        {(hasLink === true) ?
+          <>
             <Link to={link}>
+              <PostCotent {...isBold}>
+                {(number === "NOTICE") ?
+                  <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
+                  :
+                  <Number>{number}</Number>
+                }
+                <Title>
+                  <div>{title}</div>
+                  {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
+                    <HashLinkComment to={`${link}#commentTag`}>
+                      [{data.postReplies}]
+                    </HashLinkComment>
+                    :
+                    null
+                  }
+                </Title>
+                <LinkProfile to={`/profile/infor/0/${id}`}>
+                  <Writer>{writer}</Writer>
+                </LinkProfile>
+                <Date>{splitDate(data.createdDate)}</Date>
+                <Recommendation>{data.postLike}</Recommendation>
+                <Hits>{data.postView}</Hits>
+              </PostCotent>
+            </Link>
+          </>
+       :
+       <>
+            <PostCotent {...isBold}>
               {(number === "NOTICE") ?
                 <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
                 :
                 <Number>{number}</Number>
               }
-              <Title>
-                <div>{title}</div>
-                {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
-                  <HashLinkComment to={`${link}#commentTag`}>
-                    [{data.postReplies}]
-                  </HashLinkComment>
-                  :
-                  null
-                }
-              </Title>
-              <LinkProfile to={`/profile/infor/0/${id}`}>
-                <Writer>{writer}</Writer>
-              </LinkProfile>
+              <Title>{title}</Title>
+              <Writer>{writer}</Writer>
               <Date>{splitDate(data.createdDate)}</Date>
               <Recommendation>{data.postLike}</Recommendation>
               <Hits>{data.postView}</Hits>
-            </Link>
-       </>
-       :
-       <>
-
+            </PostCotent>
        </>}
     </>
     :
     <>
-        {(number === "NOTICE") ?
-          <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
-          :
-          <Number>{number}</Number>
-        }
-        <Title onclick={goSignUP}>{title}</Title>
-        <Writer>{writer}</Writer>
-        <Date>{splitDate(data.createdDate)}</Date>
-        <Recommendation>{data.postLike}</Recommendation>
-        <Hits>{data.postView}</Hits>
+        <PostCotent {...isBold}>
+          {(number === "NOTICE") ?
+            <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
+            :
+            <Number>{number}</Number>
+          }
+          <Title onclick={goSignUP}>{title}</Title>
+          <Writer>{writer}</Writer>
+          <Date>{splitDate(data.createdDate)}</Date>
+          <Recommendation>{data.postLike}</Recommendation>
+          <Hits>{data.postView}</Hits>
+        </PostCotent>
     </>}
-  </PostCotent>
+  </>
+
 )
 }
 
