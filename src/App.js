@@ -225,7 +225,7 @@ function App(props) {
                 />
                 <Route path="/profile" element={<Profile />} />
 
-                <Route path="/:userid/profile" element={<Profile />} />
+                <Route path="/profile/:category/:pagenum/:userid" element={<Profile />} />
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
