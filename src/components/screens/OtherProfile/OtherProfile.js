@@ -70,7 +70,7 @@ function OtherProfile(props) {
             getFilter={setTarget}
             target={target}
             linkHeader={"profile"}
-            userId={param.userId}
+            userId={param.userid}
           ></SideBar>
       <Content>
         <ScreenTitle>{`프로필 | ${target}`}</ScreenTitle>
