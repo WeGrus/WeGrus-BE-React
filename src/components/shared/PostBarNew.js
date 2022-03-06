@@ -113,12 +113,13 @@ function PostBar(props) {
         <>
           {data.type === "NORMAL" ? ( // 공지글이 아닐때.
             <PostCotent>
+              <Link
+                  to={`/${linkHeader}/${data.postId}`}>
               <Number>{i + 1 + number}</Number>
               <Title>
-                <Link
-                  to={`/${linkHeader}/${data.postId}`}>
+                
                   {data.title}
-                </Link>
+                
                   {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
                     <HashLinkComment to={`/${linkHeader}/${data.postId}`}>
                       [{data.postReplies}]
@@ -131,19 +132,20 @@ function PostBar(props) {
               <Date>{splitDate(data.createdDate)}</Date>
               <Recommendation>{data.postLike}</Recommendation>
               <Hits>{data.postView}</Hits>
+              </Link>
             </PostCotent>
           ) 
           : 
           (
             <PostCotent bold>
-               <Link to={`/${linkHeader}/${data.postId}`}>
+               
               <Number>
                 <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
               </Number>
               <Title>
-               
+              <Link to={`/${linkHeader}/${data.postId}`}>
                   {data.title}
-                
+                  </Link>
                     {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
                       <HashLinkComment to={`/${linkHeader}/${data.postId}`}>
                         [{data.postReplies}]
@@ -156,7 +158,7 @@ function PostBar(props) {
               <Date>{splitDate(data.createdDate)}</Date>
               <Recommendation>{data.postLike}</Recommendation>
               <Hits>{data.postView}</Hits>
-              </Link>
+              
             </PostCotent>
           )}
         </>
