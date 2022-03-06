@@ -222,7 +222,7 @@ function Board(props) {
       setPage((current) => parseInt(param.page));
       console.log(subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardSecretFlag);
       SetIsSecret((previous)=>subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardSecretFlag);
-      console.log(subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardSecretFlag);
+      
       if (param.isSearch === "false") {
         console.log("검색한 것 없음!");
         loadPageList(param.boardId, parseInt(param.page), param.sorted);
