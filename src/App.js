@@ -120,7 +120,7 @@ function App(props) {
       })
       .then(async (res) => {
         setToken(res?.data?.data?.accessToken);
-
+        console.log(res?.data?.data?.accessToken);
         axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${res?.data?.data?.accessToken}`;
@@ -225,6 +225,7 @@ function App(props) {
                 />
                 <Route path="/profile" element={<Profile />} />
 
+                <Route path="/:userid/profile" element={<Profile />} />
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
