@@ -45,10 +45,10 @@ function OtherProfile(props) {
       })
       .then(function (res) {
         console.log(res);
-        setInfo(res.data.info)
+        setInfo(res.data.data.info)
         setTarget(mapping(param.category));
         if (param.category === "infor") {
-            renderComponent = <UserInfo data={res.data.info} />;
+            renderComponent = <UserInfo data={res.data.data.info} />;
         }
         // else if (param.category === "posts") {
         //     renderComponent = <UserGroup />;
