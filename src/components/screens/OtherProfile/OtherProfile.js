@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import {useLocation,useParams } from "react-router-dom";
 import PageTitle from "../../shared/PageTitle";
 import ScreenTitle from "../../shared/ScreenTitle";
-import SideBar from "../../shared/SideBar";
+import SideBar from "./SideBar";
 import { Content } from "./../Profile/ProfileElements";
 import UserInfo from "./UserInfo";
 
