@@ -33,10 +33,10 @@ function OtherProfile(props) {
   const [info, setInfo] = React.useState(null);
   const [page, setPage] = React.useState(0);
   const [load, setLoad] = React.useState(false); // load유무로 location의 값이 바뀐 뒤에 렌더
-
+  const [renderComponent, setRenderComponent] = React.useState(null);
   const DATA = props.userReducer;
   const input = useLocation();
-  let renderComponent = null;
+
 
   React.useEffect(()=>{
       axios.get(`/members/info/${param.userid}`)
@@ -48,7 +48,7 @@ function OtherProfile(props) {
         setInfo(res.data.data.info)
         setTarget(mapping(param.category));
         if (param.category === "infor") {
-            renderComponent = <UserInfo data={res.data.data.info} />;
+          setRenderComponent(<UserInfo data={res.data.data.info} />);
         }
         // else if (param.category === "posts") {
         //     renderComponent = <UserGroup />;

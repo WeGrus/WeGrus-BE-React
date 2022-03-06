@@ -68,19 +68,6 @@ const SSelect = styled.select`
   width: 80%;
 `;
 
-const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
-  <>
-    <SSelect name={name} ref={ref} onChange={onChange} required>
-      <option value="hide">*--{placeholder}--</option>
-      {options.map((value, dataName) => (
-        <option key={value} value={dataName}>
-          {value}
-        </option>
-      ))}
-    </SSelect>
-  </>
-));
-
 function UserInfo(props) {
   console.log(props);
   const data ={ props};
