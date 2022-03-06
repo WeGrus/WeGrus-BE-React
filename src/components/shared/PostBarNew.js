@@ -15,15 +15,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { HashLink } from "react-router-hash-link";
 import { actionCreators } from "../../store";
 import { connect } from "react-redux";
+
 const Number = styled.div`
   min-width: 65px;
   text-align: center;
   margin-left: 23px;
 `;
-const Test = styled.span`
-  padding-left: 10px;
-  z-index: 20;
-`;
+// const Comment = styled.span`
+//   padding-left: 10px;
+//   z-index: 20;
+// `;
+
+const HashLinkComment = styled(HashLink)`
+padding-left: 10px;
+z-index: 2;
+`
+
+const LinkProfile = styled(Link)`
+z-index: 2;
+`
 
 
 const splitDate = (data) => {
@@ -110,9 +120,9 @@ function PostBar(props) {
                   {data.title}
                 </Link>
                   {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
-                    <HashLink to={`/${linkHeader}/${data.postId}`}>
-                      <Test>[{data.postReplies}]</Test>
-                    </HashLink>
+                    <HashLinkComment to={`/${linkHeader}/${data.postId}`}>
+                      [{data.postReplies}]
+                    </HashLinkComment>
                     :
                     null
                   }
@@ -126,17 +136,18 @@ function PostBar(props) {
           : 
           (
             <PostCotent bold>
+               <Link to={`/${linkHeader}/${data.postId}`}>
               <Number>
                 <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
               </Number>
               <Title>
-                <Link to={`/${linkHeader}/${data.postId}`}>
+               
                   {data.title}
-                </Link>
+                
                     {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
-                      <HashLink to={`/${linkHeader}/${data.postId}`}>
-                        <Test>[{data.postReplies}]</Test>
-                      </HashLink>
+                      <HashLinkComment to={`/${linkHeader}/${data.postId}`}>
+                        [{data.postReplies}]
+                      </HashLinkComment>
                       :
                       null
                     }
@@ -145,6 +156,7 @@ function PostBar(props) {
               <Date>{splitDate(data.createdDate)}</Date>
               <Recommendation>{data.postLike}</Recommendation>
               <Hits>{data.postView}</Hits>
+              </Link>
             </PostCotent>
           )}
         </>
