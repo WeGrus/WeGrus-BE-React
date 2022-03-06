@@ -1,22 +1,13 @@
 import axios from "axios";
 import * as React from "react";
-import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
-import { Link, Outlet, useLocation,useParams } from "react-router-dom";
-import styled from "styled-components";
+import {useLocation,useParams } from "react-router-dom";
 import PageTitle from "../../shared/PageTitle";
-import Pagination from "../../shared/Pagination";
-import PostBar from "../../shared/PostBar";
 import ScreenTitle from "../../shared/ScreenTitle";
 import SideBar from "../../shared/SideBar";
-import img from "./../../../images/Polygon.jpg";
-import { Content } from "./ProfileElements";
-import SavedPosts from "./SavedPosts";
-import UserAccount from "./UserAccount";
-import UserComments from "./UserComments";
-import UserGroup from "./UserGroup";
+import { Content } from "./../Profile/ProfileElements";
 import UserInfo from "./UserInfo";
-import UserPosts from "./UserPosts";
+
 
 const mapStateToProps = (state) => {
   return state;

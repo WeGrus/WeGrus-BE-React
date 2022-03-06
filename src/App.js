@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
 import Profile from "./components/screens/Profile/Profile";
+import OtherProfile from "./components/screens/OtherProfile/OtherProfile"
 import { GlobalStyles } from "./styles";
 import Operator from "./components/screens/Operator";
 import Layout from "./components/Layout";
@@ -224,7 +225,7 @@ function App(props) {
                   element={<NewUpdatePage />}
                 />
 
-                <Route path="/profile/:category/:pagenum/:userid" element={<Profile />} />
+                <Route path="/profile/:category/:pagenum/:userid" element={<OtherProfile />} />
                 <Route path="/profile" element={<Profile />} />
 
                 
