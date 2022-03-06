@@ -110,7 +110,7 @@ function Board(props) {
     console.log(option);
     if(keyword === ""){
       console.log("keyword 빈값인 걸 확인!");
-      navigate(`/board/${param.boardId}/${param.page}/${param.type}/false`);
+      navigate(`/board/${param.boardId}/${param.page}/${param.sorted}/false`);
     }
     else if (option === "제목+내용") {
       axios
