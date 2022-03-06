@@ -112,9 +112,10 @@ function PostBar(props) {
       (
         <>
           {data.type === "NORMAL" ? ( // 공지글이 아닐때.
+           <Link
+           to={`/${linkHeader}/${data.postId}`}>
             <PostCotent>
-              <Link
-                  to={`/${linkHeader}/${data.postId}`}>
+             
               <Number>{i + 1 + number}</Number>
               <Title>
                 
@@ -132,8 +133,9 @@ function PostBar(props) {
               <Date>{splitDate(data.createdDate)}</Date>
               <Recommendation>{data.postLike}</Recommendation>
               <Hits>{data.postView}</Hits>
-              </Link>
+              
             </PostCotent>
+            </Link>
           ) 
           : 
           (
