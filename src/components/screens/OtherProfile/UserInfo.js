@@ -78,7 +78,7 @@ function UserInfo(props) {
   return (
     <>
       <InfoBox>
-        <DetailBox title="프로필 사진 편집">
+        <DetailBox title="프로필 사진">
           <ContentBox>
             <ProfilePhoto>
               <img src={`${data.imageUrl}`} alt="profile" />

@@ -79,9 +79,15 @@ return(
                     null
                   }
                 </Title>
-                <LinkProfile to={`/profile/infor/0/${id}`}>
-                  <Writer>{writer}</Writer>
-                </LinkProfile>
+                {(id === props.userReducer)?
+                  <LinkProfile to={`/profile`}>
+                    <Writer>{writer}</Writer>
+                  </LinkProfile>
+                :
+                  <LinkProfile to={`/profile/infor/0/${id}`}>
+                    <Writer>{writer}</Writer>
+                  </LinkProfile>
+                }
                 <Date>{splitDate(data.createdDate)}</Date>
                 <Recommendation>{data.postLike}</Recommendation>
                 <Hits>{data.postView}</Hits>
