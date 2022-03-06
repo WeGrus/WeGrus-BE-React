@@ -48,7 +48,7 @@ const splitDate = (data) => {
 function PostBarContent(props){
 const {number, data,hasLink,link, title, writer, isBold, id} = props
 const navigate = useNavigate()
-
+console.log(props.userReducer);
 const goSignUP = (e) => {
   const check = window.confirm("게시물을 보려면 동아리 가입 승인을 먼저 받으셔야 합니다.\n 동아리 가입 신청을 먼저 받으시겠습니까?")
   if(check){
@@ -79,7 +79,7 @@ return(
                     null
                   }
                 </Title>
-                {(id === props.userReducer)?
+                {(id === props.userReducer.id)?
                   <LinkProfile to={`/profile`}>
                     <Writer>{writer}</Writer>
                   </LinkProfile>
