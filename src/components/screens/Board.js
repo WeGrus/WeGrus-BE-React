@@ -108,9 +108,9 @@ function Board(props) {
   ) => {
     // 검색일 경우 실행
     console.log(option);
-    if(option === ""){
-      console.log("option이 빈값인 걸 확인!");
-      navigate({to:`/board/${param.boardId}/${param.page}/${param.type}/false`}, { replace: true });
+    if(keyword === ""){
+      console.log("keyword 빈값인 걸 확인!");
+      navigate(`/board/${param.boardId}/${param.page}/${param.type}/false`);
     }
     else if (option === "제목+내용") {
       axios
