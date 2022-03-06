@@ -269,9 +269,9 @@ function CommentSection(props){
             <CommentContent>{comment.content}</CommentContent>
 
             {(comment.memberId === props.userReducer.id) ? // 이후 JWT 디코딩 이후 수정할 부분이다.
-              <BtnBar data-index={comment.replyId}> {(comment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천</CommentSpan>} | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> | <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan></BtnBar>
+              <BtnBar data-index={comment.replyId}> {(comment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천취소</CommentSpan>} | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> | <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan></BtnBar>
               :
-              <BtnBar data-index={comment.replyId}>{(comment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천</CommentSpan>}  | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan></BtnBar>
+              <BtnBar data-index={comment.replyId}>{(comment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천취소</CommentSpan>}  | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan></BtnBar>
             }
           </Comment>
           
