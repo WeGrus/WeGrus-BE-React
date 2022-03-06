@@ -298,9 +298,9 @@ function CommentSection(props){
             <CommentContent>{reComment.content}</CommentContent>
 
             {(reComment.memberId === props.userReducer.id) ?
-              <BtnBar data-index={reComment.replyId}>{(reComment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천</CommentSpan>} | <CommentSpan onClick={handleReCommentDelete}>삭제</CommentSpan></BtnBar>
+              <BtnBar data-index={reComment.replyId}>{(reComment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천취소</CommentSpan>} | <CommentSpan onClick={handleReCommentDelete}>삭제</CommentSpan></BtnBar>
               :
-              <BtnBar data-index={reComment.replyId}>{(reComment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천</CommentSpan>}</BtnBar>
+              <BtnBar data-index={reComment.replyId}>{(reComment.userReplyLiked === false)?<CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>:<CommentSpan onClick={handleCommentRecommandCancel}>추천취소</CommentSpan>}</BtnBar>
             }
           </ReComment>
             </>
