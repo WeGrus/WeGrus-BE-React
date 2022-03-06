@@ -70,7 +70,8 @@ const SSelect = styled.select`
 
 function UserInfo(props) {
   console.log(props);
-  const data ={ props};
+  const {data} =props;
+  console.log(data);
   const formData = new FormData();
   formData.append("emtyData", null);
 
