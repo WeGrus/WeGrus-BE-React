@@ -35,6 +35,7 @@ let filecheck = false
 
 
 function Page(props) {
+  console.log(props);
   const {isSecret} = props;
   const [refreshCheck, setRefreshCheck] = React.useState(true);
   const location = useLocation().state;

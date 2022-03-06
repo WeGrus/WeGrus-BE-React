@@ -195,7 +195,7 @@ function Board(props) {
           setPage(parseInt(param.page));
           console.log("param.sorted " + param.sorted);
           setSelected(param.sorted);
-          SetIsSecret(category.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
+          SetIsSecret((previous)=>category.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
           setLoad(true);
           if (param.isSearch === "false") {
             console.log("param.isSearch가 false");
@@ -220,7 +220,8 @@ function Board(props) {
       setTarget((current) => categoryTarget);
       console.log("page변경!!!");
       setPage((current) => parseInt(param.page));
-      SetIsSecret(subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardSecretFlag);
+      console.log(subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardSecretFlag);
+      SetIsSecret((previous)=>subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardSecretFlag);
       console.log(subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardSecretFlag);
       if (param.isSearch === "false") {
         console.log("검색한 것 없음!");
