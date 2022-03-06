@@ -84,9 +84,9 @@ function Board(props) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  //console.log(pathname);
-  // console.log("파람값");
-  // console.log(param);
+  console.log(pathname);
+   console.log("파람값");
+   console.log(param);
   // console.log(param.boardId);
   // console.log(param.isSearch);
   // console.log(param.page);

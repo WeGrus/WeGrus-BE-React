@@ -208,7 +208,7 @@ function Page(props) {
                   </SetOption>
                   :
                   null}
-              {(pageData.type !== "NORMAL") ?
+              {(pageData.secretFlag === true) ?
                 <SetOption>
                   <Text>
                     <span style={{ marginRight: 8 }}>비밀글 설정하기</span>
