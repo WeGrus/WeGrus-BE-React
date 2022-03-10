@@ -62,8 +62,8 @@ function Page(props) {
       console.log(pageData);
       const category = [...res?.data?.data?.boards?.filter((element) => element?.boardName === pageData?.board)];
       console.log(category);
-      setIsSecret(category.boardSecretFlag)
-      console.log(category.boardSecretFlag);
+      setIsSecret(category[0].boardSecretFlag)
+      console.log(category[0].boardSecretFlag);
     });
 
   }, []);
