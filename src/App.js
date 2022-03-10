@@ -23,6 +23,7 @@ import Board from "./components/screens/Board";
 import CreatePage from "./components/screens/Page_Create.js";
 import NewPage from "./components/screens/PageNew";
 import NewUpdatePage from "./components/screens/Page_UpdateNew";
+import Operator2 from "./components/screens/Admin/Operator"
 
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -237,6 +238,8 @@ function App(props) {
                 <Route path="/" element={<About />} />
               </>
             )}
+
+<Route path="/test" element={< Operator2/>} />
           </Route>
           <Route path="/login" element={<Login />} />
           {!authenticated ? (
@@ -248,7 +251,8 @@ function App(props) {
           ) : (
             <Route path="/" element={<About />} />
           )}
-
+           
+     
           {/* <Route
             path="*"
             element={

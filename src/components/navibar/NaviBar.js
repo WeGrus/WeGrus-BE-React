@@ -151,6 +151,13 @@ const NaviBar = (props) => {
                 ADMIN
               </NavLink>
             ) : null}
+
+            <NavLink
+              to="/test"
+              style={({ isActive }) => ({})}
+            >
+              test
+            </NavLink>
           </NavMenu>
           <NavBtn>
             {authenticated ? (
