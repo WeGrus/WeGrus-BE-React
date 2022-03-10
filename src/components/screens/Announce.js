@@ -107,7 +107,11 @@ function Announce(props) {
   ) => {
     // 검색일 경우 실행
     console.log(option);
-    if (option === "제목+내용") {
+    if(keyword === ""){
+      console.log("keyword 빈값인 걸 확인!");
+      navigate(`/announce/${param.boardId}/${param.page}/${param.sorted}/false`);
+    }
+    else if (option === "제목+내용") {
       axios
         .get(
           `/search/all/${currentBoardType}?keyword=${keyword}&page=${
@@ -314,7 +318,7 @@ function Announce(props) {
                 </SearchBarSelect>
                 <SearchBar>
                   <SearchBarInput
-                    {...register("keyword", { required: true })}
+                    {...register("keyword")}
                   />
                   <SearchBarSubmit type="submit" value="" />
                   <ViewSearchBarSubmit>

@@ -43,6 +43,7 @@ function Page(props) {
     const [notice, setNotice] = React.useState(checkNotice(pageData.type))
     const [secret,setSecret] = React.useState(pageData.secretFlag)
     const [title,setTitle] = React.useState(pageData.title);
+    const [isSecret, setIsSecret] = React.useState(false); // 비밀글을 설정할 수 있는지 확인
     const Navigate = useNavigate()
     const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
     const isClubExecutives =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
@@ -50,9 +51,21 @@ function Page(props) {
 
 
   React.useEffect(() => {
-    const inputText = editorRef.current.getInstance(); // 수정할 내용을 불러옴.
-    inputText.setHTML(pageData.content);
-    console.log(pageData);
+    axios
+    .get(`/boards/categories`, {})
+    .catch(function (error) {
+      console.log(error.toJSON());
+    })
+    .then(function (res) {
+      const inputText = editorRef.current.getInstance(); // 수정할 내용을 불러옴.
+      inputText.setHTML(pageData.content);
+      console.log(pageData);
+      const category = [...res?.data?.data?.boards?.filter((element) => element?.boardName === pageData?.board)];
+      console.log(category);
+      setIsSecret(category.boardSecretFlag)
+      console.log(category.boardSecretFlag);
+    });
+
   }, []);
 
 
@@ -208,7 +221,7 @@ function Page(props) {
                   </SetOption>
                   :
                   null}
-              {(pageData.secretFlag === true) ?
+              {(isSecret === true) ?
                 <SetOption>
                   <Text>
                     <span style={{ marginRight: 8 }}>비밀글 설정하기</span>

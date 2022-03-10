@@ -100,7 +100,11 @@ function Group(props) {
     const handleSearchFunction = (option,keyword,currentBoardType,page,currentType) => {
         // 검색일 경우 실행
         console.log(option);
-        if (option === "제목+내용") {
+        if(keyword === ""){
+          console.log("keyword 빈값인 걸 확인!");
+          navigate(`/group/${param.boardId}/${param.page}/${param.sorted}/false`);
+        }
+        else if (option === "제목+내용") {
           axios.get(`/search/all/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`)
             .catch(function (error) {
               console.log(error.toJSON());
@@ -274,7 +278,7 @@ function Group(props) {
                   <option>작성자</option>
                 </SearchBarSelect>
                 <SearchBar>
-                  <SearchBarInput {...register("keyword", { required: true })} />
+                  <SearchBarInput {...register("keyword")} />
                   <SearchBarSubmit type="submit" value="" />
                   <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
                 </SearchBar>
