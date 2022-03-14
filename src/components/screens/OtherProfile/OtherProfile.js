@@ -7,6 +7,9 @@ import ScreenTitle from "../../shared/ScreenTitle";
 import SideBar from "./SideBar";
 import { Content } from "./../Profile/ProfileElements";
 import UserInfo from "./UserInfo";
+import UserPosts from "./UserPosts"
+import UserComments from "./UserComments"
+import UserScrape from "./UserScrape"
 
 
 const mapStateToProps = (state) => {
@@ -17,7 +20,7 @@ const mappingParamBoardName = [
     {param: "infor", boardName: "정보"},
     {param: "posts", boardName: "게시글"},
     {param: "comments", boardName: "댓글"},
-    {param: "scrap", boardName: "저장한 게시글"},
+    {param: "scraps", boardName: "저장한 게시글"},
 ]
 
 const mapping = (param) => {
@@ -31,7 +34,7 @@ function OtherProfile(props) {
 
   const [target, setTarget] = React.useState(null);
   const [info, setInfo] = React.useState(null);
-  const [page, setPage] = React.useState(0);
+
   const [load, setLoad] = React.useState(false); // load유무로 location의 값이 바뀐 뒤에 렌더
   const [renderComponent, setRenderComponent] = React.useState(null);
   const DATA = props.userReducer;
@@ -50,15 +53,15 @@ function OtherProfile(props) {
         if (param.category === "infor") {
           setRenderComponent(<UserInfo data={res.data.data.info} />);
         }
-        // else if (param.category === "posts") {
-        //     renderComponent = <UserGroup />;
-        // } 
-        // else if (param.category === "comments") {
-        //     renderComponent = <UserPosts />;
-        // } 
-        // else if (target === "scrap") {
-        //     renderComponent = <UserComments />;
-        // }
+        else if (target === "posts") {
+          renderComponent = <UserPosts />;
+        }
+        else if (param.category === "comments") {
+          renderComponent = <UserComments />;
+        }
+        else if (target === "scraps") {
+          renderComponent = <UserScrape />;
+        }
       })
   },[location])
 
