@@ -1,21 +1,52 @@
 import {OptionSection,OptionBtn,ClickSection,ClickBtn} from "./ButtonElement"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp  } from "@fortawesome/free-regular-svg-icons";
-import {faThumbsUp as solidFaThumbsUp} from "@fortawesome/free-solid-svg-icons"
+import {faCog} from "@fortawesome/free-solid-svg-icons"
+import * as React from "react"
+import Modal from "./Modal.js";
 
-function OptionButton(){
+function OptionButton(props){
+    const {id, show, setShow} = props;
+    
+    const [showModal, setShowModal] = React.useState(false);
+
+    const showSection = () => {
+        if(id === show){
+            setShow(-1);
+        }
+        else{
+            setShow(id);
+        }
+       
+    }
+
+    const showSectionModal = () => {
+        
+    }
+
     return (
         <>
-                            <OptionSection>
-                        <OptionBtn>ddd</OptionBtn>
+            <OptionSection>
+                <OptionBtn onClick={showSection}><FontAwesomeIcon icon={faCog}/></OptionBtn>
+                {(show === id) ?
+                    <>
                         <ClickSection>
-                            <ClickBtn>1</ClickBtn>
-                            <ClickBtn>2</ClickBtn>
-                            <ClickBtn>3</ClickBtn>
-                            <ClickBtn>4</ClickBtn>
+                            <ClickBtn onClick={() => {setShowModal(current => !current) }}>권한 부여</ClickBtn>
+                            <ClickBtn>권한 해제</ClickBtn>
+                            <ClickBtn>강제 탈퇴</ClickBtn>
+                            <ClickBtn>회장 위임</ClickBtn>
                         </ClickSection>
-                    </OptionSection>
+                        {(showModal==true)?
+                        <Modal showModal={showModal} setShowModal={setShowModal} setShow={setShow}/>
+                        :
+                        null
+                        }
+                    </>
+                    :
+                    null
+                }
+
+            </OptionSection>
         </>
     )
 }
-export default (OptionButton);
+export default OptionButton;

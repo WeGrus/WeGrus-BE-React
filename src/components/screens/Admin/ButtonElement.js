@@ -12,6 +12,7 @@ background-color: #6CD2D7;
 border: none;
 border-radius: 15px;
 cursor: pointer;
+
 `
 
 export const ClickSection = styled.ul`
@@ -29,6 +30,7 @@ border-bottom: none;
 list-style: none;
 background-color: #FFFAFA;
 font-weight: bold;
+text-align: center;
 &:nth-child(4){
     border-bottom: 1px solid black;
 }
