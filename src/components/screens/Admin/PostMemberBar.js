@@ -73,7 +73,8 @@ function PostMemberBar(props) { //
 
     return (
         <>
-            <PostInforBar >
+        {postdata}
+            {/* <PostInforBar >
                 <PostCotent>
                     <PostNumber>{1}</PostNumber>
                     <Grade post>{1}</Grade>
@@ -98,7 +99,7 @@ function PostMemberBar(props) { //
                     <PostGender>{"남"}</PostGender>
                     <OptionButton id={2} setShow={setShow} show={show}/>
                 </PostCotent>
-            </PostInforBar>
+            </PostInforBar> */}
         </>
     );
 }
