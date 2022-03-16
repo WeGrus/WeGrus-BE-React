@@ -1,12 +1,163 @@
-import {Background,ModalContainer,Title,Infor,InforTitle,Table,Index,Value,Select,BtnSection,BtnBox,Btn,ModalCotent} from "./ModalElement"
+import {Background,ModalContainer,Title,Infor,InforTitle,Table,Index,Value,Select,BtnSection,BtnBox,Btn,ModalCotent,AlertBlock} from "./ModalElement"
+import * as React from "react"
+import { connect } from "react-redux";
+import { actionCreators } from "../../../store";
+import axios from "axios";
+
+function mapDispatchToProps(dispatch){
+    return{
+      setAll: (boardId,page,isSearching,selected,boardCategoryName) => dispatch(actionCreators.setAll(boardId,page,isSearching,selected,boardCategoryName)),
+    }
+  }
+
+  function mapStateToProps(state) {
+    return state;
+  }
+
+const Empower = "권한 부여"
+const Revoke = "권한 해제"
+const Delegate = "회장 위임"
+const Expulsion = "강제 탈퇴"
+
+
 
 function Modal(props){
-    const {showModal, setShowModal,setShow} = props;
+    const {showModal, setShowModal,setShow,modalOption, modalInfor} = props;
+    const id = modalInfor.id;
     console.log(props);
+
+    const [select,setSelect] = React.useState("동아리 회원");
+    const [confirm,setConfirm] = React.useState(false);
+    const [text, setText] = React.useState("");
+
+    const showText = (option, name = "", select = "") => {
+        let text = "";
+    
+        switch(option){
+            case (Empower):{
+                text = `정말 ${name}님에게 [${select}] 권한을 부여하시겠습니까?`
+                break;
+            }
+            case Revoke:{
+                text = `정말 ${name}님의 [${select}] 권한을 해제하시겠습니까?`
+                break;
+            }
+            case Delegate:{
+                text = `정말 ${name}님에게 회장 권한을 위임하시겠습니까?`
+                break;
+            }
+            case Expulsion:{
+                text = `정말 ${name}님을 강제로 탈퇴시키겠습니까?
+                한번 탈퇴시키면 다시 회원 활동을 하지 못합니다.`
+                break;
+            }
+        }
+
+        return text;
+    }
 
     const closeModal = () => {
         setShowModal(false);
         setShow(-1);
+    }
+
+    const closeConfirm = () => {
+        setConfirm(false)
+    }
+
+    const handleConfirm = () => {
+        setConfirm(true);
+        setText(showText(modalOption,modalInfor.name,select));
+    }
+
+    const empowerClub = (memberId,type) => { // 회원 권한 부여
+        axios.post(`/club/president/empower?memberId=${memberId}&type=${type}`,{},{
+        })
+        .then(function(res){
+            const PageReducer = props.PageReducer
+            console.log(res);
+            closeModal();
+            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
+        })
+    }
+
+    const revokePermissionClub = (memberId,type) => { //회원 권한 해제
+        axios.delete(`/club/president/authority?memberId=${memberId}&type=${type}`,{},{
+        })
+        .then(function(res){
+            const PageReducer = props.PageReducer
+            console.log(res);
+            closeModal();
+            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
+        })
+    }
+
+    const delegateClub = (memberId) => { //회장 위임
+        axios.patch(`/club/president/delegate?memberId=${memberId}`, {}, {
+        })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function (res) {
+                console.log(res);
+                closeModal();
+                const PageReducer = props.PageReducer
+                props.setAll(PageReducer.boardId, PageReducer.page, PageReducer.isSearching, PageReducer.selected, !(PageReducer.boardCategoryName))
+            });
+    }
+
+    const expulsionMember = (memberId) => {
+        axios.patch(`/club/president/ban?memberId=${memberId}`,{},{
+        })
+        .catch(function (error) {
+            console.log(error);
+          })
+        .then(function (res) {
+            console.log(res);
+            closeModal();
+            const PageReducer = props.PageReducer
+            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
+        });
+    }
+
+    const submit = () => {
+        let type = "";
+        switch(modalOption){
+            case (Empower):{
+                if(select === "동아리 운영진"){
+                    type = "ROLE_CLUB_EXECUTIVE"
+                }
+                else{
+                    type = "ROLE_MEMBER"
+                }
+                empowerClub(id, type)
+                break;
+            }
+            case Revoke:{
+                
+                if(select === "동아리 운영진"){
+                    type = "ROLE_CLUB_EXECUTIVE"
+                }
+                else{
+                    type = "ROLE_MEMBER"
+                }
+                revokePermissionClub(id,type)
+                break;
+            }
+            case Delegate:{
+                delegateClub(id);
+                break;
+            }
+            case Expulsion:{
+                expulsionMember(id)
+                break;
+            }
+        }
+    }
+
+    const handleSelect = (e) => {
+        console.log(e.target.value);
+        setSelect(e.target.value)
     }
 
     return(
@@ -14,51 +165,74 @@ function Modal(props){
     {(showModal === true)?
         <Background>
         <ModalContainer>
+        {(confirm === false)?
+                    <ModalCotent>
+                    <Title>{modalOption}</Title>
+                    <Infor>
+                    <InforTitle>회원 정보</InforTitle>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <Index>이름</Index>
+                                <Value>{modalInfor.name}</Value>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <Index>학번</Index>
+                                <Value>{modalInfor.studentId}</Value>
+                            </tr>
+                            <tr>
+                                <Index>학적</Index>
+                                <Value>{modalInfor.academicStatus}</Value>
+                            </tr>
+                            <tr>
+                                <Index>회원직책</Index>
+                                <Value>{modalInfor.role}</Value>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    </Infor>
+                    {((modalOption === Empower)||(modalOption === Revoke))?
+                        <Select onChange={handleSelect} value={select}>
+                            <option>동아리 회원</option>
+                            <option>동아리 운영진</option>
+                        </Select>
+                    :
+                    null
+                    }
+        
+                    <BtnSection>
+                        <BtnBox>
+                            <Btn checked onClick={handleConfirm}>확인</Btn>
+                            <Btn  onClick={closeModal}>취소</Btn>
+                        </BtnBox>
+                    </BtnSection>
+                    </ModalCotent>
+            :
             <ModalCotent>
-            <Title>메뉴</Title>
-            <Infor>
-            <InforTitle>회원 정보</InforTitle>
-            <Table>
-                <thead>
-                    <tr>
-                        <Index>이름</Index>
-                        <Value>김승태</Value>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <Index>학번</Index>
-                        <Value>12171595</Value>
-                    </tr>
-                    <tr>
-                        <Index>학적</Index>
-                        <Value>재학</Value>
-                    </tr>
-                    <tr>
-                        <Index>회원직책</Index>
-                        <Value>운영진</Value>
-                    </tr>
-                </tbody>
-            </Table>
-            </Infor>
-            <Select>
-                <option value="">--     --</option>
-                <option>동아리 임원</option>
-            </Select>
-            <BtnSection>
-                <BtnBox>
-                    <Btn checked>확인</Btn>
-                    <Btn  onClick={closeModal}>취소</Btn>
-                </BtnBox>
-            </BtnSection>
+                <AlertBlock>
+                    <div>
+                    {text}
+                    </div>
+                    
+                </AlertBlock>
+                <BtnSection>
+                        <BtnBox>
+                            <Btn checked onClick={submit}>확인</Btn>
+                            <Btn  onClick={closeConfirm}>취소</Btn>
+                        </BtnBox>
+                </BtnSection>
             </ModalCotent>
+            }
+
             
         </ModalContainer>
-    </Background>
+        </Background>
     :
     null
     }
     </>)
 }
 
-export default Modal;
+export default (connect(mapStateToProps,mapDispatchToProps)(Modal));

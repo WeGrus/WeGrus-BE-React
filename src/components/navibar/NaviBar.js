@@ -88,6 +88,11 @@ const NaviBar = (props) => {
       props.setViewCategoryName(null);
       Navigate(`/operator`);
     }
+    else if (boardCategoryName === "TEST") {
+      props.setAll("", 1, [false], "ID", true);
+      props.setViewCategoryName(null);
+      Navigate(`/test`);
+    }
   };
   let isAuthority = false;
   let isJoinGroup = false;
@@ -154,6 +159,9 @@ const NaviBar = (props) => {
 
             <NavLink
               to="/test"
+              onClick={(e) => {
+                handleLink(e, "TEST");
+              }}
               style={({ isActive }) => ({})}
             >
               test

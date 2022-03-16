@@ -28,7 +28,8 @@ export const ModalContainer = styled.div`
 `;
 
 export const ModalCotent = styled.div`
-
+margin: auto;
+width: content;
 `;
 
 export const Title = styled.div`
@@ -100,4 +101,11 @@ margin: auto;
 export const Btn = styled.button`
 width: 100px;
 margin-left: ${(props) => (props.checked ? "0" : "10px")};
+`
+
+export const AlertBlock = styled.div`
+font-size: 18px;
+font-weight: bold;
+margin-top: 150px;
+margin-bottom: 80px;
 `
