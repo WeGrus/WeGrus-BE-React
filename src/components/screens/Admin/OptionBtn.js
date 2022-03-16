@@ -9,16 +9,6 @@ const Revoke = "권한 해제"
 const Delegate = "회장 위임"
 const Expulsion = "강제 탈퇴"
 
-const test = {
-    id: 1,
-    name: "김승태",
-    studentId: 12171595,
-    role: "ROLE_CLUB_PRESIDENT",
-    academicStatus: "재학"
-}
-
-
-
 function OptionButton(props){
     const {id, show, setShow, data} = props;
     

@@ -44,6 +44,7 @@ function mapStateToProps(state) {
   }
 
 function PostMemberBar(props) { // 
+    const {type} = props
     const [show, setShow] = React.useState(-1);
     const roles = props.userReducer.roles
     const ClubLeader =roles.includes("ROLE_CLUB_PRESIDENT") // 동아리 회장 
@@ -65,11 +66,16 @@ function PostMemberBar(props) { //
             <PostRole>{printRole(data.roles)}</PostRole>
             <PostAttendance>{data.academicStatus}</PostAttendance>
             <PostGender>{data.gender}</PostGender>
-            {(ClubLeader === true)?
+
+            {((ClubLeader === true)&&(type===""))?
             <OptionButton id={data.id} setShow={setShow} show={show} data={data}/>
             :
             null
             }
+            {(type === "소모임 회장 권한 부여")?
+            <OptionButton id={data.id} setShow={setShow} show={show} data={data}/>
+            :
+            null}
             
         </PostCotent>
     </PostInforBar>
@@ -80,32 +86,6 @@ function PostMemberBar(props) { //
     return (
         <>
         {postdata}
-            {/* <PostInforBar >
-                <PostCotent>
-                    <PostNumber>{1}</PostNumber>
-                    <Grade post>{1}</Grade>
-                    <StudentId>{12141595}</StudentId>
-                    <PhoneNumber post>{"data.phone"}</PhoneNumber>
-                    <Name>{"data.name"}</Name>
-                    <PostRole>{printRole(["ROLE_CLUB_PRESIDENT"])}</PostRole>
-                    <PostAttendance>{"재학"}</PostAttendance>
-                    <PostGender>{"남"}</PostGender>
-                    <OptionButton id={1} setShow={setShow} show={show}/>
-                </PostCotent>
-            </PostInforBar>
-            <PostInforBar >
-                <PostCotent>
-                    <PostNumber>{1}</PostNumber>
-                    <Grade post>{1}</Grade>
-                    <StudentId>{12141595}</StudentId>
-                    <PhoneNumber post>{"data.phone"}</PhoneNumber>
-                    <Name>{"data.name"}</Name>
-                    <PostRole>{printRole(["ROLE_CLUB_PRESIDENT"])}</PostRole>
-                    <PostAttendance>{"재학"}</PostAttendance>
-                    <PostGender>{"남"}</PostGender>
-                    <OptionButton id={2} setShow={setShow} show={show}/>
-                </PostCotent>
-            </PostInforBar> */}
         </>
     );
 }

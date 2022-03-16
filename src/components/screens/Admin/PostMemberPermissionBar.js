@@ -40,7 +40,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state) {
     return state;
-  }
+}
 
 function PostMemberPermissionBar(props){
    // console.log(props.data);
@@ -72,8 +72,6 @@ function PostMemberPermissionBar(props){
             props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
         });
     }
-
-
 
     const handlePermission = (e) => {
         console.log(e);
