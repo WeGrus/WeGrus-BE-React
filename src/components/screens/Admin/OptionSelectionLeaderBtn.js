@@ -18,11 +18,11 @@ function OptionButton(props){
     const showSection = () => {
         if(id === show){
             setShow(-1);
-            showModal(false)
+            setShowModal(false)
         }
         else{
             setShow(id);
-            showModal(true)
+            setShowModal(true)
         }
        
     }
