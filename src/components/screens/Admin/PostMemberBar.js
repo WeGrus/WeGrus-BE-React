@@ -45,7 +45,8 @@ function mapStateToProps(state) {
 
 function PostMemberBar(props) { // 
     const [show, setShow] = React.useState(-1);
-
+    const roles = props.userReducer.roles
+    const ClubLeader =roles.includes("ROLE_CLUB_PRESIDENT") // 동아리 회장 
     //console.log(props);
     let postdata = "";
    if (props.groupList) {
@@ -64,7 +65,12 @@ function PostMemberBar(props) { //
             <PostRole>{printRole(data.roles)}</PostRole>
             <PostAttendance>{data.academicStatus}</PostAttendance>
             <PostGender>{data.gender}</PostGender>
+            {(ClubLeader === true)?
             <OptionButton id={data.id} setShow={setShow} show={show} data={data}/>
+            :
+            null
+            }
+            
         </PostCotent>
     </PostInforBar>
     )

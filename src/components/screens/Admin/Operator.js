@@ -31,12 +31,7 @@ cursor: ${(props) => (props.post ? "none" : "pointer")};
 const subCategory = [
   { boardName: "회원 목록 조회" },
   { boardName: "회원 가입 승인 및 거절" },
-  { boardName: "회원 권한 부여" },
-  { boardName: "운영진 권한 부여 및 회원 권한 해제"},
-  { boardName: "운영진 권한 해제"},
   { boardName: "그룹 회장 권한 부여"},
-  { boardName: "회원 강제 탈퇴"},
-  { boardName: "회장 위임"},
   { boardName: "전체 동아리원 초기화"},
   { boardName: "게시판 추가 및 삭제"},
   { boardName: "그룹 회원 목록 조회"},
@@ -45,8 +40,6 @@ const subCategory = [
   { boardName: "그룹 임원 권한 부여"},
   { boardName: "그룹 회장 위임 및 임원 권한 해제"},
 ];
-
-
 
 const getAuthority = (AllLeader,ClubLeaderGroupExecutive,ClubLeader,ClubExecutiveGroupLeader,GroupLeader,ClubExecutiveGroupExecutive,ClubExecutive,GroupExecutive) => {
 if(AllLeader){
@@ -59,13 +52,13 @@ else if(ClubLeader){
   return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 회원 목록 조회"))
 }
 else if(ClubExecutiveGroupLeader){
-  return subCategory.filter(item => (item.boardName !== "전체 동아리원 권한 초기화")&&(item.boardName !== "회장 위임")&&(item.boardName !== "회원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제"))
+  return subCategory.filter(item => (item.boardName !== "전체 동아리원 권한 초기화")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제"))
 }
 else if(GroupLeader){
-  return subCategory.filter(item => (item.boardName !== "회원 목록 조회")&&(item.boardName !== "회원 가입 승인 및 거절")&&(item.boardName !== "회원 권한 부여")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제")&&(item.boardName !== "운영진 권한 해제")&&(item.boardName !== "그룹 회장 권한 부여")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "회장 위임")&&(item.boardName !== "전체 동아리원 초기화")&&(item.boardName !== "게시판 추가 및 삭제"))
+  return subCategory.filter(item => (item.boardName !== "회원 목록 조회")&&(item.boardName !== "회원 가입 승인 및 거절")&&(item.boardName !== "그룹 회장 권한 부여")&&(item.boardName !== "전체 동아리원 초기화")&&(item.boardName !== "게시판 추가 및 삭제"))
 }
 else if(ClubExecutiveGroupExecutive){
-  return subCategory.filter(item => (item.boardName !== "회원 권한 부여")&&(item.boardName !== "운영진 권한 부여 및 회원 권한 해제")&&(item.boardName !== "회원 강제 탈퇴")&&(item.boardName !== "회장 위임")&&(item.boardName !== "전체 동아리원 초기화")&&(item.boardName !== "운영진 권한 해제")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 강제 탈퇴"))
+  return subCategory.filter(item => (item.boardName !== "전체 동아리원 초기화")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 강제 탈퇴"))
 }
 else if(ClubExecutive){
   return subCategory.filter(item => (item.boardName === "회원 목록 조회")||(item.boardName === "회원 가입 승인 및 거절")||(item.boardName === "그룹 회장 권한 부여")||(item.boardName !== "게시판 추가 및 삭제"))
@@ -107,7 +100,7 @@ function Operator(props) {
 
   const [target, setTarget] = React.useState("회원 목록 조회");
   const [page, setPage] = React.useState(0);
-  const [SubCategory,setSubCategory] =React.useState([{boardName: "회원 목록 조회"}]);
+  const [SubCategory,setSubCategory] =React.useState(undefined);
   
   
   const [posts, setPosts] = React.useState([]); // API로 받은 값
@@ -608,6 +601,7 @@ function Operator(props) {
      //console.log(props);
      if(SubCategory === undefined){ // 네비바에서 이동해옴.,,
        const roles = props.userReducer.roles
+       
        const AllLeader = (roles.includes("ROLE_GROUP_PRESIDENT")&&roles.includes("ROLE_CLUB_PRESIDENT")) // 동아리 회장이자, 소모임 회장
        const ClubLeaderGroupExecutive = (roles.includes("ROLE_CLUB_PRESIDENT")&&roles.includes("ROLE_GROUP_EXECUTIVE")) // 동아리 회장, 소모임 임원
        const ClubLeader = props.userReducer.roles.includes("ROLE_CLUB_PRESIDENT") // 동아리 회장 
