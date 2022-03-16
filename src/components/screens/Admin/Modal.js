@@ -4,6 +4,33 @@ import { connect } from "react-redux";
 import { actionCreators } from "../../../store";
 import axios from "axios";
 
+const printRole = (value) => {
+    if(value.includes("ROLE_CLUB_PRESIDENT")){
+        return "회장"
+    }
+    else if(value.includes("ROLE_GROUP_PRESIDENT")){
+        return "소모임장"
+    }
+    else if(value.includes("ROLE_CLUB_EXECUTIVE")){
+        return "동아리 운영진"
+    }
+    else if(value.includes("ROLE_GROUP_EXECUTIVE")){
+        return "소모임 운영진"
+    }
+    else if(value.includes("ROLE_MEMBER")){
+        return "일반"
+    }
+    else if(value.includes("ROLE_GUEST")){
+        return "게스트"
+    }
+    else if(value.includes("ROLE_BAN")){
+        return "밴"
+    }
+    else if(value.includes("ROLE_RESIGN")){
+        return "사직"
+    }
+}
+
 function mapDispatchToProps(dispatch){
     return{
       setAll: (boardId,page,isSearching,selected,boardCategoryName) => dispatch(actionCreators.setAll(boardId,page,isSearching,selected,boardCategoryName)),
@@ -188,7 +215,7 @@ function Modal(props){
                             </tr>
                             <tr>
                                 <Index>회원직책</Index>
-                                <Value>{modalInfor.role}</Value>
+                                <Value>{printRole(modalInfor.roles)}</Value>
                             </tr>
                         </tbody>
                     </Table>
