@@ -99,7 +99,31 @@ function Modal(props){
         {(confirm === false)?
                     <ModalCotent>
                     <Title>소모임 회장 권한 부여</Title>
-                    
+                    <Infor>
+                    <InforTitle>회원 정보</InforTitle>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <Index>이름</Index>
+                                <Value>{modalInfor.name}</Value>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <Index>학번</Index>
+                                <Value>{modalInfor.studentId}</Value>
+                            </tr>
+                            <tr>
+                                <Index>학적</Index>
+                                <Value>{modalInfor.academicStatus}</Value>
+                            </tr>
+                            <tr>
+                                <Index>회원직책</Index>
+                                <Value>{printRole(modalInfor.roles)}</Value>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    </Infor>
                         <Select onChange={handleSelect} value={select}>
                                     {groupInfor.map((value) => (
                                         <option value={value.id} key={value.id}>

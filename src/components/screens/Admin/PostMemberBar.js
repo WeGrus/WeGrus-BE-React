@@ -5,6 +5,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { actionCreators } from "../../../store";
 import OptionButton from "./OptionBtn"
+import EmpowerLeaderButtom from "./OptionSelectionLeaderBtn"
 
 const printRole = (value) => {
     if(value.includes("ROLE_CLUB_PRESIDENT")){
@@ -73,7 +74,7 @@ function PostMemberBar(props) { //
             null
             }
             {(type === "소모임 회장 권한 부여")?
-            <OptionButton id={data.id} setShow={setShow} show={show} data={data}/>
+            <EmpowerLeaderButtom id={data.id} setShow={setShow} show={show} data={data}/>
             :
             null}
             
