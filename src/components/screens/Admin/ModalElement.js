@@ -33,7 +33,7 @@ width: content;
 `;
 
 export const Title = styled.div`
-width: 200px;
+width: 400px;
 text-align: center;
 margin: auto;
 padding-top: 50px;

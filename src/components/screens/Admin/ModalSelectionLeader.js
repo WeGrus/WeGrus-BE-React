@@ -45,7 +45,7 @@ function Modal(props){
     const {showModal, setShowModal,setShow, modalInfor, groupInfor} = props;
 
     console.log(props);
-
+    console.log(modalInfor.roles);
     const [select,setSelect] = React.useState(groupInfor[0].id);
     const [confirm,setConfirm] = React.useState(false);
     const [text, setText] = React.useState("");
