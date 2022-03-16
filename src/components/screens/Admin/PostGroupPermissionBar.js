@@ -1,12 +1,10 @@
 import styled from "styled-components";
 import * as React from "react"
-import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,CheckBtn as Btn} from "./BoardElement"
+import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,CheckBtn as Btn} from "./../../shared/BoardElement"
 import axios from "axios";
 import { connect } from "react-redux";
-import { actionCreators } from "../../store";
-import PostGroupPermissionBar from "../../shared/PostGroupPermissionBar";
-import PostMemberExpulsionBar from "./PostMemberExpulsionBar";
-import PostMemberPermissionBar from "./PostMemberPermissionBar";
+import { actionCreators } from "../../../store";
+
 
 
 export const CheckBtn = styled.div`

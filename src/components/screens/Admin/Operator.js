@@ -16,6 +16,8 @@ import { actionCreators } from "./../../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import img from './../../../images/Polygon.jpg'
+import PostGroupPermissionBar from "./PostGroupPermissionBar"
+import PostMemberPermissionBar from "./PostMemberPermissionBar"
 
 const Number = styled.div`
 width: 40px;
@@ -1092,11 +1094,6 @@ function Operator(props) {
               null
             }
 
-            {(props.PageReducer.boardId === "회원 강제 탈퇴" && posts !== [])?
-              <PostMemberExpulsionBar data={posts} />
-              :
-              null
-            }
 
             {(props.PageReducer.boardId === "회장 위임" && posts !== []) ?
               <PostMemberBar data={posts} type={"회장 위임"} />

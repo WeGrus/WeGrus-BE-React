@@ -3,7 +3,7 @@ import * as React from "react"
 import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,CheckBtn} from "./BoardElement"
 import axios from "axios";
 import { connect } from "react-redux";
-import { actionCreators } from "../../store";
+import { actionCreators } from "../../../store";
 
 const printRole = (value) => {
     if(value.includes("ROLE_CLUB_PRESIDENT")){
