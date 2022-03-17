@@ -68,7 +68,7 @@ function UserPosts(){
                     <Hits>조회</Hits>
                 </InforContents>
             </InforBar>
-            {(load) === true?
+            {((load=== true)&&(posts!==null)) ?
              <ProfilePostBar data={posts}/>
             :
             null
