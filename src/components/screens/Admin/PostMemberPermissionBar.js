@@ -44,7 +44,8 @@ function mapStateToProps(state) {
 
 function PostMemberPermissionBar(props){
    // console.log(props.data);
-    //console.log(props);
+    const { page} = props
+    const number = (page - 1) * 16;
     let postdata
 
     const permissionMember = (requestId) => { //회원 권한 요청 승인
@@ -101,10 +102,10 @@ function PostMemberPermissionBar(props){
 
 
     if(props.data[0] !== undefined && props.data[0].member){
-        postdata  = props.data.map((data)=>
+        postdata  = props.data.map((data,i)=>
         <PostInforBar key={data.member.id}>
             <PostCotent>
-                <PostNumber>{data.member.id}</PostNumber>
+                <PostNumber>{i + 1 + number}</PostNumber>
                 <Grade post>{data.member.grade}</Grade>
                 <StudentId>{data.member.studentId}</StudentId>
                 <PhoneNumber post>{data.member.phone}</PhoneNumber>
