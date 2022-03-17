@@ -33,6 +33,8 @@ const MemberApproval = "회원 가입 승인 및 거절"
 const GroupPresident = "소모임 회장 권한 부여"
 const MemberClear = "전체 동아리원 초기화"
 const EditBoard = "게시판 추가 및 삭제";
+const GroupMemberList = "그룹 회원 목록 조회";
+const GroupMemberApproval = "그룹 가입 승인"
 
 
 const subCategory = [
@@ -41,11 +43,8 @@ const subCategory = [
   { boardName: GroupPresident},
   { boardName: MemberClear},
   { boardName: EditBoard},
-  { boardName: "그룹 회원 목록 조회"},
-  { boardName: "그룹 가입 승인" },
-  { boardName: "그룹 강제 탈퇴"},
-  { boardName: "그룹 임원 권한 부여"},
-  { boardName: "그룹 회장 위임 및 임원 권한 해제"},
+  { boardName: GroupMemberList},
+  { boardName: GroupMemberApproval },
 ];
 
 const getAuthority = (AllLeader,ClubLeaderGroupExecutive,ClubLeader,ClubExecutiveGroupLeader,GroupLeader,ClubExecutiveGroupExecutive,ClubExecutive,GroupExecutive) => {
@@ -53,25 +52,25 @@ if(AllLeader){
   return subCategory
 }
 else if(ClubLeaderGroupExecutive){
-  return subCategory.filter(item => (item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제"))
+  return subCategory
 }
 else if(ClubLeader){
-  return subCategory.filter(item => (item.boardName !== "그룹 가입 승인")&&(item.boardName !== "그룹 강제 탈퇴")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 회원 목록 조회"))
+  return subCategory.filter(item => (item.boardName !== GroupMemberApproval)&&(item.boardName !== GroupMemberList))
 }
 else if(ClubExecutiveGroupLeader){
-  return subCategory.filter(item => (item.boardName !== MemberClear)&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제"))
+  return subCategory.filter(item => (item.boardName !== MemberClear))
 }
 else if(GroupLeader){
   return subCategory.filter(item => (item.boardName !== MemberList)&&(item.boardName !== MemberApproval)&&(item.boardName !== GroupPresident)&&(item.boardName !== MemberClear)&&(item.boardName !== EditBoard))
 }
 else if(ClubExecutiveGroupExecutive){
-  return subCategory.filter(item => (item.boardName !== MemberClear)&&(item.boardName !== "그룹 회장 위임 및 임원 권한 해제")&&(item.boardName !== "그룹 임원 권한 부여")&&(item.boardName !== "그룹 강제 탈퇴"))
+  return subCategory.filter(item => (item.boardName !== MemberClear))
 }
 else if(ClubExecutive){
   return subCategory.filter(item => (item.boardName === MemberList)||(item.boardName === MemberApproval)||(item.boardName === GroupPresident)||(item.boardName !== EditBoard))
 }
 else if(GroupExecutive){
-  return subCategory.filter(item => (item.boardName === "그룹 회원 목록 조회")||(item.boardName === "그룹 가입 승인"))
+  return subCategory.filter(item => (item.boardName === GroupMemberList)||(item.boardName === GroupMemberApproval))
 }
 }
 
@@ -676,7 +675,7 @@ function Operator(props) {
           
          });
        }
-       else if(category.find(item => item.boardName === "그룹 회원 목록 조회")){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
+       else if(category.find(item => item.boardName === GroupMemberList)){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
  
          axios.get(`/groups/executives/members?direction=${"ASC"}&groupId=${groupId}&page=1&role=MEMBER&size=19&type=ID`,{
          })
@@ -687,7 +686,7 @@ function Operator(props) {
           console.log(res);
            settotalPage(res.data.data.totalPages)
            setPosts(res.data.data.content)
-           setTarget("그룹 회원 목록 조회")
+           setTarget(GroupMemberList)
            setPage(PageReducer.page)
            console.log("최초시행 작동!");
           setSubCategory(category)
@@ -718,7 +717,7 @@ function Operator(props) {
            loadMemberPermissionList(PageReducer.page)
          }
        }
-       else if(PageReducer.boardId ==="그룹 회원 목록 조회" || target === "그룹 회원 목록 조회"){
+       else if(PageReducer.boardId ===GroupMemberList || target === GroupMemberList){
  
          if(PageReducer.isSearching[0] === true){
            console.log("그룹 회원 목록 조회의 검색로직 작동!");
@@ -728,33 +727,13 @@ function Operator(props) {
            loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"MEMBER",PageReducer.selected)
          }
        }
-       else if(PageReducer.boardId === "그룹 가입 승인"){
+       else if(PageReducer.boardId === GroupMemberApproval){
          if(PageReducer.isSearching[0] === true){
            console.log("그룹 가입 승인의 검색로직 작동!");
            handleGroupSearchFunction(PageReducer.isSearching[1])
          }
          else{
            loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"APPLICANT",PageReducer.selected)
-         }
-       }
-       else if(PageReducer.boardId === "그룹 강제 탈퇴" || PageReducer.boardId === "그룹 임원 권한 부여"){
- 
-         if(PageReducer.isSearching[0] === true){
-           console.log("검색로직 작동!");
-           handleGroupSearchFunction(PageReducer.isSearching[1])
-         }
-         else{
-           loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"MEMBER",PageReducer.selected)
-         }
-       }
-       else if(PageReducer.boardId === "그룹 회장 위임 및 임원 권한 해제"){
- 
-         if(PageReducer.isSearching[0] === true){
-           console.log("검색로직 작동!");
-           handleGroupSearchFunction(PageReducer.isSearching[1])
-         }
-         else{
-           loadGroupMemberList(discriminationDirection(direction),groupId,PageReducer.page,"EXECUTIVE",PageReducer.selected)
          }
        }
      }
@@ -963,13 +942,13 @@ function Operator(props) {
     <PageTitle title="운영" />
     <SideBar posts={SubCategory} getFilter={setTarget} target={target}></SideBar>
     <Content>
-    {((target === "그룹 가입 승인")||(target === "그룹 강제 탈퇴")||(target === "그룹 임원 권한 부여")||(target === "그룹 회장 위임"))?
+    {((target === GroupMemberApproval))?
     <ScreenTitle>{target} | {subScreenTitle}</ScreenTitle>
     :
     <ScreenTitle>{target}</ScreenTitle>
     }
     
-    {((target === MemberList)||(target === "그룹 회장 위임")||(target === GroupPresident))?
+    {((target === MemberList)||(target === GroupPresident))?
       <SearchBarSection>
       <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
         <SearchBarSelect {...register("option")} >
@@ -1034,7 +1013,7 @@ function Operator(props) {
       :
       <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img} desc></InforSelection></Gender>
     }
-    {((target !== MemberList)||(target !=="그룹 회원 목록 조회")) ? <Check>버튼</Check> : null}
+    {((target !== MemberList)||(target !==GroupMemberList)) ? <Check>버튼</Check> : null}
   </InforContents>
 </InforBar>
 
@@ -1061,32 +1040,14 @@ function Operator(props) {
             }
 
 
-            {(target === "그룹 회원 목록 조회" && posts !== [] ) ?
-              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 회원 목록 조회"}/>
+            {(target === GroupMemberList && posts !== [] ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberList}/>
               :
               null
             }
 
-            {(target === "그룹 가입 승인" && posts !== [] ) ?
-              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 가입 승인"}/>
-              :
-              null
-            }
-
-            {(target === "그룹 강제 탈퇴" && posts !== [] ) ?
-              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 강제 탈퇴"}/>
-              :
-              null
-            }
-
-            {(target === "그룹 임원 권한 부여" && posts !== [] ) ?
-              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 임원 권한 부여"}/>
-              :
-              null
-            }
-
-            {(target === "그룹 회장 위임 및 임원 권한 해제" && posts !== [] ) ?
-              <PostGroupPermissionBar data={posts} groupId={groupId} type={"그룹 회장 위임 및 임원 권한 해제"}/>
+            {(target === GroupMemberApproval && posts !== [] ) ?
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberApproval}/>
               :
               null
             }
