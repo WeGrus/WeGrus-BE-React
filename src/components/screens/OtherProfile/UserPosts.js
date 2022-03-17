@@ -40,8 +40,11 @@ function UserPosts(){
                 console.log("loadPageList 동작!");
                 console.log(res);
                 setPosts(res?.data?.data?.content)
+                console.log(res?.data?.data?.content);
                 setTotalPage(res?.data?.data?.totalPages)
+                console.log(res?.data?.data?.totalPages);
                 setCurrentPage(page);
+                console.log(page);
                 setLoad(true)
             });
     }

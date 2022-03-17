@@ -31,7 +31,8 @@ const splitDate = (data) => {
   return ymd;
 };
 
-function ProfilePostBar(props) {
+function ProfilePostBar(props) 
+{console.log(props);
   const { data } = props;
 
   console.log(data);
