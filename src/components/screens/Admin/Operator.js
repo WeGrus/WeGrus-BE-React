@@ -942,13 +942,13 @@ function Operator(props) {
     <PageTitle title="운영" />
     <SideBar posts={SubCategory} getFilter={setTarget} target={target}></SideBar>
     <Content>
-    {((target === GroupMemberApproval))?
+    {((target === GroupMemberApproval)||(target === GroupMemberList))?
     <ScreenTitle>{target} | {subScreenTitle}</ScreenTitle>
     :
     <ScreenTitle>{target}</ScreenTitle>
     }
     
-    {((target === MemberList)||(target === GroupPresident))?
+    {((target === MemberList)||(target === GroupPresident)||(target === GroupMemberList))?
       <SearchBarSection>
       <SearchBarForm onSubmit={handleSubmit(handleSearching)}>
         <SearchBarSelect {...register("option")} >
@@ -956,11 +956,19 @@ function Operator(props) {
               <option >{`검색어 (학번)`}</option>
               <option >{`검색어 (번호)`}</option>
               <option >{`검색어 (학과)`}</option>
+              {((target === GroupMemberList))?
+              null
+              :
+              <>
               <option >그룹</option>
               <option >권한</option>
-              <option >학년</option>
+              </>
+              }
               <option >학적상태</option>
+              <option >학년</option>
               <option >성별</option>
+
+            
           </SearchBarSelect>
         <SearchBar>
         <SearchBarInput {...register("keyword", { required: true })} />
@@ -975,47 +983,53 @@ function Operator(props) {
     null
     } 
 
-<InforBar>
-  <InforContents>
-    {(numberDirection === true) ?
-      <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} ></InforSelection></Number>
-      :
-      <Number onClick={(e)=>{handleNumber()}}>번호<InforSelection src={img} desc ></InforSelection></Number>
-    }
-    {(gradeDirection === true) ?
-      <Grade onClick={(e)=>{handleSort("Grade")}}>학년<InforSelection src={img} ></InforSelection></Grade>
-      :
-      <Grade onClick={(e)=>{handleSort("Grade")}}>학년<InforSelection src={img} desc></InforSelection></Grade>
-    }
-    {(studentIdDirection === true) ?
-      <StudentId onClick={(e)=>{handleSort("StudentId")}}>학번<InforSelection src={img}></InforSelection></StudentId>
-      :
-      <StudentId onClick={(e)=>{handleSort("StudentId")}}>학번<InforSelection src={img} desc></InforSelection></StudentId>
-    }
-    {(phoneNumberDirection === true) ?
-      <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}} post>연락처<InforSelection src={img}></InforSelection></PhoneNumber>
-      :
-      <PhoneNumber onClick={(e)=>{handleSort("PhoneNumber")}} post>연락처<InforSelection src={img} desc></InforSelection></PhoneNumber>
-    }
-    {(nameDirection === true) ?
-      <Name onClick={(e)=>{handleSort("Name")}}>이름<InforSelection src={img}></InforSelection></Name>
-      :
-      <Name onClick={(e)=>{handleSort("Name")}}>이름<InforSelection src={img} desc></InforSelection></Name>
-    }
-      <Role>회원직책</Role>
-    {(attendanceDirection === true) ?
-      <Attendance onClick={(e)=>{handleSort("Attendance")}}>학적<InforSelection src={img}></InforSelection></Attendance>
-      :
-      <Attendance onClick={(e)=>{handleSort("Attendance")}}>학적<InforSelection src={img} desc></InforSelection></Attendance>
-    }
-    {(genderDirection === true) ?
-      <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img}></InforSelection></Gender>
-      :
-      <Gender onClick={(e)=>{handleSort("Gender")}}>성별<InforSelection src={img} desc></InforSelection></Gender>
-    }
-    {((target !== MemberList)||(target !==GroupMemberList)) ? <Check>버튼</Check> : null}
-  </InforContents>
-</InforBar>
+
+        {((target === MemberClear) || (target === EditBoard)) ?
+          null
+          :
+          <InforBar>
+            <InforContents>
+              {(numberDirection === true) ?
+                <Number onClick={(e) => { handleNumber() }}>번호<InforSelection src={img} ></InforSelection></Number>
+                :
+                <Number onClick={(e) => { handleNumber() }}>번호<InforSelection src={img} desc ></InforSelection></Number>
+              }
+              {(gradeDirection === true) ?
+                <Grade onClick={(e) => { handleSort("Grade") }}>학년<InforSelection src={img} ></InforSelection></Grade>
+                :
+                <Grade onClick={(e) => { handleSort("Grade") }}>학년<InforSelection src={img} desc></InforSelection></Grade>
+              }
+              {(studentIdDirection === true) ?
+                <StudentId onClick={(e) => { handleSort("StudentId") }}>학번<InforSelection src={img}></InforSelection></StudentId>
+                :
+                <StudentId onClick={(e) => { handleSort("StudentId") }}>학번<InforSelection src={img} desc></InforSelection></StudentId>
+              }
+              {(phoneNumberDirection === true) ?
+                <PhoneNumber onClick={(e) => { handleSort("PhoneNumber") }} post>연락처<InforSelection src={img}></InforSelection></PhoneNumber>
+                :
+                <PhoneNumber onClick={(e) => { handleSort("PhoneNumber") }} post>연락처<InforSelection src={img} desc></InforSelection></PhoneNumber>
+              }
+              {(nameDirection === true) ?
+                <Name onClick={(e) => { handleSort("Name") }}>이름<InforSelection src={img}></InforSelection></Name>
+                :
+                <Name onClick={(e) => { handleSort("Name") }}>이름<InforSelection src={img} desc></InforSelection></Name>
+              }
+              <Role>회원직책</Role>
+              {(attendanceDirection === true) ?
+                <Attendance onClick={(e) => { handleSort("Attendance") }}>학적<InforSelection src={img}></InforSelection></Attendance>
+                :
+                <Attendance onClick={(e) => { handleSort("Attendance") }}>학적<InforSelection src={img} desc></InforSelection></Attendance>
+              }
+              {(genderDirection === true) ?
+                <Gender onClick={(e) => { handleSort("Gender") }}>성별<InforSelection src={img}></InforSelection></Gender>
+                :
+                <Gender onClick={(e) => { handleSort("Gender") }}>성별<InforSelection src={img} desc></InforSelection></Gender>
+              }
+              {((target !== MemberList) || (target !== GroupMemberList)) ? <Check>버튼</Check> : null}
+            </InforContents>
+          </InforBar>
+        }
+
 
 
             
