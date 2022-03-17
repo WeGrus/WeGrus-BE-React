@@ -66,6 +66,32 @@ const MoveOnMessage = styled.div`
 `;
 
 function EmailAuth(props) {
+  useEffect(async () => {
+    /*if (!props.userReducer.userId) {
+      //window.alert(message);
+      navigate("/");
+    }*/
+    console.log(props);
+    let params = new URL(document.location.toString()).searchParams;
+    setVerificationKey(params.get("verificationKey"));
+
+    if (verificationKey) {
+      axios
+        .post(`/signup/verify?verificationKey=${verificationKey}`)
+        .then((res) => {
+          const CERTIFIED = res.data.data.certified;
+          console.log(res);
+          if (CERTIFIED) {
+            console.log(
+              "진행하던 회원 가입 브라우저로 이동하여 다음 버튼을 눌러주세요."
+            );
+          } else {
+            console.log("Authentication expired");
+          }
+        });
+    }
+  }, []);
+
   let navigate = useNavigate();
 
   const { handleSubmit, register, formState } = useForm();
@@ -93,32 +119,6 @@ function EmailAuth(props) {
   function onSubmitInvalid(data) {
     console.log("error");
   }
-
-  useEffect(async () => {
-    /*if (!props.userReducer.userId) {
-      //window.alert(message);
-      navigate("/");
-    }*/
-
-    let params = new URL(document.location.toString()).searchParams;
-    setVerificationKey(params.get("verificationKey"));
-
-    if (verificationKey) {
-      await axios
-        .post(`/signup/verify?verificationKey=${verificationKey}`)
-        .then((res) => {
-          const CERTIFIED = res.data.data.certified;
-          console.log(res);
-          if (CERTIFIED) {
-            console.log(
-              "진행하던 회원 가입 브라우저로 이동하여 다음 버튼을 눌러주세요."
-            );
-          } else {
-            console.log("Authentication expired");
-          }
-        });
-    }
-  }, []);
 
   return (
     <AuthLayout>
