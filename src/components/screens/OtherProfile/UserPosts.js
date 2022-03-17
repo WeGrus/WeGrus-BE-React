@@ -28,6 +28,7 @@ function UserPosts(){
     const [currentPage, setCurrentPage] = React.useState(0);
     const [posts, setPosts] = React.useState(null);
     const [totalPage, setTotalPage] = React.useState(0); // 총 페이지.
+    const [load, setLoad] = React.useState(false)
 
     const loadPosts = (userId, page) => {
         axios
@@ -41,6 +42,7 @@ function UserPosts(){
                 setPosts(res?.data?.data?.content)
                 setTotalPage(res?.data?.data?.totalPages)
                 setCurrentPage(page);
+                setLoad(true)
             });
     }
 
@@ -66,8 +68,12 @@ function UserPosts(){
                     <Hits>조회</Hits>
                 </InforContents>
             </InforBar>
-
-            <ProfilePostBar data={posts}/>
+            {(load) === true?
+             <ProfilePostBar data={posts}/>
+            :
+            null
+            }
+           
 
             <Pagination
             total={totalPage}
