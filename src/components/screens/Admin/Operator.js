@@ -20,6 +20,7 @@ import PostGroupPermissionBar from "./PostGroupPermissionBar"
 import PostMemberPermissionBar from "./PostMemberPermissionBar"
 import BoardEdit from "./BoardEdit";
 import ResetAllMember from "./ResetAllMember";
+import { useBeforeunload } from "react-beforeunload";
 
 const Number = styled.div`
 width: 40px;
@@ -938,6 +939,11 @@ function Operator(props) {
     props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,sortType,PageReducer.boardCategoryName)
     
   }
+
+  useBeforeunload((event) => {
+      'You’ll lose your data!'
+      event.preventDefault();
+  });
   
   return (
     <>
