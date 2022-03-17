@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as React from "react"
 import {useLocation,useParams, useNavigate } from "react-router-dom";
-import Pagination from "../../shared/Pagination";
+import Pagination from "./Pagination";
 import {
    InforBar,
     InforContents,
@@ -23,7 +23,7 @@ function UserPosts(){
     const param = useParams();
     const userId = param.userid
     const page = param.pagenum
-    console.log(param);
+    //console.log(param);
 
     const [currentPage, setCurrentPage] = React.useState(0);
     const [posts, setPosts] = React.useState(null);
@@ -51,10 +51,10 @@ function UserPosts(){
         loadPosts(userId,page)
     },[location])
 
-    React.useEffect(() => {
-        console.log("페이지 변경!");
-        navigate(`/profile/posts/${currentPage}/${userId}`)
-      }, [currentPage]);
+    // React.useEffect(() => {
+    //     console.log("페이지 변경!");
+    //     navigate(`/profile/posts/${currentPage}/${userId}`)
+    //   }, [currentPage]);
 
     return (
         <>
@@ -75,12 +75,15 @@ function UserPosts(){
             }
            
 
-            <Pagination
-            total={totalPage}
-            limit={10}
-            page={currentPage}
-            setPage={setCurrentPage}
-          />
+           <Pagination
+              total={totalPage}
+              limit={10}
+              page={currentPage}
+              setPage={setCurrentPage}
+              linkHeader={"profile"}
+              param={param}
+              searchParams={""}
+            />
         </>
     )
 }

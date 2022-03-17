@@ -19,7 +19,7 @@ function SideBar(props) {
             </SideBoldContent>
             
         ) : (
-            <Link to={`/${linkHeader}/${content.param}/0/${userId}`}>
+            <Link to={`/${linkHeader}/${content.param}/1/${userId}`}>
             <SideContent id={content.boardName} key={content.boardName} onClick={handleOnClick} data-index={posts.indexOf(content)}>
                 {content.boardName}
             </SideContent>
