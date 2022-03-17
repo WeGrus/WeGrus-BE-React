@@ -20,7 +20,6 @@ import PostGroupPermissionBar from "./PostGroupPermissionBar"
 import PostMemberPermissionBar from "./PostMemberPermissionBar"
 import BoardEdit from "./BoardEdit";
 import ResetAllMember from "./ResetAllMember";
-import { useBeforeunload } from "react-beforeunload";
 
 const Number = styled.div`
 width: 40px;
@@ -107,6 +106,7 @@ function Operator(props) {
   //'ROLE_GUEST', 'ROLE_CLUB_EXECUTIVE', 'ROLE_MEMBER'
   const [load, setLoad] = React.useState(true);
 
+  const [refreshCheck, setRefreshCheck] = React.useState(true);
   const [target, setTarget] = React.useState(MemberList);
   const [page, setPage] = React.useState(0);
   const [SubCategory,setSubCategory] =React.useState(undefined);
@@ -940,10 +940,6 @@ function Operator(props) {
     
   }
 
-  useBeforeunload((event) => {
-      'You’ll lose your data!'
-      event.preventDefault();
-  });
   
   return (
     <>
