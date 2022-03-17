@@ -130,9 +130,7 @@ function BoardEdit(props){
         axios.post(`/club/executives/boards`, {
             "boardCategoryId": boardCategoryId,
             "boardName": boardName
-        }, {
-            headers: { Authorization: `Bearer ${props.userReducer.token}` },
-        })
+        }, {})
             .catch(function (error) {
                 console.log(error.toJSON());
             })
@@ -145,7 +143,6 @@ function BoardEdit(props){
 
     const delBoard = (boardId) => {
         axios.delete(`/club/executives/boards/${boardId}`,{
-            headers: { Authorization: `Bearer ${props.userReducer.token}` },
         })
             .catch(function (error) {
                 console.log(error.toJSON());
@@ -195,7 +192,6 @@ function BoardEdit(props){
     React.useEffect(()=>{
         axios
         .get(`/boards/categories`, {
-          headers: { Authorization: `Bearer ${props.userReducer.token}` },
         })
         .catch(function (error) {
           console.log(error.toJSON());
