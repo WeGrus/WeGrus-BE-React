@@ -63,7 +63,7 @@ else if(ClubExecutiveGroupLeader){
   return subCategory.filter(item => (item.boardName !== MemberClear))
 }
 else if(GroupLeader){
-  return subCategory.filter(item => (item.boardName !== MemberList)&&(item.boardName !== MemberApproval)&&(item.boardName !== GroupPresident)&&(item.boardName !== MemberClear)&&(item.boardName !== EditBoard))
+  return subCategory.filter(item => (item.boardName === GroupMemberApproval)&&(item.boardName === GroupMemberList))
 }
 else if(ClubExecutiveGroupExecutive){
   return subCategory.filter(item => (item.boardName !== MemberClear))
@@ -623,6 +623,7 @@ function Operator(props) {
        const category = getAuthority(AllLeader,ClubLeaderGroupExecutive,ClubLeader,ClubExecutiveGroupLeader,GroupLeader,ClubExecutiveGroupExecutive,ClubExecutive,GroupExecutive)
        console.log(AllLeader,ClubLeaderGroupExecutive,ClubLeader,ClubExecutiveGroupLeader,GroupLeader,ClubExecutiveGroupExecutive,ClubExecutive,GroupExecutive);
        console.log(category);
+
        axios.get(`/members/groups`,{
        })
        .catch(function (error) {
@@ -660,7 +661,7 @@ function Operator(props) {
        
        
        
-       if(category.find(item => item.boardName === MemberList) !== undefined){ // 회원 목록 조회 즉 동아리 회장이거나 임원일때
+       if((category.find(item => item.boardName === MemberList)) !== undefined){ // 회원 목록 조회 즉 동아리 회장이거나 임원일때
          axios.get(`/club/executives/members?direction=${"ASC"}&page=${0}&size=19&type=${"ID"}`,{
          })
          .catch(function (error) {
@@ -678,7 +679,6 @@ function Operator(props) {
          });
        }
        else if(category.find(item => item.boardName === GroupMemberList)){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
- 
          axios.get(`/groups/executives/members?direction=${"ASC"}&groupId=${groupId}&page=1&role=MEMBER&size=19&type=ID`,{
          })
          .catch(function (error) {
@@ -1037,33 +1037,33 @@ function Operator(props) {
             
       {(load)?
       <>
-            {(target === MemberList && posts !== []) ?
-              <PostMemberBar data={posts} type={""}/>
+            {(target === MemberList && posts !== [] ) ?
+              <PostMemberBar data={posts} type={""} page={page}/>
               :
               null
             }
 
             {(props.PageReducer.boardId === MemberApproval && posts !== []) ?
-              <PostMemberPermissionBar data={posts} type={MemberApproval}/>
+              <PostMemberPermissionBar data={posts} type={MemberApproval} page={page}/>
               :
               null   
             }
 
             {(props.PageReducer.boardId === GroupPresident && posts !== []) ?
-              <PostMemberBar data={posts} type={GroupPresident} groupList={groupList}/>
+              <PostMemberBar data={posts} type={GroupPresident} groupList={groupList} page={page}/>
               :
               null
             }
 
 
             {(target === GroupMemberList && posts !== [] ) ?
-              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberList}/>
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberList}  page={page}/>
               :
               null
             }
 
             {(target === GroupMemberApproval && posts !== [] ) ?
-              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberApproval}/>
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberApproval} page={page}/>
               :
               null
             }
