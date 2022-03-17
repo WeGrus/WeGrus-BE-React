@@ -25,7 +25,7 @@ function UserPosts(){
     const page = param.pagenum
     console.log(param);
 
-    const [currentPage, setCurrentPage] = React.useState(Number(page));
+    const [currentPage, setCurrentPage] = React.useState(0);
     const [posts, setPosts] = React.useState(null);
     const [totalPage, setTotalPage] = React.useState(0); // 총 페이지.
 
@@ -40,6 +40,7 @@ function UserPosts(){
                 console.log(res);
                 setPosts(res?.data?.data?.content)
                 setTotalPage(res?.data?.data?.totalPages)
+                setCurrentPage(page);
             });
     }
 
