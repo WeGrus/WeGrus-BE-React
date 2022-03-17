@@ -35,7 +35,7 @@ const checkNotice = (type) => {
 
 function Page(props) {
 
-    const t = useParams();
+   
     const location = useLocation().state;
     const pageData = location.pageData
     const data = useLocation().state;
