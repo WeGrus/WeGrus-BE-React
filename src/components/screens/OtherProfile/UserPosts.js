@@ -23,8 +23,9 @@ function UserPosts(){
     const param = useParams();
     const userId = param.userid
     const page = param.pagenum
+    console.log(param);
 
-    const [currentPage, setCurrentPage] = React.useState(Number(param.pagenum));
+    const [currentPage, setCurrentPage] = React.useState(Number(page));
     const [posts, setPosts] = React.useState(null);
     const [totalPage, setTotalPage] = React.useState(0); // 총 페이지.
 
@@ -43,6 +44,7 @@ function UserPosts(){
     }
 
     React.useEffect(()=>{
+        console.log("location 동작!");
         loadPosts(userId,page)
     },[location])
 
