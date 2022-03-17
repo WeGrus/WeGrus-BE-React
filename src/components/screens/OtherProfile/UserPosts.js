@@ -46,7 +46,6 @@ function UserPosts(){
                 setCurrentPage(page);
                 console.log(page);
                 setLoad(true)
-                
                 console.log(Number(page));
             });
     }
@@ -56,10 +55,6 @@ function UserPosts(){
         loadPosts(userId,page)
     },[location])
 
-    // React.useEffect(() => {
-    //     console.log("페이지 변경!");
-    //     navigate(`/profile/posts/${currentPage}/${userId}`)
-    //   }, [currentPage]);
 
     return (
         <>
@@ -73,6 +68,8 @@ function UserPosts(){
                     <Hits>조회</Hits>
                 </InforContents>
             </InforBar>
+
+            
             {((load=== true)&&(posts!==null)) ?
              <ProfilePostBar data={posts}/>
             :
