@@ -34,9 +34,7 @@ const splitDate = (data) => {
 function ProfilePostBar(props) 
 {
   console.log(props);
-  const { data } = props;
 
-  console.log(data);
 
   const isAuthority = props?.userReducer?.roles?.some((i) =>
       [
@@ -157,5 +155,4 @@ function ProfilePostBar(props)
   return <>{"문제 없음!"}</>;
 }
 
-export default React.memo(connect(ProfilePostBar));
-
+export default connect(mapStateToProps)(React.memo(ProfilePostBar));
