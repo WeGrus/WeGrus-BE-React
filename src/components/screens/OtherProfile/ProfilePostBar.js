@@ -32,10 +32,12 @@ const splitDate = (data) => {
 };
 
 function ProfilePostBar(props) 
-{console.log(props);
+{
+  console.log(props);
   const { data } = props;
 
   console.log(data);
+
   const isAuthority = props?.userReducer?.roles?.some((i) =>
       [
         "ROLE_CLUB_EXECUTIVE",
@@ -57,12 +59,13 @@ function ProfilePostBar(props)
   }
 
   const postdata = data.map((data, i) => (
-   <>
+  
+   <PostInforBar key={i + 1}>
     {(data.secretFlag === true)?
       <>
           {(isAuthority == true) ?
             <>
-              <PostInforBar key={i + 1}>
+              
                 <PostCotent>
                   <BoardName>
                     {data.boardCategory} / {data.board}
@@ -87,11 +90,11 @@ function ProfilePostBar(props)
                   <Recommendation>{data.postLike}</Recommendation>
                   <Hits>{data.postView}</Hits>
                 </PostCotent>
-              </PostInforBar>
+           
             </>
             :
             <>
-              <PostInforBar key={i + 1}>
+             
                 <PostCotent>
                   <BoardName>
                     {data.boardCategory} / {data.board}
@@ -112,12 +115,12 @@ function ProfilePostBar(props)
                   <Recommendation>{data.postLike}</Recommendation>
                   <Hits>{data.postView}</Hits>
                 </PostCotent>
-              </PostInforBar>
+              
             </>}
       </>
       :
         <>
-          <PostInforBar key={i + 1}>
+          
             <PostCotent>
               <BoardName>
                 {data.boardCategory} / {data.board}
@@ -142,10 +145,13 @@ function ProfilePostBar(props)
               <Recommendation>{data.postLike}</Recommendation>
               <Hits>{data.postView}</Hits>
             </PostCotent>
-          </PostInforBar>
+          
         </>
     }
-   </>
+
+   </PostInforBar>
+
+ 
   ));
 
   return <>{postdata}</>;
