@@ -43,9 +43,11 @@ function UserPosts(){
                 console.log(res?.data?.data?.content);
                 setTotalPage(res?.data?.data?.totalPages)
                 console.log(res?.data?.data?.totalPages);
-                setCurrentPage(Number(page));
+                setCurrentPage(page);
                 console.log(page);
                 setLoad(true)
+                
+                console.log(Number(page));
             });
     }
 
