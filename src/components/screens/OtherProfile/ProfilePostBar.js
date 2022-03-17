@@ -34,7 +34,7 @@ const splitDate = (data) => {
 function ProfilePostBar(props) 
 {
   console.log(props);
-
+  const {data} = props
 
   const isAuthority = props?.userReducer?.roles?.some((i) =>
       [
@@ -56,103 +56,103 @@ function ProfilePostBar(props)
     }
   }
 
-  // const postdata = data.map((data, i) => (
+  const postdata = data.map((data, i) => (
   
-  //  <PostInforBar key={i + 1}>
-  //   {(data.secretFlag === true)?
-  //     <>
-  //         {(isAuthority == true) ?
-  //           <>
+   <PostInforBar key={i + 1}>
+    {(data.secretFlag === true)?
+      <>
+          {(isAuthority == true) ?
+            <>
               
-  //               <PostCotent>
-  //                 <BoardName>
-  //                   {data.boardCategory} / {data.board}
-  //                 </BoardName>
-  //                 <Title>
-  //                   {console.log(
-  //                     data.boardCategory,
-  //                     pickBoardCategory(data.boardCategory)
-  //                   )}
-  //                   <Link to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}>
-  //                     {data.title}
-  //                   </Link>
-  //                   <HashLink
-  //                     to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}
-  //                   >
-  //                     <Test>[{data.postReplies}]</Test>
-  //                   </HashLink>
-  //                 </Title>
-  //                 <Writer>{data.memberName}</Writer>
+                <PostCotent>
+                  <BoardName>
+                    {data.boardCategory} / {data.board}
+                  </BoardName>
+                  <Title>
+                    {console.log(
+                      data.boardCategory,
+                      pickBoardCategory(data.boardCategory)
+                    )}
+                    <Link to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}>
+                      {data.title}
+                    </Link>
+                    <HashLink
+                      to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}
+                    >
+                      <Test>[{data.postReplies}]</Test>
+                    </HashLink>
+                  </Title>
+                  <Writer>{data.memberName}</Writer>
 
-  //                 <Date>{splitDate(data.createdDate)}</Date>
-  //                 <Recommendation>{data.postLike}</Recommendation>
-  //                 <Hits>{data.postView}</Hits>
-  //               </PostCotent>
+                  <Date>{splitDate(data.createdDate)}</Date>
+                  <Recommendation>{data.postLike}</Recommendation>
+                  <Hits>{data.postView}</Hits>
+                </PostCotent>
            
-  //           </>
-  //           :
-  //           <>
+            </>
+            :
+            <>
              
-  //               <PostCotent>
-  //                 <BoardName>
-  //                   {data.boardCategory} / {data.board}
-  //                 </BoardName>
-  //                 <Title>
-  //                   {console.log(
-  //                     data.boardCategory,
-  //                     pickBoardCategory(data.boardCategory)
-  //                   )}
-  //                   <>
-  //                     {"비밀글입니다."}
-  //                   </>
-  //                     <Test>[{data.postReplies}]</Test>
-  //                 </Title>
-  //                 <Writer>{data.memberName}</Writer>
+                <PostCotent>
+                  <BoardName>
+                    {data.boardCategory} / {data.board}
+                  </BoardName>
+                  <Title>
+                    {console.log(
+                      data.boardCategory,
+                      pickBoardCategory(data.boardCategory)
+                    )}
+                    <>
+                      {"비밀글입니다."}
+                    </>
+                      <Test>[{data.postReplies}]</Test>
+                  </Title>
+                  <Writer>{data.memberName}</Writer>
 
-  //                 <Date>{splitDate(data.createdDate)}</Date>
-  //                 <Recommendation>{data.postLike}</Recommendation>
-  //                 <Hits>{data.postView}</Hits>
-  //               </PostCotent>
+                  <Date>{splitDate(data.createdDate)}</Date>
+                  <Recommendation>{data.postLike}</Recommendation>
+                  <Hits>{data.postView}</Hits>
+                </PostCotent>
               
-  //           </>}
-  //     </>
-  //     :
-  //       <>
+            </>}
+      </>
+      :
+        <>
           
-  //           <PostCotent>
-  //             <BoardName>
-  //               {data.boardCategory} / {data.board}
-  //             </BoardName>
-  //             <Title>
-  //               {console.log(
-  //                 data.boardCategory,
-  //                 pickBoardCategory(data.boardCategory)
-  //               )}
-  //               <Link to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}>
-  //                 {data.title}
-  //               </Link>
-  //               <HashLink
-  //                 to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}
-  //               >
-  //                 <Test>[{data.postReplies}]</Test>
-  //               </HashLink>
-  //             </Title>
-  //             <Writer>{data.memberName}</Writer>
+            <PostCotent>
+              <BoardName>
+                {data.boardCategory} / {data.board}
+              </BoardName>
+              <Title>
+                {console.log(
+                  data.boardCategory,
+                  pickBoardCategory(data.boardCategory)
+                )}
+                <Link to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}>
+                  {data.title}
+                </Link>
+                <HashLink
+                  to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}
+                >
+                  <Test>[{data.postReplies}]</Test>
+                </HashLink>
+              </Title>
+              <Writer>{data.memberName}</Writer>
 
-  //             <Date>{splitDate(data.createdDate)}</Date>
-  //             <Recommendation>{data.postLike}</Recommendation>
-  //             <Hits>{data.postView}</Hits>
-  //           </PostCotent>
+              <Date>{splitDate(data.createdDate)}</Date>
+              <Recommendation>{data.postLike}</Recommendation>
+              <Hits>{data.postView}</Hits>
+            </PostCotent>
           
-  //       </>
-  //   }
+        </>
+    }
 
-  //  </PostInforBar>
+   </PostInforBar>
 
  
-  // ));
+  ));
 
-  return <>{"문제 없음!"}</>;
+  return <>{postdata}</>;
 }
 
 export default connect(mapStateToProps)(React.memo(ProfilePostBar));
