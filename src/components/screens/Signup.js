@@ -199,19 +199,18 @@ function Signup(props) {
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState();
 
-  useEffect(() => {
-    axios
-      .get(`/signup/validate/email?email=${props.userReducer.email}`)
-      .then((res) => {
-        const result = res.data.data.status;
-
-        console.log(result);
-        if (result !== "success") {
-          window.alert("이메일 인증은 필수입니다.");
-          navigate("/login");
-        }
-      });
-  }, []);
+  axios
+    .get(`/signup/validate/email?email=${props.userReducer.email}`)
+    .then((res) => {
+      const result = res.data.data.status;
+      console.log(props);
+      console.log(res);
+      console.log(result);
+      if (result !== "success") {
+        window.alert("이메일 인증은 필수입니다.");
+        navigate("/login");
+      }
+    });
 
   const onSubmit = ({
     academicStatus,
