@@ -18,6 +18,8 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import img from './../../../images/Polygon.jpg'
 import PostGroupPermissionBar from "./PostGroupPermissionBar"
 import PostMemberPermissionBar from "./PostMemberPermissionBar"
+import BoardEdit from "./BoardEdit";
+import ResetAllMember from "./ResetAllMember";
 
 const Number = styled.div`
 width: 40px;
