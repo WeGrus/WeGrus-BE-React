@@ -94,7 +94,7 @@ function EmailAuth(props) {
     console.log("error");
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     /*if (!props.userReducer.userId) {
       //window.alert(message);
       navigate("/");
@@ -104,7 +104,7 @@ function EmailAuth(props) {
     setVerificationKey(params.get("verificationKey"));
 
     if (verificationKey) {
-      axios
+      await axios
         .post(`/signup/verify?verificationKey=${verificationKey}`)
         .then((res) => {
           const CERTIFIED = res.data.data.certified;
