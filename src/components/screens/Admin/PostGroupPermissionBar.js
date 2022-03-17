@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import * as React from "react"
-import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,CheckBtn as Btn} from "./../../shared/BoardElement"
+import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,CheckBtn as Btn, SmallCheckBtn} from "./../../shared/BoardElement"
 import axios from "axios";
 import { connect } from "react-redux";
 import { actionCreators } from "../../../store";
@@ -17,6 +17,9 @@ border: none;
 border-radius: 15px;
 cursor: pointer;
 `
+
+const GroupMemberList = "그룹 회원 목록 조회"
+const GroupMemberApproval = "그룹 가입 승인"
 
 const printRole = (value) => {
     if(value.includes("ROLE_CLUB_PRESIDENT")){
@@ -58,7 +61,7 @@ function mapStateToProps(state) {
 function PostGroupPermissionBar(props){
     
     console.log(props);
-    const groupId = props.groupId
+    const {groupId, type} = props
     console.log(groupId);
 
     const roles = props.userReducer.roles
@@ -93,8 +96,6 @@ function PostGroupPermissionBar(props){
             props.setAll("그룹 가입 승인",PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
         });
     }
-
-
 
     const handlePermission = (e) => {
         console.log(e);
@@ -132,8 +133,16 @@ function PostGroupPermissionBar(props){
             <PostRole>{printRole(data.roles)}</PostRole>
             <PostAttendance>{data.academicStatus}</PostAttendance>
             <PostGender>{data.gender}</PostGender>
-            {(GroupLeader === true)?
+            {((GroupLeader === true) && type === GroupMemberList)?
             <OptionButton id={data.id} setShow={setShow} show={show} data={data} groupId={groupId}/>
+            :
+            null  
+            }
+             {(type === GroupMemberApproval)?
+                    <>
+                        <SmallCheckBtn data-id={data.id} onClick={handlePermission}></SmallCheckBtn>
+                        <SmallCheckBtn data-id={data.id} onClick={handleRejection} red></SmallCheckBtn>
+                    </>
             :
             null  
             }
