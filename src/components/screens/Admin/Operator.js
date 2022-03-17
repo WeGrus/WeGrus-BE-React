@@ -1071,6 +1071,20 @@ function Operator(props) {
       null
       }
 
+        {(target === EditBoard) ?
+          <>
+            <BoardEdit groupList={groupList} />
+          </>
+          :
+          null
+        }
+
+        {(target === MemberClear) ?
+          <ResetAllMember />
+          :
+          null
+        }
+
     
         {((target === MemberClear) || (target === EditBoard)) ?
           null
