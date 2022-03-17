@@ -1027,7 +1027,7 @@ function Operator(props) {
                 :
                 <Gender onClick={(e) => { handleSort("Gender") }}>성별<InforSelection src={img} desc></InforSelection></Gender>
               }
-              {((target !== MemberList) || (target !== GroupMemberList)) ? <Check>버튼</Check> : null}
+              {((target !== MemberList) || (target !== GroupMemberList)) ? <Check>설정</Check> : null}
             </InforContents>
           </InforBar>
         }
