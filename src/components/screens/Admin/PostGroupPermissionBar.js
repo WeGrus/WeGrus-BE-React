@@ -4,6 +4,7 @@ import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAt
 import axios from "axios";
 import { connect } from "react-redux";
 import { actionCreators } from "../../../store";
+import OptionButton from "./OptionGroupBtn";
 
 
 
@@ -59,6 +60,13 @@ function PostGroupPermissionBar(props){
     console.log(props);
     const groupId = props.groupId
     console.log(groupId);
+
+    const roles = props.userReducer.roles
+    const GroupLeader =roles.includes("ROLE_GROUP_PRESIDENT") // 동아리 회장 
+
+    const [show, setShow] = React.useState(-1);
+
+
     const permissionGroup = (groupId, memberId) => {
         axios.patch(`/groups/executives/applicants/approve?groupId=${groupId}&memberId=${memberId}`,
         {
@@ -86,60 +94,6 @@ function PostGroupPermissionBar(props){
         });
     }
 
-    const promoteGroup = (groupId,memberId) => { // 임원 승급
-        axios.patch(`/groups/president/promote?groupId=${groupId}&memberId=${memberId}`,{
-        })
-        .catch(function (error) {
-            console.log(error);
-          })
-        .then(function (res) {
-            console.log(res);
-            const PageReducer = props.PageReducer
-            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
-        });
-    }
-
-    const degradeGroup = (groupId,memberId) => { // 임원 하락
-        axios.patch(`/groups/president/degrade?groupId=${groupId}&memberId=${memberId}`,{
-        })
-        .catch(function (error) {
-            console.log(error);
-          })
-        .then(function (res) {
-            console.log(res);
-            const PageReducer = props.PageReducer
-            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
-        });
-    }
-
-    const delegateGroup = (groupId,memberId) => {
-        axios.patch(`/groups/president/delegate?groupId=${groupId}&memberId=${memberId}`,{
-        })
-        .catch(function (error) {
-            console.log(error);
-          })
-        .then(function (res) {
-            console.log(res);
-            const PageReducer = props.PageReducer
-            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
-        });
-    }
-
-    const kickGroup = (groupId,memberId) => {
-        axios.patch(`/groups/president/kick?groupId=${groupId}&memberId=${memberId}`,{
-        })
-        .catch(function (error) {
-            console.log(error);
-          })
-        .then(function (res) {
-            console.log(res);
-            const PageReducer = props.PageReducer
-            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
-        });
-    }
-
- 
-
 
 
     const handlePermission = (e) => {
@@ -166,44 +120,7 @@ function PostGroupPermissionBar(props){
         }
     }
 
-    const handlePromote = (e) => {
-        const check = window.confirm("이 회원에게 임원권한을 부여하시겠습니까?")
-        console.log(check);
-        if(check){
-            const id = e.target.dataset.id
-            promoteGroup(groupId,id)
-        }
-    }
 
-    const handleDegrade = (e) => {
-        const check = window.confirm("이 회원의 임원권한을 해제하시겠습니까?")
-        console.log(check);
-        if(check){
-            const id = e.target.dataset.id
-            degradeGroup(groupId,id)
-        }
-    }
-
-    const handleDelegate = (e) => {
-        const name = e.target.parentNode.childNodes[4].innerText
-        const check = window.confirm(`${name}에게 회장을 위임 하시겠습니까?`)
-        console.log(check);
-        if(check){
-            const id = e.target.dataset.id
-            delegateGroup(groupId,id)
-        }
-    }
-
-    const handleKick = (e) => {
-        const name = e.target.parentNode.childNodes[4].innerText
-        const check = window.confirm(`${name}을 탈퇴시겠습니까?`)
-        console.log(check);
-        if(check){
-            const id = e.target.dataset.id
-            kickGroup(groupId,id)
-        }
-    }
-// 
     const postdata = props.data.map((data)=>
     <PostInforBar key={data.id}>
         <PostCotent>
@@ -215,37 +132,11 @@ function PostGroupPermissionBar(props){
             <PostRole>{printRole(data.roles)}</PostRole>
             <PostAttendance>{data.academicStatus}</PostAttendance>
             <PostGender>{data.gender}</PostGender>
-            {(props.type === "그룹 가입 승인")?
-                <>
-                <CheckBtn data-id={data.id} onClick={handlePermission}></CheckBtn>
-                <CheckBtn data-id={data.id} onClick={handleRejection} red></CheckBtn>
-                </>
-                :
-                null
+            {(GroupLeader === true)?
+            <OptionButton id={data.id} setShow={setShow} show={show} data={data} groupId={groupId}/>
+            :
+            null  
             }
-            {(props.type === "그룹 임원 권한 부여")?
-                <>
-                <Btn data-id={data.id} onClick={handlePromote}></Btn>
-                </>
-                :
-                null
-            }
-            {(props.type === "그룹 회장 위임 및 임원 권한 해제")?
-                <>
-                <CheckBtn data-id={data.id} onClick={handleDelegate}></CheckBtn>
-                <CheckBtn data-id={data.id} onClick={handleDegrade} red></CheckBtn>
-                </>
-                :
-                null
-            }
-            {(props.type === "그룹 강제 탈퇴")?
-                <>
-                    <Btn data-id={data.id} onClick={handleKick} red></Btn>
-                </>
-                :
-                null
-            }
-
         </PostCotent>
     </PostInforBar>
     )

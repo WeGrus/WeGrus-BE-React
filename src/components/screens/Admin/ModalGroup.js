@@ -46,16 +46,15 @@ const Revoke = "권한 해제"
 const Delegate = "회장 위임"
 const Expulsion = "강제 탈퇴"
 
-const ClubExecutive = "동아리 운영진"
-const ClubMember = "동아리 회원"
+const GroupExecutive = "소모임 운영진"
 
 
 function Modal(props){
-    const {showModal, setShowModal,setShow,modalOption, modalInfor} = props;
+    const {showModal, setShowModal,setShow,modalOption, modalInfor, groupId} = props;
     const id = modalInfor.id;
     console.log(props);
 
-    const [select,setSelect] = React.useState(ClubMember);
+    const [select,setSelect] = React.useState(GroupExecutive);
     const [confirm,setConfirm] = React.useState(false);
     const [text, setText] = React.useState("");
 
@@ -72,12 +71,11 @@ function Modal(props){
                 break;
             }
             case Delegate:{
-                text = `정말 ${name}님에게 회장 권한을 위임하시겠습니까?`
+                text = `정말 ${name}님에게 소모임장 권한을 위임하시겠습니까?`
                 break;
             }
             case Expulsion:{
-                text = `정말 ${name}님을 강제로 탈퇴시키겠습니까?
-                한번 탈퇴시키면 다시 회원 활동을 하지 못합니다.`
+                text = `정말 ${name}님을 강제로 탈퇴시키겠습니까?`
                 break;
             }
         }
@@ -99,44 +97,50 @@ function Modal(props){
         setText(showText(modalOption,modalInfor.name,select));
     }
 
-    const empowerClub = (memberId,type) => { // 회원 권한 부여
-        axios.post(`/club/president/empower?memberId=${memberId}&type=${type}`,{},{
+    const promoteGroup = (groupId,memberId) => { // 임원 승급
+        axios.patch(`/groups/president/promote?groupId=${groupId}&memberId=${memberId}`,{
         })
-        .then(function(res){
-            const PageReducer = props.PageReducer
+        .catch(function (error) {
+            console.log(error);
+          })
+        .then(function (res) {
             console.log(res);
             closeModal();
+            const PageReducer = props.PageReducer
             props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
-        })
+        });
     }
 
-    const revokePermissionClub = (memberId,type) => { //회원 권한 해제
-        axios.delete(`/club/president/authority?memberId=${memberId}&type=${type}`,{},{
+    const degradeGroup = (groupId,memberId) => { // 임원 하락
+        axios.patch(`/groups/president/degrade?groupId=${groupId}&memberId=${memberId}`,{
         })
-        .then(function(res){
-            const PageReducer = props.PageReducer
+        .catch(function (error) {
+            console.log(error);
+          })
+        .then(function (res) {
             console.log(res);
             closeModal();
+            const PageReducer = props.PageReducer
             props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
-        })
+        });
     }
 
-    const delegateClub = (memberId) => { //회장 위임
-        axios.patch(`/club/president/delegate?memberId=${memberId}`, {}, {
+    const delegateGroup = (groupId,memberId) => {
+        axios.patch(`/groups/president/delegate?groupId=${groupId}&memberId=${memberId}`,{
         })
-            .catch(function (error) {
-                console.log(error);
-            })
-            .then(function (res) {
-                console.log(res);
-                closeModal();
-                const PageReducer = props.PageReducer
-                props.setAll(PageReducer.boardId, PageReducer.page, PageReducer.isSearching, PageReducer.selected, !(PageReducer.boardCategoryName))
-            });
+        .catch(function (error) {
+            console.log(error);
+          })
+        .then(function (res) {
+            console.log(res);
+            closeModal();
+            const PageReducer = props.PageReducer
+            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
+        });
     }
 
-    const expulsionMember = (memberId) => {
-        axios.patch(`/club/president/ban?memberId=${memberId}`,{},{
+    const kickGroup = (groupId,memberId) => {
+        axios.patch(`/groups/president/kick?groupId=${groupId}&memberId=${memberId}`,{
         })
         .catch(function (error) {
             console.log(error);
@@ -153,32 +157,19 @@ function Modal(props){
         let type = "";
         switch(modalOption){
             case (Empower):{
-                if(select === ClubExecutive){
-                    type = "ROLE_CLUB_EXECUTIVE"
-                }
-                else{
-                    type = "ROLE_MEMBER"
-                }
-                empowerClub(id, type)
+                promoteGroup(groupId, id)
                 break;
             }
             case Revoke:{
-                
-                if(select === ClubExecutive){
-                    type = "ROLE_CLUB_EXECUTIVE"
-                }
-                else{
-                    type = "ROLE_MEMBER"
-                }
-                revokePermissionClub(id,type)
+                degradeGroup(groupId,id)
                 break;
             }
             case Delegate:{
-                delegateClub(id);
+                delegateGroup(groupId,id);
                 break;
             }
             case Expulsion:{
-                expulsionMember(id)
+                kickGroup(groupId,id)
                 break;
             }
         }
@@ -222,10 +213,10 @@ function Modal(props){
                         </tbody>
                     </Table>
                     </Infor>
+
                     {((modalOption === Empower)||(modalOption === Revoke))?
                         <Select onChange={handleSelect} value={select}>
-                            <option>동아리 회원</option>
-                            <option>동아리 운영진</option>
+                            <option>소모임 운영진</option>
                         </Select>
                     :
                     null
