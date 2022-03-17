@@ -54,13 +54,13 @@ function OtherProfile(props) {
           setRenderComponent(<UserInfo data={res.data.data.info} />);
         }
         else if (target === "posts") {
-          renderComponent = <UserPosts />;
+          setRenderComponent(<UserPosts />);
         }
         else if (param.category === "comments") {
-          renderComponent = <UserComments />;
+          renderComponent(<UserComments />) ;
         }
         else if (target === "scraps") {
-          renderComponent = <UserScrape />;
+          renderComponent(<UserScrape />);
         }
       })
   },[location])
