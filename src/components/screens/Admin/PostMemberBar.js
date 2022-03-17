@@ -1,16 +1,18 @@
 import styled from "styled-components";
 import * as React from "react"
-import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,CheckBtn} from "./BoardElement"
+import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,CheckBtn,SmallCheckBtn} from "./../../shared/BoardElement"
 import axios from "axios";
 import { connect } from "react-redux";
-import { actionCreators } from "../../store";
+import { actionCreators } from "../../../store";
+import OptionButton from "./OptionBtn"
+import EmpowerLeaderButtom from "./OptionSelectionLeaderBtn"
 
 const printRole = (value) => {
     if(value.includes("ROLE_CLUB_PRESIDENT")){
         return "회장"
     }
     else if(value.includes("ROLE_GROUP_PRESIDENT")){
-        return "소모임장"
+        return "운영진"
     }
     else if(value.includes("ROLE_CLUB_EXECUTIVE")){
         return "운영진"
@@ -42,37 +44,16 @@ function mapStateToProps(state) {
     return state;
   }
 
-function PostMemberExpulsionBar(props){
-    //console.log(props.data);
+function PostMemberBar(props) { // 
+    const {type} = props
+    const [show, setShow] = React.useState(-1);
+    const roles = props.userReducer.roles
+    const ClubLeader =roles.includes("ROLE_CLUB_PRESIDENT") // 동아리 회장 
     //console.log(props);
-    
+    let postdata = "";
 
-    const expulsionMember = (memberId) => {
-        axios.patch(`/club/president/ban?memberId=${memberId}`,{},{
-        })
-        .catch(function (error) {
-            console.log(error);
-          })
-        .then(function (res) {
-            console.log(res);
-            const PageReducer = props.PageReducer
-            props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
-        });
-    }
-
-    const handleExpulsion = (e) => {
-        console.log(e);
-        const name = e.target.parentNode.childNodes[4].innerText
-        console.log(e);
-        const check = window.confirm(`${name}을(를) 정말 강제로 탈퇴시키겠습니까?`)
-        console.log(check);
-        if(check){
-            const id = e.target.dataset.id
-            expulsionMember(id)
-        }
-    }
-
-    const postdata = props.data.map((data)=>
+   if(props.data[0] !== undefined && props.data[0].member === undefined){
+    postdata = props.data.map((data)=>
     <PostInforBar key={data.id}>
         <PostCotent>
             <PostNumber>{data.id}</PostNumber>
@@ -83,18 +64,28 @@ function PostMemberExpulsionBar(props){
             <PostRole>{printRole(data.roles)}</PostRole>
             <PostAttendance>{data.academicStatus}</PostAttendance>
             <PostGender>{data.gender}</PostGender>
-            <CheckBtn data-id={data.id} onClick={handleExpulsion} red></CheckBtn>
+
+            {((ClubLeader === true)&&(type===""))?
+            <OptionButton id={data.id} setShow={setShow} show={show} data={data}/>
+            :
+            null
+            }
+            {(type === "소모임 회장 권한 부여")?
+            <EmpowerLeaderButtom id={data.id} setShow={setShow} show={show} data={data}/>
+            :
+            null}
+            
         </PostCotent>
     </PostInforBar>
     )
+}
+
 
     return (
         <>
-           {
-           postdata
-           }
+        {postdata}
         </>
     );
 }
 
-export default  React.memo(connect(mapStateToProps,mapDispatchToProps)(PostMemberExpulsionBar));
+export default React.memo(connect(mapStateToProps,mapDispatchToProps)(PostMemberBar));

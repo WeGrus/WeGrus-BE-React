@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import * as React from "react"
-import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,SmallCheckBtn} from "./BoardElement"
+import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,SmallCheckBtn} from "./../../shared/BoardElement"
 import axios from "axios";
 import { connect } from "react-redux";
-import { actionCreators } from "../../store";
+import { actionCreators } from "../../../store";
 
 const printRole = (value) => {
     if(value.includes("ROLE_CLUB_PRESIDENT")){
@@ -40,7 +40,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state) {
     return state;
-  }
+}
 
 function PostMemberPermissionBar(props){
    // console.log(props.data);
@@ -72,8 +72,6 @@ function PostMemberPermissionBar(props){
             props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,PageReducer.selected,!(PageReducer.boardCategoryName))
         });
     }
-
-
 
     const handlePermission = (e) => {
         console.log(e);

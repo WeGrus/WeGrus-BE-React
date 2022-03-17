@@ -2,7 +2,7 @@ import styled from "styled-components";
 import * as React from "react"
 import axios from "axios";
 import { connect } from "react-redux";
-import { actionCreators } from "../../store";
+import { actionCreators } from "../../../store";
 
 const ResetBtn = styled.button`
 margin-top: 30px;
