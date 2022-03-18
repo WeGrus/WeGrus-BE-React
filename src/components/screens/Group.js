@@ -89,12 +89,14 @@ function Group(props) {
 
 
     const createChecker = (boardTarget) => {
+      let checker = false;
       props.userReducer.group.forEach(item => {
         if(item.name === boardTarget){
-          return true;
+          console.log("return true");
+          checker = true;
         }
       })
-      return false
+      return checker;
     }
 
     const handleSearchFunction = (option,keyword,currentBoardType,page,currentType) => {
@@ -182,6 +184,7 @@ function Group(props) {
               console.log("param.sorted "+param.sorted);
               setSelected(param.sorted)
               const checkCreateBtn = createChecker(categoryTarget)
+              console.log(checkCreateBtn);
               SetPermissionCreateBtn(checkCreateBtn)
               SetIsSecret(category.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
               setLoad(true)
