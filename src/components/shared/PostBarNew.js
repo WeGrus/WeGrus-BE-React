@@ -50,11 +50,13 @@ function PostBar(props) {
           {data.secretFlag === true ? ( // 비밀글일때,
             <>
               {isAuthority === true || data.memberId === userReducer?.id ? (
+
                 <PostBarContent number={i + 1 + number} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={"비밀글 " + data.title} writer={data.memberName} isBold={""} id={data.memberId}/>
               )
                 :
                 (
                   <PostBarContent number={i + 1 + number} hasLink={false} link={`/${linkHeader}/${data.postId}`} data={data} title={"비밀글 입니다."} writer={"작성자"} isBold={""} id={0}/>
+
                 )}
             </>
           )
@@ -62,11 +64,13 @@ function PostBar(props) {
             (
               <>
                 {data.type === "NORMAL" ? ( // 공지글이 아닐때.
+
                   <PostBarContent number={i + 1 + number} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={data.title} writer={data.memberName} isBold={""} id={data.memberId}/>
                 )
                   :
                   (
                     <PostBarContent number={"NOTICE"} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={data.title} writer={data.memberName} isBold={"bold"} id={data.memberId}/>
+
                   )}
               </>
             )}
@@ -76,7 +80,9 @@ function PostBar(props) {
           {data.secretFlag === true ? ( // 비밀글일때,
             <>
               (
+
               <PostBarContent number={i + 1 + number} hasLink={false} link={`/`} data={data} title={"비밀글 입니다."} writer={"작성자"} isBold={""} id={0}/>
+
               )
             </>
           )
@@ -84,6 +90,7 @@ function PostBar(props) {
             (
               <>
                 {data.type === "NORMAL" ? ( // 공지글이 아닐때.
+
                   <PostBarContent number={i + 1 + number} hasLink={true} link={`/`} data={data} title={data.title} writer={data.memberName} isBold={""} id={0}/>
                 )
                   :

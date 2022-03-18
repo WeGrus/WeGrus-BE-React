@@ -19,10 +19,12 @@ const Number = styled.div`
   text-align: center;
   margin-left: 23px;
 `;
+
 const Comment = styled.span`
   padding-left: 10px;
   z-index: 20;
 `;
+
 
 const HashLinkComment = styled(HashLink)`
 padding-left: 10px;
@@ -32,6 +34,7 @@ z-index: 2;
 const LinkProfile = styled(Link)`
 z-index: 2;
 `
+
 
 
 const splitDate = (data) => {
@@ -46,9 +49,11 @@ const splitDate = (data) => {
   
   
 function PostBarContent(props){
+
 const {number, data,hasLink,link, title, writer, isBold, id} = props
 const navigate = useNavigate()
 console.log(props.userReducer);
+
 const goSignUP = (e) => {
   const check = window.confirm("게시물을 보려면 동아리 가입 승인을 먼저 받으셔야 합니다.\n 동아리 가입 신청을 먼저 받으시겠습니까?")
   if(check){
@@ -57,6 +62,7 @@ const goSignUP = (e) => {
 }
 
 return(
+
   <>
       {(link !== `/`)?
     <>
@@ -126,6 +132,7 @@ return(
         </PostCotent>
     </>}
   </>
+
 
 )
 }
