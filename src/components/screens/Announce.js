@@ -78,6 +78,7 @@ function Announce(props) {
   const [load, setLoad] = React.useState(false); // load유무로 location의 값이 바뀐 뒤에 렌더
   const [posts, setPosts] = React.useState(null); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
+  const [isSecret, SetIsSecret] = React.useState(false)
 
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
@@ -106,7 +107,11 @@ function Announce(props) {
   ) => {
     // 검색일 경우 실행
     console.log(option);
-    if (option === "제목+내용") {
+    if(keyword === ""){
+      console.log("keyword 빈값인 걸 확인!");
+      navigate(`/announce/${param.boardId}/${param.page}/${param.sorted}/false`);
+    }
+    else if (option === "제목+내용") {
       axios
         .get(
           `/search/all/${currentBoardType}?keyword=${keyword}&page=${
@@ -202,6 +207,7 @@ function Announce(props) {
           setPage(parseInt(param.page));
           console.log("param.sorted " + param.sorted);
           setSelected(param.sorted);
+          SetIsSecret(category.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
           setLoad(true);
         });
 
@@ -227,6 +233,7 @@ function Announce(props) {
         (item) => item.boardId === parseInt(param.boardId)
       ).boardName;
       setTarget((current) => categoryTarget);
+      SetIsSecret(subCategory.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
       console.log("page변경!!!");
       setPage((current) => parseInt(param.page));
       if (param.isSearch === "false") {
@@ -311,7 +318,7 @@ function Announce(props) {
                 </SearchBarSelect>
                 <SearchBar>
                   <SearchBarInput
-                    {...register("keyword", { required: true })}
+                    {...register("keyword")}
                   />
                   <SearchBarSubmit type="submit" value="" />
                   <ViewSearchBarSubmit>
@@ -338,6 +345,7 @@ function Announce(props) {
                     category: "공지사항",
                     subCategory: target,
                     boardId: param.boardId,
+                    isSecret: isSecret
                   }}
                 >
                   create

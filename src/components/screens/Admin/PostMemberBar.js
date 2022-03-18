@@ -45,18 +45,18 @@ function mapStateToProps(state) {
   }
 
 function PostMemberBar(props) { // 
-    const {type} = props
+    const {type, page} = props
     const [show, setShow] = React.useState(-1);
     const roles = props.userReducer.roles
     const ClubLeader =roles.includes("ROLE_CLUB_PRESIDENT") // 동아리 회장 
-    //console.log(props);
+    const number = (page - 1) * 16;
     let postdata = "";
 
    if(props.data[0] !== undefined && props.data[0].member === undefined){
-    postdata = props.data.map((data)=>
+    postdata = props.data.map((data, i)=>
     <PostInforBar key={data.id}>
         <PostCotent>
-            <PostNumber>{data.id}</PostNumber>
+            <PostNumber>{i + 1 + number}</PostNumber>
             <Grade post>{data.grade}</Grade>
             <StudentId>{data.studentId}</StudentId>
             <PhoneNumber post>{data.phone}</PhoneNumber>
