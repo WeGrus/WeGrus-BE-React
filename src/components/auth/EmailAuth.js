@@ -64,8 +64,8 @@ const MoveOnMessage = styled.div`
   align-items: center;
   justify-content: center;
 `;
-const [verificationKey, setVerificationKey] = useState();
 function EmailAuth(props) {
+  const [verificationKey, setVerificationKey] = useState();
   useEffect(async () => {
     /*if (!props.userReducer.userId) {
       //window.alert(message);
