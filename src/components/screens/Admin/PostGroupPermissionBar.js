@@ -61,8 +61,7 @@ function mapStateToProps(state) {
 function PostGroupPermissionBar(props){
     
     console.log(props);
-    const {groupId, type, page} = props
-    const number = (page - 1) * 16;
+    const {groupId, type} = props
     console.log(groupId);
 
     const roles = props.userReducer.roles
@@ -123,10 +122,10 @@ function PostGroupPermissionBar(props){
     }
 
 
-    const postdata = props.data.map((data,i)=>
+    const postdata = props.data.map((data)=>
     <PostInforBar key={data.id}>
         <PostCotent>
-            <PostNumber>{i + 1 + number}</PostNumber>
+            <PostNumber>{data.id}</PostNumber>
             <Grade post>{data.grade}</Grade>
             <StudentId>{data.studentId}</StudentId>
             <PhoneNumber post>{data.phone}</PhoneNumber>

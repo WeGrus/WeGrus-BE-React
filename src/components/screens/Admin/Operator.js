@@ -63,7 +63,7 @@ else if(ClubExecutiveGroupLeader){
   return subCategory.filter(item => (item.boardName !== MemberClear))
 }
 else if(GroupLeader){
-  return subCategory.filter(item => (item.boardName === GroupMemberApproval)&&(item.boardName === GroupMemberList))
+  return subCategory.filter(item => (item.boardName !== MemberList)&&(item.boardName !== MemberApproval)&&(item.boardName !== GroupPresident)&&(item.boardName !== MemberClear)&&(item.boardName !== EditBoard))
 }
 else if(ClubExecutiveGroupExecutive){
   return subCategory.filter(item => (item.boardName !== MemberClear))
@@ -106,7 +106,6 @@ function Operator(props) {
   //'ROLE_GUEST', 'ROLE_CLUB_EXECUTIVE', 'ROLE_MEMBER'
   const [load, setLoad] = React.useState(true);
 
-  const [refreshCheck, setRefreshCheck] = React.useState(true);
   const [target, setTarget] = React.useState(MemberList);
   const [page, setPage] = React.useState(0);
   const [SubCategory,setSubCategory] =React.useState(undefined);
@@ -624,7 +623,6 @@ function Operator(props) {
        const category = getAuthority(AllLeader,ClubLeaderGroupExecutive,ClubLeader,ClubExecutiveGroupLeader,GroupLeader,ClubExecutiveGroupExecutive,ClubExecutive,GroupExecutive)
        console.log(AllLeader,ClubLeaderGroupExecutive,ClubLeader,ClubExecutiveGroupLeader,GroupLeader,ClubExecutiveGroupExecutive,ClubExecutive,GroupExecutive);
        console.log(category);
-
        axios.get(`/members/groups`,{
        })
        .catch(function (error) {
@@ -662,7 +660,7 @@ function Operator(props) {
        
        
        
-       if((category.find(item => item.boardName === MemberList)) !== undefined){ // 회원 목록 조회 즉 동아리 회장이거나 임원일때
+       if(category.find(item => item.boardName === MemberList) !== undefined){ // 회원 목록 조회 즉 동아리 회장이거나 임원일때
          axios.get(`/club/executives/members?direction=${"ASC"}&page=${0}&size=19&type=${"ID"}`,{
          })
          .catch(function (error) {
@@ -680,6 +678,7 @@ function Operator(props) {
          });
        }
        else if(category.find(item => item.boardName === GroupMemberList)){ // 그룹원 목록 조회 즉 소모임 회장이거나 임원일때
+ 
          axios.get(`/groups/executives/members?direction=${"ASC"}&groupId=${groupId}&page=1&role=MEMBER&size=19&type=ID`,{
          })
          .catch(function (error) {
@@ -939,7 +938,6 @@ function Operator(props) {
     props.setAll(PageReducer.boardId,PageReducer.page,PageReducer.isSearching,sortType,PageReducer.boardCategoryName)
     
   }
-
   
   return (
     <>
@@ -1029,7 +1027,7 @@ function Operator(props) {
                 :
                 <Gender onClick={(e) => { handleSort("Gender") }}>성별<InforSelection src={img} desc></InforSelection></Gender>
               }
-              {((target !== MemberList) || (target !== GroupMemberList)) ? <Check>설정</Check> : null}
+              {((target !== MemberList) || (target !== GroupMemberList)) ? <Check>버튼</Check> : null}
             </InforContents>
           </InforBar>
         }
@@ -1039,33 +1037,33 @@ function Operator(props) {
             
       {(load)?
       <>
-            {(target === MemberList && posts !== [] ) ?
-              <PostMemberBar data={posts} type={""} page={page}/>
+            {(target === MemberList && posts !== []) ?
+              <PostMemberBar data={posts} type={""}/>
               :
               null
             }
 
             {(props.PageReducer.boardId === MemberApproval && posts !== []) ?
-              <PostMemberPermissionBar data={posts} type={MemberApproval} page={page}/>
+              <PostMemberPermissionBar data={posts} type={MemberApproval}/>
               :
               null   
             }
 
             {(props.PageReducer.boardId === GroupPresident && posts !== []) ?
-              <PostMemberBar data={posts} type={GroupPresident} groupList={groupList} page={page}/>
+              <PostMemberBar data={posts} type={GroupPresident} groupList={groupList}/>
               :
               null
             }
 
 
             {(target === GroupMemberList && posts !== [] ) ?
-              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberList}  page={page}/>
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberList}/>
               :
               null
             }
 
             {(target === GroupMemberApproval && posts !== [] ) ?
-              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberApproval} page={page}/>
+              <PostGroupPermissionBar data={posts} groupId={groupId} type={GroupMemberApproval}/>
               :
               null
             }

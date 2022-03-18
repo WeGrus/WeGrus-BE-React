@@ -35,7 +35,7 @@ const checkNotice = (type) => {
 
 function Page(props) {
 
-    const t = useParams();
+   
     const location = useLocation().state;
     const pageData = location.pageData
     const data = useLocation().state;
@@ -63,6 +63,7 @@ function Page(props) {
             "postId": pageData.postId,
             "type": "NOTICE"
         },{
+        
         })
       }
       else{
@@ -70,6 +71,7 @@ function Page(props) {
           "postId": pageData.postId,
           "type": "NORMAL"
       },{
+       
       })
       }
       setNotice(!notice)
@@ -82,6 +84,7 @@ function Page(props) {
             "postId": pageData.postId,
             "type": "NOTICE"
         },{
+         
         })
       }
       else{
@@ -89,6 +92,7 @@ function Page(props) {
           "postId": pageData.postId,
           "type": "NORMAL"
       },{
+       
       })
       }
       setNotice(!notice)
@@ -106,29 +110,13 @@ function Page(props) {
     return getContent_html;
   }
 
-  const emptyChecker = (content) => {
-    if(title === "" || content === null || content === undefined){
-      console.log(title);
-      console.log(content);
-      return true;
-    }
-    return false;
-    
-  }
-
   function submit() {
     // 작성 버튼을 눌렀을 시 작동
-    const content = printTextBody()
-
-    if(emptyChecker(content) === true){
-      alert("제목이나 게시글이 공백이면 작성하실 수 없습니다.")
-    }
-    else{
-      axios
+    axios
       .put(
         `/posts`,
         {
-          content: content,
+          content: printTextBody(),
           postId: pageData.postId,
           secretFlag: secret,
           title: title,
@@ -145,15 +133,17 @@ function Page(props) {
       .then(function (res) {
         console.log(res);
         //Navigate("/board", {state:{category:location.subCategory, page:1}});
-        Navigate(-1);
+        Navigate(props.PageReducer.boardCategoryName);
       });
-    }
-
-    
 
      }
 
-
+     window.onpopstate = function(event){ // 뒤로가기
+      event.preventDefault();
+      console.log("업데이트에서 뒤로가기");
+      console.log(props.PageReducer);
+      Navigate(props.PageReducer.boardCategoryName)
+    }
 
 //initialValue={data.title}
 
@@ -165,7 +155,7 @@ function Page(props) {
       <Background>
         <Content>
           <Category>
-            {location.category}|{location.subCategory}
+            {props.PageReducer.viewCategoryName}|{location.subCategory}
           </Category>
           <Header>
             <Title
@@ -185,10 +175,10 @@ function Page(props) {
           />
           <BtnSection>
 
-            <GoToList onClick={()=>{Navigate(-1);}}>목록으로</GoToList>
+            <Link to={`${props.PageReducer.boardCategoryName}`}><GoToList >목록으로</GoToList></Link>
             <Right>
 
-            {(isClubExecutives === true && location.category !== "소모임")?
+            {(isClubExecutives === true && props.PageReducer.viewCategoryName !== "소모임")?
                           <SetOption>
                           <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
                           <Checkbox
@@ -198,7 +188,7 @@ function Page(props) {
                         </SetOption>
               :
               null}
-                {(isGroupExecutives === true && location.category === "소모임")?
+                {(isGroupExecutives === true && props.PageReducer.viewCategoryName === "소모임") ?
                   <SetOption>
                     <Text><span style={{ marginRight: 8 }}>공지글 설정하기</span></Text>
                     <Checkbox

@@ -150,7 +150,7 @@ export const CommentRecommand = styled.span`
   padding-left: 5px;
 `;
 export const CommentContent = styled.div`
-  padding-top: 25px;
+  padding-top: 10px;
   margin-left: 20px;
   max-width: 608px;
   min-height: 96.22px;
@@ -294,9 +294,9 @@ export const PostRecommand = styled.button`
   width: 59.14px;
   height: 27px;
   font-size: 14px;
-  color: ${(props) => (props.checked ? "white" : "black")};
-  background-color: ${(props) => (props.checked ? "#6CD2D7" : "white")};
-  border: ${(props) => (props.checked ? "none" : "1px solid #6CD2D7")};
+  color: white;
+  background-color: ${(props) => (props.checked ? "#0B665C" : "#6CD2D7")};
+  border: none;
   border-radius: 15px;
   cursor: pointer;
 `;
@@ -305,9 +305,9 @@ export const PostScrape = styled.button`
   width: 59.14px;
   height: 27px;
   font-size: 14px;
-  color: ${(props) => (props.checked ? "white" : "black")};
-  background-color: ${(props) => (props.checked ? "#6CD2D7" : "white")};
-  border: ${(props) => (props.checked ? "none" : "1px solid #6CD2D7")};
+  color: white;
+  background-color: ${(props) => (props.checked ? "#0B665C" : "#6CD2D7")};
+  border: none;
   border-radius: 15px;
   margin-left: 6.72px;
   cursor: pointer;

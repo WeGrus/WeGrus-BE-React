@@ -269,11 +269,9 @@ export const PostInforBar = styled.div`
   border-bottom: 1px solid black;
   display: flex;
   align-items: center;
-  background-color: ${(props) => (props.notice ? "#C8F2EF" : null)};
 
   &:hover {
     cursor: pointer;
-    background-color: #C8F2EF;
   }
 `;
 export const PostCotent = styled.div`
@@ -282,9 +280,7 @@ export const PostCotent = styled.div`
   flex-direction: row;
   :hover {
     font-weight: 700;
-    border-bottom: 1px solid black;
   }
-  font-weight: ${(props) => (props.bold ? "700" : "400")};
 `;
 
 export const PostRole = styled.div`

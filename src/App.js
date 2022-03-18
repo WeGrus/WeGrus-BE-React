@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
 import Profile from "./components/screens/Profile/Profile";
-import OtherProfile from "./components/screens/OtherProfile/OtherProfile"
 import { GlobalStyles } from "./styles";
 import Layout from "./components/Layout";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -121,7 +120,7 @@ function App(props) {
       })
       .then(async (res) => {
         setToken(res?.data?.data?.accessToken);
-        console.log(res?.data?.data?.accessToken);
+
         axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${res?.data?.data?.accessToken}`;
@@ -224,11 +223,8 @@ function App(props) {
                   path="/board/update/:pagenum/:userid"
                   element={<NewUpdatePage />}
                 />
-
-                <Route path="/profile/:category/:pagenum/:userid" element={<OtherProfile />} />
                 <Route path="/profile" element={<Profile />} />
 
-                
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
