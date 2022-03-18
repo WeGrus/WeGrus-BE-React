@@ -295,8 +295,8 @@ export const PostRecommand = styled.button`
   height: 27px;
   font-size: 14px;
   color: white;
-  background-color: ${(props) => (props.checked ? "#0B665C" : "#6CD2D7")};
-  border: none;
+  background-color: ${(props) => (props.checked ? "#6CD2D7" : "none")};
+  border: ${(props) => (props.checked ? "#none" : "1px solid #6CD2D7")};
   border-radius: 15px;
   cursor: pointer;
 `;
