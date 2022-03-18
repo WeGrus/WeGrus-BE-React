@@ -305,9 +305,9 @@ export const PostScrape = styled.button`
   width: 59.14px;
   height: 27px;
   font-size: 14px;
-  color: white;
-  background-color: ${(props) => (props.checked ? "#0B665C" : "#6CD2D7")};
-  border: none;
+  color: ${(props) => (props.checked ? "white" : "black")};
+  background-color: ${(props) => (props.checked ? "#6CD2D7" : "white")};
+  border: ${(props) => (props.checked ? "none" : "1px solid #6CD2D7")};
   border-radius: 15px;
   margin-left: 6.72px;
   cursor: pointer;
