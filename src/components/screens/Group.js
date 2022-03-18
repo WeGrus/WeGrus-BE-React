@@ -89,14 +89,14 @@ function Group(props) {
 
 
     const createChecker = (boardTarget) => {
+      let checker = false;
       props.userReducer.group.forEach(item => {
         if(item.name === boardTarget){
           console.log("return true");
-          return true;
+          checker = true;
         }
       })
-      console.log("return false");
-      return false
+      return checker;
     }
 
     const handleSearchFunction = (option,keyword,currentBoardType,page,currentType) => {
