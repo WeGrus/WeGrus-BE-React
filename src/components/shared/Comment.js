@@ -248,7 +248,7 @@ function CommentSection(props){
           <Comment data-id={`${comment.replyId}`} >
             <CommentLeft>
               {(props.userReducer.id === comment.memberId) ?
-                <Link to={`profile`}><CommentImage src={`${comment.image.url}`}></CommentImage></Link>
+                <Link to={`/profile`}><CommentImage src={`${comment.image.url}`}></CommentImage></Link>
                 :
                 <Link to={`/profile/infor/0/${comment.memberId}`}><CommentImage src={`${comment.image.url}`}></CommentImage></Link>
               }
@@ -256,7 +256,7 @@ function CommentSection(props){
               <CommentNameBox>
                   <CommentName>
                     {(props.userReducer.id === comment.memberId) ?
-                      <Link to={`profile`}>{comment.memberName}</Link>
+                      <Link to={`/profile`}>{comment.memberName}</Link>
                       :
                       <Link to={`/profile/infor/0/${comment.memberId}`}>{comment.memberName}</Link>
                     }
@@ -288,7 +288,7 @@ function CommentSection(props){
               <ReComment key={reComment.replyId} data-id={`${reComment.replyId}`}>
               <CommentLeft>
               {(props.userReducer.id === reComment.memberId) ?
-                    <Link to={`profile`}><ReCommentImage src={`${reComment.image.url}`}></ReCommentImage></Link>
+                    <Link to={`/profile`}><ReCommentImage src={`${reComment.image.url}`}></ReCommentImage></Link>
                     :
                     <Link to={`/profile/infor/0/${reComment.memberId}`}><ReCommentImage src={`${reComment.image.url}`}></ReCommentImage></Link>
               }
@@ -296,7 +296,7 @@ function CommentSection(props){
               <CommentNameBox>
                       <CommentName>
                         {(props.userReducer.id === reComment.memberId) ?
-                          <Link to={`profile`}>{reComment.memberName}</Link>
+                          <Link to={`/profile`}>{reComment.memberName}</Link>
                           :
                           <Link to={`/profile/infor/0/${reComment.memberId}`}>{reComment.memberName}</Link>
                         }
