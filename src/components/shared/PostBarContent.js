@@ -71,7 +71,7 @@ return(
             <Link to={link}>
               <PostCotent {...isBold}>
                 {(number === "NOTICE") ?
-                  <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
+                  <Number><FontAwesomeIcon icon={faVolumeOff} color="#0B665C" /></Number>
                   :
                   <Number>{number}</Number>
                 }
@@ -104,7 +104,7 @@ return(
        <>
             <PostCotent {...isBold}>
               {(number === "NOTICE") ?
-                <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
+                <Number><FontAwesomeIcon icon={faVolumeOff} color="#0B665C" /></Number>
                 :
                 <Number>{number}</Number>
               }
@@ -120,7 +120,7 @@ return(
     <>
         <PostCotent {...isBold}>
           {(number === "NOTICE") ?
-            <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
+            <Number><FontAwesomeIcon icon={faVolumeOff} color="#0B665C" /></Number>
             :
             <Number>{number}</Number>
           }
