@@ -39,7 +39,7 @@ function UserScrape(){
             console.log(res?.data?.data?.content);
             setTotalPage(res?.data?.data?.totalPages)
             console.log(res?.data?.data?.totalPages);
-            setCurrentPage(page);
+            setCurrentPage(parseInt(page));
             console.log(page);
             setLoad(true)
           })

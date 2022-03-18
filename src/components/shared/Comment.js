@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp  } from "@fortawesome/free-regular-svg-icons";
 import {faThumbsUp as solidFaThumbsUp} from "@fortawesome/free-solid-svg-icons"
+import {Link} from "react-router-dom";
 import {Comments,Comment
     ,CommentContent,CommentWriteSection,CommentWrite,CommentSubmit,
     CommentName,CommentLeft,CommentNameBox,
@@ -242,17 +243,24 @@ function CommentSection(props){
         }
   }
 
-    
-
-    
       const printComment = commentData.map((comment,i)=>
         <CommentBox key={comment.replyId}>
           <Comment data-id={`${comment.replyId}`} >
             <CommentLeft>
-              <CommentImage src={`${comment.image.url}`}></CommentImage>
+              {(props.userReducer.id === comment.memberId) ?
+                <Link to={`/profile`}><CommentImage src={`${comment.image.url}`}></CommentImage></Link>
+                :
+                <Link to={`/profile/infor/0/${comment.memberId}`}><CommentImage src={`${comment.image.url}`}></CommentImage></Link>
+              }
               <CommentLeftContent>
               <CommentNameBox>
-                <CommentName>{comment.memberName}</CommentName>
+                  <CommentName>
+                    {(props.userReducer.id === comment.memberId) ?
+                      <Link to={`/profile`}>{comment.memberName}</Link>
+                      :
+                      <Link to={`/profile/infor/0/${comment.memberId}`}>{comment.memberName}</Link>
+                    }
+                  </CommentName>
               </CommentNameBox>
               <CommentInfor data-index={comment.replyId}>
                 <Date>{splitDate(comment.updatedDate)} </Date>
@@ -279,10 +287,20 @@ function CommentSection(props){
             <>
               <ReComment key={reComment.replyId} data-id={`${reComment.replyId}`}>
               <CommentLeft>
-              <ReCommentImage src={`${reComment.image.url}`}></ReCommentImage>
+              {(props.userReducer.id === reComment.memberId) ?
+                    <Link to={`/profile`}><ReCommentImage src={`${reComment.image.url}`}></ReCommentImage></Link>
+                    :
+                    <Link to={`/profile/infor/0/${reComment.memberId}`}><ReCommentImage src={`${reComment.image.url}`}></ReCommentImage></Link>
+              }
               <CommentLeftContent>
               <CommentNameBox>
-                <CommentName>{reComment.memberName}</CommentName>
+                      <CommentName>
+                        {(props.userReducer.id === reComment.memberId) ?
+                          <Link to={`/profile`}>{reComment.memberName}</Link>
+                          :
+                          <Link to={`/profile/infor/0/${reComment.memberId}`}>{reComment.memberName}</Link>
+                        }
+                      </CommentName>
               </CommentNameBox>
               <CommentInfor data-index={reComment.replyId}>
                 <Date>{splitDate(comment.updatedDate)} </Date>

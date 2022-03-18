@@ -248,11 +248,19 @@ function Page(props) {
             </Category>
 
             <Header>
-              <PageImage src={`${pageDate.image.url}`}></PageImage>
+              {(props.userReducer.id === pageDate.memberId)?
+               <Link to={`/profile`}><PageImage src={`${pageDate.image.url}`}></PageImage></Link>
+              :
+              <Link to={`/profile/infor/0/${pageDate.memberId}`}><PageImage src={`${pageDate.image.url}`}></PageImage></Link>
+              }
               <HeaderContent>
                 <Title>{pageDate.title}</Title>
                 <OtherDetail>
-                  {pageDate.memberName} | {splitDate(pageDate.updatedDate)}
+                  {(props.userReducer.id === pageDate.memberId) ?
+                    <><Link to={`/profile`}>{pageDate.memberName}</Link> | {splitDate(pageDate.updatedDate)}</>
+                    :
+                    <><Link to={`/profile/infor/0/${pageDate.memberId}`}>{pageDate.memberName}</Link> | {splitDate(pageDate.updatedDate)}</>
+                  }
                   <Right>
                     조회 {pageDate.postView} | 추천 {countOfRecommend} | 댓글{" "}
                     {countOfComment}
