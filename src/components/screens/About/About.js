@@ -38,12 +38,14 @@ const WelcomeTitle = styled.div`
 const AboutTitle = styled.h2`
   font-size: 20px;
   font-weight: 600;
-  margin: 40px 0 40px 0;
+  margin: 40px 10px 40px 10px;
 `;
 const BigTitle = styled.h1`
   font-size: 25px;
   font-weight: 700;
   margin: 40px 0 40px 0;
+  display: flex;
+  align-items: center;
 `;
 
 const Emoji = styled.span`
@@ -180,7 +182,7 @@ const SmallDescriptionBox = styled.div`
 `;
 
 const Hashtag = styled.div`
-  width: 400px;
+  width: 550px;
   display: flex;
   justify-content: space-between;
 `;
@@ -215,7 +217,7 @@ function About(props) {
           <BigTitle>
             <Emoji>🙋🏻</Emoji> IGRUS는 어떤 동아리인가요?
           </BigTitle>
-          {props?.userReducer?.roles === ["ROLE_GUEST"] ? (
+          {props?.userReducer?.roles?.length === 1 ? (
             <BtnLink onClick={handleEnrollClub}>동아리 가입 신청</BtnLink>
           ) : null}
         </TitleBox>

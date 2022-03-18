@@ -185,7 +185,7 @@ function UserInfo(props) {
             <ProfilePhoto>
               <img src={`${DATA.imageUrl}`} alt="profile" />
             </ProfilePhoto>
-            {props?.userReducer?.roles === ["ROLE_GUEST"] ? (
+            {props?.userReducer?.roles?.length > 1 ? (
               <ButtonBox>
                 <FileUploadComponent />
                 <EditButton type="file" onClick={() => handleDeletePhoto()}>
@@ -206,7 +206,7 @@ function UserInfo(props) {
                 <span>상태 | {DATA.academicStatus}</span>
                 <span>연락처 | {DATA.phone}</span>
                 <span>소개 | {DATA.introduce}</span>
-                {props?.userReducer?.roles === ["ROLE_GUEST"] ? (
+                {props?.userReducer?.roles?.length > 1 ? (
                   <ButtonBox>
                     <EditButton onClick={() => handleEditProfile()}>
                       수정

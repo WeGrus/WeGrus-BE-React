@@ -204,7 +204,7 @@ function Signup(props) {
       .get(`/signup/validate/email?email=${props.userReducer.email}`)
       .then((res) => {
         const result = res.data.data.status;
-
+        console.log(props);
         console.log(result);
         if (result !== "success") {
           window.alert("이메일 인증은 필수입니다.");

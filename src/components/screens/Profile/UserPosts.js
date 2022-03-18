@@ -97,10 +97,9 @@ function UserPosts(props) {
       {posts !== null ? (
         <>
           <ProfilePostBar
-            //target={target}
             page={page}
             data={posts}
-            userReducer={props.userReducer}
+            userReducer={props?.userReducer}
           />
           <Pagination
             total={totalPage}

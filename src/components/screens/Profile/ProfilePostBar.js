@@ -26,11 +26,25 @@ const splitDate = (data) => {
   return ymd;
 };
 
-function ProfilePostBar({ page, data, userReducer }) {
+function ProfilePostBar(props) {
+  const { page, data, userReducer } = props;
   // 기존의 postBar에서 userReducer가 추가되었습니다. 변경하고 나서 문제가 생기실 수도 있으니 한번 확인해주시길 바랍니다.
-  const limit = 19;
-  const offset = (page - 1) * limit;
-  const number = page * 16;
+  const number = (page - 1) * 16;
+
+  console.log(data);
+
+  function pickBoardCategory(linkHeader) {
+    if (linkHeader === "게시판") {
+      console.log(linkHeader);
+      return "board";
+    } else if (linkHeader === "스터디") {
+      return "study";
+    } else if (linkHeader === "공지사항") {
+      return "announce";
+    } else if (linkHeader === "소모임") {
+      return "group";
+    }
+  }
 
   const postdata = data.map((data, i) => (
     <PostInforBar key={i + 1}>
@@ -39,23 +53,15 @@ function ProfilePostBar({ page, data, userReducer }) {
           {data.boardCategory} / {data.board}
         </BoardName>
         <Title>
-          <Link
-            to={`${i + 1 + number}`}
-            state={{
-              category: "커뮤니티",
-
-              postId: data.postId,
-            }}
-          >
+          {console.log(
+            data.boardCategory,
+            pickBoardCategory(data.boardCategory)
+          )}
+          <Link to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}>
             {data.title}
           </Link>
           <HashLink
-            to="1#commentTag"
-            state={{
-              category: "커뮤니티",
-
-              postId: data.postId,
-            }}
+            to={`/${pickBoardCategory(data.boardCategory)}/${data.postId}`}
           >
             <Test>[{data.postReplies}]</Test>
           </HashLink>

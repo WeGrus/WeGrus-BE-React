@@ -19,10 +19,22 @@ const Number = styled.div`
   text-align: center;
   margin-left: 23px;
 `;
-const Test = styled.span`
+
+const Comment = styled.span`
   padding-left: 10px;
   z-index: 20;
 `;
+
+
+const HashLinkComment = styled(HashLink)`
+padding-left: 10px;
+z-index: 2;
+`
+
+const LinkProfile = styled(Link)`
+z-index: 2;
+`
+
 
 
 const splitDate = (data) => {
@@ -37,8 +49,10 @@ const splitDate = (data) => {
   
   
 function PostBarContent(props){
-const {number, data,hasLink,link, title, writer, isBold} = props
+
+const {number, data,hasLink,link, title, writer, isBold, id} = props
 const navigate = useNavigate()
+console.log(props.userReducer);
 
 const goSignUP = (e) => {
   const check = window.confirm("게시물을 보려면 동아리 가입 승인을 먼저 받으셔야 합니다.\n 동아리 가입 신청을 먼저 받으시겠습니까?")
@@ -48,44 +62,78 @@ const goSignUP = (e) => {
 }
 
 return(
-    <PostCotent {...isBold}>
-    {(number === "NOTICE")?
-    <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
-    :
-    <Number>{number}</Number>
-    }
-    
-    <Title>
+
+  <>
       {(link !== `/`)?
-      <>
-          {(hasLink === true) ?
-            <>
-              <Link to={link}>
-                {title}
-              </Link>
-              {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
-                <HashLink to={`${link}#commentTag`}>
-                  <Test>[{data.postReplies}]</Test>
-                </HashLink>
+    <>
+        {(hasLink === true) ?
+          <>
+            <Link to={link}>
+              <PostCotent {...isBold}>
+                {(number === "NOTICE") ?
+                  <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
+                  :
+                  <Number>{number}</Number>
+                }
+                <Title>
+                  {title}
+                  {(parseInt(data.postReplies) !== 0) ? // 댓글이 0개가 아니라면 보이게 하고 하나도 없으면 보이지 않게 한다.
+                    <HashLinkComment to={`${link}#commentTag`}>
+                      [{data.postReplies}]
+                    </HashLinkComment>
+                    :
+                    null
+                  }
+                </Title>
+                {(id === props.userReducer.id)?
+                  <LinkProfile to={`/profile`}>
+                    <Writer>{writer}</Writer>
+                  </LinkProfile>
                 :
-                null
+                  <LinkProfile to={`/profile/infor/0/${id}`}>
+                    <Writer>{writer}</Writer>
+                  </LinkProfile>
+                }
+                <Date>{splitDate(data.createdDate)}</Date>
+                <Recommendation>{data.postLike}</Recommendation>
+                <Hits>{data.postView}</Hits>
+              </PostCotent>
+            </Link>
+          </>
+       :
+       <>
+            <PostCotent {...isBold}>
+              {(number === "NOTICE") ?
+                <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
+                :
+                <Number>{number}</Number>
               }
-            </>
+              <Title>{title}</Title>
+              <Writer>{writer}</Writer>
+              <Date>{splitDate(data.createdDate)}</Date>
+              <Recommendation>{data.postLike}</Recommendation>
+              <Hits>{data.postView}</Hits>
+            </PostCotent>
+       </>}
+    </>
+    :
+    <>
+        <PostCotent {...isBold}>
+          {(number === "NOTICE") ?
+            <FontAwesomeIcon icon={faVolumeOff} color="#0B665C" />
             :
-            <div>{ title }</div>
+            <Number>{number}</Number>
           }
-      </>
-      :
-      <div onclick={goSignUP}>
-            {title}
-      </div>
-      }
-    </Title>
-    <Writer>{writer}</Writer>
-    <Date>{splitDate(data.createdDate)}</Date>
-    <Recommendation>{data.postLike}</Recommendation>
-    <Hits>{data.postView}</Hits>
-  </PostCotent>
+          <Title onclick={goSignUP}>{title}</Title>
+          <Writer>{writer}</Writer>
+          <Date>{splitDate(data.createdDate)}</Date>
+          <Recommendation>{data.postLike}</Recommendation>
+          <Hits>{data.postView}</Hits>
+        </PostCotent>
+    </>}
+  </>
+
+
 )
 }
 
