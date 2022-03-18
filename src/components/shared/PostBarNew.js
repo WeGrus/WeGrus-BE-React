@@ -44,65 +44,72 @@ function PostBar(props) {
   const isMember = userReducer.roles.some((i) =>["ROLE_MEMBER"].includes(i));
   console.log("isMember"+isMember);
   const postdata = data?.map((data, i) => (
-    <PostInforBar key={i + 1}>
+    <>
       {(isMember === true) ? // 멤버 권한이 있다면
         <>
           {data.secretFlag === true ? ( // 비밀글일때,
             <>
               {isAuthority === true || data.memberId === userReducer?.id ? (
-
-                <PostBarContent number={i + 1 + number} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={"비밀글 " + data.title} writer={data.memberName} isBold={""} id={data.memberId}/>
+                <PostInforBar key={i + 1}>
+                  <PostBarContent number={i + 1 + number} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={"비밀글 " + data.title} writer={data.memberName} isBold={""} id={data.memberId} />
+                </PostInforBar>
+                
               )
                 :
-                (
+                ( // 비밀글이고 권한이 없을 때.
+                  <PostInforBar key={i + 1}>
                   <PostBarContent number={i + 1 + number} hasLink={false} link={`/${linkHeader}/${data.postId}`} data={data} title={"비밀글 입니다."} writer={"작성자"} isBold={""} id={0}/>
-
+                  </PostInforBar>
                 )}
             </>
           )
             :
             (
               <>
-                {data.type === "NORMAL" ? ( // 공지글이 아닐때.
-
+                {data.type === "NORMAL" ? ( // 일반 게시글일때
+                  <PostInforBar key={i + 1}>
                   <PostBarContent number={i + 1 + number} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={data.title} writer={data.memberName} isBold={""} id={data.memberId}/>
+                  </PostInforBar>
                 )
                   :
                   (
+                    <PostInforBar key={i + 1} notice>
                     <PostBarContent number={"NOTICE"} hasLink={true} link={`/${linkHeader}/${data.postId}`} data={data} title={data.title} writer={data.memberName} isBold={"bold"} id={data.memberId}/>
-
+                    </PostInforBar>
                   )}
               </>
             )}
         </>
         :
-        <>
-          {data.secretFlag === true ? ( // 비밀글일때,
+        <> 
+          {data.secretFlag === true ? ( // 멤버 권한이 없고 비밀글일때,
             <>
               (
-
+                <PostInforBar key={i + 1}>
               <PostBarContent number={i + 1 + number} hasLink={false} link={`/`} data={data} title={"비밀글 입니다."} writer={"작성자"} isBold={""} id={0}/>
-
+              </PostInforBar>
               )
             </>
           )
             :
             (
               <>
-                {data.type === "NORMAL" ? ( // 공지글이 아닐때.
-
+                {data.type === "NORMAL" ? ( // 멤버 권한이 없고 일반 게시글일때.
+                   <PostInforBar key={i + 1}>
                   <PostBarContent number={i + 1 + number} hasLink={true} link={`/`} data={data} title={data.title} writer={data.memberName} isBold={""} id={0}/>
+                  </PostInforBar>
                 )
                   :
                   (
+                    <PostInforBar key={i + 1} notice>
                     <PostBarContent number={"NOTICE"} hasLink={true} link={`/`} data={data} title={data.title} writer={data.memberName} isBold={"bold"} id={0}/>
+                    </PostInforBar>
                   )}
               </>
             )}
         </>
       }
-
-    </PostInforBar>
+    </>
   ));
 
   return <>{postdata}</>;
