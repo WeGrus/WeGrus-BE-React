@@ -75,6 +75,7 @@ function Group(props) {
     const [posts, setPosts] = React.useState(null); // API로 받은 값
     const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
     const [permissionCreateBtn,SetPermissionCreateBtn] = React.useState(false);
+    const [isSecret, SetIsSecret] = React.useState(false)
 
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
@@ -88,18 +89,24 @@ function Group(props) {
 
 
     const createChecker = (boardTarget) => {
+      let checker = false;
       props.userReducer.group.forEach(item => {
         if(item.name === boardTarget){
-          return true;
+          console.log("return true");
+          checker = true;
         }
       })
-      return false
+      return checker;
     }
 
     const handleSearchFunction = (option,keyword,currentBoardType,page,currentType) => {
         // 검색일 경우 실행
         console.log(option);
-        if (option === "제목+내용") {
+        if(keyword === ""){
+          console.log("keyword 빈값인 걸 확인!");
+          navigate(`/group/${param.boardId}/${param.page}/${param.sorted}/false`);
+        }
+        else if (option === "제목+내용") {
           axios.get(`/search/all/${currentBoardType}?keyword=${keyword}&page=${page - 1}&pageSize=19&type=${currentType}`)
             .catch(function (error) {
               console.log(error.toJSON());
@@ -177,7 +184,9 @@ function Group(props) {
               console.log("param.sorted "+param.sorted);
               setSelected(param.sorted)
               const checkCreateBtn = createChecker(categoryTarget)
+              console.log(checkCreateBtn);
               SetPermissionCreateBtn(checkCreateBtn)
+              SetIsSecret(category.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
               setLoad(true)
             });
 
@@ -202,7 +211,7 @@ function Group(props) {
             setPage((current) =>parseInt(param.page))
             const checkCreateBtn = createChecker(categoryTarget)
             SetPermissionCreateBtn(checkCreateBtn)
-
+            SetIsSecret(subCategory.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
 
             if (param.isSearch === "false") {
                 console.log("검색한 것 없음!");
@@ -272,7 +281,7 @@ function Group(props) {
                   <option>작성자</option>
                 </SearchBarSelect>
                 <SearchBar>
-                  <SearchBarInput {...register("keyword", { required: true })} />
+                  <SearchBarInput {...register("keyword")} />
                   <SearchBarSubmit type="submit" value="" />
                   <ViewSearchBarSubmit><FontAwesomeIcon icon={faSearch} /></ViewSearchBarSubmit>
                 </SearchBar>
@@ -289,7 +298,7 @@ function Group(props) {
               {(permissionCreateBtn) === true ?
                 <CreateBtnLink
                   to={`/group/write/${props.userReducer.id}`}
-                  state={{ category: "소모임", subCategory: target, boardId: param.boardId }}
+                  state={{ category: "소모임", subCategory: target, boardId: param.boardId,isSecret: isSecret }}
                 >
                   create
                 </CreateBtnLink>

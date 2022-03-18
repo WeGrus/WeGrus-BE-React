@@ -79,12 +79,13 @@ function Board(props) {
   const [load, setLoad] = React.useState(false); // load유무로 location의 값이 바뀐 뒤에 렌더
   const [posts, setPosts] = React.useState(null); // API로 받은 값
   const [totalPage, settotalPage] = React.useState(0); // 총 페이지.
+  const [isSecret, SetIsSecret] = React.useState(false)
 
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
   //console.log(pathname);
-  // console.log("파람값");
+ //  console.log("파람값");
   // console.log(param);
   // console.log(param.boardId);
   // console.log(param.isSearch);
@@ -107,7 +108,11 @@ function Board(props) {
   ) => {
     // 검색일 경우 실행
     console.log(option);
-    if (option === "제목+내용") {
+    if(keyword === ""){
+      console.log("keyword 빈값인 걸 확인!");
+      navigate(`/board/${param.boardId}/${param.page}/${param.sorted}/false`);
+    }
+    else if (option === "제목+내용") {
       axios
         .get(
           `/search/all/${currentBoardType}?keyword=${keyword}&page=${
@@ -181,14 +186,8 @@ function Board(props) {
         })
         .then(function (res) {
           console.log(res);
-          const category = [
-            ...res?.data?.data?.boards?.filter(
-              (element) => element?.boardCategoryName === boardCategory
-            ),
-          ];
-          const categoryTarget = category.find(
-            (item) => item?.boardId === parseInt(param?.boardId)
-          )?.boardName;
+          const category = [...res?.data?.data?.boards?.filter((element) => element?.boardCategoryName === boardCategory)];
+          const categoryTarget = category.find((item) => item?.boardId === parseInt(param?.boardId))?.boardName;
           console.log(category);
           setSubCategory((previous) => category);
           console.log(categoryTarget);
@@ -197,6 +196,7 @@ function Board(props) {
           setPage(parseInt(param.page));
           console.log("param.sorted " + param.sorted);
           setSelected(param.sorted);
+          SetIsSecret((previous)=>category.find((item) => item?.boardId === parseInt(param?.boardId)).boardSecretFlag);
           setLoad(true);
           if (param.isSearch === "false") {
             console.log("param.isSearch가 false");
@@ -217,12 +217,13 @@ function Board(props) {
         });
     } else {
       console.log("subCategory가 undifined가 아님!!!");
-      const categoryTarget = subCategory.find(
-        (item) => item.boardId === parseInt(param.boardId)
-      ).boardName;
+      const categoryTarget = subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardName;
       setTarget((current) => categoryTarget);
       console.log("page변경!!!");
       setPage((current) => parseInt(param.page));
+      console.log(subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardSecretFlag);
+      SetIsSecret((previous)=>subCategory.find((item) => item.boardId === parseInt(param.boardId)).boardSecretFlag);
+      
       if (param.isSearch === "false") {
         console.log("검색한 것 없음!");
         loadPageList(param.boardId, parseInt(param.page), param.sorted);
@@ -282,6 +283,7 @@ function Board(props) {
     console.log("error");
   };
 
+
   return (
     <>
       {load ? (
@@ -306,7 +308,7 @@ function Board(props) {
                 <SearchBar>
                   <SearchBarInput
                     placeholder="검색어를 입력하세요."
-                    {...register("keyword", { required: true })}
+                    {...register("keyword")}
                   />
                   <SearchBarSubmit type="submit" value="" />
                   <ViewSearchBarSubmit>
@@ -325,17 +327,20 @@ function Board(props) {
                   </option>
                 ))}
               </SearchBarFilter>
+           
+                <CreateBtnLink
+                  to={`/board/write/${props.userReducer.id}`}
+                  state={{
+                    category: "커뮤니티",
+                    subCategory: target,
+                    boardId: param.boardId,
+                    isSecret: isSecret
+                  }}
+                >
+                  create
+                </CreateBtnLink>
 
-              <CreateBtnLink
-                to={`/board/write/${props.userReducer.id}`}
-                state={{
-                  category: "커뮤니티",
-                  subCategory: target,
-                  boardId: param.boardId,
-                }}
-              >
-                create
-              </CreateBtnLink>
+
             </SearchBarSection>
 
             <InforBar>
