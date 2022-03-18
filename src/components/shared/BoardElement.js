@@ -273,6 +273,7 @@ export const PostInforBar = styled.div`
 
   &:hover {
     cursor: pointer;
+    background-color:9e9e9e;
   }
 `;
 export const PostCotent = styled.div`
@@ -281,6 +282,7 @@ export const PostCotent = styled.div`
   flex-direction: row;
   :hover {
     font-weight: 700;
+    border-bottom: 1px solid black;
   }
   font-weight: ${(props) => (props.bold ? "700" : "400")};
 `;
