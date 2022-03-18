@@ -150,7 +150,7 @@ export const CommentRecommand = styled.span`
   padding-left: 5px;
 `;
 export const CommentContent = styled.div`
-  padding-top: 10px;
+  padding-top: 25px;
   margin-left: 20px;
   max-width: 608px;
   min-height: 96.22px;
