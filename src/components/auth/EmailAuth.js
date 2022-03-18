@@ -66,7 +66,10 @@ const MoveOnMessage = styled.div`
 `;
 function EmailAuth(props) {
   const [verificationKey, setVerificationKey] = useState();
-  useEffect(async () => {
+  const { handleSubmit, register, formState } = useForm();
+  const [emailAuth, setEmailAuth] = useState(false);
+
+  useEffect(() => {
     /*if (!props.userReducer.userId) {
       //window.alert(message);
       navigate("/");
@@ -89,14 +92,12 @@ function EmailAuth(props) {
           } else {
             console.log("Authentication expired");
           }
-        });
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 
   let navigate = useNavigate();
-
-  const { handleSubmit, register, formState } = useForm();
-  const [emailAuth, setEmailAuth] = useState(false);
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
