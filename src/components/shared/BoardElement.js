@@ -269,11 +269,11 @@ export const PostInforBar = styled.div`
   border-bottom: 1px solid black;
   display: flex;
   align-items: center;
-  background-color: ${(props) => (props.notice ? "#9e9e9e" : null)};
+  background-color: ${(props) => (props.notice ? "#C8F2EF" : null)};
 
   &:hover {
     cursor: pointer;
-    background-color:9e9e9e;
+    background-color: #C8F2EF;
   }
 `;
 export const PostCotent = styled.div`
