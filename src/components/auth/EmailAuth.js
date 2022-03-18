@@ -64,7 +64,7 @@ const MoveOnMessage = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
+const [verificationKey, setVerificationKey] = useState();
 function EmailAuth(props) {
   useEffect(async () => {
     /*if (!props.userReducer.userId) {
@@ -74,13 +74,14 @@ function EmailAuth(props) {
     console.log(props);
     let params = new URL(document.location.toString()).searchParams;
     setVerificationKey(params.get("verificationKey"));
-
+    console.log(verificationKey);
     if (verificationKey) {
       axios
         .post(`/signup/verify?verificationKey=${verificationKey}`)
         .then((res) => {
-          const CERTIFIED = res.data.data.certified;
           console.log(res);
+          const CERTIFIED = res.data.data.certified;
+
           if (CERTIFIED) {
             console.log(
               "진행하던 회원 가입 브라우저로 이동하여 다음 버튼을 눌러주세요."
@@ -96,7 +97,6 @@ function EmailAuth(props) {
 
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState(false);
-  const [verificationKey, setVerificationKey] = useState();
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
