@@ -46,7 +46,7 @@ function UserPosts(){
                 setCurrentPage(page);
                 console.log(page);
                 setLoad(true)
-                console.log(Number(page));
+                console.log(parseInt(page));
             });
     }
 

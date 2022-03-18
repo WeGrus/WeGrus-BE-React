@@ -51,16 +51,20 @@ function OtherProfile(props) {
         setInfo(res.data.data.info)
         setTarget(mapping(param.category));
         if (param.category === "infor") {
-          setRenderComponent(<UserInfo data={res.data.data.info} />);
+          console.log("infor");
+          setRenderComponent((current) =><UserInfo data={res.data.data.info} />);
         }
         else if (param.category === "posts") {
-          setRenderComponent(<UserPosts />);
+          console.log("posts");
+          setRenderComponent((current) =><UserPosts />);
         }
         else if (param.category === "comments") {
-          renderComponent(<UserComments />) ;
+          console.log("comments");
+          renderComponent((current) =><UserComments />) ;
         }
         else if (param.category === "scraps") {
-          renderComponent(<UserScrape />);
+          console.log("scraps");
+          renderComponent((current) =><UserScrape />);
         }
       })
   },[location])
