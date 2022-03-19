@@ -157,7 +157,7 @@ function App(props) {
 
   useEffect(() => {
     reissueToken();
-  }, [reissueToken, token]);
+  }, [props.userReducer.token]);
 
   return (
     <HelmetProvider>
