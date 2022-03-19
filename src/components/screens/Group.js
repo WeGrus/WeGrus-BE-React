@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Outlet, useLocation, useParams,useSearchParams,useNavigate } from "react-router-dom";
+import { useLocation, useParams,useSearchParams,useNavigate } from "react-router-dom";
 import { Content } from "../shared/Content";
 import PageTitle from "../shared/PageTitle";
 import ScreenTitle from "../shared/ScreenTitle";
@@ -63,7 +63,6 @@ function mapDispatchToProps(dispatch) {
 
 function Group(props) {
     const location = useLocation();
-    const { pathname } = location
     const param = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
     

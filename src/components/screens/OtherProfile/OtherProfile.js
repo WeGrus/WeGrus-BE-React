@@ -56,15 +56,15 @@ function OtherProfile(props) {
         }
         else if (param.category === "posts") {
           console.log("posts");
-          setRenderComponent((current) =><UserPosts />);
+          setRenderComponent((current) => <UserPosts />);
         }
         else if (param.category === "comments") {
           console.log("comments");
-          renderComponent((current) =><UserComments />) ;
+          setRenderComponent((current) => <UserComments />) ;
         }
         else if (param.category === "scraps") {
           console.log("scraps");
-          renderComponent((current) =><UserScrape />);
+          setRenderComponent((current) =><UserScrape />);
         }
       })
   },[location])

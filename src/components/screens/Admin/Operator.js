@@ -4,7 +4,7 @@ import ScreenTitle from "../../shared/ScreenTitle";
 import SideBar from "../../shared/SideBar";
 import { Content } from "../../shared/Content";
 import {SearchBarSection,SearchBarForm,SearchBarSelect,SearchBar,SearchBarInput,SearchBarSubmit,InforBar,InforContents,
-  Grade,StudentId,Name,Role,Attendance,PostInforBar,PhoneNumber,Gender,Check,CheckBtn,PostCotent,PostRole,PostAttendance,PostGender,
+  Grade,StudentId,Name,Role,Attendance,PhoneNumber,Gender,Check,
   InforSelection,ViewSearchBarSubmit} from "./../../shared/BoardElement.js"
 import { useForm } from "react-hook-form";
 import Pagination from "../../shared/Pagination";
@@ -105,8 +105,6 @@ function Operator(props) {
 
   //'ROLE_GUEST', 'ROLE_CLUB_EXECUTIVE', 'ROLE_MEMBER'
   const [load, setLoad] = React.useState(true);
-
-  const [refreshCheck, setRefreshCheck] = React.useState(true);
   const [target, setTarget] = React.useState(MemberList);
   const [page, setPage] = React.useState(0);
   const [SubCategory,setSubCategory] =React.useState(undefined);
@@ -797,7 +795,6 @@ function Operator(props) {
         setStudentIdDirection(true)
         setPhoneNumberDirection(true)
         setNameDirection(true)
-        setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
         break;
@@ -807,7 +804,6 @@ function Operator(props) {
         setStudentIdDirection(true)
         setPhoneNumberDirection(true)
         setNameDirection(true)
-        setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
         break;
@@ -817,7 +813,6 @@ function Operator(props) {
         setGradeDirection(true)
         setPhoneNumberDirection(true)
         setNameDirection(true)
-        setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
         break;
@@ -827,7 +822,6 @@ function Operator(props) {
         setGradeDirection(true)
         setStudentIdDirection(true)
         setNameDirection(true)
-        setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
         break;
@@ -837,7 +831,6 @@ function Operator(props) {
         setGradeDirection(true)
         setStudentIdDirection(true)
         setPhoneNumberDirection(true)
-        setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
         break;
@@ -848,7 +841,6 @@ function Operator(props) {
         setStudentIdDirection(true)
         setPhoneNumberDirection(true)
         setNameDirection(true)
-        setRoleDirection(true)
         setGenderDirection(true)
         break;
       }
@@ -858,7 +850,6 @@ function Operator(props) {
         setStudentIdDirection(true)
         setPhoneNumberDirection(true)
         setNameDirection(true)
-        setRoleDirection(true)
         setAttendanceDirection(true)
         break;
       }
@@ -868,7 +859,6 @@ function Operator(props) {
         setStudentIdDirection(true)
         setPhoneNumberDirection(true)
         setNameDirection(true)
-        setRoleDirection(true)
         setAttendanceDirection(true)
         setGenderDirection(true)
       }

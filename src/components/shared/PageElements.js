@@ -85,11 +85,7 @@ export const Text = styled.div`
   color: white;
   padding-left: 4px;
 `;
-export const CheckBox = styled.input`
-  margin: 8px 11px 8px 8px;
-  width: 16px;
-  height: 16px;
-`;
+
 export const Write = styled.button`
   width: 53px;
   height: 32px;
@@ -142,7 +138,6 @@ export const Comment = styled.div`
   position: relative;
   width: 924px;
 `;
-
 export const CommentRecommand = styled.span`
   color: #0b665c;
   opacity: 1;
@@ -157,23 +152,6 @@ export const CommentContent = styled.div`
   white-space: pre-wrap;
   word-break: break-all;
 `;
-
-export const Recode = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 0;
-`;
-
-export const CommentDelete = styled.button`
-  margin-right: 2.98px;
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 15px;
-  width: 49.02px;
-  height: 29.22;
-  cursor: pointer;
-`;
-
 export const CommentWriteSection = styled.div`
   display: flex;
   flex-direction: row;
@@ -390,8 +368,5 @@ background-color: #6CD2D7;
 color: white;
 border-radius: 20px;
 text-align: center;
-
-
-
 `
 

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import * as React from "react"
 import {PostInforBar,PostCotent,Grade,StudentId,PhoneNumber,Name,PostRole,PostAttendance,PostGender,PostNumber,SmallCheckBtn} from "./../../shared/BoardElement"
 import axios from "axios";

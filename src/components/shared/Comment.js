@@ -2,29 +2,14 @@ import axios from "axios";
 import * as React from "react";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { faThumbsUp as solidFaThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import {
-  Comments,
-  Comment,
-  CommentContent,
-  CommentWriteSection,
-  CommentWrite,
-  CommentSubmit,
-  CommentName,
-  CommentLeft,
-  CommentNameBox,
-  CommentBox,
-  Date,
-  CommentRecommand,
-  BtnBar,
-  CommentInfor,
-  ReComment,
-  CommentSpan,
-  CommentLeftContent,
-  CommentImage,
-  ReCommentImage,
-} from "./PageElements";
+import { faThumbsUp  } from "@fortawesome/free-regular-svg-icons";
+import {faThumbsUp as solidFaThumbsUp} from "@fortawesome/free-solid-svg-icons"
+import {Link} from "react-router-dom";
+import {Comments,Comment
+    ,CommentContent,CommentWriteSection,CommentWrite,CommentSubmit,
+    CommentName,CommentLeft,CommentNameBox,
+    CommentBox,Date,CommentRecommand,BtnBar, CommentInfor,ReComment,CommentSpan,CommentLeftContent,CommentImage,ReCommentImage} from "./PageElements"
+
 
 function mapStateToProps(state) {
   return state;
@@ -264,56 +249,34 @@ function CommentSection(props) {
     }
   };
 
-  const handleReCommentDelete = (e) => {
-    // 대댓글 삭제함수
-    const index = e.target.parentNode.parentNode.dataset.id;
-    let value = window.confirm("해당 댓글을 삭제하겠습니까?");
-    if (value) {
-      axios
-        .delete(`/comments?replyId=${index}`, {})
-        .catch(function (error) {
-          console.log(error.toJSON());
-        })
-        .then(function (res) {
-          console.log(res);
-          triggerSwitch();
-        });
-    }
-  };
-
-  const printComment = commentData.map((comment, i) => (
-    <CommentBox key={comment.replyId}>
-      <Comment data-id={`${comment.replyId}`}>
-        <CommentLeft>
-          <CommentImage src={`${comment.image.url}`}></CommentImage>
-          <CommentLeftContent>
-            <CommentNameBox>
-              <CommentName>{comment.memberName}</CommentName>
-            </CommentNameBox>
-            <CommentInfor data-index={comment.replyId}>
-              <Date>{splitDate(comment.updatedDate)} </Date>
-              {comment.userReplyLiked === false ? (
-                <CommentRecommand>
-                  <FontAwesomeIcon
-                    icon={faThumbsUp}
-                    onClick={handleEmojiRecommand}
-                    color="#0B665C"
-                  />
-                  {comment.replyLike}
-                </CommentRecommand>
-              ) : (
-                <CommentRecommand>
-                  <FontAwesomeIcon
-                    icon={solidFaThumbsUp}
-                    onClick={handleEmojiCancel}
-                    color="#0B665C"
-                  />
-                  {comment.replyLike}
-                </CommentRecommand>
-              )}
-            </CommentInfor>
-          </CommentLeftContent>
-        </CommentLeft>
+      const printComment = commentData.map((comment,i)=>
+        <CommentBox key={comment.replyId}>
+          <Comment data-id={`${comment.replyId}`} >
+            <CommentLeft>
+              {(props.userReducer.id === comment.memberId) ?
+                <Link to={`/profile`}><CommentImage src={`${comment.image.url}`}></CommentImage></Link>
+                :
+                <Link to={`/profile/infor/0/${comment.memberId}`}><CommentImage src={`${comment.image.url}`}></CommentImage></Link>
+              }
+              <CommentLeftContent>
+              <CommentNameBox>
+                  <CommentName>
+                    {(props.userReducer.id === comment.memberId) ?
+                      <Link to={`/profile`}>{comment.memberName}</Link>
+                      :
+                      <Link to={`/profile/infor/0/${comment.memberId}`}>{comment.memberName}</Link>
+                    }
+                  </CommentName>
+              </CommentNameBox>
+              <CommentInfor data-index={comment.replyId}>
+                <Date>{splitDate(comment.updatedDate)} </Date>
+                {(comment.userReplyLiked === false)?
+                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} onClick={handleEmojiRecommand} color="#0B665C" />{comment.replyLike}</CommentRecommand>
+                :
+                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} onClick={handleEmojiCancel} color="#0B665C" />{comment.replyLike}</CommentRecommand>
+                }        
+              </CommentInfor>
+            </CommentLeftContent>
 
         <CommentContent>{comment.content}</CommentContent>
 
@@ -350,34 +313,31 @@ function CommentSection(props) {
           <>
             <ReComment key={reComment.replyId} data-id={`${reComment.replyId}`}>
               <CommentLeft>
-                <ReCommentImage src={`${reComment.image.url}`}></ReCommentImage>
-                <CommentLeftContent>
-                  <CommentNameBox>
-                    <CommentName>{reComment.memberName}</CommentName>
-                  </CommentNameBox>
-                  <CommentInfor data-index={reComment.replyId}>
-                    <Date>{splitDate(comment.updatedDate)} </Date>
-                    {reComment.userReplyLiked === false ? (
-                      <CommentRecommand>
-                        <FontAwesomeIcon
-                          icon={faThumbsUp}
-                          onClick={handleEmojiRecommand}
-                          color="#0B665C"
-                        />
-                        {reComment.replyLike}
-                      </CommentRecommand>
-                    ) : (
-                      <CommentRecommand>
-                        <FontAwesomeIcon
-                          icon={solidFaThumbsUp}
-                          onClick={handleEmojiCancel}
-                          color="#0B665C"
-                        />
-                        {reComment.replyLike}
-                      </CommentRecommand>
-                    )}
-                  </CommentInfor>
-                </CommentLeftContent>
+              {(props.userReducer.id === reComment.memberId) ?
+                    <Link to={`/profile`}><ReCommentImage src={`${reComment.image.url}`}></ReCommentImage></Link>
+                    :
+                    <Link to={`/profile/infor/0/${reComment.memberId}`}><ReCommentImage src={`${reComment.image.url}`}></ReCommentImage></Link>
+              }
+              <CommentLeftContent>
+              <CommentNameBox>
+                      <CommentName>
+                        {(props.userReducer.id === reComment.memberId) ?
+                          <Link to={`/profile`}>{reComment.memberName}</Link>
+                          :
+                          <Link to={`/profile/infor/0/${reComment.memberId}`}>{reComment.memberName}</Link>
+                        }
+                      </CommentName>
+              </CommentNameBox>
+              <CommentInfor data-index={reComment.replyId}>
+                <Date>{splitDate(comment.updatedDate)} </Date>
+                {(reComment.userReplyLiked === false)?
+                <CommentRecommand><FontAwesomeIcon icon={faThumbsUp} onClick={handleEmojiRecommand} color="#0B665C" />{reComment.replyLike}</CommentRecommand>
+                :
+                <CommentRecommand><FontAwesomeIcon icon={solidFaThumbsUp} onClick={handleEmojiCancel} color="#0B665C" />{reComment.replyLike}</CommentRecommand>
+                }
+              </CommentInfor>
+              </CommentLeftContent>
+
               </CommentLeft>
 
               <CommentContent>{reComment.content}</CommentContent>

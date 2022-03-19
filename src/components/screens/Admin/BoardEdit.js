@@ -6,22 +6,6 @@ import { actionCreators } from "../../../store";
 import styled from "styled-components";
 import img from "./../../../images/Polygon.jpg";
 
-const Btn = styled.button`
-width: 200px;
-background-color: ${(props) => (props.red ? "red" : "#6CD2D7")};
-border: none;
-border-radius: 20px;
-height: 50px;
-background-color: ${(props) => (props.red ? "red" : "#6CD2D7")};
-margin-right: ${(props) => (props.red ? "0px" : "350px")};
-font-size: 30px;
-color: white;
-cursor: pointer;
-`
-const BtnSection = styled.div`
-    margin-top: 20px;
-    margin-bottom: 20px;
-`
 export const Category = styled.div`
   font-size: 15px;
   font-weight: 700;

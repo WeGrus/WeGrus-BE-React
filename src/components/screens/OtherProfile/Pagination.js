@@ -13,7 +13,7 @@ function Pagination(props) {
   const { total, page, linkHeader, param} = props
   const totalNumPages = total;
   const numPages = totalNumPages > 4 ? 5 : totalNumPages;
-  const [current, setCurrent] = React.useState(page);
+  const [current, setCurrent] = React.useState(parseInt(page));
   const displayRightEl = React.useRef(null);
   const displayLeftEl = React.useRef(null);
   const navigate = useNavigate();
