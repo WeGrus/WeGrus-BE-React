@@ -283,66 +283,68 @@ function CommentSection(props) {
 
   const printComment = commentData.map((comment, i) => (
     <CommentBox key={comment.replyId}>
-      <Comment data-id={`${comment.replyId}`}>
-        <CommentLeft>
-          <CommentImage src={`${comment.image.url}`}></CommentImage>
-          <CommentLeftContent>
-            <CommentNameBox>
-              <CommentName>{comment.memberName}</CommentName>
-            </CommentNameBox>
-            <CommentInfor data-index={comment.replyId}>
-              <Date>{splitDate(comment.updatedDate)} </Date>
+      <>
+        <Comment data-id={`${comment.replyId}`}>
+          <CommentLeft>
+            <CommentImage src={`${comment.image.url}`}></CommentImage>
+            <CommentLeftContent>
+              <CommentNameBox>
+                <CommentName>{comment.memberName}</CommentName>
+              </CommentNameBox>
+              <CommentInfor data-index={comment.replyId}>
+                <Date>{splitDate(comment.updatedDate)} </Date>
+                {comment.userReplyLiked === false ? (
+                  <CommentRecommand>
+                    <FontAwesomeIcon
+                      icon={faThumbsUp}
+                      onClick={handleEmojiRecommand}
+                      color="#0B665C"
+                    />
+                    {comment.replyLike}
+                  </CommentRecommand>
+                ) : (
+                  <CommentRecommand>
+                    <FontAwesomeIcon
+                      icon={solidFaThumbsUp}
+                      onClick={handleEmojiCancel}
+                      color="#0B665C"
+                    />
+                    {comment.replyLike}
+                  </CommentRecommand>
+                )}
+              </CommentInfor>
+            </CommentLeftContent>
+          </CommentLeft>
+
+          <CommentContent>{comment.content}</CommentContent>
+
+          {comment.memberId === props.userReducer.id ? ( // 이후 JWT 디코딩 이후 수정할 부분이다.
+            <BtnBar data-index={comment.replyId}>
+              {" "}
               {comment.userReplyLiked === false ? (
-                <CommentRecommand>
-                  <FontAwesomeIcon
-                    icon={faThumbsUp}
-                    onClick={handleEmojiRecommand}
-                    color="#0B665C"
-                  />
-                  {comment.replyLike}
-                </CommentRecommand>
+                <CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>
               ) : (
-                <CommentRecommand>
-                  <FontAwesomeIcon
-                    icon={solidFaThumbsUp}
-                    onClick={handleEmojiCancel}
-                    color="#0B665C"
-                  />
-                  {comment.replyLike}
-                </CommentRecommand>
-              )}
-            </CommentInfor>
-          </CommentLeftContent>
-        </CommentLeft>
-
-        <CommentContent>{comment.content}</CommentContent>
-
-        {comment.memberId === props.userReducer.id ? ( // 이후 JWT 디코딩 이후 수정할 부분이다.
-          <BtnBar data-index={comment.replyId}>
-            {" "}
-            {comment.userReplyLiked === false ? (
-              <CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>
-            ) : (
-              <CommentSpan onClick={handleCommentRecommandCancel}>
-                추천취소
-              </CommentSpan>
-            )}{" "}
-            | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> |{" "}
-            <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan>
-          </BtnBar>
-        ) : (
-          <BtnBar data-index={comment.replyId}>
-            {comment.userReplyLiked === false ? (
-              <CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>
-            ) : (
-              <CommentSpan onClick={handleCommentRecommandCancel}>
-                추천취소
-              </CommentSpan>
-            )}{" "}
-            | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan>
-          </BtnBar>
-        )}
-      </Comment>
+                <CommentSpan onClick={handleCommentRecommandCancel}>
+                  추천취소
+                </CommentSpan>
+              )}{" "}
+              | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan> |{" "}
+              <CommentSpan onClick={handleCommentDelete}>삭제</CommentSpan>
+            </BtnBar>
+          ) : (
+            <BtnBar data-index={comment.replyId}>
+              {comment.userReplyLiked === false ? (
+                <CommentSpan onClick={handleCommentRecommand}>추천</CommentSpan>
+              ) : (
+                <CommentSpan onClick={handleCommentRecommandCancel}>
+                  추천취소
+                </CommentSpan>
+              )}{" "}
+              | <CommentSpan onClick={handleReCommentWirte}>답글</CommentSpan>
+            </BtnBar>
+          )}
+        </Comment>
+      </>
 
       {reCommentData
         .filter((item) => item.replyParentId === comment.replyId)
