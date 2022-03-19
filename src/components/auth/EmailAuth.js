@@ -66,7 +66,6 @@ const MoveOnMessage = styled.div`
 `;
 
 function EmailAuth(props) {
-  const [verificationKey, setVerificationKey] = useState();
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState(false);
 
@@ -77,7 +76,8 @@ function EmailAuth(props) {
     }*/
     console.log(props);
     let params = new URL(document.location.toString()).searchParams;
-    setVerificationKey(params.get("verificationKey"));
+    let verificationKey = params.get("verificationKey");
+
     console.log(verificationKey);
     if (verificationKey) {
       axios
@@ -94,6 +94,8 @@ function EmailAuth(props) {
           }
         })
         .catch((err) => console.log(err));
+    } else {
+      console.log("Can't find verification key.");
     }
   }, []);
 
