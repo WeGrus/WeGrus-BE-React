@@ -1,6 +1,6 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthLayout from "../auth/AuthLayout";
 import Button from "../auth/Button";
 import HeaderContainer from "../auth/HeaderContainer";
@@ -9,7 +9,7 @@ import PageTitle from "../shared/PageTitle";
 import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
-import { actionCreators, userSignUp } from "../../store";
+import { actionCreators } from "../../store";
 
 /*function Signupo() {
   const location = useLocation();
@@ -197,7 +197,6 @@ const Select = forwardRef(({ onChange, name, options, placeholder }, ref) => (
 function Signup(props) {
   let navigate = useNavigate();
   const { handleSubmit, register, formState } = useForm();
-  const [emailAuth, setEmailAuth] = useState();
 
   useEffect(() => {
     axios
@@ -211,7 +210,7 @@ function Signup(props) {
           navigate("/login");
         }
       });
-  }, []);
+  });
 
   const onSubmit = ({
     academicStatus,
@@ -253,9 +252,7 @@ function Signup(props) {
       })
       .catch((res) => console.log(res));
   };
-  function onSubmitInvalid(data) {
-    console.log("hi");
-  }
+
   return (
     <AuthLayout>
       <PageTitle title="이메일 인증" />

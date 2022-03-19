@@ -16,7 +16,7 @@ function Pagination({ total, limit, page, setPage }) {
   const displayLeftEl = React.useRef(null);
 
   const showBtnBox = (e) => {
-    if (e.target.dataset.direction == "right") {
+    if (e.target.dataset.direction === "right") {
       if (displayRightEl.current.style.display === "block") {
         displayRightEl.current.style.display = "none";
       } else {
@@ -34,7 +34,7 @@ function Pagination({ total, limit, page, setPage }) {
   };
 
   const movePage = () => {
-    if (current > 0 && current< totalNumPages) {
+    if (current > 0 && current < totalNumPages) {
       displayLeftEl.current.style.display = "none";
       displayRightEl.current.style.display = "none";
       setPage(current);
