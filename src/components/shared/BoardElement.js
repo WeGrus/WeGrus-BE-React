@@ -118,12 +118,6 @@ export const Number = styled.div`
   text-align: center;
   margin-left: 23px;
 `;
-
-export const Categorization = styled.div`
-  width: 90px;
-  text-align: center;
-  margin-left: 4px;
-`;
 //
 export const Title = styled.div`
   width: 373px;
@@ -161,12 +155,6 @@ export const Recommendation = styled.div`
   text-align: center;
   margin-left: 9px;
 `;
-
-export const Comment = styled.div`
-  width: 40px;
-  text-align: center;
-  margin-left: 7px;
-`;
 //
 export const Grade = styled.div`
   width: 40px;
@@ -184,16 +172,6 @@ export const StudentId = styled.div`
   position: relative;
   word-spacing: -3px;
   cursor: ${(props) => (props.post ? "none" : "pointer")};
-`;
-
-export const Major = styled.div`
-  width: 100px;
-  margin-left: 25px;
-`;
-export const Apply = styled.div`
-  width: 83px;
-  margin-left: 25px;
-  text-align: center;
 `;
 //
 export const Name = styled.div`
@@ -221,18 +199,6 @@ export const Attendance = styled.div`
   position: relative;
   cursor: ${(props) => (props.post ? "none" : "pointer")};
 `;
-
-export const Age = styled.div`
-  width: 28px;
-  text-align: center;
-  margin-left: 25px;
-`;
-export const Permission = styled.div`
-  width: 28px;
-  text-align: center;
-  margin-left: 25px;
-  height: 16px;
-`;
 //
 export const PhoneNumber = styled.div`
   width: 110px;
@@ -255,23 +221,6 @@ export const Gender = styled.div`
 export const Check = styled.div`
   margin-left: 30px;
   width: 30px;
-`;
-
-export const CheckBtn = styled.div`
-  margin-left: 35px;
-  width: 30px;
-  height: 16px;
-  background-color: ${(props) => (props.red ? "red" : "#6CD2D7")};
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-`;
-
-export const Withdraw = styled.div`
-  width: 28px;
-  text-align: center;
-  margin-left: 25px;
-  height: 16px;
 `;
 //
 export const PostInforBar = styled.div`
@@ -332,10 +281,6 @@ export const InforSelection = styled.img`
   right: 0px;
   top: 3px;
   transform: ${(props) => (props.desc ? "rotate( 180deg )" : "none")};
-`;
-
-export const Bold = styled.div`
-  font-weight: bold;
 `;
 //
 export const PostNumber = styled.div`
