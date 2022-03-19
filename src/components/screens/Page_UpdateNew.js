@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
   Background,
@@ -35,17 +35,16 @@ const checkNotice = (type) => {
 
 function Page(props) {
 
-    const t = useParams();
+    
     const location = useLocation().state;
     const pageData = location.pageData
-    const data = useLocation().state;
     const editorRef = React.createRef();
     const [notice, setNotice] = React.useState(checkNotice(pageData.type))
     const [secret,setSecret] = React.useState(pageData.secretFlag)
     const [title,setTitle] = React.useState(pageData.title);
     const [isSecret, setIsSecret] = React.useState(false); // 비밀글을 설정할 수 있는지 확인
     const Navigate = useNavigate()
-    const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
+    //const isAuthority =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT","ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
     const isClubExecutives =   props.userReducer.roles.some(i => ["ROLE_CLUB_EXECUTIVE","ROLE_CLUB_PRESIDENT"].includes(i))
     const isGroupExecutives =   props.userReducer.roles.some(i => ["ROLE_GROUP_EXECUTIVE","ROLE_GROUP_PRESIDENT"].includes(i))
 

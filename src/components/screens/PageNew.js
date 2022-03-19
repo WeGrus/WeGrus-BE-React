@@ -1,7 +1,7 @@
 import * as React from "react";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
-import { useLocation, Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";

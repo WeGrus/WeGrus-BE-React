@@ -7,7 +7,7 @@ import {
   MovePageInput,
   MovePageSubmit,
 } from "./PaginationElements";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Pagination(props) {
   const { total, limit, page, setPage, linkHeader, param, searchParams} = props

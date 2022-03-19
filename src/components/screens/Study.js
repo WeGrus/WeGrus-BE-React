@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Outlet,
   useLocation,
   useParams,
   useSearchParams,
@@ -67,7 +66,6 @@ function mapDispatchToProps(dispatch) {
 
 function Study(props) {
   const location = useLocation();
-  const { pathname } = location;
   const param = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
 

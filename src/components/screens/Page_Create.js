@@ -1,10 +1,8 @@
 import * as React from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
 import Checkbox from "./../shared/Checkbox";
-import react from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import {
@@ -21,7 +19,6 @@ import {
   Text,
   Write,
 } from "./../shared/PageElements";
-import { current } from "@reduxjs/toolkit";
 import { usePrompt } from "./../Blocker";
 import { useBeforeunload } from "react-beforeunload";
 
