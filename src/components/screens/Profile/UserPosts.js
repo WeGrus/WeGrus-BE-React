@@ -5,7 +5,6 @@ import { actionCreators } from "../../../store";
 import {
   InforBar,
   InforContents,
-  Number,
   Title,
   Writer,
   Date,
@@ -13,7 +12,6 @@ import {
   Recommendation,
   BoardName,
 } from "./ProfilePostBarElements";
-import PostBar from "../../shared/PostBar";
 import Pagination from "../../shared/Pagination";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
@@ -40,16 +38,14 @@ function mapDispatchToProps(dispatch) {
 }
 
 function UserPosts(props) {
-  const location = useLocation();
-
   //const [target, setTarget] = React.useState(null); // subCategory중 지금 선택한 부분.
 
   //const [selected, setSelected] = React.useState(""); // 필터값
   //const [currentBoardType, setCurrentBoardType] = React.useState("") // 현재 타겟의 boardType(숫자)
   // const [currentType, setCurrentType] = React.useState("") // 현재 타겟의 selected(숫자)
-  let currentBoardType = "";
-  let currentType = "";
-  const [load, setLoad] = useState(false); // load유무로 location의 값이 바뀐 뒤에 렌더
+  //let currentBoardType = "";
+  //let currentType = "";
+  //const [load, setLoad] = useState(false); // load유무로 location의 값이 바뀐 뒤에 렌더
   const [posts, setPosts] = useState(null); // API로 받은 값
   const [totalPage, setTotalPage] = useState(0); // 총 페이지.
 

@@ -1,13 +1,11 @@
 import { createStore } from "@reduxjs/toolkit";
-import { configureStore } from "@reduxjs/toolkit";
-import AccessTokenReducer from "./reducer/AccessTokenReducer";
+
 import { combineReducers } from "redux";
 
 const SET_ID = "SET_ID";
 const SET_EMAIL = "SET_EMAIL";
 const LOGIN = "LOGIN";
 const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-const DELETE_TOKEN = "DELETE_TOKEN";
 const PUT_USER_INFO = "PUT_USER_INFO";
 const EDIT_PHOTO = "EDIT_PHOTO";
 const LOGOUT = "LOGOUT";

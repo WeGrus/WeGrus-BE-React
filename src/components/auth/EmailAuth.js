@@ -7,8 +7,8 @@ import axios from "axios";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { actionCreators, logInUser, setEmail } from "../../store";
+import { Link } from "react-router-dom";
+import { actionCreators } from "../../store";
 
 function mapStateToProps(state) {
   console.log(state);
@@ -66,24 +66,25 @@ const MoveOnMessage = styled.div`
 `;
 
 function EmailAuth(props) {
-
   const [verificationKey, setVerificationKey] = useState();
-  const { handleSubmit, register, formState } = useForm();
+  const { handleSubmit, register } = useForm();
   const [emailAuth, setEmailAuth] = useState(false);
 
   useEffect(() => {
-
     /*if (!props.userReducer.userId) {
       //window.alert(message);
       navigate("/");
     }*/
     console.log(props);
-    let params = new URL(document.location.toString()).searchParams;
-    setVerificationKey(params.get("verificationKey"));
+    let params = new URLSearchParams(window.location.search);
+    let verifiKey = params.get("verificationKey");
+    console.log(params, verifiKey);
 
-    if (verificationKey) {
+    setVerificationKey(verifiKey);
+    console.log(verificationKey);
+    if (verifiKey) {
       axios
-        .post(`/signup/verify?verificationKey=${verificationKey}`)
+        .post(`/signup/verify?verificationKey=${verifiKey}`)
         .then((res) => {
           const CERTIFIED = res.data.data.certified;
           console.log(res);
@@ -96,11 +97,10 @@ function EmailAuth(props) {
           }
         })
         .catch((err) => console.log(err));
+    } else {
+      console.log("Can't find verification key.");
     }
-  }, []);
-
-  let navigate = useNavigate();
-
+  }, [verificationKey]);
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
@@ -119,10 +119,6 @@ function EmailAuth(props) {
       }
     });
   };
-
-  function onSubmitInvalid(data) {
-    console.log("error");
-  }
 
   return (
     <AuthLayout>

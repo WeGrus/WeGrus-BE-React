@@ -1,21 +1,19 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/screens/Login";
 import Profile from "./components/screens/Profile/Profile";
-import OtherProfile from "./components/screens/OtherProfile/OtherProfile"
+import OtherProfile from "./components/screens/OtherProfile/OtherProfile";
 import { GlobalStyles } from "./styles";
 import Layout from "./components/Layout";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
 import EmailAuth from "./components/auth/EmailAuth";
 import React, { useEffect, useState } from "react";
 import OAuth from "./components/auth/OAuth";
-import Loading from "./components/screens/Loading";
 import { connect } from "react-redux";
 import axios from "axios";
 import Signup from "./components/screens/Signup";
 import { actionCreators } from "./store";
-import jwt_decode from "jwt-decode";
 import About from "./components/screens/About/About";
-import { Cookies, useCookies } from "react-cookie";
+import { Cookies } from "react-cookie";
 import Study from "./components/screens/Study";
 import Group from "./components/screens/Group";
 import Announce from "./components/screens/Announce";
@@ -23,7 +21,7 @@ import Board from "./components/screens/Board";
 import CreatePage from "./components/screens/Page_Create.js";
 import NewPage from "./components/screens/PageNew";
 import NewUpdatePage from "./components/screens/Page_UpdateNew";
-import Operator from "./components/screens/Admin/Operator"
+import Operator from "./components/screens/Admin/Operator";
 
 axios.defaults.baseURL = "http://api.igrus.net:8080/";
 //"http://ec2-3-35-129-82.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -76,7 +74,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
+//const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 
 export const jsonType = { "content-type": "application/json" };
 
@@ -84,11 +82,7 @@ export const cookies = new Cookies();
 
 function App(props) {
   const authenticated = props?.userReducer?.authenticated;
-
   const [token, setToken] = useState(null);
-  const [role, setRole] = useState(null);
-
-  const [userInfo, setUserInfo] = useState(false);
 
   let isAuthority = false;
   let isJoinGroup = false;
@@ -112,21 +106,20 @@ function App(props) {
       ].includes(i)
     );
   }
-
-  useEffect(async () => {
+  const reissueToken = async () => {
     await axios
       .post("/reissue", {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         withCredentials: true,
       })
-      .then(async (res) => {
+      .then((res) => {
         setToken(res?.data?.data?.accessToken);
         console.log(res?.data?.data?.accessToken);
         axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${res?.data?.data?.accessToken}`;
 
-        await axios //유저 정보를 가져옵니다.
+        axios //유저 정보를 가져옵니다.
           .get(`/info`)
           .then((res) => {
             console.log(res.data.data);
@@ -159,8 +152,12 @@ function App(props) {
         // ... 로그인 실패 처리(리프레시 토큰을 삭제해주어야함)
       });
     //렌더링시 자동으로 리이슈 api 요청
-    //reissue api를 요청합니다.
-  }, [props.userReducer.token]);
+    //reissue api를 요청합니다.}
+  };
+
+  useEffect(() => {
+    reissueToken();
+  }, [reissueToken, token]);
 
   return (
     <HelmetProvider>
@@ -225,10 +222,12 @@ function App(props) {
                   element={<NewUpdatePage />}
                 />
 
-                <Route path="/profile/:category/:pagenum/:userid" element={<OtherProfile />} />
+                <Route
+                  path="/profile/:category/:pagenum/:userid"
+                  element={<OtherProfile />}
+                />
                 <Route path="/profile" element={<Profile />} />
 
-                
                 <>
                   {isAuthority === true ? (
                     <Route path="/operator" element={<Operator />} />
@@ -241,7 +240,6 @@ function App(props) {
                 <Route path="/" element={<About />} />
               </>
             )}
-
           </Route>
           <Route path="/login" element={<Login />} />
           {!authenticated ? (
@@ -253,8 +251,7 @@ function App(props) {
           ) : (
             <Route path="/" element={<About />} />
           )}
-           
-     
+
           {/* <Route
             path="*"
             element={
