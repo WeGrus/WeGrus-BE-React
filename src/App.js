@@ -13,7 +13,6 @@ import { connect } from "react-redux";
 import axios from "axios";
 import Signup from "./components/screens/Signup";
 import { actionCreators } from "./store";
-import jwt_decode from "jwt-decode";
 import About from "./components/screens/About/About";
 import { Cookies, useCookies } from "react-cookie";
 import Study from "./components/screens/Study";
