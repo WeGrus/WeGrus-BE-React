@@ -4,11 +4,10 @@ import Profile from "./components/screens/Profile/Profile";
 import OtherProfile from "./components/screens/OtherProfile/OtherProfile";
 import { GlobalStyles } from "./styles";
 import Layout from "./components/Layout";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
 import EmailAuth from "./components/auth/EmailAuth";
 import React, { useEffect, useState } from "react";
 import OAuth from "./components/auth/OAuth";
-import Loading from "./components/screens/Loading";
 import { connect } from "react-redux";
 import axios from "axios";
 import Signup from "./components/screens/Signup";
@@ -75,7 +74,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
+//const JWT_EXPIRY_TIME = 30 * 60; //만료 시간 1800초 (=30분)
 
 export const jsonType = { "content-type": "application/json" };
 
@@ -83,11 +82,7 @@ export const cookies = new Cookies();
 
 function App(props) {
   const authenticated = props?.userReducer?.authenticated;
-
   const [token, setToken] = useState(null);
-  const [role, setRole] = useState(null);
-
-  const [userInfo, setUserInfo] = useState(false);
 
   let isAuthority = false;
   let isJoinGroup = false;
@@ -112,54 +107,57 @@ function App(props) {
     );
   }
 
-  useEffect(async () => {
-    await axios
-      .post("/reissue", {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        withCredentials: true,
-      })
-      .then(async (res) => {
-        setToken(res?.data?.data?.accessToken);
-        console.log(res?.data?.data?.accessToken);
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${res?.data?.data?.accessToken}`;
+  useEffect(() => {
+    const reissueToken = async () => {
+      await axios
+        .post("/reissue", {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          withCredentials: true,
+        })
+        .then((res) => {
+          setToken(res?.data?.data?.accessToken);
+          console.log(res?.data?.data?.accessToken);
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${res?.data?.data?.accessToken}`;
 
-        await axios //유저 정보를 가져옵니다.
-          .get(`/info`)
-          .then((res) => {
-            console.log(res.data.data);
-            const INFO = res.data.data.info;
-            const INFO_ARRAY = Object.values(INFO);
-            props.putUserInfo(...INFO_ARRAY);
-            props.loginSuccess(token);
+          axios //유저 정보를 가져옵니다.
+            .get(`/info`)
+            .then((res) => {
+              console.log(res.data.data);
+              const INFO = res.data.data.info;
+              const INFO_ARRAY = Object.values(INFO);
+              props.putUserInfo(...INFO_ARRAY);
+              props.loginSuccess(token);
 
-            //setRole(props?.userReducer?.roles);
-            //window.sessionStorage.setItem("userRole", JSON.stringify(role));
-            //setUserInfo(true);
-            //console.log(token);
+              //setRole(props?.userReducer?.roles);
+              //window.sessionStorage.setItem("userRole", JSON.stringify(role));
+              //setUserInfo(true);
+              //console.log(token);
 
-            //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
-          })
-          .catch((err) => {
-            const ERR = err.response.data.status;
-            console.log(ERR);
-            if (ERR === 403) {
-              window.alert(
-                "GUEST 권한입니다. 동아리 가입 신청 후 MEMBER 권한을 획득하면 이용 가능합니다."
-              );
-            }
-          });
-        //reissue 성공
-      })
-      .catch((err) => {
-        console.log(err);
-        //props.logUserOut();
-        // ... 로그인 실패 처리(리프레시 토큰을 삭제해주어야함)
-      });
-    //렌더링시 자동으로 리이슈 api 요청
-    //reissue api를 요청합니다.
-  }, [props.userReducer.token]);
+              //앱이 랜더링 될 때마다 유저 정보를 리덕스 스토어에 저장합니다.
+            })
+            .catch((err) => {
+              const ERR = err.response.data.status;
+              console.log(ERR);
+              if (ERR === 403) {
+                window.alert(
+                  "GUEST 권한입니다. 동아리 가입 신청 후 MEMBER 권한을 획득하면 이용 가능합니다."
+                );
+              }
+            });
+          //reissue 성공
+        })
+        .catch((err) => {
+          console.log(err);
+          //props.logUserOut();
+          // ... 로그인 실패 처리(리프레시 토큰을 삭제해주어야함)
+        });
+      //렌더링시 자동으로 리이슈 api 요청
+      //reissue api를 요청합니다.}
+    };
+    reissueToken();
+  }, [token]);
 
   return (
     <HelmetProvider>

@@ -7,7 +7,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { actionCreators } from "../../store";
 
 function mapStateToProps(state) {
@@ -100,9 +100,7 @@ function EmailAuth(props) {
     } else {
       console.log("Can't find verification key.");
     }
-  }, []);
-
-  let navigate = useNavigate();
+  }, [verificationKey]);
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
@@ -121,10 +119,6 @@ function EmailAuth(props) {
       }
     });
   };
-
-  function onSubmitInvalid(data) {
-    console.log("error");
-  }
 
   return (
     <AuthLayout>
