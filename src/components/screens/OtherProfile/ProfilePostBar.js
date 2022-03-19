@@ -9,9 +9,7 @@ import {
   Date,
   Hits,
   Recommendation,
-  Bold,
   Writer,
-  Number,
 } from "./../Profile/ProfilePostBarElements";
 import { HashLink } from "react-router-hash-link";
 import { connect } from 'react-redux';

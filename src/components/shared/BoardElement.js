@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import img from "./../../images/Polygon.jpg";
 import { Link } from "react-router-dom";
-
+//
 export const SearchBarSection = styled.div`
   width: 910.07px;
   margin: 0 auto;
@@ -11,12 +11,14 @@ export const SearchBarSection = styled.div`
   display: flex;
   flex-direction: row;
 `;
+//
 export const SearchBarForm = styled.form`
   display: flex;
   flex-direction: row;
   margin-left: 20px;
   margin-top: 16px;
 `;
+//
 export const SearchBarSelect = styled.select`
   width: 117px;
   height: 32px;
@@ -34,10 +36,12 @@ export const SearchBarSelect = styled.select`
   background-size: 12px 12px;
   background-position: bottom 8px right 11px;
 `;
+//
 export const SearchBar = styled.div`
   margin-left: 9px;
   position: relative;
 `;
+//
 export const SearchBarInput = styled.input`
   min-width: 331.48px;
   height: 31.59px;
@@ -45,6 +49,7 @@ export const SearchBarInput = styled.input`
   border-radius: 50px;
   padding-left: 19.87px;
 `;
+//
 export const SearchBarSubmit = styled.input`
   position: absolute;
   right: 3.71px;
@@ -56,7 +61,7 @@ export const SearchBarSubmit = styled.input`
   cursor: pointer;
   z-index:1;
 `;
-
+//
 export const SearchBarFilter = styled.select`
   width: 60.52px;
   height: 16.59px;
@@ -74,7 +79,7 @@ export const SearchBarFilter = styled.select`
   background-size: 12.35px 10.43px;
   background-position: right 2px bottom 2px;
 `;
-
+//
 export const CreateBtnLink = styled(Link)`
   display: flex;
   justify-content: center;
@@ -90,7 +95,7 @@ export const CreateBtnLink = styled(Link)`
   margin-top: 15.85px;
   font-size: 20px;
 `;
-
+//
 export const InforBar = styled.div`
   font-size: 14px;
   font-weight: 700;
@@ -100,12 +105,14 @@ export const InforBar = styled.div`
   min-height: 34px;
   border-bottom: 2px solid #0b665c;
 `;
+//
 export const InforContents = styled.div`
   padding-top: 10px;
   display: flex;
   flex-direction: row;
   text-align: center;
 `;
+//
 export const Number = styled.div`
   min-width: 65px;
   text-align: center;
@@ -117,36 +124,38 @@ export const Categorization = styled.div`
   text-align: center;
   margin-left: 4px;
 `;
+//
 export const Title = styled.div`
   width: 373px;
   margin-left: 62px;
 `;
-
+//
 export const Writer = styled.div`
   width: 77px;
   text-align: center;
   margin-left: 62px;
   word-spacing: -3px;
 `;
+//
 export const BoardName = styled.div`
   width: 130px;
   text-align: center;
   margin-left: 45px;
   word-spacing: -3px;
 `;
-
+//
 export const Date = styled.div`
   width: 63px;
   text-align: center;
   margin-left: 16px;
 `;
-
+//
 export const Hits = styled.div`
   width: 40px;
   text-align: center;
   margin-left: 10px;
 `;
-
+//
 export const Recommendation = styled.div`
   width: 40px;
   text-align: center;
@@ -158,7 +167,7 @@ export const Comment = styled.div`
   text-align: center;
   margin-left: 7px;
 `;
-
+//
 export const Grade = styled.div`
   width: 40px;
   text-align: ${(props) => (props.post ? "center" : "left")};
@@ -167,6 +176,7 @@ export const Grade = styled.div`
   word-spacing: -3px;
   cursor: ${(props) => (props.post ? "default" : "pointer")};
 `;
+//
 export const StudentId = styled.div`
   width: 63px;
   text-align: center;
@@ -185,6 +195,7 @@ export const Apply = styled.div`
   margin-left: 25px;
   text-align: center;
 `;
+//
 export const Name = styled.div`
   width: 80px;
   text-align: center;
@@ -192,6 +203,7 @@ export const Name = styled.div`
   position: relative;
   cursor: ${(props) => (props.post ? "none" : "pointer")};
 `;
+//
 export const Role = styled.div`
   width: 68px;
   text-align: left;
@@ -200,6 +212,7 @@ export const Role = styled.div`
   position: relative;
   cursor: ${(props) => (props.post ? "none" : "pointer")};
 `;
+//
 export const Attendance = styled.div`
   width: 42px;
   text-align: left;
@@ -220,7 +233,7 @@ export const Permission = styled.div`
   margin-left: 25px;
   height: 16px;
 `;
-
+//
 export const PhoneNumber = styled.div`
   width: 110px;
   position: relative;
@@ -229,7 +242,7 @@ export const PhoneNumber = styled.div`
   word-spacing: -10px;
   cursor: ${(props) => (props.post ? "pointer" : "auto")};
 `;
-
+//
 export const Gender = styled.div`
   width: 42px;
   margin-left: 45px;
@@ -238,7 +251,7 @@ export const Gender = styled.div`
   text-align: left;
   cursor: ${(props) => (props.post ? "none" : "pointer")};
 `;
-
+//
 export const Check = styled.div`
   margin-left: 30px;
   width: 30px;
@@ -260,6 +273,7 @@ export const Withdraw = styled.div`
   margin-left: 25px;
   height: 16px;
 `;
+//
 export const PostInforBar = styled.div`
   width: 909.07px;
   height: 31px;
@@ -276,6 +290,7 @@ export const PostInforBar = styled.div`
     background-color: #C8F2EF;
   }
 `;
+//
 export const PostCotent = styled.div`
   align-items: center;
   display: flex;
@@ -286,7 +301,7 @@ export const PostCotent = styled.div`
   }
   font-weight: ${(props) => (props.bold ? "700" : "400")};
 `;
-
+//
 export const PostRole = styled.div`
   width: 74px;
   text-align: center;
@@ -294,7 +309,7 @@ export const PostRole = styled.div`
   word-spacing: -3px;
   position: relative;
 `;
-
+//
 export const PostAttendance = styled.div`
   width: 42px;
   text-align: center;
@@ -302,7 +317,7 @@ export const PostAttendance = styled.div`
   word-spacing: -3px;
   position: relative;
 `;
-
+//
 export const PostGender = styled.div`
   width: 42px;
   margin-left: 45px;
@@ -310,7 +325,7 @@ export const PostGender = styled.div`
   word-spacing: -3px;
   text-align: center;
 `;
-
+//
 export const InforSelection = styled.img`
   width: 8px;
   position: absolute;
@@ -322,7 +337,7 @@ export const InforSelection = styled.img`
 export const Bold = styled.div`
   font-weight: bold;
 `;
-
+//
 export const PostNumber = styled.div`
 
 width: 40px;
@@ -331,7 +346,7 @@ margin-left: 44px;
 position: relative;
 word-spacing: -3px;
 `
-
+//
 export const SmallCheckBtn = styled.div`
 margin-left: ${(props) => (props.red ? "10px" : "28px")};
 width: 15px;
@@ -341,7 +356,7 @@ border: none;
 border-radius: 15px;
 cursor: pointer;
 `
-
+//
 export const ViewSearchBarSubmit = styled.div`
 display: block;
 position: absolute;
