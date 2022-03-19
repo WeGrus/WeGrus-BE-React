@@ -70,12 +70,7 @@ function EmailAuth(props) {
   const { handleSubmit, register } = useForm();
   const [emailAuth, setEmailAuth] = useState(false);
 
-  useEffect(() => {
-    /*if (!props.userReducer.userId) {
-      //window.alert(message);
-      navigate("/");
-    }*/
-    console.log(props);
+  const checkVerifi = () => {
     let params = new URLSearchParams(window.location.search);
     let verifiKey = params.get("verificationKey");
     console.log(params, verifiKey);
@@ -100,7 +95,15 @@ function EmailAuth(props) {
     } else {
       console.log("Can't find verification key.");
     }
-  }, [verificationKey]);
+  };
+  useEffect(() => {
+    /*if (!props.userReducer.userId) {
+      //window.alert(message);
+      navigate("/");
+    }*/
+    console.log(props);
+    checkVerifi();
+  });
 
   const onSubmit = (data) => {
     data.email = `${data.email}@inha.edu`;
