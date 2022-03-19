@@ -76,14 +76,14 @@ function EmailAuth(props) {
       navigate("/");
     }*/
     console.log(props);
-    let params = new URL(document.location.toString()).searchParams;
+    let params = new URLSearchParams(window.location.search);
     let verifiKey = params.get("verificationKey");
     console.log(params);
     setVerificationKey(verifiKey);
     console.log(verificationKey);
     if (verifiKey) {
       axios
-        .post(`/signup/verify?verificationKey=${verificationKey}`)
+        .post(`/signup/verify?verificationKey=${verifiKey}`)
         .then((res) => {
           const CERTIFIED = res.data.data.certified;
           console.log(res);
