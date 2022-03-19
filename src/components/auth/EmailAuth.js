@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { actionCreators, logInUser, setEmail } from "../../store";
+import { actionCreators } from "../../store";
 
 function mapStateToProps(state) {
   console.log(state);
@@ -67,7 +67,7 @@ const MoveOnMessage = styled.div`
 
 function EmailAuth(props) {
   const [verificationKey, setVerificationKey] = useState();
-  const { handleSubmit, register, formState } = useForm();
+  const { handleSubmit, register } = useForm();
   const [emailAuth, setEmailAuth] = useState(false);
 
   useEffect(() => {
@@ -78,7 +78,8 @@ function EmailAuth(props) {
     console.log(props);
     let params = new URLSearchParams(window.location.search);
     let verifiKey = params.get("verificationKey");
-    console.log(params);
+    console.log(params, verifiKey);
+
     setVerificationKey(verifiKey);
     console.log(verificationKey);
     if (verifiKey) {

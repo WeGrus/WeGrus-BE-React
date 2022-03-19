@@ -5,8 +5,6 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Cookies from "universal-cookie/es6";
-import { JWT_EXPIRY_TIME, onSilentRefresh } from "../../App";
 import { actionCreators } from "../../store";
 
 const Redirecting = styled.div`

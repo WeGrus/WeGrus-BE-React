@@ -14,8 +14,6 @@ import {
 } from "./NavBarElements";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-import { cookies } from "../../App";
 import { useCookies } from "react-cookie";
 
 function mapStateToProps(state) {
