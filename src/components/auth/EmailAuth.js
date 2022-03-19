@@ -66,6 +66,7 @@ const MoveOnMessage = styled.div`
 `;
 
 function EmailAuth(props) {
+  const [verificationKey, setVerificationKey] = useState();
   const { handleSubmit, register, formState } = useForm();
   const [emailAuth, setEmailAuth] = useState(false);
 
@@ -76,10 +77,11 @@ function EmailAuth(props) {
     }*/
     console.log(props);
     let params = new URL(document.location.toString()).searchParams;
-    let verificationKey = params.get("verificationKey");
-
+    let verifiKey = params.get("verificationKey");
+    console.log(params);
+    setVerificationKey(verifiKey);
     console.log(verificationKey);
-    if (verificationKey) {
+    if (verifiKey) {
       axios
         .post(`/signup/verify?verificationKey=${verificationKey}`)
         .then((res) => {
