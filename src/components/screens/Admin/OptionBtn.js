@@ -16,6 +16,8 @@ function OptionButton(props){
     const [modalOption, setModalOption] = React.useState(false); // option이 무엇인지
     const [modalInfor, setModalInfor] = React.useState(data); // 회원 정보
 
+    console.log("option change!");
+
     const showSection = () => {
         if(id === show){
             setShow(-1);
@@ -83,4 +85,4 @@ function OptionButton(props){
         </>
     )
 }
-export default OptionButton;
+export default React.memo(OptionButton);

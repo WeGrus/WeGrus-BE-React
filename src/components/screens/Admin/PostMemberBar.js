@@ -49,6 +49,7 @@ function PostMemberBar(props) { //
     const ClubLeader =roles.includes("ROLE_CLUB_PRESIDENT") // 동아리 회장 
     const number = (page - 1) * 16;
     let postdata = "";
+    console.log("postChange!");
 
    if(props.data[0] !== undefined && props.data[0].member === undefined){
     postdata = props.data.map((data, i)=>
